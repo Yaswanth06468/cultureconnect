@@ -120,19 +120,7 @@ const Translator = () => {
                 }
             };
 
-            recognitionRef.current.onerror = (event) => {
-                console.error("Speech recognition error", event.error);
-                if (event.error !== 'no-speech') {
-                    setIsListening(false);
-                }
-            };
-
-            recognitionRef.current.onend = () => {
-                // If the user wants to keep listening, it can auto-restart, but standard behavior usually requires user intent to restart
-                if (isListening) {
-                   setIsListening(false);
-                }
-            };
+            // Event handlers (onerror, onend) moved to separate useEffect to avoid stale closures
         } else {
             console.error("Speech Recognition API not supported in this browser.");
             alert("Speech Recognition API not supported in your browser.");
@@ -140,11 +128,37 @@ const Translator = () => {
 
         return () => {
             if (recognitionRef.current) {
-                recognitionRef.current.stop();
+                try {
+                    recognitionRef.current.stop();
+                } catch (e) {
+                    console.error("Stop on unmount failed:", e);
+                }
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const isListeningRef = useRef(false);
+    useEffect(() => {
+        isListeningRef.current = isListening;
+    }, [isListening]);
+
+    useEffect(() => {
+        if (recognitionRef.current) {
+            recognitionRef.current.onend = () => {
+                if (isListeningRef.current) {
+                    setIsListening(false);
+                }
+            };
+            recognitionRef.current.onerror = (event) => {
+                console.error("Speech recognition error", event.error);
+                if (event.error === 'not-allowed') {
+                    alert("Microphone access denied. Please allow microphone to use translation.");
+                }
+                setIsListening(false);
+            };
+        }
+    }, [isListening]); // Re-bind on state change safely
 
     // We keep this function outside useEffect or use targetLang properly
     // Wait, targetLang used in translateText might capture stale state if we define it in useEffect.
@@ -226,12 +240,21 @@ const Translator = () => {
     };
 
     const toggleListening = () => {
+        if (!recognitionRef.current) {
+            alert("Speech recognition is not supported in this browser.");
+            return;
+        }
+
         if (isListening) {
-            recognitionRef.current?.stop();
+            try {
+                recognitionRef.current.stop();
+            } catch (e) {
+                console.error("Stop failed:", e);
+            }
             setIsListening(false);
         } else {
             try {
-                // Audio context warm-up to unlock TTS features in strict browsers
+                // Audio context warm-up
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
                 }
@@ -239,15 +262,18 @@ const Translator = () => {
                 silentAudio.play().catch(() => {});
                 
                 // Set the correct speech recognition language based on sourceLang
-                if (recognitionRef.current) {
-                    const sourceLangObj = languages.find(l => l.code === sourceLang);
-                    recognitionRef.current.lang = sourceLangObj ? sourceLangObj.ttsCode : 'en-US';
-                }
+                const sourceLangObj = languages.find(l => l.code === sourceLang);
+                recognitionRef.current.lang = sourceLangObj ? sourceLangObj.ttsCode : 'en-US';
 
-                recognitionRef.current?.start();
+                recognitionRef.current.start();
                 setIsListening(true);
             } catch (e) {
                 console.error("Could not start listening", e);
+                setIsListening(false);
+                if (e.name === 'InvalidStateError') {
+                   // Often means it was already starting or stopping
+                   // No action needed, user can retry
+                }
             }
         }
     };

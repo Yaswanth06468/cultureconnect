@@ -41,12 +41,12 @@ const Navbar = () => {
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
-                <Link to="/" className="text-2xl font-serif font-bold text-text-primary tracking-tight">
+                <Link to="/" className="text-2xl font-serif font-bold text-text-primary tracking-tight mr-8 flex-shrink-0">
                     Culture<span className="font-light italic text-accent-terra">Connect</span>
                 </Link>
 
                 {/* Desktop Links */}
-                <div className="hidden md:flex items-center gap-10">
+                <div className="hidden md:flex items-center gap-4 lg:gap-8 flex-1 justify-center">
                     {navLinks.map((link) => (
                         link.href.startsWith('/#') ? (
                             <a
@@ -69,7 +69,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Auth Buttons */}
-                <div className="hidden md:flex items-center gap-4">
+                <div className="hidden md:flex items-center gap-6 ml-8 flex-shrink-0">
                     {token ? (
                         <>
                             <span className="text-sm font-bold text-accent-teal">Hi, {username}</span>
