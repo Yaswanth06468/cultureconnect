@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -10,7 +11,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const endpoint = username === 'ADMIN' ? 'http://localhost:5000/api/admin/login' : 'http://localhost:5000/api/auth/login';
+            const endpoint = username === 'ADMIN' ? `${API_BASE_URL}/api/admin/login` : `${API_BASE_URL}/api/auth/login`;
             const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

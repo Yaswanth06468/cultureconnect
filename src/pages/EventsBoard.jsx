@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 // ── Static category & filter data ────────────────────────────────────────────
 const CATEGORIES = [
@@ -169,7 +170,7 @@ const BookingModal = ({ event, onClose, token, navigate }) => {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${event.id}/book`, {
+      const res = await fetch(`${API_BASE_URL}/api/events/${event.id}/book`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ tickets, name, email, phone }),
@@ -384,7 +385,7 @@ const EventsBoard = () => {
 
   const fetchEvents = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/events');
+      const res = await fetch(`${API_BASE_URL}/api/events`);
       const data = await res.json();
       if (res.ok) setEvents(data);
     } catch (err) { console.error('Failed to fetch events'); }
@@ -393,7 +394,7 @@ const EventsBoard = () => {
   const handleDeleteEvent = async (eventId) => {
     if (!window.confirm('Are you sure you want to delete this event?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/events/${eventId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/events/${eventId}`, {
         method: 'DELETE', headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) fetchEvents(); else alert('Failed to delete event');
@@ -405,7 +406,7 @@ const EventsBoard = () => {
     if (!token) { navigate('/login'); return; }
     if (!title || !date || !location || !description) { setError('All fields are required'); return; }
     try {
-      const res = await fetch('http://localhost:5000/api/events', {
+      const res = await fetch(`${API_BASE_URL}/api/events`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, date, location, description, category, price, language }),

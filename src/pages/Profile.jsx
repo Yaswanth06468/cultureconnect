@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 const Profile = () => {
     const { username } = useParams();
@@ -19,7 +20,7 @@ const Profile = () => {
 
     const fetchProfile = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/users/${username}`);
+            const res = await fetch(`${API_BASE_URL}/api/users/${username}`);
             const data = await res.json();
             if (res.ok) {
                 setProfileUser(data.user);
@@ -36,7 +37,7 @@ const Profile = () => {
     const handleLike = async (postId) => {
         if (!token) return navigate('/login');
         try {
-            const res = await fetch(`http://localhost:5000/api/posts/${postId}/like`, {
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/like`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -48,7 +49,7 @@ const Profile = () => {
 
     const fetchComments = async (postId) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/posts/${postId}/comments`);
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/comments`);
             const data = await res.json();
             if (res.ok) setVisibleComments(prev => ({ ...prev, [postId]: data }));
         } catch (err) {
@@ -63,7 +64,7 @@ const Profile = () => {
         if (!text) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/posts/${postId}/comments`, {
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/comments`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text })
@@ -82,7 +83,7 @@ const Profile = () => {
     const handleDeletePost = async (postId) => {
         if (!window.confirm("Are you sure you want to delete this post?")) return;
         try {
-            const res = await fetch(`http://localhost:5000/api/admin/posts/${postId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/posts/${postId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -99,7 +100,7 @@ const Profile = () => {
     const handleDeleteComment = async (commentId, postId) => {
         if (!window.confirm("Are you sure you want to delete this comment?")) return;
         try {
-            const res = await fetch(`http://localhost:5000/api/admin/comments/${commentId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/comments/${commentId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -117,7 +118,7 @@ const Profile = () => {
     const handleDeleteUser = async () => {
         if (!window.confirm("Are you sure you want to DELETE THIS USER and ALL their data?")) return;
         try {
-            const res = await fetch(`http://localhost:5000/api/admin/users/${profileUser.id}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/users/${profileUser.id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -171,7 +172,7 @@ const Profile = () => {
                                 </div>
                             )}
                             <img
-                                src={`http://localhost:5000${post.image_url}`}
+                                src={post.image_url && post.image_url.startsWith('http') ? post.image_url : `${API_BASE_URL}${post.image_url}`}
                                 alt={post.description}
                                 className="w-full h-auto object-cover max-h-[600px] border-b border-black/10"
                             />

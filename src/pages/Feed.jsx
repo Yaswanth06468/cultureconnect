@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 const Feed = () => {
     const [posts, setPosts] = useState([]);
@@ -21,7 +22,7 @@ const Feed = () => {
 
     const fetchPosts = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/posts');
+            const res = await fetch(`${API_BASE_URL}/api/posts`);
             const data = await res.json();
             if (res.ok) setPosts(data);
         } catch (err) {
@@ -32,7 +33,7 @@ const Feed = () => {
     const handleLike = async (postId) => {
         if (!token) return navigate('/login');
         try {
-            const res = await fetch(`http://localhost:5000/api/posts/${postId}/like`, {
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/like`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -47,7 +48,7 @@ const Feed = () => {
 
     const fetchComments = async (postId) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/posts/${postId}/comments`);
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/comments`);
             const data = await res.json();
             if (res.ok) {
                 setVisibleComments(prev => ({ ...prev, [postId]: data }));
@@ -65,7 +66,7 @@ const Feed = () => {
         if (!text) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/posts/${postId}/comments`, {
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/comments`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -87,7 +88,7 @@ const Feed = () => {
     const handleDeletePost = async (postId) => {
         if (!window.confirm("Are you sure you want to delete this post?")) return;
         try {
-            const res = await fetch(`http://localhost:5000/api/admin/posts/${postId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/posts/${postId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -104,7 +105,7 @@ const Feed = () => {
     const handleDeleteComment = async (commentId, postId) => {
         if (!window.confirm("Are you sure you want to delete this comment?")) return;
         try {
-            const res = await fetch(`http://localhost:5000/api/admin/comments/${commentId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/comments/${commentId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -139,7 +140,7 @@ const Feed = () => {
         formData.append('tag', tag);
 
         try {
-            const res = await fetch('http://localhost:5000/api/posts', {
+            const res = await fetch(`${API_BASE_URL}/api/posts`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -226,7 +227,7 @@ const Feed = () => {
                                 </div>
                             </div>
                             <img
-                                src={post.image_url && post.image_url.startsWith('http') ? post.image_url : `http://localhost:5000${post.image_url}`}
+                                src={post.image_url && post.image_url.startsWith('http') ? post.image_url : `${API_BASE_URL}${post.image_url}`}
                                 alt={post.description}
                                 className="w-full h-auto object-cover max-h-[600px] border-b border-black/10"
                             />
