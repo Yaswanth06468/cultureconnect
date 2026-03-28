@@ -341,8 +341,8 @@ const FoodNotification = ({ notif, onClose }) => {
       <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
         <span style={{ fontSize: 28 }}>{notif.emoji}</span>
         <div style={{ flex: 1 }}>
-          <p style={{ margin: '0 0 2px', fontSize: 11, fontWeight: 700, color: '#666', letterSpacing: 1, textTransform: 'uppercase' }}>📍 You arrived in {notif.city}</p>
-          <p style={{ margin: '0 0 10px', fontSize: 15, fontWeight: 800, color: '#111' }}>Try these local specialties!</p>
+          <p style={{ margin: '0 0 2px', fontSize: 11, fontWeight: 700, color: '#666', letterSpacing: 1, textTransform: 'uppercase' }}>📍 Welcome to {notif.city}!</p>
+          <p style={{ margin: '0 0 10px', fontSize: 15, fontWeight: 800, color: '#111' }}>Since you're here, you <span style={{color: notif.color}}>MUST</span> taste <b>{notif.foods[0]}</b>! It's a local favorite.</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
             {notif.foods.slice(0, 3).map((f, i) => (
               <span key={i} style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 20, background: `${notif.color}18`, color: notif.color, border: `1px solid ${notif.color}40` }}>{f}</span>
@@ -406,7 +406,7 @@ const DetailPanel = ({ city, onNotify }) => {
             className="flex items-center gap-2 font-bold text-sm px-5 py-2.5 rounded-xl text-white transition-all duration-200 hover:-translate-y-0.5"
             style={{ background: city.color, boxShadow: `0 4px 16px ${city.color}50` }}
           >
-            🔔 Simulate Arrival
+            🚀 I'm in {city.city}!
           </button>
         </div>
         <p className="text-text-secondary text-sm leading-relaxed">{city.description}</p>
@@ -615,7 +615,7 @@ const CityFoodExplorer = () => {
                   ['🛰️','Enable "Auto-Detect" to use your real GPS'],
                   ['📍','App watches your location every 30 seconds'],
                   ['🔔','Get notified automatically on city arrival'],
-                  ['🍽️','Or click "Simulate Arrival" to test manually'],
+                  ['🍽️','Or click "I\'m in {city}!" to test manually'],
                   ['🌶️','Never miss a local specialty again!'],
                 ].map(([ic, tx]) => (
                   <div key={tx} className="flex items-center gap-3 mb-2.5">

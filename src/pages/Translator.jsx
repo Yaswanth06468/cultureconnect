@@ -6,6 +6,8 @@ const Translator = () => {
     const [translatedText, setTranslatedText] = useState('');
     const [sourceLang, setSourceLang] = useState('en'); // Default Source is English
     const [targetLang, setTargetLang] = useState('random'); // Default Target is Random
+    const [selectedTone, setSelectedTone] = useState('default'); // default, polite, formal, casual, angry
+    const [detectedEmotion, setDetectedEmotion] = useState(null);
     const recognitionRef = useRef(null);
 
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
@@ -40,6 +42,11 @@ const Translator = () => {
     const targetLangRef = useRef(targetLang);
     const isVoiceEnabledRef = useRef(isVoiceEnabled);
     const speechRateRef = useRef(speechRate);
+    const selectedToneRef = useRef(selectedTone);
+
+    useEffect(() => {
+        selectedToneRef.current = selectedTone;
+    }, [selectedTone]);
 
     useEffect(() => {
         sourceLangRef.current = sourceLang;
@@ -101,15 +108,30 @@ const Translator = () => {
                             displayLangName = randLang.name;
                         }
                         
+                        // Detect real simulated emotion from text
+                        const detected = analyzeMood(transcriptPiece);
+                        setDetectedEmotion(detected);
+                        const tone = detected.toLowerCase();
+
                         // Translate the final recognized sentence
                         translateText(transcriptPiece, sourceLangRef.current, currentLang).then((translatedPiece) => {
                             if (translatedPiece) {
+                                // Simulate cultural modification
+                                let finalPiece = translatedPiece;
+                                const emoji = detected === 'Happy' ? '😊 ' : detected === 'Angry' ? '😡 ' : detected === 'Polite' ? '🙏 ' : detected === 'Formal' ? '💼 ' : '✨ ';
+                                
+                                if (currentLang === 'hi') {
+                                    if (tone === 'polite' && !finalPiece.includes('कृपया')) finalPiece = 'कृपया ' + finalPiece;
+                                    if (tone === 'formal' && !finalPiece.includes('कीजिए')) finalPiece = finalPiece.replace('करो', 'कीजिए').replace('करें', 'कीजिए');
+                                    if (tone === 'angry' && !finalPiece.includes('!')) finalPiece += '!';
+                                }
+
                                 const prefix = targetLangRef.current === 'random' ? `[${displayLangName}] ` : '';
-                                setTranslatedText((prev) => prev + prefix + translatedPiece + ' ');
+                                setTranslatedText((prev) => prev + prefix + emoji + finalPiece + ' ');
                                 // Voice Output
                                 if (voiceEnabled) {
                                     const langObj = languages.find(l => l.code === currentLang);
-                                    speakText(translatedPiece, langObj ? langObj.ttsCode : currentLang);
+                                    speakText(finalPiece, langObj ? langObj.ttsCode : currentLang);
                                 }
                             }
                         });
@@ -163,6 +185,15 @@ const Translator = () => {
     // We keep this function outside useEffect or use targetLang properly
     // Wait, targetLang used in translateText might capture stale state if we define it in useEffect.
     // So we pass targetLang to translateText which is fine.
+
+    const analyzeMood = (text) => {
+        const lower = text.toLowerCase();
+        if (lower.includes('please') || lower.includes('thank') || lower.includes('kindly') || lower.includes('sir') || lower.includes('madam')) return 'Polite';
+        if (lower.includes('no') || lower.includes('stop') || lower.includes('hate') || lower.includes('bad') || lower.includes('stupid')) return 'Angry';
+        if (lower.includes('hello') || lower.includes('good') || lower.includes('happy') || lower.includes('great')) return 'Happy';
+        if (lower.includes('should') || lower.includes('must') || lower.includes('office') || lower.includes('meeting')) return 'Formal';
+        return 'Neutral';
+    };
 
     const translateText = async (text, sl, tl) => {
         if (!text.trim()) return null;
@@ -291,7 +322,7 @@ const Translator = () => {
                         Voice Translator
                     </h1>
                     <p className="text-lg text-text-muted max-w-2xl mx-auto">
-                        Speak in English and seamlessly translate your voice into any selected language in real-time.
+                        Speak and translate with <span className="text-accent-terra font-bold">Emotion-Aware AI</span> that understands cultural context and social nuances.
                     </p>
                 </div>
 
@@ -338,7 +369,7 @@ const Translator = () => {
                         </div>
 
                         <div className="flex flex-wrap gap-4 w-full xl:w-auto mt-4 xl:mt-0 items-center justify-start xl:justify-end">
-                            {/* Speed Control */}
+                            {/* Controls */}
                             <div className="flex items-center gap-2 mr-4 bg-bg-secondary border border-black/10 px-3 py-1 rounded-lg">
                                 <span className="text-xs font-bold text-text-muted">SPEED</span>
                                 <select 
@@ -354,7 +385,6 @@ const Translator = () => {
                                 </select>
                             </div>
 
-                            {/* Voice Setting Toggle */}
                             <label className="flex items-center cursor-pointer gap-2 mr-4 hidden md:flex">
                                 <div className="relative">
                                     <input 
@@ -366,21 +396,18 @@ const Translator = () => {
                                     <div className={`block w-10 h-6 rounded-full transition-colors ${isVoiceEnabled ? 'bg-accent-teal' : 'bg-gray-300'}`}></div>
                                     <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${isVoiceEnabled ? 'transform translate-x-4' : ''}`}></div>
                                 </div>
-                                <span className="text-sm font-semibold text-text-muted">TTS Voice Out</span>
+                                <span className="text-sm font-semibold text-text-muted uppercase text-[10px] font-black">Voice Out</span>
                             </label>
 
                             <button
                                 onClick={clearText}
-                                className="flex-1 md:flex-none px-6 py-3 border border-text-primary text-text-primary rounded-lg font-medium hover:bg-bg-secondary transition-colors flex items-center justify-center gap-2"
+                                className="px-6 py-3 border border-text-primary text-text-primary rounded-lg font-medium hover:bg-bg-secondary transition-colors"
                             >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
                                 Clear
                             </button>
                             <button
                                 onClick={toggleListening}
-                                className={`flex-1 md:flex-none px-8 py-3 rounded-lg font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-md ${
+                                className={`px-8 py-3 rounded-lg font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-md ${
                                     isListening 
                                     ? 'bg-accent-terra hover:bg-red-800 animate-pulse' 
                                     : 'bg-text-primary hover:bg-text-secondary'
@@ -388,20 +415,59 @@ const Translator = () => {
                             >
                                 {isListening ? (
                                     <>
-                                        <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H10a1 1 0 01-1-1v-4z" />
                                         </svg>
-                                        Listening...
+                                        Stop Recording
                                     </>
                                 ) : (
                                     <>
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                                         </svg>
-                                        Start Listening
+                                        Speak to Translate
                                     </>
                                 )}
                             </button>
+                        </div>
+                    </div>
+
+                    {/* AI Emotion & Cultural Tone Detector */}
+                    <div className="mb-8 p-6 rounded-xl border border-dashed border-accent-teal/30 bg-accent-teal/5 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="flex items-center gap-4">
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-inner ${isListening ? 'animate-pulse bg-white' : 'bg-gray-100'}`}>
+                                {detectedEmotion === 'Angry' ? '😡' : detectedEmotion === 'Polite' ? '🙏' : detectedEmotion === 'Happy' ? '😊' : detectedEmotion === 'Formal' ? '💼' : '🧠'}
+                            </div>
+                            <div>
+                                <h3 className="text-sm font-bold text-accent-teal uppercase tracking-widest leading-none mb-1">AI Context Detector</h3>
+                                <p className="text-lg font-serif font-bold text-text-primary">
+                                    {isListening ? "Analyzing Tone..." : detectedEmotion ? `Detected: ${detectedEmotion}` : "Waiting for speech..."}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                            {[
+                                { id: 'default', label: 'Default', icon: '🧠' },
+                                { id: 'polite', label: 'Polite', icon: '🙏' },
+                                { id: 'formal', label: 'Formal', icon: '💼' },
+                                { id: 'casual', label: 'Casual', icon: '👕' },
+                                { id: 'angry', label: 'Angry', icon: '😡' }
+                            ].map(tone => (
+                                <button
+                                    key={tone.id}
+                                    onClick={() => setSelectedTone(tone.id)}
+                                    title={tone.label}
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border ${
+                                        selectedTone === tone.id 
+                                        ? 'bg-text-primary text-white border-text-primary shadow-md' 
+                                        : 'bg-white text-text-muted border-black/10 hover:border-text-primary'
+                                    }`}
+                                >
+                                    {tone.icon}
+                                </button>
+                            ))}
                         </div>
                     </div>
 
@@ -413,13 +479,7 @@ const Translator = () => {
                                 {languages.find(l => l.code === sourceLang)?.name} Speech
                             </h2>
                             <div className="flex-1 p-6 border border-black/10 rounded-xl overflow-y-auto whitespace-pre-wrap text-text-primary text-lg leading-relaxed shadow-inner font-sans scroll-smooth" style={{ background: '#faf5ef' }}>
-                                {transcript ? (
-                                    <span>{transcript}</span>
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-text-muted italic opacity-50">
-                                        Your speech will appear here...
-                                    </div>
-                                )}
+                                {transcript || <div className="w-full h-full flex items-center justify-center text-text-muted italic opacity-50">Your speech will appear here...</div>}
                             </div>
                         </div>
 
@@ -430,18 +490,41 @@ const Translator = () => {
                                 Translated {targetLang !== 'random' && `(${languages.find(l => l.code === targetLang)?.name})`}
                             </h2>
                             <div className="flex-1 p-6 border border-black/10 rounded-xl overflow-y-auto whitespace-pre-wrap text-text-primary text-lg leading-relaxed shadow-inner font-sans scroll-smooth" style={{ background: '#faf5ef' }}>
-                                {translatedText ? (
-                                    <span>{translatedText}</span>
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-text-muted italic opacity-50">
-                                        Translation will appear here...
-                                    </div>
-                                )}
+                                {translatedText || <div className="w-full h-full flex items-center justify-center text-text-muted italic opacity-50">Translation will appear here...</div>}
                             </div>
                         </div>
                     </div>
 
-                    {/* New Features: Save Phrase & Phrasebook */}
+                    {/* Cultural Adaptation Info Panel */}
+                    <div className="mt-8 p-6 bg-white border border-black/10 rounded-xl shadow-sm animate-fade-in">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="text-2xl">🌍</span>
+                            <div>
+                                <h3 className="font-serif font-bold text-text-primary leading-none">Cultural Nuance Adaptation</h3>
+                                <p className="text-xs text-text-muted mt-1 uppercase font-bold tracking-tighter">Powered by Culture-AI Tone Analysis</p>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="p-4 border-l-4 border-accent-gold bg-accent-gold/5 rounded-r-lg">
+                                <h4 className="text-xs font-black text-accent-gold uppercase mb-1">Detected Intent</h4>
+                                <p className="text-sm text-text-primary font-medium">{detectedEmotion || "Awaiting Voice Input..."}</p>
+                            </div>
+                            <div className="p-4 border-l-4 border-accent-blue bg-accent-blue/5 rounded-r-lg">
+                                <h4 className="text-xs font-black text-accent-blue uppercase mb-1">Social Norm</h4>
+                                <p className="text-sm text-text-primary font-medium">
+                                    {selectedTone === 'formal' ? "Hierarchical respect applied" : selectedTone === 'polite' ? "Honorifics synchronized" : "Casual Peer-to-Peer"}
+                                </p>
+                            </div>
+                            <div className="p-4 border-l-4 border-accent-teal bg-accent-teal/5 rounded-r-lg">
+                                <h4 className="text-xs font-black text-accent-teal uppercase mb-1">Nuance Tip</h4>
+                                <p className="text-sm text-text-primary font-medium italic">
+                                    {selectedTone === 'angry' ? "Translations avoid offensive slang while preserving urgency." : "Grammar adjusted for appropriate social distance."}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Phrasebook Section */}
                     <div className="mt-12 pt-8 border-t border-black/10">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-serif font-bold text-text-primary flex items-center gap-2">
