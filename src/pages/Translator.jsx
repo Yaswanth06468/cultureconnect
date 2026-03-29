@@ -108,26 +108,39 @@ const Translator = () => {
                             displayLangName = randLang.name;
                         }
                         
-                        // Detect real simulated emotion from text
+                        // Use manual tone selector as priority if it's NOT default, otherwise use auto-detected
                         const detected = analyzeMood(transcriptPiece);
                         setDetectedEmotion(detected);
-                        const tone = detected.toLowerCase();
+                        
+                        const toneToUse = selectedToneRef.current !== 'default' ? selectedToneRef.current : detected.toLowerCase();
+                        const finalTone = toneToUse.charAt(0).toUpperCase() + toneToUse.slice(1);
 
                         // Translate the final recognized sentence
                         translateText(transcriptPiece, sourceLangRef.current, currentLang).then((translatedPiece) => {
                             if (translatedPiece) {
                                 // Simulate cultural modification
                                 let finalPiece = translatedPiece;
-                                const emoji = detected === 'Happy' ? '😊 ' : detected === 'Angry' ? '😡 ' : detected === 'Polite' ? '🙏 ' : detected === 'Formal' ? '💼 ' : '✨ ';
+                                
+                                // Map tone to emoji
+                                const toneEmojis = {
+                                    'Happy': '😊',
+                                    'Angry': '😡',
+                                    'Polite': '🙏',
+                                    'Formal': '💼',
+                                    'Casual': '👕',
+                                    'Neutral': '✨'
+                                };
+                                const emoji = toneEmojis[finalTone] || '✨';
                                 
                                 if (currentLang === 'hi') {
-                                    if (tone === 'polite' && !finalPiece.includes('कृपया')) finalPiece = 'कृपया ' + finalPiece;
-                                    if (tone === 'formal' && !finalPiece.includes('कीजिए')) finalPiece = finalPiece.replace('करो', 'कीजिए').replace('करें', 'कीजिए');
-                                    if (tone === 'angry' && !finalPiece.includes('!')) finalPiece += '!';
+                                    const toneLower = toneToUse.toLowerCase();
+                                    if (toneLower === 'polite' && !finalPiece.includes('कृपया')) finalPiece = 'कृपया ' + finalPiece;
+                                    if (toneLower === 'formal' && !finalPiece.includes('कीजिए')) finalPiece = finalPiece.replace('करो', 'कीजिए').replace('करें', 'कीजिए');
+                                    if (toneLower === 'angry' && !finalPiece.includes('!')) finalPiece += '!';
                                 }
 
                                 const prefix = targetLangRef.current === 'random' ? `[${displayLangName}] ` : '';
-                                setTranslatedText((prev) => prev + prefix + emoji + finalPiece + ' ');
+                                setTranslatedText((prev) => prev + prefix + emoji + ' ' + finalPiece + ' ');
                                 // Voice Output
                                 if (voiceEnabled) {
                                     const langObj = languages.find(l => l.code === currentLang);
@@ -188,11 +201,47 @@ const Translator = () => {
 
     const analyzeMood = (text) => {
         const lower = text.toLowerCase();
-        if (lower.includes('please') || lower.includes('thank') || lower.includes('kindly') || lower.includes('sir') || lower.includes('madam')) return 'Polite';
-        if (lower.includes('no') || lower.includes('stop') || lower.includes('hate') || lower.includes('bad') || lower.includes('stupid')) return 'Angry';
-        if (lower.includes('hello') || lower.includes('good') || lower.includes('happy') || lower.includes('great')) return 'Happy';
-        if (lower.includes('should') || lower.includes('must') || lower.includes('office') || lower.includes('meeting')) return 'Formal';
-        return 'Neutral';
+        
+        // Comprehensive Scoring Engine
+        const scores = {
+            Polite: 0,
+            Angry: 0,
+            Happy: 0,
+            Formal: 0,
+            Casual: 0
+        };
+
+        // Polite keywords
+        if (/\b(please|thank|kindly|sir|madam|appreciate|help|could you|would you)\b/.test(lower)) scores.Polite += 3;
+        if (/\b(sorry|pardon|excuse)\b/.test(lower)) scores.Polite += 2;
+
+        // Angry/Urgent keywords
+        if (/\b(no|stop|don't|hate|bad|stupid|awful|wrong|danger|immediate|now|fast)\b/.test(lower)) scores.Angry += 3;
+        if (lower.includes('!') || /\b(ridiculous|meaningless|useless)\b/.test(lower)) scores.Angry += 2;
+
+        // Happy/Positive keywords
+        if (/\b(hello|hi|good|happy|great|wonderful|amazing|love|thanks|glad|delighted|pleasure)\b/.test(lower)) scores.Happy += 3;
+        if (/\b(yes|cool|nice|beauty|super|excellent)\b/.test(lower)) scores.Happy += 2;
+
+        // Formal keywords
+        if (/\b(should|must|office|meeting|presentation|official|scheduled|department|management|request|enquiry)\b/.test(lower)) scores.Formal += 3;
+        if (/\b(regarding|therefore|consequently|accordance|policy)\b/.test(lower)) scores.Formal += 2;
+
+        // Casual keywords
+        if (/\b(hey|yo|what's up|buddy|friend|cool|chill|talk|hangout|funny|lol|wow)\b/.test(lower)) scores.Casual += 3;
+        
+        // Find highest score
+        let maxScore = 0;
+        let detected = 'Neutral';
+        
+        for (const [mood, score] of Object.entries(scores)) {
+            if (score > maxScore) {
+                maxScore = score;
+                detected = mood;
+            }
+        }
+        
+        return detected;
     };
 
     const translateText = async (text, sl, tl) => {
@@ -434,40 +483,66 @@ const Translator = () => {
                     </div>
 
                     {/* AI Emotion & Cultural Tone Detector */}
-                    <div className="mb-8 p-6 rounded-xl border border-dashed border-accent-teal/30 bg-accent-teal/5 flex flex-col md:flex-row items-center justify-between gap-6">
-                        <div className="flex items-center gap-4">
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-inner ${isListening ? 'animate-pulse bg-white' : 'bg-gray-100'}`}>
-                                {detectedEmotion === 'Angry' ? '😡' : detectedEmotion === 'Polite' ? '🙏' : detectedEmotion === 'Happy' ? '😊' : detectedEmotion === 'Formal' ? '💼' : '🧠'}
+                    <div className="mb-8 p-6 rounded-xl border border-dashed border-accent-teal/30 bg-accent-teal/5 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                        <div className="flex items-center gap-4 z-10">
+                            <div className={`w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-lg transition-transform duration-300 ${isListening ? 'animate-pulse bg-white scale-110' : 'bg-white'}`}>
+                                {selectedTone !== 'default' ? (
+                                    <span>{['default', 'polite', 'formal', 'casual', 'angry'].find(t => t === selectedTone) === 'polite' ? '🙏' : selectedTone === 'formal' ? '💼' : selectedTone === 'casual' ? '👕' : selectedTone === 'angry' ? '😡' : '🧠'}</span>
+                                ) : (
+                                    <span>{detectedEmotion === 'Angry' ? '😡' : detectedEmotion === 'Polite' ? '🙏' : detectedEmotion === 'Happy' ? '😊' : detectedEmotion === 'Formal' ? '💼' : detectedEmotion === 'Casual' ? '👕' : '🧠'}</span>
+                                )}
                             </div>
                             <div>
-                                <h3 className="text-sm font-bold text-accent-teal uppercase tracking-widest leading-none mb-1">AI Context Detector</h3>
-                                <p className="text-lg font-serif font-bold text-text-primary">
-                                    {isListening ? "Analyzing Tone..." : detectedEmotion ? `Detected: ${detectedEmotion}` : "Waiting for speech..."}
+                                <h3 className="text-xs font-black text-accent-teal uppercase tracking-widest leading-none mb-2">AI Context Engine</h3>
+                                <p className="text-xl font-serif font-bold text-text-primary flex items-center gap-2">
+                                    {isListening ? (
+                                        <span className="flex items-center gap-2">
+                                            Analyzing Tone
+                                            <span className="flex gap-1">
+                                                <span className="w-1 h-1 bg-accent-teal rounded-full animate-bounce"></span>
+                                                <span className="w-1 h-1 bg-accent-teal rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+                                                <span className="w-1 h-1 bg-accent-teal rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+                                            </span>
+                                        </span>
+                                    ) : (
+                                        <>
+                                            {selectedTone !== 'default' ? (
+                                                <span className="text-accent-terra">Manual: {selectedTone.charAt(0).toUpperCase() + selectedTone.slice(1)}</span>
+                                            ) : detectedEmotion ? (
+                                                <span>Detected: {detectedEmotion}</span>
+                                            ) : (
+                                                <span className="opacity-50">Waiting for speech...</span>
+                                            )}
+                                        </>
+                                    )}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-2">
-                            {[
-                                { id: 'default', label: 'Default', icon: '🧠' },
-                                { id: 'polite', label: 'Polite', icon: '🙏' },
-                                { id: 'formal', label: 'Formal', icon: '💼' },
-                                { id: 'casual', label: 'Casual', icon: '👕' },
-                                { id: 'angry', label: 'Angry', icon: '😡' }
-                            ].map(tone => (
-                                <button
-                                    key={tone.id}
-                                    onClick={() => setSelectedTone(tone.id)}
-                                    title={tone.label}
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border ${
-                                        selectedTone === tone.id 
-                                        ? 'bg-text-primary text-white border-text-primary shadow-md' 
-                                        : 'bg-white text-text-muted border-black/10 hover:border-text-primary'
-                                    }`}
-                                >
-                                    {tone.icon}
-                                </button>
-                            ))}
+                        <div className="flex flex-col items-end gap-2 z-10">
+                            <span className="text-[10px] font-black text-text-muted uppercase tracking-tighter mr-2">Force Tone Override</span>
+                            <div className="flex flex-wrap items-center gap-2">
+                                {[
+                                    { id: 'default', label: 'Auto (Default)', icon: '🧠' },
+                                    { id: 'polite', label: 'Polite', icon: '🙏' },
+                                    { id: 'formal', label: 'Formal', icon: '💼' },
+                                    { id: 'casual', label: 'Casual', icon: '👕' },
+                                    { id: 'angry', label: 'Angry', icon: '😡' }
+                                ].map(tone => (
+                                    <button
+                                        key={tone.id}
+                                        onClick={() => setSelectedTone(tone.id)}
+                                        title={tone.label}
+                                        className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border shadow-sm ${
+                                            selectedTone === tone.id 
+                                            ? 'bg-text-primary text-white border-text-primary scale-110' 
+                                            : 'bg-white text-text-muted border-black/10 hover:border-text-primary hover:scale-105'
+                                        }`}
+                                    >
+                                        {tone.icon}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
@@ -501,24 +576,24 @@ const Translator = () => {
                             <span className="text-2xl">🌍</span>
                             <div>
                                 <h3 className="font-serif font-bold text-text-primary leading-none">Cultural Nuance Adaptation</h3>
-                                <p className="text-xs text-text-muted mt-1 uppercase font-bold tracking-tighter">Powered by Culture-AI Tone Analysis</p>
+                                <p className="text-xs text-text-muted mt-1 uppercase font-bold tracking-tighter">Powered by Culture-Connect Tone Engine</p>
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="p-4 border-l-4 border-accent-gold bg-accent-gold/5 rounded-r-lg">
-                                <h4 className="text-xs font-black text-accent-gold uppercase mb-1">Detected Intent</h4>
-                                <p className="text-sm text-text-primary font-medium">{detectedEmotion || "Awaiting Voice Input..."}</p>
+                                <h4 className="text-xs font-black text-accent-gold uppercase mb-1">Intent Context</h4>
+                                <p className="text-sm text-text-primary font-medium">{selectedTone !== 'default' ? `${selectedTone.charAt(0).toUpperCase() + selectedTone.slice(1)} (Manual)` : detectedEmotion || "Awaiting Voice Input..."}</p>
                             </div>
                             <div className="p-4 border-l-4 border-accent-blue bg-accent-blue/5 rounded-r-lg">
                                 <h4 className="text-xs font-black text-accent-blue uppercase mb-1">Social Norm</h4>
                                 <p className="text-sm text-text-primary font-medium">
-                                    {selectedTone === 'formal' ? "Hierarchical respect applied" : selectedTone === 'polite' ? "Honorifics synchronized" : "Casual Peer-to-Peer"}
+                                    {(selectedTone === 'formal' || (selectedTone === 'default' && detectedEmotion === 'Formal')) ? "Hierarchical respect applied" : (selectedTone === 'polite' || (selectedTone === 'default' && detectedEmotion === 'Polite')) ? "Honorifics synchronized" : (selectedTone === 'angry' || (selectedTone === 'default' && detectedEmotion === 'Angry')) ? "Urgent/Direct modality" : "Casual Peer-to-Peer"}
                                 </p>
                             </div>
                             <div className="p-4 border-l-4 border-accent-teal bg-accent-teal/5 rounded-r-lg">
                                 <h4 className="text-xs font-black text-accent-teal uppercase mb-1">Nuance Tip</h4>
                                 <p className="text-sm text-text-primary font-medium italic">
-                                    {selectedTone === 'angry' ? "Translations avoid offensive slang while preserving urgency." : "Grammar adjusted for appropriate social distance."}
+                                    {(selectedTone === 'angry' || (selectedTone === 'default' && detectedEmotion === 'Angry')) ? "Translations avoid offensive slang while preserving urgency." : "Grammar adjusted for appropriate social distance."}
                                 </p>
                             </div>
                         </div>
