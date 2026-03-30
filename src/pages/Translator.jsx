@@ -13,6 +13,7 @@ const Translator = () => {
     const audioContextRef = useRef(null);
     const analyserRef = useRef(null);
     const volumeRef = useRef(0);
+    const isSpeakingRef = useRef(false);
 
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
     const [speechRate, setSpeechRate] = useState(1);
@@ -96,6 +97,9 @@ const Translator = () => {
             // The language will be set right before start()
 
             recognitionRef.current.onresult = (event) => {
+                // BUG FIX: Ignore recognition while the app is speaking to prevent feedback loops
+                if (isSpeakingRef.current) return;
+
                 let finalTranscript = '';
                 let interimTranscript = '';
                 
@@ -108,14 +112,16 @@ const Translator = () => {
                     }
                 }
                 
-                // Set the display transcript correctly
+                // Update display - rebuilding from scratch prevents "repeating" in UI
                 setTranscript(finalTranscript + interimTranscript);
 
                 // Only process NEWLY finalized segments for translation
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     if (event.results[i].isFinal && i > lastTranslatedIndexRef.current) {
+                        const transcriptPiece = event.results[i][0].transcript.trim();
+                        if (!transcriptPiece) continue;
+
                         lastTranslatedIndexRef.current = i;
-                        const transcriptPiece = event.results[i][0].transcript;
                         
                         let currentLang = targetLangRef.current;
                         let displayLangName = '';
@@ -127,7 +133,6 @@ const Translator = () => {
                             displayLangName = randLang.name;
                         }
                         
-                        // Use manual tone selector as priority if it's NOT default, otherwise use auto-detected
                         // Pass current volume intensity to analysis
                         const detected = analyzeMood(transcriptPiece, volumeRef.current);
                         setDetectedEmotion(detected);
@@ -138,32 +143,32 @@ const Translator = () => {
                         // Translate the final recognized sentence
                         translateText(transcriptPiece, sourceLangRef.current, currentLang).then((translatedPiece) => {
                             if (translatedPiece) {
-                                // Map tone to emoji
-                                const toneEmojis = {
-                                    'Happy': '😊',
-                                    'Angry': '😡',
-                                    'Polite': '🙏',
-                                    'Formal': '💼',
-                                    'Casual': '👕',
-                                    'Neutral': '✨'
-                                };
-                                const emoji = toneEmojis[finalTone] || '✨';
-                                
-                                let finalPiece = translatedPiece;
-                                if (currentLang === 'hi') {
-                                    const toneLower = toneToUse.toLowerCase();
-                                    if (toneLower === 'polite' && !finalPiece.includes('कृपया')) finalPiece = 'कृपया ' + finalPiece;
-                                    if (toneLower === 'formal' && !finalPiece.includes('कीजिए')) finalPiece = finalPiece.replace('करो', 'कीजिए').replace('करें', 'कीजिए');
-                                    if (toneLower === 'angry' && !finalPiece.includes('!')) finalPiece += '!';
-                                }
+                                // Double check if we already translated this exact same piece recently
+                                // This prevents logic bugs where indices might stay same on some browsers
+                                setTranslatedText((prev) => {
+                                    if (prev.endsWith(translatedPiece + '. ')) return prev;
+                                    
+                                    const emoji = {
+                                        'Happy': '😊', 'Angry': '😡', 'Polite': '🙏', 
+                                        'Formal': '💼', 'Casual': '👕', 'Neutral': '✨'
+                                    }[finalTone] || '✨';
+                                    
+                                    let final = translatedPiece;
+                                    if (currentLang === 'hi') {
+                                        const toneLower = toneToUse.toLowerCase();
+                                        if (toneLower === 'polite' && !final.includes('कृपया')) final = 'कृपया ' + final;
+                                        if (toneLower === 'formal' && !final.includes('कीजिए')) final = final.replace('करो', 'कीजिए').replace('करें', 'कीजिए');
+                                        if (toneLower === 'angry' && !final.includes('!')) final += '!';
+                                    }
 
-                                const prefix = targetLangRef.current === 'random' ? `[${displayLangName}] ` : '';
-                                setTranslatedText((prev) => prev + prefix + emoji + ' ' + finalPiece + '. ');
+                                    const prefix = targetLangRef.current === 'random' ? `[${displayLangName}] ` : '';
+                                    return prev + prefix + emoji + ' ' + final + '. ';
+                                });
                                 
                                 // Voice Output
                                 if (voiceEnabled) {
                                     const langObj = languages.find(l => l.code === currentLang);
-                                    speakText(finalPiece, langObj ? langObj.ttsCode : currentLang);
+                                    speakText(translatedPiece, langObj ? langObj.ttsCode : currentLang);
                                 }
                             }
                         });
@@ -300,6 +305,11 @@ const Translator = () => {
             const audioUrl = `https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(safeText)}&tl=${ttsLang}&client=gtx`;
             const audio = new window.Audio(audioUrl);
             audio.playbackRate = speechRateRef.current;
+            
+            audio.onplay = () => { isSpeakingRef.current = true; };
+            audio.onended = () => { isSpeakingRef.current = false; };
+            audio.onerror = () => { isSpeakingRef.current = false; };
+
             const playPromise = audio.play();
 
             if (playPromise !== undefined) {
@@ -339,6 +349,10 @@ const Translator = () => {
             }
 
             utterance.rate = speechRateRef.current * 0.95;
+            utterance.onstart = () => { isSpeakingRef.current = true; };
+            utterance.onend = () => { isSpeakingRef.current = false; };
+            utterance.onerror = () => { isSpeakingRef.current = false; };
+            
             window.speechSynthesis.speak(utterance);
         }
     };
@@ -391,6 +405,7 @@ const Translator = () => {
                 // Reset tracking
                 lastTranslatedIndexRef.current = -1;
                 volumeRef.current = 0;
+                isSpeakingRef.current = false;
 
                 // Audio context warm-up
                 if ('speechSynthesis' in window) {
