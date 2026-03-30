@@ -11,6 +11,7 @@ const Translator = () => {
     const recognitionRef = useRef(null);
     const lastTranslatedIndexRef = useRef(-1);
     const isSpeakingRef = useRef(false);
+    const finalizedTranscriptRef = useRef(''); // Holds the confirmed English text
 
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
     const [speechRate, setSpeechRate] = useState(1);
@@ -96,34 +97,28 @@ const Translator = () => {
             recognitionRef.current.onresult = (event) => {
                 if (isSpeakingRef.current) return;
 
-                let currentPiece = '';
+                let currentInterim = '';
+                let newestFinalPiece = '';
                 let isFinalPiece = false;
                 
-                // Track only the latest segment to avoid cumulative duplicates (e.g. "hi", then "hi how are you")
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     const t = event.results[i][0].transcript;
                     if (event.results[i].isFinal) {
-                        currentPiece = t;
+                        newestFinalPiece = t;
                         isFinalPiece = true;
                     } else {
-                        // Interim results just update the display transcript
-                        setTranscript((prev) => {
-                           // Extract the "already final" parts and append current interim
-                           const words = prev.trim().split(' ');
-                           const lastWord = words[words.length - 1];
-                           if (t.startsWith(lastWord)) return prev.substring(0, prev.lastIndexOf(lastWord)) + t;
-                           return prev + ' ' + t;
-                        });
+                        currentInterim += t;
                     }
                 }
                 
-                if (isFinalPiece && currentPiece.trim()) {
-                    // Update transcript state with the full finalized thought
-                    setTranscript((prev) => {
-                        const trimmed = prev.trim();
-                        if (trimmed.endsWith(currentPiece.trim())) return trimmed;
-                        return trimmed + ' ' + currentPiece.trim() + '. ';
-                    });
+                // UPDATE SOURCE DISPLAY
+                // Confirmation (finalized history) + currently being spoken thought (interim)
+                setTranscript(finalizedTranscriptRef.current + currentInterim);
+
+                if (isFinalPiece && newestFinalPiece.trim()) {
+                    // Update persistent confirmed text
+                    finalizedTranscriptRef.current += newestFinalPiece.trim() + '. ';
+                    setTranscript(finalizedTranscriptRef.current);
 
                     let currentLang = targetLangRef.current;
                     let displayLangName = '';
@@ -135,13 +130,13 @@ const Translator = () => {
                         displayLangName = randLang.name;
                     }
                     
-                    const detected = analyzeMood(currentPiece);
+                    const detected = analyzeMood(newestFinalPiece);
                     setDetectedEmotion(detected);
                     
                     const toneToUse = selectedToneRef.current !== 'default' ? selectedToneRef.current : detected.toLowerCase();
                     const finalTone = toneToUse.charAt(0).toUpperCase() + toneToUse.slice(1);
 
-                    translateText(currentPiece, sourceLangRef.current, currentLang).then((translatedPiece) => {
+                    translateText(newestFinalPiece, sourceLangRef.current, currentLang).then((translatedPiece) => {
                         if (translatedPiece) {
                             setTranslatedText((prev) => {
                                 // Strict duplicate check
@@ -401,6 +396,7 @@ const Translator = () => {
     const clearText = () => {
         setTranscript('');
         setTranslatedText('');
+        finalizedTranscriptRef.current = '';
     };
 
     return (
