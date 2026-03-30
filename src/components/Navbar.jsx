@@ -20,6 +20,7 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
+        setIsMobileMenuOpen(false);
         navigate('/login');
     };
 
@@ -135,10 +136,18 @@ const Navbar = () => {
                         </button>
                     ) : (
                         <div className="flex flex-col gap-3">
-                            <Link to="/login" className="w-full text-center py-3 border border-text-primary text-text-primary font-medium">
+                            <Link 
+                                to="/login" 
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="w-full text-center py-3 border border-text-primary text-text-primary font-medium"
+                            >
                                 Login
                             </Link>
-                            <Link to="/signup" className="w-full text-center py-3 bg-text-primary text-bg-primary font-medium">
+                            <Link 
+                                to="/signup" 
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="w-full text-center py-3 bg-text-primary text-bg-primary font-medium"
+                            >
                                 Sign Up
                             </Link>
                         </div>
