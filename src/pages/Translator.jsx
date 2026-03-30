@@ -10,9 +10,6 @@ const Translator = () => {
     const [detectedEmotion, setDetectedEmotion] = useState(null);
     const recognitionRef = useRef(null);
     const lastTranslatedIndexRef = useRef(-1);
-    const audioContextRef = useRef(null);
-    const analyserRef = useRef(null);
-    const volumeRef = useRef(0);
     const isSpeakingRef = useRef(false);
 
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
@@ -134,7 +131,7 @@ const Translator = () => {
                         }
                         
                         // Pass current volume intensity to analysis
-                        const detected = analyzeMood(transcriptPiece, volumeRef.current);
+                        const detected = analyzeMood(transcriptPiece);
                         setDetectedEmotion(detected);
                         
                         const toneToUse = selectedToneRef.current !== 'default' ? selectedToneRef.current : detected.toLowerCase();
@@ -190,9 +187,7 @@ const Translator = () => {
                     // console.error("Stop on unmount failed:", e);
                 }
             }
-            if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
-                audioContextRef.current.close().catch(() => {});
-            }
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -223,7 +218,7 @@ const Translator = () => {
     // Wait, targetLang used in translateText might capture stale state if we define it in useEffect.
     // So we pass targetLang to translateText which is fine.
 
-    const analyzeMood = (text, volume = 0) => {
+    const analyzeMood = (text) => {
         const lower = text.toLowerCase().trim();
         if (!lower) return 'Neutral';
         
@@ -238,23 +233,22 @@ const Translator = () => {
 
         // Polite keywords & phrases
         if (/\b(please|thank|kindly|sir|madam|appreciate|help|could you|would you|pardon|sorry|excuse)\b/.test(lower)) scores.Polite += 4;
-        if (/\b(may i|if you don't mind|grateful|honor)\b/.test(lower)) scores.Polite += 3;
+        if (/\b(may i|if you don't mind|grateful|honor|regards)\b/.test(lower)) scores.Polite += 3;
 
-        // Angry/Urgent keywords & Voice Intensity
-        if (/\b(no|stop|don't|hate|bad|stupid|awful|wrong|danger|immediate|now|fast|ridiculous|meaningless|useless|shut up|annoying)\b/.test(lower)) scores.Angry += 5;
-        if (lower.includes('!') || volume > 70) scores.Angry += 3; // High volume increases anger score
+        // Angry/Urgent keywords
+        if (/\b(no|stop|don't|hate|bad|stupid|awful|wrong|danger|immediate|now|fast|ridiculous|meaningless|useless|shut up|annoying|hate|crazy|never)\b/.test(lower)) scores.Angry += 5;
+        if (lower.includes('!') || text === text.toUpperCase() && text.length > 5) scores.Angry += 3;
 
         // Happy/Positive keywords
-        if (/\b(hello|hi|good|happy|great|wonderful|amazing|love|thanks|glad|delighted|pleasure|yes|cool|nice|beauty|super|excellent|awesome|joy)\b/.test(lower)) scores.Happy += 4;
-        if (volume > 50 && volume < 75) scores.Happy += 2; // Mid-high volume can indicate excitement/happiness
-
+        if (/\b(hello|hi|good|happy|great|wonderful|amazing|love|thanks|glad|delighted|pleasure|yes|cool|nice|beauty|super|excellent|awesome|joy|celebrate)\b/.test(lower)) scores.Happy += 4;
+        
         // Formal keywords
-        if (/\b(should|must|office|meeting|presentation|official|scheduled|department|management|request|enquiry|regarding|therefore|consequently|accordance|policy|professional|sincerely)\b/.test(lower)) scores.Formal += 4;
-        if (lower.length > 50) scores.Formal += 1; // Longer sentences slightly lean formal
+        if (/\b(should|must|office|meeting|presentation|official|scheduled|department|management|request|enquiry|regarding|therefore|consequently|accordance|policy|professional|sincerely|contract|agreement)\b/.test(lower)) scores.Formal += 4;
+        if (lower.length > 60) scores.Formal += 2; // Longer sentences lean formal
 
         // Casual keywords
-        if (/\b(hey|yo|what's up|buddy|friend|cool|chill|talk|hangout|funny|lol|wow|nah|yeah|yep|guess|maybe)\b/.test(lower)) scores.Casual += 4;
-        if (volume < 30 && volume > 5) scores.Casual += 1; // Low volume can indicate casual/intimate talk
+        if (/\b(hey|yo|what's up|buddy|friend|cool|chill|talk|hangout|funny|lol|wow|nah|yeah|yep|guess|maybe|stuff|cool)\b/.test(lower)) scores.Casual += 4;
+        if (lower.length < 20) scores.Casual += 1;
         
         // Find highest score
         let maxScore = 0;
@@ -357,35 +351,6 @@ const Translator = () => {
         }
     };
 
-    const startVolumeAnalysis = () => {
-        try {
-            audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-            analyserRef.current = audioContextRef.current.createAnalyser();
-            analyserRef.current.fftSize = 256;
-            
-            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-                const source = audioContextRef.current.createMediaStreamSource(stream);
-                source.connect(analyserRef.current);
-                
-                const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-                const updateVolume = () => {
-                    if (!isListeningRef.current) return;
-                    analyserRef.current.getByteFrequencyData(dataArray);
-                    let sum = 0;
-                    for (let i = 0; i < dataArray.length; i++) {
-                        sum += dataArray[i];
-                    }
-                    const average = sum / dataArray.length;
-                    volumeRef.current = average;
-                    requestAnimationFrame(updateVolume);
-                };
-                updateVolume();
-            }).catch(err => console.error("Mic access for volume analysis failed:", err));
-        } catch (e) {
-            console.error("AudioContext failed:", e);
-        }
-    };
-
     const toggleListening = () => {
         if (!recognitionRef.current) {
             alert("Speech recognition is not supported in this browser.");
@@ -395,7 +360,8 @@ const Translator = () => {
         if (isListening) {
             try {
                 recognitionRef.current.stop();
-                if (audioContextRef.current) audioContextRef.current.close().catch(() => {});
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                isSpeakingRef.current = false;
             } catch (e) {
                 console.error("Stop failed:", e);
             }
@@ -404,13 +370,12 @@ const Translator = () => {
             try {
                 // Reset tracking
                 lastTranslatedIndexRef.current = -1;
-                volumeRef.current = 0;
                 isSpeakingRef.current = false;
 
+                // Stop any current speaking to avoid immediate feedback ignore
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                
                 // Audio context warm-up
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
-                }
                 const silentAudio = new window.Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
                 silentAudio.play().catch(() => {});
                 
@@ -420,9 +385,6 @@ const Translator = () => {
 
                 recognitionRef.current.start();
                 setIsListening(true);
-                
-                // Start listening to voice volume for emotion detection
-                startVolumeAnalysis();
             } catch (e) {
                 console.error("Could not start listening", e);
                 setIsListening(false);
