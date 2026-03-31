@@ -1,15 +1,18 @@
 import express from 'express';
 import cors from 'cors';
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +22,76 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
+// Schemas
+const UserSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+});
+const User = mongoose.model('User', UserSchema);
+
+const PostSchema = new mongoose.Schema({
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    username: String,
+    image_url: String,
+    description: String,
+    tag: String,
+    created_at: { type: Date, default: Date.now },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+});
+PostSchema.set('toJSON', { virtuals: true });
+PostSchema.virtual('id').get(function() { return this._id.toHexString(); });
+const Post = mongoose.model('Post', PostSchema);
+
+const CommentSchema = new mongoose.Schema({
+    post_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    username: String,
+    text: String,
+    created_at: { type: Date, default: Date.now }
+});
+CommentSchema.set('toJSON', { virtuals: true });
+CommentSchema.virtual('id').get(function() { return this._id.toHexString(); });
+const Comment = mongoose.model('Comment', CommentSchema);
+
+const EventSchema = new mongoose.Schema({
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    username: String,
+    title: String,
+    date: String,
+    location: String,
+    description: String,
+    category: { type: String, default: 'Cultural' },
+    price: { type: Number, default: 0 },
+    language: { type: String, default: 'English' },
+    created_at: { type: Date, default: Date.now }
+});
+EventSchema.set('toJSON', { virtuals: true });
+EventSchema.virtual('id').get(function() { return this._id.toHexString(); });
+const Event = mongoose.model('Event', EventSchema);
+
+const BookingSchema = new mongoose.Schema({
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    username: String,
+    event_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Event' },
+    event_title: String,
+    tickets: { type: Number, default: 1 },
+    total_price: { type: Number, default: 0 },
+    name: String,
+    email: String,
+    phone: String,
+    status: { type: String, default: 'confirmed' },
+    created_at: { type: Date, default: Date.now }
+});
+BookingSchema.set('toJSON', { virtuals: true });
+BookingSchema.virtual('id').get(function() { return this._id.toHexString(); });
+const Booking = mongoose.model('Booking', BookingSchema);
+
+// Multer Storage
 const storage = multer.diskStorage({
     destination: './uploads/',
     filename: function (req, file, cb) {
@@ -27,106 +100,11 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-let db;
-
-// Initialize Database
-async function initDb() {
-    db = await open({
-        filename: './users.db',
-        driver: sqlite3.Database
-    });
-
-    await db.exec(`
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE,
-            password TEXT
-        )
-    `);
-
-    await db.exec(`
-        CREATE TABLE IF NOT EXISTS posts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            username TEXT,
-            image_url TEXT,
-            description TEXT,
-            tag TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(user_id) REFERENCES users(id)
-        )
-    `);
-
-    await db.exec(`
-        CREATE TABLE IF NOT EXISTS likes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            post_id INTEGER,
-            UNIQUE(user_id, post_id),
-            FOREIGN KEY(user_id) REFERENCES users(id),
-            FOREIGN KEY(post_id) REFERENCES posts(id)
-        )
-    `);
-
-    await db.exec(`
-        CREATE TABLE IF NOT EXISTS comments (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            post_id INTEGER,
-            username TEXT,
-            text TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(user_id) REFERENCES users(id),
-            FOREIGN KEY(post_id) REFERENCES posts(id)
-        )
-    `);
-
-    await db.exec(`
-        CREATE TABLE IF NOT EXISTS events (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            username TEXT,
-            title TEXT,
-            date TEXT,
-            location TEXT,
-            description TEXT,
-            category TEXT,
-            price INTEGER,
-            language TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(user_id) REFERENCES users(id)
-        )
-    `);
-
-    await db.exec(`
-        CREATE TABLE IF NOT EXISTS bookings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            username TEXT,
-            event_id INTEGER,
-            event_title TEXT,
-            tickets INTEGER DEFAULT 1,
-            total_price INTEGER DEFAULT 0,
-            name TEXT,
-            email TEXT,
-            phone TEXT,
-            status TEXT DEFAULT 'confirmed',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(user_id) REFERENCES users(id),
-            FOREIGN KEY(event_id) REFERENCES events(id)
-        )
-    `);
-
-    console.log('Connected to SQLite users.db');
-}
-initDb();
-
+// Middleware
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-
     if (!token) return res.status(401).json({ error: 'Access denied' });
-
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) return res.status(403).json({ error: 'Invalid token' });
         req.user = user;
@@ -137,117 +115,92 @@ function authenticateToken(req, res, next) {
 function authenticateAdmin(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-
     if (!token) return res.status(401).json({ error: 'Access denied' });
-
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) return res.status(403).json({ error: 'Invalid token' });
-        if (user.role !== 'admin') {
-            return res.status(403).json({ error: 'Requires admin privileges' });
-        }
+        if (user.role !== 'admin') return res.status(403).json({ error: 'Requires admin privileges' });
         req.user = user;
         next();
     });
 }
 
-// Admin Login Route
+// Routes
 app.post('/api/admin/login', (req, res) => {
     const { username, password } = req.body;
-    
-    // Check against environment variables
     if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
-        // Sign token with admin role
-        const token = jwt.sign(
-            { id: 'admin', username: 'ADMIN', role: 'admin' }, 
-            JWT_SECRET, 
-            { expiresIn: '8h' }
-        );
+        const token = jwt.sign({ id: 'admin', username: 'ADMIN', role: 'admin' }, JWT_SECRET, { expiresIn: '8h' });
         res.json({ message: 'Admin login successful', token, username: 'ADMIN', role: 'admin' });
     } else {
         res.status(401).json({ error: 'Invalid admin credentials' });
     }
 });
 
-// Signup Route
 app.post('/api/auth/signup', async (req, res) => {
     const { username, password } = req.body;
-
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password required' });
-    }
-
+    if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        await db.run('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword]);
+        const newUser = new User({ username, password: hashedPassword });
+        await newUser.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
-        if (err.message.includes('UNIQUE constraint failed')) {
-            return res.status(409).json({ error: 'Username already exists' });
-        }
-        console.error(err);
+        if (err.code === 11000) return res.status(409).json({ error: 'Username already exists' });
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-// Login Route
 app.post('/api/auth/login', async (req, res) => {
     const { username, password } = req.body;
-
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password required' });
-    }
-
+    if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
     try {
-        const user = await db.get('SELECT * FROM users WHERE username = ?', [username]);
-        if (!user) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+        const user = await User.findOne({ username });
+        if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ error: 'Invalid credentials' });
+        const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
         res.json({ message: 'Login successful', token, username: user.username });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-// Fetch Posts Route
 app.get('/api/posts', async (req, res) => {
     try {
-        const posts = await db.all(`
-            SELECT 
-                p.*,
-                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
-                (SELECT COUNT(*) FROM comments WHERE post_id = p.id) as comment_count
-            FROM posts p
-            ORDER BY p.created_at DESC
-        `);
-        res.json(posts);
+        const posts = await Post.find().sort({ created_at: -1 }).lean();
+        const results = await Promise.all(posts.map(async p => {
+            const comment_count = await Comment.countDocuments({ post_id: p._id });
+            return { ...p, id: p._id.toString(), like_count: p.likes.length, comment_count };
+        }));
+        res.json(results);
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to fetch posts' });
     }
 });
 
-// Toggle Like
-app.post('/api/posts/:id/like', authenticateToken, async (req, res) => {
-    const postId = req.params.id;
-    const userId = req.user.id;
-
+app.post('/api/posts', authenticateToken, upload.single('image'), async (req, res) => {
+    const { description, tag } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    if (!imageUrl || !description) return res.status(400).json({ error: 'Image and description are required' });
     try {
-        // Check if already liked
-        const existingLike = await db.get('SELECT * FROM likes WHERE user_id = ? AND post_id = ?', [userId, postId]);
+        const newPost = new Post({ user_id: req.user.id, username: req.user.username, image_url: imageUrl, description, tagValue: tag || 'General' }); // Changed property name to tagValue internally if tag is special but here we keep tag or tagValue
+        newPost.tag = tag || 'General';
+        await newPost.save();
+        res.status(201).json({ message: 'Post created successfully', post: newPost });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to create post' });
+    }
+});
 
-        if (existingLike) {
-            await db.run('DELETE FROM likes WHERE user_id = ? AND post_id = ?', [userId, postId]);
+app.post('/api/posts/:id/like', authenticateToken, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) return res.status(404).json({ error: 'Post not found' });
+        const index = post.likes.indexOf(req.user.id);
+        if (index > -1) {
+            post.likes.splice(index, 1);
+            await post.save();
             res.json({ message: 'Post unliked', liked: false });
         } else {
-            await db.run('INSERT INTO likes (user_id, post_id) VALUES (?, ?)', [userId, postId]);
+            post.likes.push(req.user.id);
+            await post.save();
             res.json({ message: 'Post liked', liked: true });
         }
     } catch (err) {
@@ -255,262 +208,137 @@ app.post('/api/posts/:id/like', authenticateToken, async (req, res) => {
     }
 });
 
-// Fetch Comments for a Post
 app.get('/api/posts/:id/comments', async (req, res) => {
     try {
-        const comments = await db.all('SELECT * FROM comments WHERE post_id = ? ORDER BY created_at ASC', [req.params.id]);
+        const comments = await Comment.find({ post_id: req.params.id }).sort({ created_at: 1 });
         res.json(comments);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch comments' });
     }
 });
 
-// Add Comment
 app.post('/api/posts/:id/comments', authenticateToken, async (req, res) => {
     const { text } = req.body;
-    const postId = req.params.id;
-
     if (!text) return res.status(400).json({ error: 'Comment text is required' });
-
     try {
-        const result = await db.run(
-            'INSERT INTO comments (user_id, post_id, username, text) VALUES (?, ?, ?, ?)',
-            [req.user.id, postId, req.user.username, text]
-        );
-        res.status(201).json({
-            id: result.lastID,
-            user_id: req.user.id,
-            post_id: postId,
-            username: req.user.username,
-            text
-        });
+        const newComment = new Comment({ post_id: req.params.id, user_id: req.user.id, username: req.user.username, text });
+        await newComment.save();
+        res.status(201).json(newComment);
     } catch (err) {
         res.status(500).json({ error: 'Failed to add comment' });
     }
 });
 
-// Fetch User Profile
 app.get('/api/users/:username', async (req, res) => {
     try {
-        const user = await db.get('SELECT id, username FROM users WHERE username = ?', [req.params.username]);
+        const user = await User.findOne({ username: req.params.username }).lean();
         if (!user) return res.status(404).json({ error: 'User not found' });
-
-        const posts = await db.all(`
-            SELECT 
-                p.*,
-                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
-                (SELECT COUNT(*) FROM comments WHERE post_id = p.id) as comment_count
-            FROM posts p
-            WHERE p.user_id = ?
-            ORDER BY p.created_at DESC
-        `, [user.id]);
-
-        res.json({ user, posts });
+        const posts = await Post.find({ user_id: user._id }).sort({ created_at: -1 }).lean();
+        const results = await Promise.all(posts.map(async p => {
+            const comment_count = await Comment.countDocuments({ post_id: p._id });
+            return { ...p, id: p._id.toString(), like_count: p.likes.length, comment_count };
+        }));
+        res.json({ user: { ...user, id: user._id.toString() }, posts: results });
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch user profile' });
     }
 });
 
-// Create Post Route
-app.post('/api/posts', authenticateToken, upload.single('image'), async (req, res) => {
-    const { description, tag } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-    if (!imageUrl || !description) {
-        return res.status(400).json({ error: 'Image and description are required' });
-    }
-
-    try {
-        const result = await db.run(
-            'INSERT INTO posts (user_id, username, image_url, description, tag) VALUES (?, ?, ?, ?, ?)',
-            [req.user.id, req.user.username, imageUrl, description, tag || 'General']
-        );
-        res.status(201).json({
-            message: 'Post created successfully',
-            post: { id: result.lastID, user_id: req.user.id, username: req.user.username, image_url: imageUrl, description, tag }
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to create post' });
-    }
-});
-
-// Fetch Events Route
 app.get('/api/events', async (req, res) => {
     try {
-        const events = await db.all('SELECT * FROM events ORDER BY date ASC');
+        const events = await Event.find().sort({ date: 1 });
         res.json(events);
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to fetch events' });
     }
 });
 
-// Create Event Route
 app.post('/api/events', authenticateToken, async (req, res) => {
     const { title, date, location, description, category, price, language } = req.body;
-
-    if (!title || !date || !location || !description) {
-        return res.status(400).json({ error: 'All fields are required' });
-    }
-
+    if (!title || !date || !location || !description) return res.status(400).json({ error: 'All fields are required' });
     try {
-        const result = await db.run(
-            'INSERT INTO events (user_id, username, title, date, location, description, category, price, language) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [req.user.id, req.user.username, title, date, location, description, category || 'Cultural', price || 0, language || 'English']
-        );
-        res.status(201).json({
-            message: 'Event created successfully',
-            event: { id: result.lastID, user_id: req.user.id, username: req.user.username, title, date, location, description, category, price, language }
-        });
+        const newEvent = new Event({ user_id: req.user.id, username: req.user.username, title, date, location, description, category, price, language });
+        await newEvent.save();
+        res.status(201).json({ message: 'Event created successfully', event: newEvent });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to create event' });
     }
 });
 
-// --- ADMIN DELETION ENDPOINTS ---
-
-// Delete Post
 app.delete('/api/admin/posts/:id', authenticateAdmin, async (req, res) => {
-    const postId = req.params.id;
     try {
-        // Find post to get image_url
-        const post = await db.get('SELECT * FROM posts WHERE id = ?', [postId]);
-        if (!post) {
-            return res.status(404).json({ error: 'Post not found' });
-        }
-
-        // Delete image file if it exists
+        const post = await Post.findByIdAndDelete(req.params.id);
+        if (!post) return res.status(404).json({ error: 'Post not found' });
         if (post.image_url) {
-            // Remove the leading slash if present matching the public directory
             const imagePath = path.join(process.cwd(), post.image_url.replace(/^\//, ''));
-            if (fs.existsSync(imagePath)) {
-                fs.unlinkSync(imagePath);
-            }
+            if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
         }
-
-        // Delete associated records
-        await db.run('DELETE FROM likes WHERE post_id = ?', [postId]);
-        await db.run('DELETE FROM comments WHERE post_id = ?', [postId]);
-        await db.run('DELETE FROM posts WHERE id = ?', [postId]);
-
+        await Comment.deleteMany({ post_id: req.params.id });
         res.json({ message: 'Post and associated data deleted successfully' });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to delete post' });
     }
 });
 
-// Delete User
 app.delete('/api/admin/users/:id', authenticateAdmin, async (req, res) => {
-    const userId = req.params.id;
     try {
-        const user = await db.get('SELECT * FROM users WHERE id = ?', [userId]);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        // Find all posts from user to delete images
-        const userPosts = await db.all('SELECT * FROM posts WHERE user_id = ?', [userId]);
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        const userPosts = await Post.find({ user_id: req.params.id });
         for (const post of userPosts) {
             if (post.image_url) {
                 const imagePath = path.join(process.cwd(), post.image_url.replace(/^\//, ''));
-                if (fs.existsSync(imagePath)) {
-                    fs.unlinkSync(imagePath);
-                }
+                if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
             }
+            await Post.findByIdAndDelete(post._id);
+            await Comment.deleteMany({ post_id: post._id });
         }
-
-        // Delete all associated records
-        await db.run('DELETE FROM likes WHERE user_id = ?', [userId]);
-        await db.run('DELETE FROM comments WHERE user_id = ?', [userId]);
-        await db.run('DELETE FROM events WHERE user_id = ?', [userId]);
-        await db.run('DELETE FROM posts WHERE user_id = ?', [userId]);
-        
-        // Delete user
-        await db.run('DELETE FROM users WHERE id = ?', [userId]);
-
+        await Booking.deleteMany({ user_id: req.params.id });
+        await Event.deleteMany({ user_id: req.params.id });
         res.json({ message: 'User and all associated data deleted successfully' });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to delete user' });
     }
 });
 
-// Delete Comment
 app.delete('/api/admin/comments/:id', authenticateAdmin, async (req, res) => {
-    const commentId = req.params.id;
     try {
-        const result = await db.run('DELETE FROM comments WHERE id = ?', [commentId]);
-        if (result.changes === 0) {
-            return res.status(404).json({ error: 'Comment not found' });
-        }
+        await Comment.findByIdAndDelete(req.params.id);
         res.json({ message: 'Comment deleted successfully' });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to delete comment' });
     }
 });
 
-// Delete Event
 app.delete('/api/admin/events/:id', authenticateAdmin, async (req, res) => {
-    const eventId = req.params.id;
     try {
-        const result = await db.run('DELETE FROM events WHERE id = ?', [eventId]);
-        if (result.changes === 0) {
-            return res.status(404).json({ error: 'Event not found' });
-        }
+        await Event.findByIdAndDelete(req.params.id);
         res.json({ message: 'Event deleted successfully' });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to delete event' });
     }
 });
 
-// Book Event Route
 app.post('/api/events/:id/book', authenticateToken, async (req, res) => {
-    const eventId = req.params.id;
     const { tickets, name, email, phone } = req.body;
-
-    if (!name || !email || !phone || !tickets) {
-        return res.status(400).json({ error: 'All fields are required' });
-    }
-
+    if (!name || !email || !phone || !tickets) return res.status(400).json({ error: 'All fields are required' });
     try {
-        const event = await db.get('SELECT * FROM events WHERE id = ?', [eventId]);
+        const event = await Event.findById(req.params.id);
         if (!event) return res.status(404).json({ error: 'Event not found' });
-
         const totalPrice = (event.price || 0) * tickets;
-
-        const result = await db.run(
-            'INSERT INTO bookings (user_id, username, event_id, event_title, tickets, total_price, name, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [req.user.id, req.user.username, eventId, event.title, tickets, totalPrice, name, email, phone]
-        );
-
-        res.status(201).json({
-            message: 'Booking confirmed!',
-            booking: {
-                id: result.lastID,
-                event_title: event.title,
-                tickets,
-                total_price: totalPrice,
-                status: 'confirmed'
-            }
-        });
+        const newBooking = new Booking({ user_id: req.user.id, username: req.user.username, event_id: req.params.id, event_title: event.title, tickets, total_price: totalPrice, name, email, phone });
+        await newBooking.save();
+        res.status(201).json({ message: 'Booking confirmed!', booking: newBooking });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Booking failed' });
     }
 });
 
-// Get My Bookings
 app.get('/api/bookings', authenticateToken, async (req, res) => {
     try {
-        const bookings = await db.all('SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC', [req.user.id]);
+        const bookings = await Booking.find({ user_id: req.user.id }).sort({ created_at: -1 });
         res.json(bookings);
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Failed to fetch bookings' });
     }
 });
