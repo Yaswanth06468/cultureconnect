@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const username = localStorage.getItem('username');
-    const token = localStorage.getItem('token');
+    const [username, setUsername] = useState(localStorage.getItem('username'));
+    const [token, setToken] = useState(localStorage.getItem('token'));
+
+    useEffect(() => {
+        setUsername(localStorage.getItem('username'));
+        setToken(localStorage.getItem('token'));
+    }, [location]);
 
     useEffect(() => {
         const handleScroll = () => {

@@ -6,10 +6,13 @@ const Signup = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        setError('');
+        setIsLoading(true);
         try {
             const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
                 method: 'POST',
@@ -20,10 +23,12 @@ const Signup = () => {
             if (res.ok) {
                 navigate('/login');
             } else {
-                setError(data.error);
+                setError(data.error || 'Failed to create account');
             }
         } catch (err) {
-            setError('Failed to connect to server');
+            setError('Unable to connect to server. It might be waking up (Render free tier), please try again in a moment.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -50,8 +55,12 @@ const Signup = () => {
                         required
                     />
                 </label>
-                <button type="submit" className="mt-4 px-6 py-3 bg-text-primary text-bg-primary font-bold hover:bg-accent-blue transition-colors">
-                    Create Account
+                <button 
+                    type="submit" 
+                    disabled={isLoading}
+                    className={`mt-4 px-6 py-3 font-bold transition-colors ${isLoading ? 'bg-gray-400 cursor-not-allowed text-white' : 'bg-text-primary text-bg-primary hover:bg-accent-blue'}`}
+                >
+                    {isLoading ? 'Creating Account...' : 'Create Account'}
                 </button>
                 <p className="mt-4 text-center">
                     Already have an account? <a href="/login" className="text-accent-blue underline">Log in here</a>

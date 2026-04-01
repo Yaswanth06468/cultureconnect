@@ -6,10 +6,13 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError('');
+        setIsLoading(true);
         try {
             const endpoint = username === 'ADMIN' ? `${API_BASE_URL}/api/admin/login` : `${API_BASE_URL}/api/auth/login`;
             const res = await fetch(endpoint, {
@@ -28,10 +31,12 @@ const Login = () => {
                 }
                 navigate('/');
             } else {
-                setError(data.error);
+                setError(data.error || 'Invalid username or password');
             }
         } catch (err) {
-            setError('Failed to connect to server');
+            setError('Unable to connect to server. It might be waking up (Render free tier), please try again in a moment.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -58,8 +63,12 @@ const Login = () => {
                         required
                     />
                 </label>
-                <button type="submit" className="mt-4 px-6 py-3 bg-text-primary text-bg-primary font-bold hover:bg-accent-blue transition-colors">
-                    Submit
+                <button 
+                    type="submit" 
+                    disabled={isLoading}
+                    className={`mt-4 px-6 py-3 font-bold transition-colors ${isLoading ? 'bg-gray-400 cursor-not-allowed text-white' : 'bg-text-primary text-bg-primary hover:bg-accent-blue'}`}
+                >
+                    {isLoading ? 'Logging in...' : 'Submit'}
                 </button>
                 <p className="mt-4 text-center">
                     Don't have an account? <a href="/signup" className="text-accent-blue underline">Sign up here</a>
