@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
@@ -29,8 +29,12 @@ app.get('/health', (req, res) => res.status(200).send('OK'));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .then(() => console.log('Successfully connected to MongoDB Atlas!'))
+    .catch(err => {
+        console.error('MongoDB Atlas connection error details:');
+        console.error(err);
+        process.exit(1); // Stop server if database is not reachable, to avoid 500 errors in routes later
+    });
 
 // Schemas
 const UserSchema = new mongoose.Schema({
@@ -149,6 +153,7 @@ app.post('/api/auth/signup', async (req, res) => {
         await newUser.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
+        console.error('Signup error:', err);
         if (err.code === 11000) return res.status(409).json({ error: 'Username already exists' });
         res.status(500).json({ error: 'Internal server error' });
     }
