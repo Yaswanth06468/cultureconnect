@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -10,8 +11,21 @@ import CulturalDances from './pages/CulturalDances';
 import CityFoodExplorer from './pages/CityFoodExplorer';
 import CultureSwap from './pages/CultureSwap';
 import Navbar from './components/Navbar';
+import { API_BASE_URL } from './config';
 
 function App() {
+  useEffect(() => {
+    // Wake up the Render server as soon as the user enters the site
+    const wakeUpServer = async () => {
+      try {
+        await fetch(`${API_BASE_URL}/api/ping`);
+      } catch (err) {
+        console.log('Server is still waking up...');
+      }
+    };
+    wakeUpServer();
+  }, []);
+
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-bg-primary text-text-primary">

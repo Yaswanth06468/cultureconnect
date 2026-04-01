@@ -22,6 +22,11 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+// Health Check / Ping
+app.get('/api/ping', (req, res) => res.json({ status: 'waking up' }));
+app.get('/', (req, res) => res.send('Culture-Connect API is live!'));
+app.get('/health', (req, res) => res.status(200).send('OK'));
+
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Connected to MongoDB'))
