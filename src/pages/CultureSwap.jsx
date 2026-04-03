@@ -201,7 +201,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
 
 const CultureSwap = () => {
     const [isMatching, setIsMatching] = useState(false);
-    const [activeSwap, setActiveSwap] = useState(() => partners[Math.floor(Math.random() * partners.length)]);
+    const [activeSwap, setActiveSwap] = useState(null);
     const [timeLeft, setTimeLeft] = useState(86400); // 24 hours in seconds
     const [completedTasks, setCompletedTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState(null);
