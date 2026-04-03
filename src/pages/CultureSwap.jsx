@@ -69,38 +69,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                 </div>
             )
         },
-        music: {
-            title: 'Melodic Soul',
-            subtitle: 'Ancestral Rhythms',
-            icon: '🎵',
-            color: 'purple',
-            requirements: [
-                'Listen with headphones/quietly',
-                'Focus on the rhythmic patterns',
-                'Feel the emotional resonance'
-            ],
-            content: (
-                <div className="space-y-6 text-center">
-                     <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white mb-8 transform -rotate-1 transition-transform hover:rotate-0 h-48 bg-purple-50 flex items-center justify-center relative">
-                         <img src={activeSwap.musicImage} alt="Ancient Music" className="w-full h-full object-cover" />
-                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="flex gap-4">
-                                <span className="text-5xl animate-bounce" style={{ animationDelay: '0s' }}>🎵</span>
-                                <span className="text-5xl animate-bounce" style={{ animationDelay: '0.2s' }}>🥁</span>
-                                <span className="text-5xl animate-bounce" style={{ animationDelay: '0.4s' }}>🎻</span>
-                             </div>
-                         </div>
-                    </div>
-                    <div className="bg-purple-50/50 p-8 rounded-3xl border border-purple-100">
-                         <h5 className="text-xs font-black uppercase tracking-widest text-purple-600 mb-6 tracking-[0.2em]">Sonographic Journey</h5>
-                        <p className="text-lg font-serif text-text-primary leading-relaxed italic border-l-4 border-purple-200 pl-6 text-left">
-                            "{activeSwap.musicTask}"
-                        </p>
-                    </div>
-                </div>
-            )
-        },
+
         language: {
             title: 'The Oral Heritage',
             subtitle: 'Speak 3 Words',
@@ -122,17 +91,20 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {activeSwap.words.map((word, idx) => (
+                        {activeSwap.words.map((wordObj, idx) => (
                             <div 
                                 key={idx} 
-                                onClick={() => playWord(word)}
-                                className="p-6 bg-white rounded-2xl border border-black/5 shadow-sm hover:border-teal-500 cursor-pointer transition-all active:scale-95 group/word"
+                                onClick={() => playWord(wordObj.word)}
+                                className="bg-white rounded-3xl border border-black/5 shadow-sm hover:border-teal-500 cursor-pointer transition-all active:scale-95 group/word overflow-hidden"
                             >
-                                <div className="flex items-center gap-3">
+                                <div className="h-32 w-full overflow-hidden">
+                                    <img src={wordObj.image} alt={wordObj.word} className="w-full h-full object-cover group-hover/word:scale-110 transition-transform duration-500" />
+                                </div>
+                                <div className="p-5 flex items-center gap-3">
                                     <span className="text-xl group-hover/word:scale-125 transition-transform">🔊</span>
                                     <div>
-                                        <p className="text-2xl font-serif font-black text-text-primary mb-1">{word.split(' (')[0]}</p>
-                                        <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest">{word.split(' (')[1] ? word.split(' (')[1].replace(')', '') : ''}</p>
+                                        <p className="text-xl font-serif font-black text-text-primary mb-0.5">{wordObj.word}</p>
+                                        <p className="text-[9px] text-text-muted font-bold uppercase tracking-widest">{wordObj.translation}</p>
                                     </div>
                                 </div>
                             </div>
@@ -218,11 +190,13 @@ const CultureSwap = () => {
             recipe: 'Bake hand-rolled wheat balls (Baati) until golden. Prepare a spiced lentil soup (Dal). Crumb some Baatis with ghee and jaggery for the sweet (Churma).',
             routine: 'Morning desert walk and sunrise folk singing',
             ritualDetails: 'Start your day with a peaceful walk in the desert during sunrise. Hum a traditional folk melody to welcome the energy of the new day.',
-            words: ['Khamma Ghani (Hello)', 'Padharo (Welcome)', 'Dhanyavad (Thank you)'],
+            words: [
+                { word: 'Khamma Ghani', translation: 'Hello', image: 'https://images.unsplash.com/photo-1598891001556-37bc237336ed?q=80&w=2070&auto=format&fit=crop' },
+                { word: 'Padharo', translation: 'Welcome', image: 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?q=80&w=1975&auto=format&fit=crop' },
+                { word: 'Dhanyavad', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1545663731-07316fc108eb?q=80&w=2070&auto=format&fit=crop' }
+            ],
             languageSignificance: 'Marwari is a language of extreme hospitality. A greeting is often a blessing, and a "Welcome" is and invitation into one\'s soul.',
-            musicTask: 'Listen to Kalbeliya folk tunes. Feel the desert energy in the rhythmic beats of the "Been".',
             color: '#e67300',
-            musicImage: 'https://images.unsplash.com/photo-1590483736622-39da8af75bba?q=80&w=1974&auto=format&fit=crop',
             languageImage: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=2071&auto=format&fit=crop'
         },
         {
@@ -236,11 +210,13 @@ const CultureSwap = () => {
             recipe: 'Simmer dashi with seaweed and tofu. Whisk in miso paste at the end. Grill salted mackerel until the skin is crispy and golden.',
             routine: 'Morning Zen meditation and tea preparation',
             ritualDetails: 'Practice 10 minutes of silent seated meditation, then prepare a bowl of matcha or green tea with mindful, deliberate movements.',
-            words: ['Ohayo (Good Morning)', 'Itadakimasu (Let\'s eat)', 'Arigato (Thank you)'],
+            words: [
+                { word: 'Ohayo', translation: 'Good Morning', image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2070&auto=format&fit=crop' },
+                { word: 'Itadakimasu', translation: 'Let\'s eat', image: 'https://images.unsplash.com/photo-1582450871972-ed3ec38f2a40?q=80&w=2070&auto=format&fit=crop' },
+                { word: 'Arigato', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=2070&auto=format&fit=crop' }
+            ],
             languageSignificance: 'Japanese greetings reflect deep mindfulness. "Itadakimasu" is a sacred acknowledgment of all the lives that contributed to your meal.',
-            musicTask: 'Listen to Koto instrumental music. Let the wooden string vibrations find your inner focus.',
             color: '#bc002d',
-            musicImage: 'https://images.unsplash.com/photo-1542332213-31f87348057f?q=80&w=2070&auto=format&fit=crop',
             languageImage: 'https://images.unsplash.com/photo-1596484552943-4b68f3074697?q=80&w=2072&auto=format&fit=crop'
         },
         {
@@ -254,11 +230,13 @@ const CultureSwap = () => {
             recipe: 'Toast and blend chiles with nuts and spices. Simmer with dark chocolate to create a complex, earthy sauce. Serve with hot handmade tortillas.',
             routine: 'Market visit for fresh cacao and chiles',
             ritualDetails: 'Visit a local market (or grocery) specifically to find the most aromatic spices and freshest ingredients for your evening meal.',
-            words: ['Hola (Hello)', 'Provecho (Enjoy your meal)', 'Gracias (Thank you)'],
+            words: [
+                { word: 'Hola', translation: 'Hello', image: 'https://images.unsplash.com/photo-1518112166137-856914902aa7?q=80&w=1935&auto=format&fit=crop' },
+                { word: 'Provecho', translation: 'Enjoy your meal', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop' },
+                { word: 'Gracias', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1528605105345-5344ea20e269?q=80&w=2070&auto=format&fit=crop' }
+            ],
             languageSignificance: 'In Mexico, food and speech are communal. "Provecho" is a ubiquitous blessing shared even with strangers at the next table.',
-            musicTask: 'Listen to Son Jarocho folk music. The "Jarana" guitar rhythms celebrate the vibrancy of communal life.',
             color: '#006341',
-            musicImage: 'https://images.unsplash.com/photo-1550927062-09e863ba9d0d?q=80&w=1974&auto=format&fit=crop',
             languageImage: 'https://images.unsplash.com/photo-1522071823991-b99c65118583?q=80&w=2070&auto=format&fit=crop'
         },
         {
@@ -272,11 +250,13 @@ const CultureSwap = () => {
             recipe: 'Slow-cook lamb with aromatic spices until tender. Add honey and prunes in the last 30 minutes. Garnish with crunchy almonds.',
             routine: 'Afternoon mint tea ritual with family',
             ritualDetails: 'Prepare fresh mint tea with plenty of sugar. Pour from a height to create foam, and share with family or friends while discussing the day.',
-            words: ['Salam (Peace/Hello)', 'Bismillah (In the name of God)', 'Shukran (Thank you)'],
+            words: [
+                { word: 'Salam', translation: 'Peace/Hello', image: 'https://images.unsplash.com/photo-1528431835564-927364ca1076?q=80&w=2071&auto=format&fit=crop' },
+                { word: 'Bismillah', translation: 'In the name of God', image: 'https://images.unsplash.com/photo-1590076214667-cda4475997a9?q=80&w=2069&auto=format&fit=crop' },
+                { word: 'Shukran', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1510672981848-a1c4f1cb5ccf?q=80&w=2072&auto=format&fit=crop' }
+            ],
             languageSignificance: 'These words form the foundation of Berber hospitality, rooted in peace, spiritual intention, and deep gratitude.',
-            musicTask: 'Listen to spiritual Gnawa rhythms. The heavy pulse of the "Hajhouj" lute centers the soul.',
             color: '#c1272d',
-            musicImage: 'https://images.unsplash.com/photo-1563223552-30d01fda3ead?q=80&w=1970&auto=format&fit=crop',
             languageImage: 'https://images.unsplash.com/photo-1610444583737-9759af57774d?q=80&w=2015&auto=format&fit=crop'
         }
     ];
@@ -323,8 +303,7 @@ const CultureSwap = () => {
         );
     };
 
-    const playWord = (wordWithTranslation) => {
-        const text = wordWithTranslation.split(' (')[0];
+    const playWord = (text) => {
         const utterance = new SpeechSynthesisUtterance(text);
         // Try to match language based on culture
         if (activeSwap.culture.includes('Japan')) utterance.lang = 'ja-JP';
@@ -416,13 +395,7 @@ const CultureSwap = () => {
                                     <p className="text-xs text-text-muted">Learn 3 sacred words of their heritage.</p>
                                 </div>
                             </div>
-                            <div className="flex gap-4">
-                                <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-2xl">🎵</div>
-                                <div>
-                                    <h4 className="font-bold text-text-primary">Melodic Soul</h4>
-                                    <p className="text-xs text-text-muted">Listen to their ancestral rhythms.</p>
-                                </div>
-                            </div>
+
                         </div>
 
                         {/* Visual Eye Candy */}
@@ -453,9 +426,9 @@ const CultureSwap = () => {
                                     <div className="p-4 bg-bg-secondary rounded-2xl border border-black/5">
                                         <h4 className="text-xs font-black text-text-muted uppercase mb-2">Challenge Progress</h4>
                                         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                                            <div className="h-full bg-accent-terra transition-all" style={{ width: `${(completedTasks.length / 4) * 100}%` }}></div>
+                                            <div className="h-full bg-accent-terra transition-all" style={{ width: `${(completedTasks.length / 3) * 100}%` }}></div>
                                         </div>
-                                        <p className="text-[10px] text-right mt-1 font-bold">{completedTasks.length} / 4 Tasks Complete</p>
+                                        <p className="text-[10px] text-right mt-1 font-bold">{completedTasks.length} / 3 Tasks Complete</p>
                                     </div>
                                 </div>
 
@@ -554,36 +527,7 @@ const CultureSwap = () => {
                                     </div>
                                 </div>
 
-                                {/* Music Task Card */}
-                                <div 
-                                    onClick={() => setSelectedTask('music')}
-                                    className="group relative bg-white border border-black/5 rounded-[3rem] p-1 shadow-xl hover:shadow-2xl transition-all cursor-pointer overflow-hidden aspect-[4/5] md:aspect-auto h-[450px]"
-                                >
-                                     <div className="absolute inset-2 rounded-[2.5rem] bg-gray-100 overflow-hidden">
-                                        <img src={activeSwap.musicImage} alt="Traditional Music" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10"></div>
-                                        
-                                        <div className="absolute bottom-8 left-8 right-8 z-20">
-                                            <div className="flex items-center gap-3 mb-4">
-                                                <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-xl text-white">🎵</div>
-                                                <h4 className="text-[10px] font-black uppercase tracking-[.4em] text-white/70">Melodic Soul</h4>
-                                            </div>
-                                            <h3 className="text-4xl font-serif font-black text-white leading-tight mb-4">Ancestral Rhythms</h3>
-                                            <div className="flex items-center gap-4">
-                                                <span className="px-4 py-2 bg-purple-600 text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg">Listen Now</span>
-                                                {completedTasks.includes('music') && <span className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm shadow-lg">✓</span>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="absolute top-6 right-6 z-30">
-                                        <button 
-                                            onClick={(e) => { e.stopPropagation(); toggleTask('music'); }}
-                                            className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all shadow-xl backdrop-blur-md ${completedTasks.includes('music') ? 'bg-green-500 border-green-400 text-white' : 'bg-white/10 border-white/30 text-white hover:bg-white/20'}`}
-                                        >
-                                            {completedTasks.includes('music') ? '✓' : ''}
-                                        </button>
-                                    </div>
-                                </div>
+
 
                                 {/* Language Task Card */}
                                 <div 
