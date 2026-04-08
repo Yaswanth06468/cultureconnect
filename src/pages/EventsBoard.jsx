@@ -79,7 +79,10 @@ const EventCard = ({ event, idx, onDelete, role, onBook }) => {
     >
       {/* Poster */}
       <div style={{
-        height: 200, background: `linear-gradient(145deg, ${palette[0]} 0%, ${palette[1]} 100%)`,
+        height: 200, 
+        background: event.image_url 
+          ? `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.6)), url(${event.image_url}) center/cover no-repeat`
+          : `linear-gradient(145deg, ${palette[0]} 0%, ${palette[1]} 100%)`,
         position: 'relative', display: 'flex', flexDirection: 'column',
         justifyContent: 'flex-end', padding: '0 14px 14px',
         overflow: 'hidden',
@@ -88,10 +91,10 @@ const EventCard = ({ event, idx, onDelete, role, onBook }) => {
         <div style={{ position:'absolute', top:20, right:30, width:60, height:60, borderRadius:'50%', background:'rgba(255,255,255,0.07)' }} />
         <div style={{
           position: 'absolute', top: 12, left: 12,
-          background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)',
-          border: '1px solid rgba(255,255,255,0.25)',
+          background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)',
           borderRadius: 20, padding: '3px 10px',
-          fontSize: 11, fontWeight: 700, color: '#fff', letterSpacing: 0.5,
+          fontSize: 10, fontWeight: 700, color: '#fff', border: '1px solid rgba(255,255,255,0.2)',
+          zIndex: 5
         }}>
           {categoryEmoji} {event.category || 'Cultural'}
         </div>
@@ -102,11 +105,16 @@ const EventCard = ({ event, idx, onDelete, role, onBook }) => {
               position: 'absolute', top: 10, right: 10,
               background: 'rgba(220,38,38,0.85)', color: '#fff', border: 'none',
               borderRadius: 6, padding: '4px 10px', fontSize: 11, fontWeight: 700, cursor: 'pointer',
+              zIndex: 10
             }}
           >✕ Delete</button>
         )}
-        <div style={{ fontSize: 38, marginBottom: 6 }}>{categoryEmoji}</div>
-        <div style={{ fontSize: 18, fontWeight: 800, color: '#fff', lineHeight: 1.25, textShadow: '0 2px 8px rgba(0,0,0,0.5)', maxWidth: '85%' }}>
+        {!event.image_url && <div style={{ fontSize: 38, marginBottom: 6 }}>{categoryEmoji}</div>}
+        <div style={{ 
+          fontSize: 18, fontWeight: 800, color: '#fff', lineHeight: 1.25, 
+          textShadow: '0 2px 8px rgba(0,0,0,0.8)', maxWidth: '90%',
+          position: 'relative', zIndex: 2
+        }}>
           {event.title}
         </div>
         <div style={{
@@ -302,10 +310,11 @@ const HostEventModal = ({ onClose, onSubmit, error }) => {
   const [category, setCategory] = useState(CATEGORIES[1]);
   const [price, setPrice] = useState('');
   const [language, setLanguage] = useState('Hindi');
+  const [image_url, setImageUrl] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ title, date, location, description, category, price: price === '' ? null : Number(price), language });
+    onSubmit({ title, date, location, description, category, price: price === '' ? null : Number(price), language, image_url });
   };
 
   return (
@@ -342,6 +351,8 @@ const HostEventModal = ({ onClose, onSubmit, error }) => {
           </div>
           <textarea placeholder="Describe your event in detail…" value={description} onChange={e => setDescription(e.target.value)} required
             style={{ ...inputStyle, minHeight: 100, resize: 'vertical' }} />
+          <input type="text" placeholder="Poster/Logo Image URL (optional)" value={image_url} onChange={e => setImageUrl(e.target.value)}
+            style={inputStyle} />
           <button type="submit" style={{
             background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: '#fff',
             border: 'none', borderRadius: 10, padding: '14px', fontWeight: 800,
@@ -409,7 +420,7 @@ const EventsBoard = () => {
       const res = await fetch(`${API_BASE_URL}/api/events`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, date, location, description, category, price, language }),
+        body: JSON.stringify({ title, date, location, description, category, price, language, image_url }),
       });
       if (res.ok) { setShowModal(false); fetchEvents(); }
       else { const d = await res.json(); setError(d.error || 'Failed to post event'); }

@@ -78,6 +78,7 @@ const EventSchema = new mongoose.Schema({
     category: { type: String, default: 'Cultural' },
     price: { type: Number, default: 0 },
     language: { type: String, default: 'English' },
+    image_url: String,
     created_at: { type: Date, default: Date.now }
 });
 EventSchema.set('toJSON', { virtuals: true });
@@ -265,10 +266,10 @@ app.get('/api/events', async (req, res) => {
 });
 
 app.post('/api/events', authenticateToken, async (req, res) => {
-    const { title, date, location, description, category, price, language } = req.body;
+    const { title, date, location, description, category, price, language, image_url } = req.body;
     if (!title || !date || !location || !description) return res.status(400).json({ error: 'All fields are required' });
     try {
-        const newEvent = new Event({ user_id: req.user.id, username: req.user.username, title, date, location, description, category, price, language });
+        const newEvent = new Event({ user_id: req.user.id, username: req.user.username, title, date, location, description, category, price, language, image_url });
         await newEvent.save();
         res.status(201).json({ message: 'Event created successfully', event: newEvent });
     } catch (err) {
