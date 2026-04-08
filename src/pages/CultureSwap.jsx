@@ -111,6 +111,30 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                     </div>
                 </div>
             )
+        },
+        visual: {
+            title: 'The Visual Soul',
+            subtitle: 'Traditional Art/Music',
+            icon: '🧩',
+            color: 'orange',
+            requirements: [
+                'Observe the traditional patterns',
+                'Understand the cultural symbolism',
+                'Try to sketch or hum the rhythm'
+            ],
+            content: (
+                <div className="space-y-6 text-center">
+                     <div className="rounded-xl overflow-hidden shadow-md border border-black/5 mb-8 h-48 bg-orange-50/30 flex items-center justify-center">
+                         <span className="text-6xl text-orange-400">🎨</span>
+                    </div>
+                    <div className="bg-[#fff7ed]/50 p-8 rounded-xl border border-orange-100">
+                        <h5 className="text-[10px] font-bold uppercase tracking-widest text-orange-700 mb-4 tracking-[0.2em]">Artistic Identity</h5>
+                        <p className="text-xl font-serif text-text-primary leading-loose italic max-w-2xl mx-auto font-light">
+                            "{activeSwap.artDescription || 'Explore the vibrant visual and musical heritage through their unique traditional patterns and rhythmic soul.'}"
+                        </p>
+                    </div>
+                </div>
+            )
         }
     }[task];
 
@@ -172,7 +196,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
 const CultureSwap = () => {
     const [isMatching, setIsMatching] = useState(false);
     const [activeSwap, setActiveSwap] = useState(null);
-    const [timeLeft, setTimeLeft] = useState(86400); // 24 hours in seconds
+    const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
     const [completedTasks, setCompletedTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState(null);
 
@@ -195,7 +219,8 @@ const CultureSwap = () => {
             ],
             languageSignificance: 'Marwari is a language of extreme hospitality. A greeting is often a blessing, and a "Welcome" is and invitation into one\'s soul.',
             color: '#e67300',
-            languageImage: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=2071&auto=format&fit=crop'
+            languageImage: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=2071&auto=format&fit=crop',
+            artDescription: 'Observe the intricate Mandana patterns on clay walls and listen to the haunting resonance of the Sarangi.'
         },
         {
             name: 'Kenji',
@@ -215,7 +240,8 @@ const CultureSwap = () => {
             ],
             languageSignificance: 'Japanese greetings reflect deep mindfulness. "Itadakimasu" is a sacred acknowledgment of all the lives that contributed to your meal.',
             color: '#bc002d',
-            languageImage: 'https://images.unsplash.com/photo-1596484552943-4b68f3074697?q=80&w=2072&auto=format&fit=crop'
+            languageImage: 'https://images.unsplash.com/photo-1596484552943-4b68f3074697?q=80&w=2072&auto=format&fit=crop',
+            artDescription: 'Study the balance of Kintsugi (mending with gold) and the meditative pluck of the Koto.'
         },
         {
             name: 'Sofía',
@@ -235,7 +261,8 @@ const CultureSwap = () => {
             ],
             languageSignificance: 'In Mexico, food and speech are communal. "Provecho" is a ubiquitous blessing shared even with strangers at the next table.',
             color: '#006341',
-            languageImage: 'https://images.unsplash.com/photo-1522071823991-b99c65118583?q=80&w=2070&auto=format&fit=crop'
+            languageImage: 'https://images.unsplash.com/photo-1522071823991-b99c65118583?q=80&w=2070&auto=format&fit=crop',
+            artDescription: 'Marvel at the vibrant Alebrijes carvings and the rhythmic stomp of the Zapateado dance.'
         },
         {
             name: 'Amina',
@@ -255,7 +282,113 @@ const CultureSwap = () => {
             ],
             languageSignificance: 'These words form the foundation of Berber hospitality, rooted in peace, spiritual intention, and deep gratitude.',
             color: '#c1272d',
-            languageImage: 'https://images.unsplash.com/photo-1610444583737-9759af57774d?q=80&w=2015&auto=format&fit=crop'
+            languageImage: 'https://images.unsplash.com/photo-1610444583737-9759af57774d?q=80&w=2015&auto=format&fit=crop',
+            artDescription: 'Trace the geometric symmetry of Zellige tiles and feel the heartbeat of the Gnawa drum.'
+        },
+        {
+            name: 'Lucas',
+            location: 'Rio de Janeiro, Brazil',
+            culture: 'Carioca',
+            avatar: '🤴🏾',
+            food: 'Feijoada',
+            foodImage: 'https://images.unsplash.com/photo-1599481238505-b8b0537a3f77?q=80&w=2070&auto=format&fit=crop',
+            ingredients: ['Black beans', 'Pork ribs', 'Sausage', 'Garlic', 'Bay leaves', 'Oranges'],
+            recipe: 'Slow-cook black beans with various smoked meats. Serve with white rice, farofa (toasted manioc flour), and sliced oranges to help digestion.',
+            routine: 'Late afternoon beach football and coconut water',
+            ritualDetails: 'Head to a local park or open space. Engage in some light physical activity (like football or jogging), and end with a hydrating drink.',
+            words: [
+                { word: 'Tudo bem?', translation: 'How are you?', image: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=2076&auto=format&fit=crop' },
+                { word: 'Valeu', translation: 'Thanks', image: 'https://images.unsplash.com/photo-1518414922561-6a052aa53917?q=80&w=1974&auto=format&fit=crop' },
+                { word: 'Saudade', translation: 'Deep longing', image: 'https://images.unsplash.com/photo-1490214341916-c41c0667ea3b?q=80&w=2070&auto=format&fit=crop' }
+            ],
+            languageSignificance: 'Portuguese in Brazil is melodic and expressive. "Saudade" is one of the most beautiful words in the world, describing a presence of absence.',
+            color: '#009b3a',
+            languageImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=2026&auto=format&fit=crop',
+            artDescription: 'Experience the explosive colors of Carnival masks and the infectious swing of the Bossa Nova guitar.'
+        },
+        {
+            name: 'Chen',
+            location: 'Chengdu, China',
+            culture: 'Sichuan',
+            avatar: '👨🏻‍🍳',
+            food: 'Mapo Tofu',
+            foodImage: 'https://images.unsplash.com/photo-1541696490-8744a5db7f7b?q=80&w=1932&auto=format&fit=crop',
+            ingredients: ['Silken Tofu', 'Sichuan Peppercorns', 'Doubanjiang (Bean paste)', 'Minced Beef', 'Green Onions'],
+            recipe: 'Stir-fry aromatics and garlic. Add tofu cubes and simmer in a spicy red sauce. The key is the numbing sensation of the peppercorns.',
+            routine: 'Evening Mahjong game with neighbors',
+            ritualDetails: 'Spend an hour playing a strategy game or solving puzzles with friends to stimulate the mind and build social connections.',
+            words: [
+                { word: 'Nǐ hǎo', translation: 'Hello', image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=2070&auto=format&fit=crop' },
+                { word: 'Xièxiè', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?q=80&w=2070&auto=format&fit=crop' },
+                { word: 'Mànmàn chī', translation: 'Eat slowly/Enjoy', image: 'https://images.unsplash.com/photo-1498654203945-39936a2df7bf?q=80&w=2070&auto=format&fit=crop' }
+            ],
+            languageSignificance: 'Mandarin is a tonal language where meaning is music. "Mànmàn chī" reflects a cultural priority on savoring life\'s basic joys.',
+            color: '#ee1c25',
+            languageImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=2070&auto=format&fit=crop',
+            artDescription: 'Admire the flowing ink of traditional calligraphy and the high-pitched elegance of the Guzheng zither.'
+        },
+        {
+            name: 'Sarah',
+            location: 'Paris, France',
+            culture: 'Parisian',
+            avatar: '👩🏼‍🎨',
+            food: 'Ratatouille',
+            foodImage: 'https://images.unsplash.com/photo-1572453800999-e8d2d1589b7c?q=80&w=1940&auto=format&fit=crop',
+            ingredients: ['Eggplant', 'Zucchini', 'Bell Peppers', 'Tomatoes', 'Herbes de Provence', 'Olive Oil'],
+            recipe: 'Thinly slice vegetables and layer them in a spiral. Roast slowly until tender and the flavors meld into a rustic masterpiece.',
+            routine: 'Morning stroll to the local Boulangerie',
+            ritualDetails: 'Take a slow walk through your neighborhood. Observe the architecture and life around you, and pick up a fresh loaf of bread.',
+            words: [
+                { word: 'Bonjour', translation: 'Good day', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop' },
+                { word: 'Merci', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=2070&auto=format&fit=crop' },
+                { word: 'Flâner', translation: 'Aimless strolling', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop' }
+            ],
+            languageSignificance: 'French is often called the language of love, but it\'s truly the language of detail. "Flâner" is a lifestyle of urban exploration.',
+            color: '#002395',
+            languageImage: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=2070&auto=format&fit=crop',
+            artDescription: 'Wander through Impressionist light and shadow, accompanied by the nostalgic swell of an accordion.'
+        },
+        {
+            name: 'Thabo',
+            location: 'Cape Town, South Africa',
+            culture: 'Xhosa',
+            avatar: '🧔🏿',
+            food: 'Chakalaka & Pap',
+            foodImage: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=2069&auto=format&fit=crop',
+            ingredients: ['Maize meal', 'Carrots', 'Beans', 'Cabbage', 'Curry powder', 'Ginger'],
+            recipe: 'Prepare a thick maize porridge (Pap). Sauté vegetables with strong curry spices (Chakalaka). Serve together hot.',
+            routine: 'Community storytelling afternoon',
+            ritualDetails: 'Sit with a friend or elder and ask them for a story from their youth. Listen without interrupting, practicing the art of "Ubuntu".',
+            words: [
+                { word: 'Molo', translation: 'Hello', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop' },
+                { word: 'Enkosi', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1615461066841-6116ecaaba39?q=80&w=1956&auto=format&fit=crop' },
+                { word: 'Ubuntu', translation: 'I am because we are', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop' }
+            ],
+            languageSignificance: 'Xhosa contains unique click sounds that reflect the rhythm of the land. "Ubuntu" is the philosophy that humanity is found in togetherness.',
+            color: '#007a33',
+            languageImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop',
+            artDescription: 'Be dazzled by the intricate storytelling of Xhosa beadwork and the powerful harmonies of choral singing.'
+        },
+        {
+            name: 'Malai',
+            location: 'Chiang Mai, Thailand',
+            culture: 'Northern Thai',
+            avatar: '👩🏻‍🌾',
+            food: 'Khao Soi',
+            foodImage: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1974&auto=format&fit=crop',
+            ingredients: ['Curry paste', 'Coconut milk', 'Egg noodles', 'Chicken', 'Pickled mustard greens', 'Lime'],
+            recipe: 'Simmer a rich, creamy yellow curry. Serve with boiled and deep-fried crispy noodles, topped with fresh lime and shallots.',
+            routine: 'Midday flower market visit',
+            ritualDetails: 'Visit a place with vibrant colors and scents (like a flower shop or park). Appreciate the beauty and take a moment of silent gratitude.',
+            words: [
+                { word: 'Sawatdee', translation: 'Hello', image: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=2070&auto=format&fit=crop' },
+                { word: 'Khop khun', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=2039&auto=format&fit=crop' },
+                { word: 'Sabai Sabai', translation: 'Relaxed/Comfortable', image: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=2070&auto=format&fit=crop' }
+            ],
+            languageSignificance: 'Thai is famous for its "wai" greeting—a bow with hands in prayer. This reflects the deep respect built into the language.',
+            color: '#ed1c24',
+            languageImage: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=2070&auto=format&fit=crop',
+            artDescription: 'Observe the delicate gold leaf of temple murals and the metallic shimmer of the Ranat khane xylophone.'
         }
     ];
 
@@ -282,7 +415,7 @@ const CultureSwap = () => {
             const randomPartner = partners[Math.floor(Math.random() * partners.length)];
             setActiveSwap(randomPartner);
             setIsMatching(false);
-            setTimeLeft(86400); // Reset timer
+            setTimeLeft(3600); // Reset timer to 1 hour
         }, 3000);
     };
 
@@ -362,27 +495,33 @@ const CultureSwap = () => {
                             </button>
                         </div>
 
-                        {/* Feature Badges */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 text-left border-t border-black/5 pt-10">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-16 text-left border-t border-black/5 pt-10">
                             <div className="flex gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-accent-gold/5 flex items-center justify-center text-xl">🥘</div>
+                                <div className="w-10 h-10 rounded-lg bg-accent-gold/5 flex items-center justify-center text-xl border border-accent-gold/10 shadow-sm">🥘</div>
                                 <div>
-                                    <h4 className="font-bold text-text-primary text-sm uppercase tracking-wider">Culinary Swap</h4>
-                                    <p className="text-xs text-text-secondary font-light">Cook exactly what they eat today.</p>
+                                    <h4 className="font-bold text-text-primary text-xs uppercase tracking-wider">Culinary</h4>
+                                    <p className="text-[10px] text-text-secondary font-light">Taste their Day</p>
                                 </div>
                             </div>
                             <div className="flex gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-accent-blue/5 flex items-center justify-center text-xl">⚡</div>
+                                <div className="w-10 h-10 rounded-lg bg-accent-blue/5 flex items-center justify-center text-xl border border-accent-blue/10 shadow-sm">⚡</div>
                                 <div>
-                                    <h4 className="font-bold text-text-primary text-sm uppercase tracking-wider">Ritual Mirror</h4>
-                                    <p className="text-xs text-text-secondary font-light">Adopt their daily routine.</p>
+                                    <h4 className="font-bold text-text-primary text-xs uppercase tracking-wider">Ritual</h4>
+                                    <p className="text-[10px] text-text-secondary font-light">Mirror Habits</p>
                                 </div>
                             </div>
                             <div className="flex gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-accent-teal/5 flex items-center justify-center text-xl">🗣️</div>
+                                <div className="w-10 h-10 rounded-lg bg-accent-teal/5 flex items-center justify-center text-xl border border-accent-teal/10 shadow-sm">🗣️</div>
                                 <div>
-                                    <h4 className="font-bold text-text-primary text-sm uppercase tracking-wider">Voice Gift</h4>
-                                    <p className="text-xs text-text-secondary font-light">Learn 3 sacred words of their heritage.</p>
+                                    <h4 className="font-bold text-text-primary text-xs uppercase tracking-wider">Voice</h4>
+                                    <p className="text-[10px] text-text-secondary font-light">Inherit words</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-4">
+                                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-xl border border-orange-100 shadow-sm">🧩</div>
+                                <div>
+                                    <h4 className="font-bold text-text-primary text-xs uppercase tracking-wider">Soul</h4>
+                                    <p className="text-[10px] text-text-secondary font-light">Shared Flow</p>
                                 </div>
                             </div>
                         </div>
@@ -413,9 +552,9 @@ const CultureSwap = () => {
                                     <div className="p-5 bg-[#faf7f2] rounded-xl border border-[#f0ece6]">
                                         <h4 className="text-xs font-bold text-[#8b6f5e] uppercase tracking-widest mb-3">Challenge Progress</h4>
                                         <div className="w-full h-1.5 bg-[#ede3d8] rounded-full overflow-hidden">
-                                            <div className="h-full bg-accent-terra transition-all duration-500" style={{ width: `${(completedTasks.length / 3) * 100}%` }}></div>
+                                            <div className="h-full bg-accent-terra transition-all duration-500" style={{ width: `${(completedTasks.length / 4) * 100}%` }}></div>
                                         </div>
-                                        <p className="text-[10px] text-right mt-2 font-bold text-text-secondary">{completedTasks.length} / 3 Tasks Complete</p>
+                                        <p className="text-[10px] text-right mt-2 font-bold text-text-secondary">{completedTasks.length} / 4 Tasks Complete</p>
                                     </div>
                                 </div>
 
@@ -435,6 +574,28 @@ const CultureSwap = () => {
                                     </p>
                                 </div>
                                 <div className="absolute -bottom-4 -right-4 text-8xl opacity-10 pointer-events-none">✨</div>
+                            </div>
+
+                            <div className="bg-white border border-black/5 p-8 rounded-2xl shadow-sm">
+                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-[#8b6f5e] mb-4">Swap Ecosystem</h4>
+                                <div className="space-y-4">
+                                     <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600 font-bold border border-red-100">C</div>
+                                        <span className="text-xs text-text-secondary">Culinary Connections</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 font-bold border border-blue-100">R</div>
+                                        <span className="text-xs text-text-secondary">Ritual Mimicry</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 font-bold border border-teal-100">L</div>
+                                        <span className="text-xs text-text-secondary">Linguistic Gifts</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600 font-bold border border-orange-100">S</div>
+                                        <span className="text-xs text-text-secondary">Social Soul</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -536,12 +697,44 @@ const CultureSwap = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="absolute top-4 right-4 z-30">
+                                 <div className="absolute top-4 right-4 z-30">
                                         <button 
                                             onClick={(e) => { e.stopPropagation(); toggleTask('language'); }}
                                             className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${completedTasks.includes('language') ? 'bg-green-500 border-green-500 text-white' : 'bg-white/20 border-white/30 text-white hover:bg-white/40'}`}
                                         >
                                             {completedTasks.includes('language') ? '✓' : ''}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Visual Task Card */}
+                                <div 
+                                    onClick={() => setSelectedTask('visual')}
+                                    className="group relative bg-white border border-[#f0f0f0] rounded-2xl p-2 shadow-md hover:shadow-lg transition-all cursor-pointer h-[400px]"
+                                >
+                                     <div className="absolute inset-2 rounded-xl bg-[#faf7f2] overflow-hidden">
+                                        <div className="absolute inset-0 bg-[#ea580c] opacity-5"></div>
+                                        <div className="absolute inset-0 flex items-center justify-center text-[12rem] text-black/5">🧩</div>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent z-10"></div>
+                                        
+                                        <div className="absolute bottom-6 left-6 right-6 z-20">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="text-xs">🧩</span>
+                                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-white/80">Visual Soul</h4>
+                                            </div>
+                                            <h3 className="text-2xl font-serif font-medium text-white mb-4">Art & Rhythms</h3>
+                                            <div className="flex items-center justify-between">
+                                                <span className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-[10px] font-bold rounded-full uppercase tracking-widest">Connect</span>
+                                                {completedTasks.includes('visual') && <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs shadow-lg">✓</span>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="absolute top-4 right-4 z-30">
+                                        <button 
+                                            onClick={(e) => { e.stopPropagation(); toggleTask('visual'); }}
+                                            className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${completedTasks.includes('visual') ? 'bg-green-500 border-green-500 text-white' : 'bg-white/20 border-white/30 text-white hover:bg-white/40'}`}
+                                        >
+                                            {completedTasks.includes('visual') ? '✓' : ''}
                                         </button>
                                     </div>
                                 </div>
