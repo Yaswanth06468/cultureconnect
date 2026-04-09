@@ -336,8 +336,11 @@ const CultureSwap = () => {
                         Culture <span className="italic font-light">Swap</span>
                     </h1>
                     <p className="text-lg text-text-secondary max-w-2xl mx-auto font-light">
-                        Don't just chat. <span className="text-text-primary font-bold">Exchange lifestyles.</span><br />
-                                        {!activeSwap ? (
+                        Don't just chat. <span className="text-text-primary font-bold">Exchange lifestyles.</span>
+                    </p>
+                </div>
+
+                {!activeSwap ? (
                     <div className="space-y-12 animate-fade-in">
                         {/* Main Interaction Card */}
                         <div className="bg-white border border-black/5 rounded-[2rem] p-10 md:p-20 text-center shadow-[0_20px_50px_rgba(0,0,0,0.05)] relative overflow-hidden group">
@@ -412,7 +415,8 @@ const CultureSwap = () => {
                             </div>
                         </div>
                     </div>
-                ) :                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 animate-fade-in">
+                ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 animate-fade-in">
                         
                         {/* Live Status Sidebar - The Passport */}
                         <div className="lg:col-span-4 flex flex-col gap-6">

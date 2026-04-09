@@ -70,89 +70,186 @@ const EventCard = ({ event, idx, onDelete, role, onBook }) => {
       onMouseLeave={() => setHovered(false)}
       onClick={() => onBook(event)}
       style={{
-        background: '#fdf8f3', borderRadius: 12, overflow: 'hidden', cursor: 'pointer',
-        boxShadow: hovered ? '0 12px 40px rgba(0,0,0,0.18)' : '0 2px 12px rgba(0,0,0,0.08)',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        transition: 'all 0.22s cubic-bezier(.4,0,.2,1)',
-        border: '1px solid #f0f0f0',
+        background: '#fff', 
+        borderRadius: 20, 
+        overflow: 'hidden', 
+        cursor: 'pointer',
+        boxShadow: hovered ? '0 25px 50px -12px rgba(0, 0, 0, 0.15)' : '0 10px 15px -3px rgba(0, 0, 0, 0.05)',
+        transform: hovered ? 'translateY(-8px)' : 'translateY(0)',
+        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        border: '1px solid rgba(0,0,0,0.05)',
       }}
     >
-      {/* Poster */}
+      {/* Poster / Hero Image with Glassmorphism Overlay */}
       <div style={{
-        height: 200, 
-        background: event.image_url 
-          ? `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.6)), url(${event.image_url}) center/cover no-repeat`
-          : `linear-gradient(145deg, ${palette[0]} 0%, ${palette[1]} 100%)`,
-        position: 'relative', display: 'flex', flexDirection: 'column',
-        justifyContent: 'flex-end', padding: '0 14px 14px',
+        height: 260, 
+        background: `linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url("${event.image_url || 'https://images.unsplash.com/photo-1514525253344-763353753744?auto=format&fit=crop&q=80&w=800'}") center/cover no-repeat`,
+        position: 'relative', 
+        display: 'flex', 
+        flexDirection: 'column',
+        justifyContent: 'space-between', 
+        padding: '24px',
         overflow: 'hidden',
       }}>
-        <div style={{ position:'absolute', top:-30, right:-30, width:120, height:120, borderRadius:'50%', background:'rgba(255,255,255,0.05)' }} />
-        <div style={{ position:'absolute', top:20, right:30, width:60, height:60, borderRadius:'50%', background:'rgba(255,255,255,0.07)' }} />
+        {/* Top Section: Category */}
         <div style={{
-          position: 'absolute', top: 12, left: 12,
-          background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)',
-          borderRadius: 20, padding: '3px 10px',
-          fontSize: 10, fontWeight: 700, color: '#fff', border: '1px solid rgba(255,255,255,0.2)',
-          zIndex: 5
+          alignSelf: 'flex-start',
+          background: 'rgba(255,255,255,0.15)', 
+          backdropFilter: 'blur(10px)',
+          borderRadius: 30, 
+          padding: '6px 14px',
+          fontSize: 10, 
+          fontWeight: 800, 
+          color: '#fff', 
+          border: '1px solid rgba(255,255,255,0.2)',
+          letterSpacing: 1,
+          textTransform: 'uppercase',
+          zIndex: 5,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6
         }}>
-          {categoryEmoji} {event.category || 'Cultural'}
+          <span>{categoryEmoji}</span>
+          <span>{event.category || 'Cultural'}</span>
         </div>
+
         {role === 'admin' && (
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(event.id); }}
             style={{
-              position: 'absolute', top: 10, right: 10,
-              background: 'rgba(220,38,38,0.85)', color: '#fff', border: 'none',
-              borderRadius: 6, padding: '4px 10px', fontSize: 11, fontWeight: 700, cursor: 'pointer',
-              zIndex: 10
+              position: 'absolute', top: 24, right: 24,
+              background: 'rgba(239, 68, 68, 0.9)', color: '#fff', border: 'none',
+              borderRadius: 8, padding: '6px 12px', fontSize: 10, fontWeight: 800, cursor: 'pointer',
+              zIndex: 10, backdropFilter: 'blur(4px)'
             }}
-          >✕ Delete</button>
+          >DELETE</button>
         )}
-        {!event.image_url && <div style={{ fontSize: 38, marginBottom: 6 }}>{categoryEmoji}</div>}
-        <div style={{ 
-          fontSize: 18, fontWeight: 800, color: '#fff', lineHeight: 1.25, 
-          textShadow: '0 2px 8px rgba(0,0,0,0.8)', maxWidth: '90%',
-          position: 'relative', zIndex: 2
-        }}>
-          {event.title}
-        </div>
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0,
-          background: 'rgba(0,0,0,0.55)', padding: '5px 14px',
-          fontSize: 12, fontWeight: 700, color: '#fff',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        }}>
-          <span>📅 {dateLabel}</span>
-          {event.price != null && (
-            <span style={{ color: '#fbbf24' }}>
-              {event.price === 0 ? 'FREE' : `₹${event.price} onwards`}
+
+        {/* Bottom Section: Title and Date (No collision) */}
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <h3 style={{ 
+            fontSize: 24, 
+            fontWeight: 800, 
+            color: '#fff', 
+            lineHeight: 1.1, 
+            marginBottom: 12,
+            letterSpacing: -0.5,
+            textShadow: '0 4px 12px rgba(0,0,0,0.6)',
+            fontFamily: 'serif'
+          }}>
+            {event.title}
+          </h3>
+          
+          <div style={{
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            fontSize: 12, 
+            fontWeight: 700, 
+            color: 'rgba(255,255,255,0.95)',
+          }}>
+            <span style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 6,
+              background: 'rgba(255,255,255,0.2)',
+              padding: '6px 12px',
+              borderRadius: 12,
+              backdropFilter: 'blur(8px)'
+            }}>
+              📅 {dateLabel}
             </span>
-          )}
+            {event.price != null && (
+              <span style={{ 
+                color: '#fbbf24', 
+                fontSize: 14,
+                fontWeight: 900
+              }}>
+                {event.price === 0 ? 'FREE' : `₹${event.price} onwards`}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Card body */}
-      <div style={{ padding: '14px 16px' }}>
-        <p style={{ fontSize: 15, fontWeight: 700, color: '#111', margin: 0, marginBottom: 4, lineHeight: 1.3 }}>{event.title}</p>
-        <p style={{ fontSize: 12, color: '#8b6f5e', fontWeight: 600, margin: '0 0 6px' }}>{event.category || 'Cultural Event'}</p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#666', marginBottom: 8 }}>
-          <span>📍</span>
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 180 }}>{event.location}</span>
+      {/* Card Body: Details Only (Title removed to avoid repetition) */}
+      <div style={{ padding: '24px' }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 10, 
+          fontSize: 13, 
+          color: '#8b6f5e', 
+          fontWeight: 700, 
+          marginBottom: 12,
+          opacity: 0.9
+        }}>
+          <span style={{ fontSize: 18 }}>📍</span>
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{event.location}</span>
         </div>
-        <p style={{ fontSize: 12, color: '#888', margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        
+        <p style={{ 
+          fontSize: 14, 
+          color: '#555', 
+          margin: 0, 
+          lineHeight: 1.7, 
+          minHeight: 48,
+          display: '-webkit-box', 
+          WebkitLineClamp: 2, 
+          WebkitBoxOrient: 'vertical', 
+          overflow: 'hidden',
+          fontStyle: 'italic',
+          fontWeight: 400
+        }}>
           {event.description}
         </p>
-        <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid #f0f0f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: 12, color: '#aaa' }}>
-            by <Link to={`/profile/${event.username}`} style={{ color: '#8b6f5e', fontWeight: 700, textDecoration: 'none' }} onClick={e => e.stopPropagation()}>{event.username}</Link>
-          </span>
-          <span style={{
-            fontSize: 11, fontWeight: 700, padding: '5px 14px', borderRadius: 20, cursor: 'pointer',
-            background: 'linear-gradient(135deg, #8b6f5e, #6b4f3e)', color: '#fff', border: 'none',
+
+        <div style={{ 
+          marginTop: 24, 
+          paddingTop: 20, 
+          borderTop: '1px solid rgba(0,0,0,0.06)', 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ 
+              width: 36, 
+              height: 36, 
+              borderRadius: 12, 
+              background: 'linear-gradient(135deg, #8b6f5e, #5a4539)', 
+              color: '#fff', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              fontSize: 14, 
+              fontWeight: 900,
+              boxShadow: '0 4px 6px rgba(139,111,94,0.3)'
+            }}>
+              {event.username?.[0].toUpperCase() || 'A'}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+               <span style={{ fontSize: 10, color: '#aaa', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1 }}>Hosted by</span>
+               <Link to={`/profile/${event.username}`} style={{ color: '#111', fontWeight: 800, textDecoration: 'none', fontSize: 13 }} onClick={e => e.stopPropagation()}>{event.username}</Link>
+            </div>
+          </div>
+          
+          <button style={{
+            fontSize: 12, 
+            fontWeight: 800, 
+            padding: '10px 20px', 
+            borderRadius: 12, 
+            cursor: 'pointer',
+            background: 'linear-gradient(135deg, #111, #333)',
+            color: '#fff', 
+            border: 'none',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            transition: 'all 0.3s ease',
+            textTransform: 'uppercase',
+            letterSpacing: 1
           }}>
-            {event.price === 0 ? '🎟️ FREE' : event.price ? `🎟️ ₹${event.price}` : '🎟️ Buy Ticket'}
-          </span>
+            Explore
+          </button>
         </div>
       </div>
     </div>
@@ -448,13 +545,18 @@ const EventsBoard = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         :root { font-family: 'Inter', sans-serif; }
-        .evt-cat-pill { transition: all 0.18s ease; white-space: nowrap; }
-        .evt-cat-pill:hover { background: #8b6f5e !important; color: #fff !important; border-color: #8b6f5e !important; }
-        .date-btn { transition: all 0.15s ease; }
-        .date-btn:hover { background: #8b6f5e !important; color: #fff !important; }
+        .evt-cat-pill { transition: all 0.3s ease; white-space: nowrap; }
+        .evt-cat-pill:hover { background: #8b6f5e !important; color: #fff !important; border-color: #8b6f5e !important; transform: scale(1.05); }
+        .date-btn { transition: all 0.2s ease; }
+        .date-btn:hover { background: #8b6f5e !important; color: #fff !important; transform: translateY(-2px); }
         .filter-check:hover { background: #fff5f5; }
-        .sidebar-section { border-bottom: 1px solid #f0f0f0; padding: 16px 0; }
+        .sidebar-section { border-bottom: 1px solid rgba(0,0,0,0.05); padding: 20px 0; }
         .sidebar-section:last-child { border-bottom: none; }
+        .events-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 32px;
+        }
       `}</style>
 
       {/* ── Top Hero Bar ─────────────────────────────────────────────────────── */}
@@ -653,7 +755,7 @@ const EventsBoard = () => {
               )}
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 18 }}>
+            <div className="events-grid">
               {filtered.map((event, idx) => (
                 <EventCard key={event.id} event={event} idx={idx} onDelete={handleDeleteEvent} role={role} onBook={(ev) => setBookingEvent(ev)} />
               ))}
