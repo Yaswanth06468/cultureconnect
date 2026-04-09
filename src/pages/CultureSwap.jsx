@@ -17,7 +17,12 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
             content: (
                 <div className="space-y-6">
                     <div className="rounded-xl overflow-hidden shadow-md border border-black/5 mb-6 h-64 bg-[#faf7f2] relative group">
-                         <img src={activeSwap.foodImage} alt={activeSwap.food} className="w-full h-full object-cover" />
+                         <img 
+                            src={activeSwap.foodImage} 
+                            alt={activeSwap.food} 
+                            className="w-full h-full object-cover" 
+                            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop'; }}
+                         />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                          <div className="absolute bottom-6 left-6 text-white text-3xl font-serif font-medium">{activeSwap.food}</div>
                     </div>
@@ -57,7 +62,12 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
             content: (
                 <div className="space-y-6 text-center">
                     <div className="rounded-xl overflow-hidden shadow-md border border-black/5 mb-8 h-48 bg-blue-50/30 relative">
-                         <img src={activeSwap.ritualImage} alt={activeSwap.routine} className="w-full h-full object-cover" />
+                         <img 
+                            src={activeSwap.ritualImage} 
+                            alt={activeSwap.routine} 
+                            className="w-full h-full object-cover" 
+                            onError={(e) => { e.target.src = '/images/master-ritual.png'; }}
+                         />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                          <div className="absolute top-4 right-4 text-2xl drop-shadow-md">⚡</div>
                     </div>
@@ -84,7 +94,12 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
             content: (
                 <div className="space-y-8">
                     <div className="rounded-xl overflow-hidden shadow-md border border-black/5 h-48 mb-8 relative">
-                        <img src={activeSwap.languageImage} alt="Cultural Script" className="w-full h-full object-cover" />
+                        <img 
+                            src={activeSwap.languageImage} 
+                            alt="Cultural Script" 
+                            className="w-full h-full object-cover" 
+                            onError={(e) => { e.target.src = '/images/master-language.png'; }}
+                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
                         <div className="absolute top-1/2 left-8 -translate-y-1/2">
                              <h5 className="text-[10px] font-bold uppercase tracking-widest text-white/80 mb-2 tracking-[0.2em]">Language Heritage</h5>
@@ -127,7 +142,12 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
             content: (
                 <div className="space-y-6 text-center">
                     <div className="rounded-xl overflow-hidden shadow-md border border-black/5 mb-8 h-48 bg-orange-50/30 relative">
-                         <img src={activeSwap.visualImage} alt="Traditional Art" className="w-full h-full object-cover" />
+                         <img 
+                            src={activeSwap.visualImage} 
+                            alt="Traditional Art" 
+                            className="w-full h-full object-cover" 
+                            onError={(e) => { e.target.src = '/images/visual-kenji.png'; }}
+                         />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                          <div className="absolute top-4 right-4 text-2xl drop-shadow-md">🎨</div>
                     </div>
@@ -216,17 +236,17 @@ const CultureSwap = () => {
             recipe: 'Bake hand-rolled wheat balls (Baati) until golden. Prepare a spiced lentil soup (Dal). Crumb some Baatis with ghee and jaggery for the sweet (Churma).',
             routine: 'Morning desert walk and sunrise folk singing',
             ritualDetails: 'Start your day with a peaceful walk in the desert during sunrise. Hum a traditional folk melody to welcome the energy of the new day.',
-            ritualImage: 'https://images.unsplash.com/photo-1545062990-4a95e8e4b96d?q=80&w=2070&auto=format&fit=crop',
+            ritualImage: 'https://images.unsplash.com/photo-1545062990-4a95e8e4b96d?q=80&w=800&auto=format&fit=crop',
             words: [
-                { word: 'Khamma Ghani', translation: 'Hello', image: 'https://images.unsplash.com/photo-1598891001556-37bc237336ed?q=80&w=2070&auto=format&fit=crop' },
-                { word: 'Padharo', translation: 'Welcome', image: 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?q=80&w=1975&auto=format&fit=crop' },
-                { word: 'Dhanyavad', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1545663731-07316fc108eb?q=80&w=2070&auto=format&fit=crop' }
+                { word: 'Khamma Ghani', translation: 'Hello', image: 'https://images.unsplash.com/photo-1598891001556-37bc237336ed?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Padharo', translation: 'Welcome', image: 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Dhanyavad', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1545663731-07316fc108eb?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'Marwari is a language of extreme hospitality. A greeting is often a blessing, and a "Welcome" is and invitation into one\'s soul.',
             color: '#e67300',
-            languageImage: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=2071&auto=format&fit=crop',
+            languageImage: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800&auto=format&fit=crop',
             artDescription: 'Observe the intricate Mandana patterns on clay walls and listen to the haunting resonance of the Sarangi.',
-            visualImage: 'https://images.unsplash.com/photo-1590424744295-97743969a56a?q=80&w=1935&auto=format&fit=crop'
+            visualImage: 'https://images.unsplash.com/photo-1590424744295-97743969a56a?q=80&w=800&auto=format&fit=crop'
         },
         {
             name: 'Kenji',
@@ -241,9 +261,9 @@ const CultureSwap = () => {
             ritualDetails: 'Practice 10 minutes of silent seated meditation, then prepare a bowl of matcha or green tea with mindful, deliberate movements.',
             ritualImage: '/images/ritual-kenji.png',
             words: [
-                { word: 'Ohayo', translation: 'Good Morning', image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2070&auto=format&fit=crop' },
-                { word: 'Itadakimasu', translation: 'Let\'s eat', image: 'https://images.unsplash.com/photo-1582450871972-ed3ec38f2a40?q=80&w=2070&auto=format&fit=crop' },
-                { word: 'Arigato', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=2070&auto=format&fit=crop' }
+                { word: 'Ohayo', translation: 'Good Morning', image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Itadakimasu', translation: 'Let\'s eat', image: 'https://images.unsplash.com/photo-1582450871972-ed3ec38f2a40?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Arigato', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'Japanese greetings reflect deep mindfulness. "Itadakimasu" is a sacred acknowledgment of all the lives that contributed to your meal.',
             color: '#bc002d',
@@ -262,17 +282,17 @@ const CultureSwap = () => {
             recipe: 'Toast and blend chiles with nuts and spices. Simmer with dark chocolate to create a complex, earthy sauce. Serve with hot handmade tortillas.',
             routine: 'Market visit for fresh cacao and chiles',
             ritualDetails: 'Visit a local market (or grocery) specifically to find the most aromatic spices and freshest ingredients for your evening meal.',
-            ritualImage: 'https://images.unsplash.com/photo-1615485290382-441e4d019cb5?q=80&w=2070&auto=format&fit=crop',
+            ritualImage: 'https://images.unsplash.com/photo-1539665551699-2313507d9db3?q=80&w=800&auto=format&fit=crop',
             words: [
-                { word: 'Hola', translation: 'Hello', image: 'https://images.unsplash.com/photo-1518112166137-856914902aa7?q=80&w=1935&auto=format&fit=crop' },
-                { word: 'Provecho', translation: 'Enjoy your meal', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop' },
-                { word: 'Gracias', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1528605105345-5344ea20e269?q=80&w=2070&auto=format&fit=crop' }
+                { word: 'Hola', translation: 'Hello', image: 'https://images.unsplash.com/photo-1518112166137-856914902aa7?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Provecho', translation: 'Enjoy your meal', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Gracias', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1528605105345-5344ea20e269?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'In Mexico, food and speech are communal. "Provecho" is a ubiquitous blessing shared even with strangers at the next table.',
             color: '#006341',
-            languageImage: 'https://images.unsplash.com/photo-1522071823991-b99c65118583?q=80&w=2070&auto=format&fit=crop',
+            languageImage: 'https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=800&auto=format&fit=crop',
             artDescription: 'Marvel at the vibrant Alebrijes carvings and the rhythmic stomp of the Zapateado dance.',
-            visualImage: 'https://images.unsplash.com/photo-1518112166137-856914902aa7?q=80&w=1935&auto=format&fit=crop'
+            visualImage: 'https://images.unsplash.com/photo-1518112166137-856914902aa7?q=80&w=800&auto=format&fit=crop'
         },
         {
             name: 'Amina',
@@ -285,17 +305,17 @@ const CultureSwap = () => {
             recipe: 'Slow-cook lamb with aromatic spices until tender. Add honey and prunes in the last 30 minutes. Garnish with crunchy almonds.',
             routine: 'Afternoon mint tea ritual with family',
             ritualDetails: 'Prepare fresh mint tea with plenty of sugar. Pour from a height to create foam, and share with family or friends while discussing the day.',
-            ritualImage: 'https://images.unsplash.com/photo-1579450393273-0477817eb595?q=80&w=2072&auto=format&fit=crop',
+            ritualImage: 'https://images.unsplash.com/photo-1579450393273-0477817eb595?q=80&w=800&auto=format&fit=crop',
             words: [
-                { word: 'Salam', translation: 'Peace/Hello', image: 'https://images.unsplash.com/photo-1528431835564-927364ca1076?q=80&w=2071&auto=format&fit=crop' },
-                { word: 'Bismillah', translation: 'In the name of God', image: 'https://images.unsplash.com/photo-1590076214667-cda4475997a9?q=80&w=2069&auto=format&fit=crop' },
-                { word: 'Shukran', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1510672981848-a1c4f1cb5ccf?q=80&w=2072&auto=format&fit=crop' }
+                { word: 'Salam', translation: 'Peace/Hello', image: 'https://images.unsplash.com/photo-1528431835564-927364ca1076?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Bismillah', translation: 'In the name of God', image: 'https://images.unsplash.com/photo-1590076214667-cda4475997a9?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Shukran', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1510672981848-a1c4f1cb5ccf?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'These words form the foundation of Berber hospitality, rooted in peace, spiritual intention, and deep gratitude.',
             color: '#c1272d',
-            languageImage: 'https://images.unsplash.com/photo-1610444583737-9759af57774d?q=80&w=2015&auto=format&fit=crop',
+            languageImage: 'https://images.unsplash.com/photo-1610444583737-9759af57774d?q=80&w=800&auto=format&fit=crop',
             artDescription: 'Trace the geometric symmetry of Zellige tiles and feel the heartbeat of the Gnawa drum.',
-            visualImage: 'https://images.unsplash.com/photo-1621235123901-b530fbad1777?q=80&w=2070&auto=format&fit=crop'
+            visualImage: 'https://images.unsplash.com/photo-1621235123901-b530fbad1777?q=80&w=800&auto=format&fit=crop'
         },
         {
             name: 'Lucas',
@@ -308,17 +328,17 @@ const CultureSwap = () => {
             recipe: 'Slow-cook black beans with various smoked meats. Serve with white rice, farofa (toasted manioc flour), and sliced oranges to help digestion.',
             routine: 'Late afternoon beach football and coconut water',
             ritualDetails: 'Head to a local park or open space. Engage in some light physical activity (like football or jogging), and end with a hydrating drink.',
-            ritualImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=2026&auto=format&fit=crop',
+            ritualImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=800&auto=format&fit=crop',
             words: [
-                { word: 'Tudo bem?', translation: 'How are you?', image: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=2076&auto=format&fit=crop' },
-                { word: 'Valeu', translation: 'Thanks', image: 'https://images.unsplash.com/photo-1518414922561-6a052aa53917?q=80&w=1974&auto=format&fit=crop' },
-                { word: 'Saudade', translation: 'Deep longing', image: 'https://images.unsplash.com/photo-1490214341916-c41c0667ea3b?q=80&w=2070&auto=format&fit=crop' }
+                { word: 'Tudo bem?', translation: 'How are you?', image: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Valeu', translation: 'Thanks', image: 'https://images.unsplash.com/photo-1518414922561-6a052aa53917?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Saudade', translation: 'Deep longing', image: 'https://images.unsplash.com/photo-1490214341916-c41c0667ea3b?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'Portuguese in Brazil is melodic and expressive. "Saudade" is one of the most beautiful words in the world, describing a presence of absence.',
             color: '#009b3a',
-            languageImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=2026&auto=format&fit=crop',
+            languageImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=800&auto=format&fit=crop',
             artDescription: 'Experience the explosive colors of Carnival masks and the infectious swing of the Bossa Nova guitar.',
-            visualImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=2026&auto=format&fit=crop'
+            visualImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=800&auto=format&fit=crop'
         },
         {
             name: 'Chen',
@@ -331,17 +351,17 @@ const CultureSwap = () => {
             recipe: 'Stir-fry aromatics and garlic. Add tofu cubes and simmer in a spicy red sauce. The key is the numbing sensation of the peppercorns.',
             routine: 'Evening Mahjong game with neighbors',
             ritualDetails: 'Spend an hour playing a strategy game or solving puzzles with friends to stimulate the mind and build social connections.',
-            ritualImage: 'https://images.unsplash.com/photo-1576483133276-3532f059ca9e?q=80&w=1932&auto=format&fit=crop',
+            ritualImage: 'https://images.unsplash.com/photo-1576483133276-3532f059ca9e?q=80&w=800&auto=format&fit=crop',
             words: [
-                { word: 'Nǐ hǎo', translation: 'Hello', image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=2070&auto=format&fit=crop' },
-                { word: 'Xièxiè', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?q=80&w=2070&auto=format&fit=crop' },
-                { word: 'Mànmàn chī', translation: 'Eat slowly/Enjoy', image: 'https://images.unsplash.com/photo-1498654203945-39936a2df7bf?q=80&w=2070&auto=format&fit=crop' }
+                { word: 'Nǐ hǎo', translation: 'Hello', image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Xièxiè', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Mànmàn chī', translation: 'Eat slowly/Enjoy', image: 'https://images.unsplash.com/photo-1498654203945-39936a2df7bf?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'Mandarin is a tonal language where meaning is music. "Mànmàn chī" reflects a cultural priority on savoring life\'s basic joys.',
             color: '#ee1c25',
-            languageImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=2070&auto=format&fit=crop',
+            languageImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800&auto=format&fit=crop',
             artDescription: 'Admire the flowing ink of traditional calligraphy and the high-pitched elegance of the Guzheng zither.',
-            visualImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=2070&auto=format&fit=crop'
+            visualImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800&auto=format&fit=crop'
         },
         {
             name: 'Sarah',
@@ -354,17 +374,17 @@ const CultureSwap = () => {
             recipe: 'Thinly slice vegetables and layer them in a spiral. Roast slowly until tender and the flavors meld into a rustic masterpiece.',
             routine: 'Morning stroll to the local Boulangerie',
             ritualDetails: 'Take a slow walk through your neighborhood. Observe the architecture and life around you, and pick up a fresh loaf of bread.',
-            ritualImage: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2072&auto=format&fit=crop',
+            ritualImage: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop',
             words: [
-                { word: 'Bonjour', translation: 'Good day', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop' },
-                { word: 'Merci', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=2070&auto=format&fit=crop' },
-                { word: 'Flâner', translation: 'Aimless strolling', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop' }
+                { word: 'Bonjour', translation: 'Good day', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Merci', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Flâner', translation: 'Aimless strolling', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'French is often called the language of love, but it\'s truly the language of detail. "Flâner" is a lifestyle of urban exploration.',
             color: '#002395',
-            languageImage: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=2070&auto=format&fit=crop',
+            languageImage: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=800&auto=format&fit=crop',
             artDescription: 'Wander through Impressionist light and shadow, accompanied by the nostalgic swell of an accordion.',
-            visualImage: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop'
+            visualImage: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop'
         },
         {
             name: 'Thabo',
@@ -377,17 +397,17 @@ const CultureSwap = () => {
             recipe: 'Prepare a thick maize porridge (Pap). Sauté vegetables with strong curry spices (Chakalaka). Serve together hot.',
             routine: 'Community storytelling afternoon',
             ritualDetails: 'Sit with a friend or elder and ask them for a story from their youth. Listen without interrupting, practicing the art of "Ubuntu".',
-            ritualImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop',
+            ritualImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop',
             words: [
-                { word: 'Molo', translation: 'Hello', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop' },
-                { word: 'Enkosi', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1615461066841-6116ecaaba39?q=80&w=1956&auto=format&fit=crop' },
-                { word: 'Ubuntu', translation: 'I am because we are', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop' }
+                { word: 'Molo', translation: 'Hello', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Enkosi', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1615461066841-6116ecaaba39?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Ubuntu', translation: 'I am because we are', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'Xhosa contains unique click sounds that reflect the rhythm of the land. "Ubuntu" is the philosophy that humanity is found in togetherness.',
             color: '#007a33',
-            languageImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop',
+            languageImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop',
             artDescription: 'Be dazzled by the intricate storytelling of Xhosa beadwork and the powerful harmonies of choral singing.',
-            visualImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2130&auto=format&fit=crop'
+            visualImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop'
         },
         {
             name: 'Malai',
@@ -400,17 +420,17 @@ const CultureSwap = () => {
             recipe: 'Simmer a rich, creamy yellow curry. Serve with boiled and deep-fried crispy noodles, topped with fresh lime and shallots.',
             routine: 'Midday flower market visit',
             ritualDetails: 'Visit a place with vibrant colors and scents (like a flower shop or park). Appreciate the beauty and take a moment of silent gratitude.',
-            ritualImage: 'https://images.unsplash.com/photo-151353272d805-44738608d27a?q=80&w=2070&auto=format&fit=crop',
+            ritualImage: 'https://images.unsplash.com/photo-151353272d805-44738608d27a?q=80&w=800&auto=format&fit=crop',
             words: [
-                { word: 'Sawatdee', translation: 'Hello', image: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=2070&auto=format&fit=crop' },
-                { word: 'Khop khun', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=2039&auto=format&fit=crop' },
-                { word: 'Sabai Sabai', translation: 'Relaxed/Comfortable', image: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=2070&auto=format&fit=crop' }
+                { word: 'Sawatdee', translation: 'Hello', image: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Khop khun', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=800&auto=format&fit=crop' },
+                { word: 'Sabai Sabai', translation: 'Relaxed/Comfortable', image: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=800&auto=format&fit=crop' }
             ],
             languageSignificance: 'Thai is famous for its "wai" greeting—a bow with hands in prayer. This reflects the deep respect built into the language.',
             color: '#ed1c24',
-            languageImage: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=2070&auto=format&fit=crop',
+            languageImage: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=800&auto=format&fit=crop',
             artDescription: 'Observe the delicate gold leaf of temple murals and the metallic shimmer of the Ranat khane xylophone.',
-            visualImage: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=2070&auto=format&fit=crop'
+            visualImage: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=800&auto=format&fit=crop'
         }
     ];
 
@@ -641,7 +661,12 @@ const CultureSwap = () => {
                                     className="group relative bg-white border border-[#f0f0f0] rounded-2xl p-2 shadow-md hover:shadow-lg transition-all cursor-pointer h-[400px]"
                                 >
                                      <div className="absolute inset-2 rounded-xl bg-[#faf7f2] overflow-hidden">
-                                        <img src={activeSwap.foodImage} alt={activeSwap.food} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                                         <img 
+                                            src={activeSwap.foodImage} 
+                                            alt={activeSwap.food} 
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
+                                            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop'; }}
+                                        />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
                                         
                                         <div className="absolute bottom-6 left-6 right-6 z-20">
@@ -672,7 +697,12 @@ const CultureSwap = () => {
                                     className="group relative bg-white border border-[#f0f0f0] rounded-2xl p-2 shadow-md hover:shadow-lg transition-all cursor-pointer h-[400px]"
                                 >
                                      <div className="absolute inset-2 rounded-xl bg-[#faf7f2] overflow-hidden">
-                                        <img src={activeSwap.ritualImage} alt={activeSwap.routine} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                                         <img 
+                                            src={activeSwap.ritualImage} 
+                                            alt={activeSwap.routine} 
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
+                                            onError={(e) => { e.target.src = '/images/master-ritual.png'; }}
+                                        />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
                                         
                                         <div className="absolute bottom-6 left-6 right-6 z-20">
@@ -703,7 +733,12 @@ const CultureSwap = () => {
                                     className="group relative bg-white border border-[#f0f0f0] rounded-2xl p-2 shadow-md hover:shadow-lg transition-all cursor-pointer h-[400px]"
                                 >
                                      <div className="absolute inset-2 rounded-xl bg-[#faf7f2] overflow-hidden">
-                                        <img src={activeSwap.languageImage} alt="Cultural Script" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                                         <img 
+                                            src={activeSwap.languageImage} 
+                                            alt="Cultural Script" 
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
+                                            onError={(e) => { e.target.src = '/images/master-language.png'; }}
+                                        />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
                                         
                                         <div className="absolute bottom-6 left-6 right-6 z-20">
@@ -734,7 +769,12 @@ const CultureSwap = () => {
                                     className="group relative bg-white border border-[#f0f0f0] rounded-2xl p-2 shadow-md hover:shadow-lg transition-all cursor-pointer h-[400px]"
                                 >
                                      <div className="absolute inset-2 rounded-xl bg-[#faf7f2] overflow-hidden">
-                                        <img src={activeSwap.visualImage} alt="Traditional Art" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                                         <img 
+                                            src={activeSwap.visualImage} 
+                                            alt="Traditional Art" 
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
+                                            onError={(e) => { e.target.src = '/images/visual-kenji.png'; }}
+                                        />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
                                         
                                         <div className="absolute bottom-6 left-6 right-6 z-20">
