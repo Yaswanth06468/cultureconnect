@@ -198,6 +198,111 @@ const eventsData = [
         price: 200,
         language: 'English',
         image_url: 'https://images.unsplash.com/photo-1531055060029-3ffbb3c04513?auto=format&fit=crop&q=80&w=800'
+    },
+
+    // Meetups
+    {
+        username: 'Admin',
+        title: 'Heritage Photographers Meetup',
+        date: '2026-06-08',
+        location: 'India Gate Lawns, Delhi',
+        description: 'Connect with fellow heritage photographers over golden-hour shoots at iconic Delhi monuments. Share techniques, stories, and your love for documenting culture.',
+        category: 'Meetups',
+        price: 0,
+        language: 'English',
+        image_url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        username: 'Admin',
+        title: 'Indie Bookworms: Regional Literature',
+        date: '2026-06-15',
+        location: 'Atta Galatta Bookstore, Bangalore',
+        description: 'A casual meetup for lovers of Indian regional literature. Discuss your latest reads in Tamil, Kannada, Malayalam, or any mother tongue. Chai provided!',
+        category: 'Meetups',
+        price: 0,
+        language: 'English',
+        image_url: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        username: 'Admin',
+        title: 'Folk Artists & Artisans Gathering',
+        date: '2026-07-03',
+        location: 'Dilli Haat, INA, Delhi',
+        description: 'Meet the artisans behind India\'s folk art traditions. From wooden toymakers of Channapatna to lacquerware craftsmen of Jaipur — hear their stories firsthand.',
+        category: 'Meetups',
+        price: 100,
+        language: 'Hindi',
+        image_url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800'
+    },
+
+    // Talks & Conferences
+    {
+        username: 'Admin',
+        title: 'TED x Heritage: Preserving Roots',
+        date: '2026-08-22',
+        location: 'IIT Bombay Auditorium, Mumbai',
+        description: 'A day of powerful talks on preserving intangible cultural heritage — oral traditions, dying crafts, and indigenous knowledge systems facing extinction.',
+        category: 'Talks & Conferences',
+        price: 750,
+        language: 'English',
+        image_url: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        username: 'Admin',
+        title: 'Dialogues on Dravidian Architecture',
+        date: '2026-09-05',
+        location: 'IIT Madras, Chennai',
+        description: 'Leading historians and architects discuss the mathematical precision, astronomical alignment, and spiritual symbolism embedded in South Indian temple architecture.',
+        category: 'Talks & Conferences',
+        price: 300,
+        language: 'English',
+        image_url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        username: 'Admin',
+        title: 'The Future of Indian Handicrafts',
+        date: '2026-10-12',
+        location: 'India Habitat Centre, Delhi',
+        description: 'Industry leaders, designers, and artisans converge to discuss how e-commerce, AI, and sustainable practices can revive India\'s ₹2 lakh crore handicraft sector.',
+        category: 'Talks & Conferences',
+        price: 500,
+        language: 'English',
+        image_url: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800'
+    },
+
+    // Theatre & Arts
+    {
+        username: 'Admin',
+        title: 'Yakshagana: The Night Drama',
+        date: '2026-07-18',
+        location: 'Udupi Temple Grounds, Karnataka',
+        description: 'Experience the all-night spectacle of Yakshagana — a 400-year-old theatre form combining dance, music, and dialogue under the open Karnataka sky.',
+        category: 'Theatre & Arts',
+        price: 350,
+        language: 'Kannada',
+        image_url: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        username: 'Admin',
+        title: 'Urdu Mushaira & Ghazal Night',
+        date: '2026-08-10',
+        location: 'Rang Bhavan, Hyderabad',
+        description: 'An evening of soul-stirring Urdu poetry recitations by renowned shayars, accompanied by live ghazal performances that celebrate the beauty of the Urdu language.',
+        category: 'Theatre & Arts',
+        price: 400,
+        language: 'Urdu',
+        image_url: 'https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        username: 'Admin',
+        title: 'Nautanki: The People\'s Theatre',
+        date: '2026-11-02',
+        location: 'Lucknow Mahotsav Grounds',
+        description: 'The vibrant folk theatre of North India returns with its signature satire, powerful vocals, and larger-than-life performances that have entertained millions for centuries.',
+        category: 'Theatre & Arts',
+        price: 200,
+        language: 'Hindi',
+        image_url: 'https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&q=80&w=800'
     }
 ];
 
