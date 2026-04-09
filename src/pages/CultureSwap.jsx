@@ -232,81 +232,11 @@ const CultureSwap = () => {
     const [completedTasks, setCompletedTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState(null);
 
-    const partners = [
-        {
-            name: 'Priya',
-            location: 'Rajasthan, India',
-            culture: 'Marwari',
-            avatar: '👤',
-            food: 'Dal Baati Churma',
-            foodImage: '/images/food-priya.png',
-            ingredients: ['Wheat flour', 'Ghee', 'Moong/Chana Dal', 'Jaggery', 'Cardamom', 'Green Chilies'],
-            recipe: 'Bake hand-rolled wheat balls (Baati) until golden. Prepare a spiced lentil soup (Dal). Crumb some Baatis with ghee and jaggery for the sweet (Churma).',
-            routine: 'Morning desert walk and sunrise folk singing',
-            ritualDetails: 'Start your day with a peaceful walk in the desert during sunrise. Hum a traditional folk melody to welcome the energy of the new day.',
-            ritualImage: 'https://images.unsplash.com/photo-1545062990-4a95e8e4b96d?q=80&w=800&auto=format&fit=crop',
-            words: [
-                { word: 'Khamma Ghani', translation: 'Hello', image: 'https://images.unsplash.com/photo-1598891001556-37bc237336ed?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Padharo', translation: 'Welcome', image: 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Dhanyavad', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1545663731-07316fc108eb?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'Marwari is a language of extreme hospitality. A greeting is often a blessing, and a "Welcome" is and invitation into one\'s soul.',
-            color: '#e67300',
-            languageImage: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800&auto=format&fit=crop',
-            artDescription: 'Observe the intricate Mandana patterns on clay walls and listen to the haunting resonance of the Sarangi.',
-            visualImage: 'https://images.unsplash.com/photo-1590424744295-97743969a56a?q=80&w=800&auto=format&fit=crop'
-        },
-        {
-            name: 'Kenji',
-            location: 'Kyoto, Japan',
-            culture: 'Traditional Japanese',
-            avatar: '👤',
-            food: 'Miso Soup & Grilled Fish',
-            foodImage: '/images/food-kenji.png',
-            ingredients: ['Miso paste', 'Dashi stock', 'Silken Tofu', 'Dried Seaweed', 'Mackerel fillet', 'Soy sauce'],
-            recipe: 'Simmer dashi with seaweed and tofu. Whisk in miso paste at the end. Grill salted mackerel until the skin is crispy and golden.',
-            routine: 'Morning Zen meditation and tea preparation',
-            ritualDetails: 'Practice 10 minutes of silent seated meditation, then prepare a bowl of matcha or green tea with mindful, deliberate movements.',
-            ritualImage: '/images/ritual-kenji.png',
-            words: [
-                { word: 'Ohayo', translation: 'Good Morning', image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Itadakimasu', translation: 'Let\'s eat', image: 'https://images.unsplash.com/photo-1582450871972-ed3ec38f2a40?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Arigato', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'Japanese greetings reflect deep mindfulness. "Itadakimasu" is a sacred acknowledgment of all the lives that contributed to your meal.',
-            color: '#bc002d',
-            languageImage: '/images/language-kenji.png',
-            artDescription: 'Study the balance of Kintsugi (mending with gold) and the meditative pluck of the Koto.',
-            visualImage: '/images/visual-kenji.png'
-        },
-        {
-            name: 'Sofía',
-            location: 'Oaxaca, Mexico',
-            culture: 'Zapotec/Mexican',
-            avatar: '👤',
-            food: 'Mole Poblano with Tortillas',
-            foodImage: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=2094&auto=format&fit=crop',
-            ingredients: ['Dried Ancho Chiles', 'Abuelita Chocolate', 'Sesame seeds', 'Almonds', 'Corn Tortillas'],
-            recipe: 'Toast and blend chiles with nuts and spices. Simmer with dark chocolate to create a complex, earthy sauce. Serve with hot handmade tortillas.',
-            routine: 'Market visit for fresh cacao and chiles',
-            ritualDetails: 'Visit a local market (or grocery) specifically to find the most aromatic spices and freshest ingredients for your evening meal.',
-            ritualImage: 'https://images.unsplash.com/photo-1539665551699-2313507d9db3?q=80&w=800&auto=format&fit=crop',
-            words: [
-                { word: 'Hola', translation: 'Hello', image: 'https://images.unsplash.com/photo-1518112166137-856914902aa7?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Provecho', translation: 'Enjoy your meal', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Gracias', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1528605105345-5344ea20e269?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'In Mexico, food and speech are communal. "Provecho" is a ubiquitous blessing shared even with strangers at the next table.',
-            color: '#006341',
-            languageImage: 'https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=800&auto=format&fit=crop',
-    const [partners, setPartners] = React.useState([]);
+    const [partners, setPartners] = useState([]);
 
-    React.useEffect(() => {
-        // Fetch a few partners for the preview section
+    useEffect(() => {
         const fetchPreview = async () => {
             try {
-                // Since we have a random endpoint, we can just fetch a few if we had a list endpoint
-                // For now, let's just make a list endpoint in server.js too or use fallback
                 const response = await fetch('http://localhost:5000/api/culture-swap/random');
                 const data = await response.json();
                 if (data && !data.error) setPartners([data]);
@@ -324,7 +254,6 @@ const CultureSwap = () => {
             const data = await response.json();
             
             if (data && !data.error) {
-                // Add a small delay for dramatic effect
                 setTimeout(() => {
                     setActiveSwap(data);
                     setIsMatching(false);
@@ -356,16 +285,6 @@ const CultureSwap = () => {
         const m = Math.floor((seconds % 3600) / 60);
         const s = seconds % 60;
         return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-    };
-
-    const startMatch = () => {
-        setIsMatching(true);
-        setTimeout(() => {
-            const randomPartner = partners[Math.floor(Math.random() * partners.length)];
-            setActiveSwap(randomPartner);
-            setIsMatching(false);
-            setTimeLeft(3600); // Reset timer to 1 hour
-        }, 3000);
     };
 
     const stopSwap = () => {

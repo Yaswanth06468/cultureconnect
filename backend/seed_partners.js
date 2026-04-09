@@ -1,8 +1,12 @@
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// Schema match from server.js
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '.env') });
+
 const CulturePartnerSchema = new mongoose.Schema({
     name: String,
     culture: String,
@@ -35,9 +39,9 @@ const CULTURES = [
         avatar: '👩🏽',
         food: 'Mole Negro',
         foodImage: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=800',
-        recipe: 'Toast chilies until fragrant. Grind with chocolate, spices, and nuts into a thick paste. Simmer with chicken or beans for 4 hours.',
+        recipe: 'Toast chilies until fragrant. Grind with chocolate, spices, and nuts. Simmer for hours.',
         routine: 'Plaza stroll and hot chocolate',
-        ritualDetails: 'Visit the main square at dusk. Drink a cup of hot chocolate with cinnamon while listening to the local band play.',
+        ritualDetails: 'Visit the main square at dusk. Drink a cup of hot chocolate with cinnamon.',
         ritualImage: 'https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396?q=80&w=800',
         words: [
             { word: 'Hola', translation: 'Hello', image: 'https://images.unsplash.com/photo-1543702404-58b990924151?q=80&w=800' },
@@ -53,11 +57,11 @@ const CULTURES = [
         culture: 'Japan (Kyoto)',
         location: 'Gion District',
         avatar: '👨🏻',
-        food: 'Ch Kaiseki',
+        food: 'Cha-Kaiseki',
         foodImage: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=800',
-        recipe: 'Balance seasonal flavors including a small clear soup, a seasonal fish dish, and a slow-cooked vegetable dish.',
+        recipe: 'Balance seasonal flavors: small clear soup, seasonal fish, and slow-cooked vegetables.',
         routine: 'Morning Zen Walk',
-        ritualDetails: 'Walk through a temple garden in silence before the crowds arrive. Focus on the crunch of gravel underfoot.',
+        ritualDetails: 'Walk through a temple garden in silence. Focus on the crunch of gravel underfoot.',
         ritualImage: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800',
         words: [
             { word: 'Konichiwa', translation: 'Hello', image: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c6d?q=80&w=800' },
@@ -70,28 +74,68 @@ const CULTURES = [
         visualImage: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800'
     },
     {
-        culture: 'Italy (Tuscany)',
-        location: 'Val d\'Orcia',
-        avatar: '👨🏼',
-        food: 'Pappa al Pomodoro',
-        foodImage: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800',
-        recipe: 'Simmer stale bread with fresh tomatoes, garlic, basil, and plenty of extra virgin olive oil until it reaches a thick consistency.',
-        routine: 'Evening Passeggiata',
-        ritualDetails: 'Dress up slightly and take a slow stroll through the village cobblestone streets to see neighbors and enjoy the air.',
-        ritualImage: 'https://images.unsplash.com/photo-1528114039593-4366cc08227d?q=80&w=800',
+        culture: 'India (Rajasthan)',
+        location: 'Jaisalmer (The Golden City)',
+        avatar: '👨🏾',
+        food: 'Ker Sangri with Bajra Roti',
+        foodImage: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=800',
+        recipe: 'Sauté desert beans (Ker) and berries (Sangri) with dried mango and local spices. Serve with pearl millet flatbread.',
+        routine: 'Sunset Folk Song',
+        ritualDetails: 'Sit on the sand dunes as the sun sets. Hum a traditional Maand folk melody to welcome the cool desert night.',
+        ritualImage: 'https://images.unsplash.com/photo-1524492715934-bda0972164bb?q=80&w=800',
         words: [
-            { word: 'Ciao', translation: 'Hi/Bye', image: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=800' },
-            { word: 'Grazie', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=800' }
+            { word: 'Khamma Ghani', translation: 'Royal Greetings', image: 'https://images.unsplash.com/photo-1598891001556-37bc237336ed?q=80&w=800' },
+            { word: 'Padharo', translation: 'Please Welcome', image: 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?q=80&w=800' }
         ],
-        languageSignificance: 'Tuscan Italian is known for its clarity and passion, often accompanied by expressive hand gestures.',
-        color: '#008c45',
-        languageImage: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=800',
-        artDescription: 'Renaissance Frescoes and marble sculpture.',
-        visualImage: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=800'
+        languageSignificance: 'Marwari is a language of extreme hospitality, where every greeting is an invitation into one\'s home.',
+        color: '#e67e22',
+        languageImage: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800',
+        artDescription: 'Mandana - geometric patterns painted on walls to ward off evil and welcome prosperity.',
+        visualImage: 'https://images.unsplash.com/photo-1524222717473-7394c97bc56f?q=80&w=800'
+    },
+    {
+        culture: 'Morocco (Marrakech)',
+        location: 'Medina Quarter',
+        avatar: '🧕🏼',
+        food: 'Lamb Tagine with Prunes',
+        foodImage: 'https://images.unsplash.com/photo-1541518763669-27999881c1e0?q=80&w=800',
+        recipe: 'Slow-cook lamb in a clay tagine with saffron, ginger, and honey. Add caramelized prunes and toasted almonds at the end.',
+        routine: 'Mint Tea Ceremony',
+        ritualDetails: 'Pour mint tea from a height to create froth. Drink three glasses: the first is bitter as life, second strong as love, third gentle as death.',
+        ritualImage: 'https://images.unsplash.com/photo-1514749065261-d8ec96bd0d56?q=80&w=800',
+        words: [
+            { word: 'Salam', translation: 'Peace/Hello', image: 'https://images.unsplash.com/photo-1528605105345-5344ea20e269?q=80&w=800' },
+            { word: 'Chokran', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1481349510224-44ce2b73bcbb?q=80&w=800' }
+        ],
+        languageSignificance: 'Darija is a beautiful mosaic of Arabic, Berber, and French, spoken with great warmth and expressive hands.',
+        color: '#006d77',
+        languageImage: 'https://images.unsplash.com/photo-1518481852452-9415b262eba4?q=80&w=800',
+        artDescription: 'Zellij - intricate geometric tilework that reflects the mathematical beauty of the universe.',
+        visualImage: 'https://images.unsplash.com/photo-1539665551699-2313507d9db3?q=80&w=800'
+    },
+    {
+        culture: 'Greece (Santorini)',
+        location: 'Oia Village',
+        avatar: '👴🏼',
+        food: 'Fava with Octopus',
+        foodImage: 'https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?q=80&w=800',
+        recipe: 'Puree yellow split peas with onions. Top with grilled octopus seasoned with wild mountain oregano and olive oil.',
+        routine: 'Evening Kafenio',
+        ritualDetails: 'Sit at the local café as the sun sets. Play a game of Tavli (backgammon) while sipping a strong Greek coffee.',
+        ritualImage: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=800',
+        words: [
+            { word: 'Yassas', translation: 'Health/Hello', image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800' },
+            { word: 'Efcharisto', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1505506819647-681a4971072a?q=80&w=800' }
+        ],
+        languageSignificance: 'Greek is a language of history and philosophy. Even daily greetings often carry deeper meanings of health and well-being.',
+        color: '#005f73',
+        languageImage: 'https://images.unsplash.com/photo-1542662565-7e4b66bae529?q=80&w=800',
+        artDescription: 'Cycladic Art - minimalist white marble figurines emphasizing pure form and balance.',
+        visualImage: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800'
     }
 ];
 
-const NAMES = ['Sofia', 'Kenji', 'Marco', 'Elena', 'Amara', 'Chen', 'Aleksei', 'Fatima', 'Liam', 'Zoe', 'Hans', 'Yuki', 'Suresh', 'Priya', 'Ahmed', 'Olga'];
+const NAMES = ['Sofia', 'Kenji', 'Arjun', 'Fatima', 'Yiannis', 'Mei', 'Lakshmi', 'Youssef', 'Eleni', 'Hiroshi', 'Amara', 'Mateo', 'Nisha', 'Omar', 'Katerina'];
 
 async function seed() {
     try {
@@ -104,15 +148,10 @@ async function seed() {
 
         const partners = [];
         
-        // Generate a large pool (simulating the users request for variety)
-        // We will generate 500 unique combinations for real use, but the loop can be expanded
-        for (let i = 0; i < 500; i++) {
+        // Generate a large pool with random combinations
+        for (let i = 0; i < 100; i++) {
             const template = CULTURES[Math.floor(Math.random() * CULTURES.length)];
             const name = NAMES[Math.floor(Math.random() * NAMES.length)] + ' ' + (i + 1);
-            
-            // Randomize images slightly using different Unsplash IDs or random keywords
-            // Unsplash random search: https://source.unsplash.com/featured/?keyword
-            // Note: source.unsplash is deprecated, better to use unique URLs or a pool
             
             partners.push({
                 ...template,
@@ -122,7 +161,7 @@ async function seed() {
         }
 
         await CulturePartner.insertMany(partners);
-        console.log('Seeded 500 cultural partners successfully!');
+        console.log(`Seeded ${partners.length} unique cultural partners across ${CULTURES.length} diverse cultures!`);
         
         process.exit(0);
     } catch (err) {

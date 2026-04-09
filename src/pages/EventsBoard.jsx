@@ -412,7 +412,7 @@ const EventsBoard = () => {
     } catch (err) { console.error(err); }
   };
 
-  const handleEventSubmit = async ({ title, date, location, description, category, price, language }) => {
+  const handleEventSubmit = async ({ title, date, location, description, category, price, language, image_url }) => {
     setError('');
     if (!token) { navigate('/login'); return; }
     if (!title || !date || !location || !description) { setError('All fields are required'); return; }
