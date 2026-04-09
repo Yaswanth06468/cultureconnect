@@ -102,6 +102,31 @@ BookingSchema.set('toJSON', { virtuals: true });
 BookingSchema.virtual('id').get(function() { return this._id.toHexString(); });
 const Booking = mongoose.model('Booking', BookingSchema);
 
+const CulturePartnerSchema = new mongoose.Schema({
+    name: String,
+    culture: String,
+    avatar: String,
+    location: String,
+    food: String,
+    foodImage: String,
+    recipe: String,
+    routine: String,
+    ritualDetails: String,
+    ritualImage: String,
+    words: [{
+        word: String,
+        translation: String,
+        image: String
+    }],
+    languageSignificance: String,
+    color: String,
+    languageImage: String,
+    artDescription: String,
+    visualImage: String,
+    created_at: { type: Date, default: Date.now }
+});
+const CulturePartner = mongoose.model('CulturePartner', CulturePartnerSchema);
+
 // Multer Storage
 const storage = multer.diskStorage({
     destination: './uploads/',
@@ -352,6 +377,18 @@ app.get('/api/bookings', authenticateToken, async (req, res) => {
         res.json(bookings);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch bookings' });
+    }
+});
+
+app.get('/api/culture-swap/random', async (req, res) => {
+    try {
+        const count = await CulturePartner.countDocuments();
+        if (count === 0) return res.status(404).json({ error: 'No cultural partners found' });
+        const random = Math.floor(Math.random() * count);
+        const partner = await CulturePartner.findOne().skip(random);
+        res.json(partner);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch random partner' });
     }
 });
 

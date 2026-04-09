@@ -299,148 +299,47 @@ const CultureSwap = () => {
             languageSignificance: 'In Mexico, food and speech are communal. "Provecho" is a ubiquitous blessing shared even with strangers at the next table.',
             color: '#006341',
             languageImage: 'https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=800&auto=format&fit=crop',
-            artDescription: 'Marvel at the vibrant Alebrijes carvings and the rhythmic stomp of the Zapateado dance.',
-            visualImage: 'https://images.unsplash.com/photo-1518112166137-856914902aa7?q=80&w=800&auto=format&fit=crop'
-        },
-        {
-            name: 'Amina',
-            location: 'Marrakesh, Morocco',
-            culture: 'Berber',
-            avatar: '👤',
-            food: 'Lamb Tagine with Prunes',
-            foodImage: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?q=80&w=2066&auto=format&fit=crop',
-            ingredients: ['Lamb shoulder', 'Dried prunes', 'Toasted almonds', 'Cinnamon', 'Ginger', 'Saffron'],
-            recipe: 'Slow-cook lamb with aromatic spices until tender. Add honey and prunes in the last 30 minutes. Garnish with crunchy almonds.',
-            routine: 'Afternoon mint tea ritual with family',
-            ritualDetails: 'Prepare fresh mint tea with plenty of sugar. Pour from a height to create foam, and share with family or friends while discussing the day.',
-            ritualImage: 'https://images.unsplash.com/photo-1579450393273-0477817eb595?q=80&w=800&auto=format&fit=crop',
-            words: [
-                { word: 'Salam', translation: 'Peace/Hello', image: 'https://images.unsplash.com/photo-1528431835564-927364ca1076?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Bismillah', translation: 'In the name of God', image: 'https://images.unsplash.com/photo-1590076214667-cda4475997a9?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Shukran', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1510672981848-a1c4f1cb5ccf?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'These words form the foundation of Berber hospitality, rooted in peace, spiritual intention, and deep gratitude.',
-            color: '#c1272d',
-            languageImage: 'https://images.unsplash.com/photo-1610444583737-9759af57774d?q=80&w=800&auto=format&fit=crop',
-            artDescription: 'Trace the geometric symmetry of Zellige tiles and feel the heartbeat of the Gnawa drum.',
-            visualImage: 'https://images.unsplash.com/photo-1621235123901-b530fbad1777?q=80&w=800&auto=format&fit=crop'
-        },
-        {
-            name: 'Lucas',
-            location: 'Rio de Janeiro, Brazil',
-            culture: 'Carioca',
-            avatar: '🤴🏾',
-            food: 'Feijoada',
-            foodImage: 'https://images.unsplash.com/photo-1599481238505-b8b0537a3f77?q=80&w=2070&auto=format&fit=crop',
-            ingredients: ['Black beans', 'Pork ribs', 'Sausage', 'Garlic', 'Bay leaves', 'Oranges'],
-            recipe: 'Slow-cook black beans with various smoked meats. Serve with white rice, farofa (toasted manioc flour), and sliced oranges to help digestion.',
-            routine: 'Late afternoon beach football and coconut water',
-            ritualDetails: 'Head to a local park or open space. Engage in some light physical activity (like football or jogging), and end with a hydrating drink.',
-            ritualImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=800&auto=format&fit=crop',
-            words: [
-                { word: 'Tudo bem?', translation: 'How are you?', image: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Valeu', translation: 'Thanks', image: 'https://images.unsplash.com/photo-1518414922561-6a052aa53917?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Saudade', translation: 'Deep longing', image: 'https://images.unsplash.com/photo-1490214341916-c41c0667ea3b?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'Portuguese in Brazil is melodic and expressive. "Saudade" is one of the most beautiful words in the world, describing a presence of absence.',
-            color: '#009b3a',
-            languageImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=800&auto=format&fit=crop',
-            artDescription: 'Experience the explosive colors of Carnival masks and the infectious swing of the Bossa Nova guitar.',
-            visualImage: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?q=80&w=800&auto=format&fit=crop'
-        },
-        {
-            name: 'Chen',
-            location: 'Chengdu, China',
-            culture: 'Sichuan',
-            avatar: '👨🏻‍🍳',
-            food: 'Mapo Tofu',
-            foodImage: 'https://images.unsplash.com/photo-1541696490-8744a5db7f7b?q=80&w=1932&auto=format&fit=crop',
-            ingredients: ['Silken Tofu', 'Sichuan Peppercorns', 'Doubanjiang (Bean paste)', 'Minced Beef', 'Green Onions'],
-            recipe: 'Stir-fry aromatics and garlic. Add tofu cubes and simmer in a spicy red sauce. The key is the numbing sensation of the peppercorns.',
-            routine: 'Evening Mahjong game with neighbors',
-            ritualDetails: 'Spend an hour playing a strategy game or solving puzzles with friends to stimulate the mind and build social connections.',
-            ritualImage: 'https://images.unsplash.com/photo-1576483133276-3532f059ca9e?q=80&w=800&auto=format&fit=crop',
-            words: [
-                { word: 'Nǐ hǎo', translation: 'Hello', image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Xièxiè', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Mànmàn chī', translation: 'Eat slowly/Enjoy', image: 'https://images.unsplash.com/photo-1498654203945-39936a2df7bf?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'Mandarin is a tonal language where meaning is music. "Mànmàn chī" reflects a cultural priority on savoring life\'s basic joys.',
-            color: '#ee1c25',
-            languageImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800&auto=format&fit=crop',
-            artDescription: 'Admire the flowing ink of traditional calligraphy and the high-pitched elegance of the Guzheng zither.',
-            visualImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800&auto=format&fit=crop'
-        },
-        {
-            name: 'Sarah',
-            location: 'Paris, France',
-            culture: 'Parisian',
-            avatar: '👩🏼‍🎨',
-            food: 'Ratatouille',
-            foodImage: 'https://images.unsplash.com/photo-1572453800999-e8d2d1589b7c?q=80&w=1940&auto=format&fit=crop',
-            ingredients: ['Eggplant', 'Zucchini', 'Bell Peppers', 'Tomatoes', 'Herbes de Provence', 'Olive Oil'],
-            recipe: 'Thinly slice vegetables and layer them in a spiral. Roast slowly until tender and the flavors meld into a rustic masterpiece.',
-            routine: 'Morning stroll to the local Boulangerie',
-            ritualDetails: 'Take a slow walk through your neighborhood. Observe the architecture and life around you, and pick up a fresh loaf of bread.',
-            ritualImage: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop',
-            words: [
-                { word: 'Bonjour', translation: 'Good day', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Merci', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Flâner', translation: 'Aimless strolling', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'French is often called the language of love, but it\'s truly the language of detail. "Flâner" is a lifestyle of urban exploration.',
-            color: '#002395',
-            languageImage: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=800&auto=format&fit=crop',
-            artDescription: 'Wander through Impressionist light and shadow, accompanied by the nostalgic swell of an accordion.',
-            visualImage: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop'
-        },
-        {
-            name: 'Thabo',
-            location: 'Cape Town, South Africa',
-            culture: 'Xhosa',
-            avatar: '🧔🏿',
-            food: 'Chakalaka & Pap',
-            foodImage: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=2069&auto=format&fit=crop',
-            ingredients: ['Maize meal', 'Carrots', 'Beans', 'Cabbage', 'Curry powder', 'Ginger'],
-            recipe: 'Prepare a thick maize porridge (Pap). Sauté vegetables with strong curry spices (Chakalaka). Serve together hot.',
-            routine: 'Community storytelling afternoon',
-            ritualDetails: 'Sit with a friend or elder and ask them for a story from their youth. Listen without interrupting, practicing the art of "Ubuntu".',
-            ritualImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop',
-            words: [
-                { word: 'Molo', translation: 'Hello', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Enkosi', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1615461066841-6116ecaaba39?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Ubuntu', translation: 'I am because we are', image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'Xhosa contains unique click sounds that reflect the rhythm of the land. "Ubuntu" is the philosophy that humanity is found in togetherness.',
-            color: '#007a33',
-            languageImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop',
-            artDescription: 'Be dazzled by the intricate storytelling of Xhosa beadwork and the powerful harmonies of choral singing.',
-            visualImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop'
-        },
-        {
-            name: 'Malai',
-            location: 'Chiang Mai, Thailand',
-            culture: 'Northern Thai',
-            avatar: '👩🏻‍🌾',
-            food: 'Khao Soi',
-            foodImage: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1974&auto=format&fit=crop',
-            ingredients: ['Curry paste', 'Coconut milk', 'Egg noodles', 'Chicken', 'Pickled mustard greens', 'Lime'],
-            recipe: 'Simmer a rich, creamy yellow curry. Serve with boiled and deep-fried crispy noodles, topped with fresh lime and shallots.',
-            routine: 'Midday flower market visit',
-            ritualDetails: 'Visit a place with vibrant colors and scents (like a flower shop or park). Appreciate the beauty and take a moment of silent gratitude.',
-            ritualImage: 'https://images.unsplash.com/photo-151353272d805-44738608d27a?q=80&w=800&auto=format&fit=crop',
-            words: [
-                { word: 'Sawatdee', translation: 'Hello', image: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Khop khun', translation: 'Thank you', image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=800&auto=format&fit=crop' },
-                { word: 'Sabai Sabai', translation: 'Relaxed/Comfortable', image: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=800&auto=format&fit=crop' }
-            ],
-            languageSignificance: 'Thai is famous for its "wai" greeting—a bow with hands in prayer. This reflects the deep respect built into the language.',
-            color: '#ed1c24',
-            languageImage: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=800&auto=format&fit=crop',
-            artDescription: 'Observe the delicate gold leaf of temple murals and the metallic shimmer of the Ranat khane xylophone.',
-            visualImage: 'https://images.unsplash.com/photo-1528181304800-2f140819ad9c?q=80&w=800&auto=format&fit=crop'
+    const [partners, setPartners] = React.useState([]);
+
+    React.useEffect(() => {
+        // Fetch a few partners for the preview section
+        const fetchPreview = async () => {
+            try {
+                // Since we have a random endpoint, we can just fetch a few if we had a list endpoint
+                // For now, let's just make a list endpoint in server.js too or use fallback
+                const response = await fetch('http://localhost:5000/api/culture-swap/random');
+                const data = await response.json();
+                if (data && !data.error) setPartners([data]);
+            } catch (err) {
+                console.error("Failed to fetch previews", err);
+            }
+        };
+        fetchPreview();
+    }, []);
+
+    const startMatch = async () => {
+        setIsMatching(true);
+        try {
+            const response = await fetch('http://localhost:5000/api/culture-swap/random');
+            const data = await response.json();
+            
+            if (data && !data.error) {
+                // Add a small delay for dramatic effect
+                setTimeout(() => {
+                    setActiveSwap(data);
+                    setIsMatching(false);
+                    setCompletedTasks([]);
+                    setTimeLeft(24 * 3600);
+                }, 2000);
+            } else {
+                throw new Error("No partners found");
+            }
+        } catch (err) {
+            console.error("Match failed", err);
+            setIsMatching(false);
+            alert("Connection error. Our global network is currently congested. Please try again.");
         }
-    ];
+    };
 
     useEffect(() => {
         let timer;
