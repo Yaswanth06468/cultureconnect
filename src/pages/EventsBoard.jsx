@@ -83,7 +83,7 @@ const EventCard = ({ event, idx, onDelete, role, onBook }) => {
       {/* Poster / Hero Image with Glassmorphism Overlay */}
       <div style={{
         height: 260, 
-        background: `linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url("${event.image_url || 'https://images.unsplash.com/photo-1514525253344-763353753744?auto=format&fit=crop&q=80&w=800'}") center/cover no-repeat`,
+        background: `linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url("${event.image_url || 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80'}") center/cover no-repeat`,
         position: 'relative', 
         display: 'flex', 
         flexDirection: 'column',

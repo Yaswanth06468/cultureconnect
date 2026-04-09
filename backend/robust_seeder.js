@@ -44,7 +44,7 @@ const eventsData = [
         category: 'Workshops',
         price: 1500,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1565193998772-263ef7f01905?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -55,7 +55,7 @@ const eventsData = [
         category: 'Workshops',
         price: 1200,
         language: 'Hindi',
-        image_url: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -66,7 +66,7 @@ const eventsData = [
         category: 'Workshops',
         price: 800,
         language: 'Marathi',
-        image_url: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&q=80'
     },
 
     // Music Shows
@@ -79,7 +79,7 @@ const eventsData = [
         category: 'Music Shows',
         price: 600,
         language: 'Hindi',
-        image_url: 'https://images.unsplash.com/photo-1514525253344-763353753744?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -90,7 +90,7 @@ const eventsData = [
         category: 'Music Shows',
         price: 450,
         language: 'Bengali',
-        image_url: 'https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -101,7 +101,7 @@ const eventsData = [
         category: 'Music Shows',
         price: 0,
         language: 'Urdu',
-        image_url: 'https://images.unsplash.com/photo-1524362666922-64c89d57a848?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80'
     },
 
     // Dance & Performances
@@ -114,7 +114,7 @@ const eventsData = [
         category: 'Dance & Performances',
         price: 400,
         language: 'Tamil',
-        image_url: 'https://images.unsplash.com/photo-1547427670-447a4ebe9d73?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -125,7 +125,7 @@ const eventsData = [
         category: 'Dance & Performances',
         price: 500,
         language: 'Malayalam',
-        image_url: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=800&q=80'
     },
 
     // Food & Culture
@@ -138,7 +138,7 @@ const eventsData = [
         category: 'Food & Culture',
         price: 900,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -149,7 +149,7 @@ const eventsData = [
         category: 'Food & Culture',
         price: 1200,
         language: 'Hindi',
-        image_url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80'
     },
 
     // Spirituality & Wellness
@@ -162,7 +162,7 @@ const eventsData = [
         category: 'Spirituality & Wellness',
         price: 2500,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -173,7 +173,7 @@ const eventsData = [
         category: 'Spirituality & Wellness',
         price: 0,
         language: 'Sanskrit',
-        image_url: 'https://images.unsplash.com/photo-1599443015574-be5fe8a3f783?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80'
     },
 
     // Exhibitions
@@ -186,7 +186,7 @@ const eventsData = [
         category: 'Exhibitions',
         price: 150,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1501066927592-e1ae1515ee19?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -197,7 +197,7 @@ const eventsData = [
         category: 'Exhibitions',
         price: 200,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1531055060029-3ffbb3c04513?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80'
     },
 
     // Meetups
@@ -210,7 +210,7 @@ const eventsData = [
         category: 'Meetups',
         price: 0,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -221,7 +221,7 @@ const eventsData = [
         category: 'Meetups',
         price: 0,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -232,7 +232,7 @@ const eventsData = [
         category: 'Meetups',
         price: 100,
         language: 'Hindi',
-        image_url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&q=80'
     },
 
     // Talks & Conferences
@@ -245,7 +245,7 @@ const eventsData = [
         category: 'Talks & Conferences',
         price: 750,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -256,7 +256,7 @@ const eventsData = [
         category: 'Talks & Conferences',
         price: 300,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -267,7 +267,7 @@ const eventsData = [
         category: 'Talks & Conferences',
         price: 500,
         language: 'English',
-        image_url: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&q=80'
     },
 
     // Theatre & Arts
@@ -280,7 +280,7 @@ const eventsData = [
         category: 'Theatre & Arts',
         price: 350,
         language: 'Kannada',
-        image_url: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -291,7 +291,7 @@ const eventsData = [
         category: 'Theatre & Arts',
         price: 400,
         language: 'Urdu',
-        image_url: 'https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=800&q=80'
     },
     {
         username: 'Admin',
@@ -302,7 +302,7 @@ const eventsData = [
         category: 'Theatre & Arts',
         price: 200,
         language: 'Hindi',
-        image_url: 'https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&q=80&w=800'
+        image_url: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800&q=80'
     }
 ];
 
