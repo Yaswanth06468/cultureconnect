@@ -11,6 +11,7 @@ const Translator = () => {
     const recognitionRef = useRef(null);
     const lastTranslatedIndexRef = useRef(-1);
     const isSpeakingRef = useRef(false);
+    const currentAudioRef = useRef(null);
     const finalizedTranscriptRef = useRef(''); // Holds the confirmed English text
 
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
@@ -182,6 +183,10 @@ const Translator = () => {
                     // console.error("Stop on unmount failed:", e);
                 }
             }
+            if (currentAudioRef.current) {
+                currentAudioRef.current.pause();
+                currentAudioRef.current.src = "";
+            }
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -285,6 +290,14 @@ const Translator = () => {
 
     const speakText = (text, langCode) => {
         if (!text) return;
+
+        // Stop any active audio before starting a new one
+        if (currentAudioRef.current) {
+            currentAudioRef.current.pause();
+            currentAudioRef.current.src = "";
+        }
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
         try {
             // First try Google Translate's MP3 TTS directly
             // Google TTS for Chinese uses zh-CN, zh-TW, not just 'zh'
@@ -299,6 +312,7 @@ const Translator = () => {
             // client=gtx is much more stable and widely supported for all languages
             const audioUrl = `https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(safeText)}&tl=${ttsLang}&client=gtx`;
             const audio = new window.Audio(audioUrl);
+            currentAudioRef.current = audio;
             audio.playbackRate = speechRateRef.current;
             
             audio.onplay = () => { isSpeakingRef.current = true; };
@@ -374,6 +388,10 @@ const Translator = () => {
                 isSpeakingRef.current = false;
 
                 // Stop any current speaking to avoid immediate feedback ignore
+                if (currentAudioRef.current) {
+                    currentAudioRef.current.pause();
+                    currentAudioRef.current.src = "";
+                }
                 if ('speechSynthesis' in window) window.speechSynthesis.cancel();
                 
                 // Audio context warm-up
