@@ -10,6 +10,7 @@ const Feed = () => {
     const [error, setError] = useState('');
     const [visibleComments, setVisibleComments] = useState({}); // { postId: [comments] }
     const [commentInputs, setCommentInputs] = useState({}); // { postId: "draft text" }
+    const [events, setEvents] = useState([]);
     const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
@@ -18,7 +19,20 @@ const Feed = () => {
 
     useEffect(() => {
         fetchPosts();
+        fetchEvents();
     }, []);
+
+    const fetchEvents = async () => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/events`);
+            const data = await res.json();
+            if (res.ok) {
+                setEvents(data.slice(0, 3)); // Get top 3 upcoming
+            }
+        } catch (err) {
+            console.error('Failed to fetch events');
+        }
+    };
 
     const fetchPosts = async () => {
         try {
@@ -165,10 +179,13 @@ const Feed = () => {
 
     return (
         <div className="min-h-screen pt-24 pb-12" style={{ background: 'linear-gradient(135deg, #fffafa 0%, #f4e9e9 100%)' }}>
-        <div className="container mx-auto px-6 max-w-3xl">
+        <div className="container mx-auto px-6 max-w-6xl">
             <h1 className="text-4xl font-serif font-bold text-text-primary mb-8 border-b-2 border-black pb-4">Cultural Feed</h1>
 
-            {/* Create Post Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                {/* Main Feed Column */}
+                <div className="lg:col-span-2">
+                    {/* Create Post Section */}
             {token ? (
                 <div className="mb-12 p-6 border border-black/20 rounded-xl" style={{ background: '#fdf8f3' }}>
                     <h2 className="text-2xl font-serif font-bold mb-4">Share Your Culture</h2>
@@ -296,7 +313,43 @@ const Feed = () => {
                             </div>
                         </div>
                     ))
-                )}
+                </div>
+                
+                {/* Sidebar Column */}
+                <div className="lg:col-span-1 hidden lg:block">
+                    <div className="p-6 border border-black/20 rounded-xl sticky top-32 shadow-sm" style={{ background: '#fdf8f3' }}>
+                        <h3 className="text-xl font-serif font-bold mb-6 flex items-center gap-2">
+                            <span>📅</span> Upcoming Experiences
+                        </h3>
+                        {events.length === 0 ? (
+                            <p className="text-sm text-text-secondary italic">No upcoming events.</p>
+                        ) : (
+                            <div className="space-y-4">
+                                {events.map(event => (
+                                    <Link to="/events" key={event.id} className="block group">
+                                        <div className="border border-black/10 rounded-lg p-3 bg-white hover:border-accent-blue transition-colors">
+                                            {event.image_url && (
+                                                <img 
+                                                    src={event.image_url.startsWith('http') ? event.image_url : `${API_BASE_URL}${event.image_url}`} 
+                                                    alt={event.title} 
+                                                    className="w-full h-32 object-cover rounded mb-3"
+                                                />
+                                            )}
+                                            <h4 className="font-bold text-text-primary group-hover:text-accent-blue transition-colors line-clamp-1">{event.title}</h4>
+                                            <div className="text-xs text-text-secondary mt-2 flex flex-col gap-1.5">
+                                                <span className="flex items-center gap-2"><span>📍</span> {event.location || 'Virtual'}</span>
+                                                <span className="flex items-center gap-2"><span>⏰</span> {event.date ? new Date(event.date).toLocaleDateString() : 'TBD'}</span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                        <Link to="/events" className="mt-8 block text-center text-sm font-bold text-accent-terra border border-accent-terra py-2 rounded hover:bg-accent-terra hover:text-white transition-colors">
+                            View All Events
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
         </div>
