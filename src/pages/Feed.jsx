@@ -313,8 +313,11 @@ const Feed = () => {
                             </div>
                         </div>
                     ))
-                </div>
-                
+                )}
+            </div>
+        </div>
+
+
                 {/* Sidebar Column */}
                 <div className="lg:col-span-1 hidden lg:block">
                     <div className="p-6 border border-black/20 rounded-xl sticky top-32 shadow-sm" style={{ background: '#fdf8f3' }}>
