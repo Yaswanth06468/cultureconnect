@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '../config';
 
 const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask, playWord }) => {
+    const [checkedReqs, setCheckedReqs] = useState([]);
+
+    useEffect(() => {
+        setCheckedReqs([]);
+    }, [task]);
+
     if (!task) return null;
 
     const taskData = {
@@ -196,14 +202,31 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                         <span className="w-12 h-px bg-[#8b6f5e]/20"></span>
                     </h5>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-                        {taskData.requirements.map((req, i) => (
-                            <div key={i} className="flex flex-col gap-4 bg-white p-6 rounded-2xl border border-[#f0ece6] shadow-sm hover:shadow-md transition-shadow group">
-                                <div className={`w-10 h-10 rounded-xl bg-${taskData.color}-50 flex items-center justify-center text-lg border border-${taskData.color}-100/50 group-hover:scale-110 transition-transform`}>
-                                    {typeof req === 'object' ? req.icon : '✓'}
+                        {taskData.requirements.map((req, i) => {
+                            const isChecked = checkedReqs.includes(i);
+                            return (
+                                <div 
+                                    key={i} 
+                                    onClick={() => {
+                                        setCheckedReqs(prev => {
+                                            const next = prev.includes(i) ? prev.filter(idx => idx !== i) : [...prev, i];
+                                            if (next.length === taskData.requirements.length && !completedTasks.includes(task)) {
+                                                toggleTask(task);
+                                            }
+                                            return next;
+                                        });
+                                    }}
+                                    className={`flex flex-col gap-4 bg-white p-6 rounded-2xl border transition-all duration-300 cursor-pointer group hover:-translate-y-1 ${isChecked ? 'border-green-500 shadow-lg ring-2 ring-green-500/20' : 'border-[#f0ece6] shadow-sm hover:shadow-md'}`}
+                                >
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg border transition-transform duration-300 ${isChecked ? 'bg-green-500 text-white border-green-600 scale-110' : `bg-${taskData.color}-50 border-${taskData.color}-100/50 group-hover:scale-110`}`}>
+                                        {isChecked ? '✓' : (typeof req === 'object' ? req.icon : '✓')}
+                                    </div>
+                                    <span className={`text-xs font-bold leading-relaxed uppercase tracking-wider transition-colors ${isChecked ? 'text-green-700 opacity-100' : 'text-text-primary opacity-80'}`}>
+                                        {typeof req === 'object' ? req.text : req}
+                                    </span>
                                 </div>
-                                <span className="text-xs font-bold text-text-primary leading-relaxed opacity-80 uppercase tracking-wider">{typeof req === 'object' ? req.text : req}</span>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -213,7 +236,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                             if (!completedTasks.includes(task)) toggleTask(task);
                             onClose();
                         }}
-                        className={`px-10 py-4 bg-text-primary text-white font-bold rounded-lg hover:bg-[#111] transition-colors shadow-lg flex items-center gap-3 mx-auto`}
+                        className={`px-10 py-4 font-bold rounded-lg transition-colors shadow-lg flex items-center gap-3 mx-auto ${completedTasks.includes(task) ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-text-primary text-white hover:bg-[#111]'}`}
                     >
                         {completedTasks.includes(task) ? 'Task Completed ✓' : 'Accept Challenge & Start'}
                     </button>
