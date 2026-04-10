@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 
 const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask, playWord }) => {
     if (!task) return null;
@@ -237,7 +238,7 @@ const CultureSwap = () => {
     useEffect(() => {
         const fetchPreview = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/culture-swap/random');
+                const response = await fetch(`${API_BASE_URL}/api/culture-swap/random`);
                 const data = await response.json();
                 if (data && !data.error) setPartners([data]);
             } catch (err) {
@@ -250,7 +251,7 @@ const CultureSwap = () => {
     const startMatch = async () => {
         setIsMatching(true);
         try {
-            const response = await fetch('http://localhost:5000/api/culture-swap/random');
+            const response = await fetch(`${API_BASE_URL}/api/culture-swap/random`);
             const data = await response.json();
             
             if (data && !data.error) {
