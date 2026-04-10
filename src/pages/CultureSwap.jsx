@@ -255,6 +255,7 @@ const CultureSwap = () => {
     const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
     const [completedTasks, setCompletedTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState(null);
+    const [showNotification, setShowNotification] = useState('');
 
     const [partners, setPartners] = useState([]);
 
@@ -319,11 +320,20 @@ const CultureSwap = () => {
     };
 
     const toggleTask = (taskId) => {
-        setCompletedTasks(prev => 
-            prev.includes(taskId) 
-            ? prev.filter(id => id !== taskId) 
-            : [...prev, taskId]
-        );
+        setCompletedTasks(prev => {
+            const isCompleting = !prev.includes(taskId);
+            const next = isCompleting ? [...prev, taskId] : prev.filter(id => id !== taskId);
+            
+            if (isCompleting) {
+                if (next.length === 4) {
+                    setShowNotification('Congratulations! You have successfully completed all the tasks! 🎊');
+                } else {
+                    setShowNotification(`Congratulations! You have successfully completed the ${taskId} task! 🌟`);
+                }
+                setTimeout(() => setShowNotification(''), 4000);
+            }
+            return next;
+        });
     };
 
     const playWord = (text) => {
@@ -339,6 +349,16 @@ const CultureSwap = () => {
 
     return (
         <div className="min-h-screen pt-24 pb-12 px-6 bg-[#fdf8f3] font-sans relative overflow-hidden">
+             {/* Notification Banner */}
+             {showNotification && (
+                 <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-[150] animate-slide-up">
+                     <div className="bg-green-600 text-white px-8 py-4 rounded-full shadow-2xl font-bold flex items-center gap-3 border-2 border-green-400">
+                         <span className="text-2xl">🎉</span>
+                         {showNotification}
+                     </div>
+                 </div>
+             )}
+
              {/* Dynamic Background Texture */}
              <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
              
@@ -496,10 +516,11 @@ const CultureSwap = () => {
                                 </div>
 
                                 <button 
-                                    onClick={stopSwap}
-                                    className="w-full mt-10 py-4 text-[10px] font-bold text-red-600 uppercase tracking-[0.3em] bg-red-50/50 rounded-2xl hover:bg-red-50 hover:text-red-700 transition-all border border-red-100/30"
+                                    onClick={startMatch}
+                                    disabled={isMatching}
+                                    className="w-full mt-10 py-4 text-[10px] font-bold text-accent-terra uppercase tracking-[0.3em] bg-accent-terra/10 rounded-2xl hover:bg-accent-terra/20 transition-all border border-accent-terra/30"
                                 >
-                                    End Exchange
+                                    {isMatching ? 'Finding Partner...' : 'Swap with another person 🔄'}
                                 </button>
                             </div>
 
