@@ -33,7 +33,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                                 <span className="w-1.5 h-1.5 rounded-full bg-orange-700"></span> Ingredients
                             </h5>
                             <div className="flex flex-wrap gap-2">
-                                {activeSwap.ingredients.map((ing, i) => (
+                                {(activeSwap.ingredients || []).map((ing, i) => (
                                     <span key={i} className="px-3 py-1.5 bg-orange-50 text-orange-800 text-[10px] font-bold rounded-lg border border-orange-100 italic">{ing}</span>
                                 ))}
                             </div>
@@ -108,7 +108,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {activeSwap.words.map((wordObj, idx) => (
+                        {(activeSwap.words || []).map((wordObj, idx) => (
                             <div 
                                 key={idx} 
                                 onClick={() => playWord(wordObj.word)}

@@ -108,6 +108,7 @@ const CulturePartnerSchema = new mongoose.Schema({
     avatar: String,
     location: String,
     food: String,
+    ingredients: [String],
     foodImage: String,
     recipe: String,
     routine: String,
