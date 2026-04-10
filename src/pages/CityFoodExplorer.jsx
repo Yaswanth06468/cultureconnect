@@ -381,7 +381,11 @@ const CityCard = ({ city, isSelected, onSelect }) => (
 );
 
 // ── Detail Panel ──────────────────────────────────────────────────────────────
-const DetailPanel = ({ city, onNotify }) => {
+const DetailPanel = ({ city, onNotify, foodReviews, onAddReview }) => {
+  const [expandedFood, setExpandedFood] = useState(null);
+  const [newReviewText, setNewReviewText] = useState('');
+  const [newRating, setNewRating] = useState(5);
+
   if (!city) return (
     <div className="flex flex-col items-center justify-center h-full min-h-64 gap-3 text-text-muted">
       <span style={{ fontSize: 52, opacity: 0.3 }}>🗺️</span>
@@ -389,6 +393,15 @@ const DetailPanel = ({ city, onNotify }) => {
       <p className="text-sm">Click any city card to see its best local dishes</p>
     </div>
   );
+
+  const handleAddReview = (e, foodName) => {
+    e.preventDefault();
+    if (!newReviewText.trim()) return;
+    onAddReview(city.id, foodName, newReviewText, newRating);
+    setNewReviewText('');
+    setNewRating(5);
+  };
+
   const icons = ['🥘','🍛','🥗','🍜','🍮','🧆','🥙','🥞','🫕','🍲','🥣','🍱'];
   return (
     <div>
@@ -412,14 +425,81 @@ const DetailPanel = ({ city, onNotify }) => {
         <p className="text-text-secondary text-sm leading-relaxed">{city.description}</p>
       </div>
       <div className="bg-bg-secondary rounded-2xl p-5 border border-black/5">
-        <h3 className="text-xs font-bold text-text-muted uppercase tracking-widest mb-4">🍽️ Must-Try Dishes</h3>
-        <div className="grid grid-cols-2 gap-2">
-          {city.foods.map((food, i) => (
-            <div key={i} className="flex items-center gap-2 p-3 bg-bg-primary rounded-xl border border-black/5">
-              <span style={{ fontSize: 18 }}>{icons[i % icons.length]}</span>
-              <span className="text-sm font-semibold text-text-primary">{food}</span>
-            </div>
-          ))}
+        <h3 className="text-xs font-bold text-text-muted uppercase tracking-widest mb-4">🍽️ Must-Try Dishes & Reviews</h3>
+        <div className="flex flex-col gap-3">
+          {city.foods.map((food, i) => {
+            const reviewsKey = `${city.id}-${food}`;
+            const reviews = foodReviews[reviewsKey] || [];
+            const isExpanded = expandedFood === food;
+            const avgRating = reviews.length ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) : null;
+            
+            return (
+              <div key={i} className="bg-bg-primary rounded-xl border border-black/5 overflow-hidden transition-all duration-300">
+                <div 
+                  onClick={() => setExpandedFood(isExpanded ? null : food)}
+                  className="flex justify-between items-center p-3 cursor-pointer hover:bg-black/5"
+                >
+                  <div className="flex items-center gap-3">
+                    <span style={{ fontSize: 18 }}>{icons[i % icons.length]}</span>
+                    <span className="text-sm font-semibold text-text-primary">{food}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {avgRating && <span className="text-xs font-bold text-yellow-600">⭐ {avgRating}</span>}
+                    <span className="text-xs font-bold text-text-muted">{reviews.length} Reviews</span>
+                    <span className="text-text-muted transform transition-transform" style={{ rotate: isExpanded ? '180deg' : '0deg' }}>▼</span>
+                  </div>
+                </div>
+                
+                {isExpanded && (
+                  <div className="p-4 border-t border-black/5 bg-[#fafafa]">
+                     <div className="mb-4 space-y-3 max-h-48 overflow-y-auto pr-2 pb-2">
+                       {reviews.length === 0 ? (
+                         <p className="text-xs text-text-muted italic bg-white p-3 rounded text-center border border-black/5">No reviews yet. Be the first to taste and review!</p>
+                       ) : (
+                         reviews.map((r, idx) => (
+                           <div key={idx} className="bg-white p-3 rounded-lg border border-black/5 shadow-sm relative">
+                             <div className="flex justify-between mb-1.5 items-center">
+                               <span className="text-xs font-bold text-text-primary capitalize">{r.user}</span>
+                               <span className="text-xs">{'⭐'.repeat(r.rating)}</span>
+                             </div>
+                             <p className="text-xs text-text-secondary leading-relaxed bg-[#fdfdfd] p-2 rounded">{r.text}</p>
+                           </div>
+                         ))
+                       )}
+                     </div>
+                     
+                     <form onSubmit={(e) => handleAddReview(e, food)} className="bg-white p-4 rounded-xl border border-black/10 flex flex-col gap-3 shadow-sm relative z-10">
+                       <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-text-secondary">Rate your taste:</span>
+                          <div className="flex gap-1" onMouseLeave={() => { /* To implement hover effects if needed */ }}>
+                             {[1,2,3,4,5].map(star => (
+                               <button 
+                                  type="button" 
+                                  key={star} 
+                                  onClick={() => setNewRating(star)} 
+                                  className={`text-lg transition-transform hover:scale-110 active:scale-95 ${star <= newRating ? 'text-yellow-400 drop-shadow-sm' : 'text-gray-200'}`}
+                               >
+                                  ★
+                               </button>
+                             ))}
+                          </div>
+                       </div>
+                       <textarea 
+                          value={newReviewText} 
+                          onChange={(e) => setNewReviewText(e.target.value)} 
+                          placeholder={`How was the ${food}? Leave a review so others can taste...`}
+                          className="w-full bg-[#fdfdfd] font-serif italic text-sm placeholder:font-sans placeholder:not-italic border border-black/10 rounded-lg p-3 outline-none focus:border-accent-terra transition-colors resize-none"
+                          rows={2}
+                       />
+                       <button type="submit" className="self-end px-5 py-2 bg-text-primary text-white text-[10px] uppercase font-bold tracking-widest rounded-lg hover:bg-accent-terra transition-colors shadow-md">
+                         Share Experience
+                       </button>
+                     </form>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -461,6 +541,31 @@ const CityFoodExplorer = () => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [notif, setNotif]               = useState(null);
   const [notifKey, setNotifKey]         = useState(0);
+
+  // ── Reviews state ──────────────────────────────────────────────────────────
+  const [foodReviews, setFoodReviews] = useState(() => {
+    const saved = localStorage.getItem('culturalFoodReviews');
+    if (saved) return JSON.parse(saved);
+    return {
+      "1-Bamboo Chicken": [{ user: "Local Foodie", text: "Incredible smoky flavor from the bamboo, absolutely a must-try in Vizag/Araku!", rating: 5 }],
+      "19-Hyderabadi Dum Biryani": [{ user: "Biryani Fanatic", text: "The aroma and perfectly cooked meat is just legendary.", rating: 5 }],
+      "24-Masala Dosa": [{ user: "Cafe Hopper", text: "Crispy perfection. Paired with filter coffee, it's heaven.", rating: 5 }],
+      "29-Vada Pav": [{ user: "Mumbai Express", text: "The ultimate street food. The spicy garlic chutney is everything.", rating: 4 }]
+    };
+  });
+
+  const handleAddReview = (cityId, foodName, text, rating) => {
+    setFoodReviews(prev => {
+      const key = `${cityId}-${foodName}`;
+      const existing = prev[key] || [];
+      const newReviews = {
+         ...prev,
+         [key]: [{ user: localStorage.getItem('username') || 'Cultural Explorer', text, rating, date: new Date().toISOString() }, ...existing]
+      };
+      localStorage.setItem('culturalFoodReviews', JSON.stringify(newReviews));
+      return newReviews;
+    });
+  };
 
   // ── Geolocation state ──────────────────────────────────────────────────────
   const [geoStatus, setGeoStatus]       = useState('idle'); // idle | asking | watching | denied | unsupported
@@ -606,7 +711,12 @@ const CityFoodExplorer = () => {
           {/* Detail Panel */}
           <div className="flex-1 min-w-72 lg:sticky lg:top-24">
             <div className="bg-bg-primary rounded-2xl border border-black/10 p-6 shadow-sm min-h-64">
-              <DetailPanel city={selectedCity} onNotify={handleNotify} />
+              <DetailPanel 
+                 city={selectedCity} 
+                 onNotify={handleNotify} 
+                 foodReviews={foodReviews} 
+                 onAddReview={handleAddReview} 
+              />
             </div>
             {!selectedCity && (
               <div className="mt-4 bg-bg-secondary rounded-2xl border border-black/5 p-5">
