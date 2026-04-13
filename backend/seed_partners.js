@@ -153,12 +153,12 @@ async function seed() {
         console.log('Cleared existing partners.');
 
         const partners = [];
-        
+
         // Generate a large pool with random combinations
         for (let i = 0; i < 100; i++) {
             const template = CULTURES[Math.floor(Math.random() * CULTURES.length)];
             const name = NAMES[Math.floor(Math.random() * NAMES.length)] + ' ' + (i + 1);
-            
+
             partners.push({
                 ...template,
                 name: name,
@@ -168,7 +168,7 @@ async function seed() {
 
         await CulturePartner.insertMany(partners);
         console.log(`Seeded ${partners.length} unique cultural partners across ${CULTURES.length} diverse cultures!`);
-        
+
         process.exit(0);
     } catch (err) {
         console.error('Seeding error:', err);

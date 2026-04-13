@@ -9,55 +9,57 @@ async function seed() {
       driver: sqlite3.Database
     });
 
+    await db.run('DELETE FROM events');
+    
     const events = [
       // Music Shows (5)
-      { title: 'Sufi Night - Qawaali by Nizami Bandhu', category: 'Music Shows', date: '2026-04-10', location: 'Mumbai', description: 'Divine sufi music and qawaali.', price: 999, language: 'Hindi' },
-      { title: 'Carnatic Classical Vocal - TM Krishna', category: 'Music Shows', date: '2026-04-12', location: 'Chennai', description: 'An enchanting evening of pure Carnatic ragas.', price: 500, language: 'Tamil' },
-      { title: 'Baul Sangeet Festival', category: 'Music Shows', date: '2026-04-14', location: 'Kolkata', description: 'Experience the mystical folk music of Bengal.', price: 200, language: 'Bengali' },
-      { title: 'Ghazal Maestro Night', category: 'Music Shows', date: '2026-04-18', location: 'Delhi', description: 'A tribute to Jagjit Singh featuring rising ghazal stars.', price: 1200, language: 'Urdu' },
-      { title: 'Rajasthani Folk & Manganiyar Magic', category: 'Music Shows', date: '2026-04-22', location: 'Jaipur', description: 'Desert melodies that transport you to the dunes.', price: 400, language: 'Rajasthani' },
+      { title: 'Calvin Harris Tour', category: 'Music Shows', date: '2026-04-10', location: 'Bangalore', description: 'Experience the electronic music giant Calvin Harris live.', price: 2999, language: 'English' },
+      { title: 'Scorpions Rock Tour', category: 'Music Shows', date: '2026-04-20', location: 'Mumbai', description: 'Legendary rock band Scorpions live in India.', price: 4500, language: 'English' },
+      { title: 'Kanye West Ye Tour', category: 'Music Shows', date: '2026-05-15', location: 'New Delhi', description: 'Hip-hop icon Kanye West performs his highly anticipated tour.', price: 5000, language: 'English' },
+      { title: 'Anyma AEDEN Tour', category: 'Music Shows', date: '2026-11-10', location: 'Mumbai', description: 'Immersive visual and auditory electronic experience by Anyma.', price: 3500, language: 'English' },
+      { title: 'Ziro Festival of Music', category: 'Music Shows', date: '2026-09-26', location: 'Arunachal Pradesh', description: 'India\'s greatest outdoor indie music festival.', price: 2000, language: 'English/Hindi' },
 
       // Dance & Performances (5)
-      { title: 'Baithak Live - Kathak Performance', category: 'Dance & Performances', date: '2026-04-15', location: 'Mumbai', description: 'Witness the breathtaking twirls of classical Kathak.', price: 500, language: 'Hindi' },
-      { title: 'Bharatanatyam Recital by Rukmini', category: 'Dance & Performances', date: '2026-04-17', location: 'Bangalore', description: 'A vibrant storytelling session through ancient dance.', price: 600, language: 'Tamil' },
-      { title: 'Odissi Enigma - Grace in Motion', category: 'Dance & Performances', date: '2026-04-20', location: 'Bhubaneswar', description: 'An exploration of the divine Tribhangi posture.', price: 300, language: 'Odia' },
-      { title: 'Kathakali Story Play: The Epic', category: 'Dance & Performances', date: '2026-04-24', location: 'Kochi', description: 'Elaborate makeup and ancient theatrical storytelling.', price: 800, language: 'Malayalam' },
-      { title: 'Bhangra & Giddha Extravaganza', category: 'Dance & Performances', date: '2026-04-26', location: 'Chandigarh', description: 'High-energy harvest dances of Punjab.', price: 250, language: 'Punjabi' },
+      { title: 'Khajuraho Dance Festival', category: 'Dance & Performances', date: '2026-02-20', location: 'Khajuraho', description: 'A celebration of Indian classical dance against historic temples.', price: 500, language: 'Hindi' },
+      { title: 'Mamallapuram Dance Festival', category: 'Dance & Performances', date: '2026-12-25', location: 'Tamil Nadu', description: 'Open-air classical and folk dance performances near Shore Temple.', price: 300, language: 'Tamil' },
+      { title: 'Chennai Music & Dance Season', category: 'Dance & Performances', date: '2026-12-15', location: 'Chennai', description: 'World\'s largest cultural festival featuring Carnatic music and Bharatanatyam.', price: 600, language: 'Tamil/English' },
+      { title: 'Rann Utsav Cultural Performances', category: 'Dance & Performances', date: '2026-11-01', location: 'Kutch', description: 'Folk music and traditional dances in the white salt desert.', price: 800, language: 'Gujarati/Hindi' },
+      { title: 'NCPA Monsoon Dance Festival', category: 'Dance & Performances', date: '2026-07-15', location: 'Mumbai', description: 'Showcasing traditional dance forms during the Indian monsoons.', price: 400, language: 'Hindi' },
 
       // Workshops (5)
       { title: 'Pottery Workshop at Sukoon', category: 'Workshops', date: '2026-04-25', location: 'Hyderabad', description: 'Learn hand-building and wheel-throwing techniques.', price: 499, language: 'English' },
       { title: 'Madhubani Art Masterclass', category: 'Workshops', date: '2026-04-28', location: 'Patna', description: 'Learn the intricate motifs of Mithila painting.', price: 799, language: 'Hindi' },
-      { title: 'Sitar Basics Workshop', category: 'Workshops', date: '2026-05-02', location: 'Pune', description: 'Introduction to string instruments and ragas.', price: 1500, language: 'English' },
-      { title: 'Ayurvedic Cooking Immersion', category: 'Workshops', date: '2026-05-05', location: 'Mysore', description: 'Discover the balance of doshas through spices.', price: 900, language: 'English' },
+      { title: 'Classical Sitar Basics', category: 'Workshops', date: '2026-05-02', location: 'Pune', description: 'Introduction to string instruments and ancient ragas.', price: 1500, language: 'English/Hindi' },
+      { title: 'Ayurvedic Cooking Arts', category: 'Workshops', date: '2026-05-05', location: 'Mysore', description: 'Discover the balance of doshas through spices and herbs.', price: 900, language: 'English' },
       { title: 'Kalaripayattu Martial Arts Intro', category: 'Workshops', date: '2026-05-10', location: 'Trivandrum', description: 'Learn the basics of the oldest surviving martial art.', price: 400, language: 'Malayalam' },
 
       // Comedy Shows (5)
-      { title: 'Desi Humor Night - Standup', category: 'Comedy Shows', date: '2026-04-11', location: 'Delhi', description: 'A hilarious take on Indian middle-class life.', price: 499, language: 'Hindi' },
-      { title: 'South Indian Sarcasm', category: 'Comedy Shows', date: '2026-04-16', location: 'Chennai', description: 'Standup focusing on filtering coffee and logic.', price: 399, language: 'English' },
-      { title: 'Bambaiya Local Laughs', category: 'Comedy Shows', date: '2026-04-21', location: 'Mumbai', description: 'Observational comedy about local trains and rains.', price: 599, language: 'Hindi' },
-      { title: 'Nawabi Nuskhe Comedy', category: 'Comedy Shows', date: '2026-04-27', location: 'Lucknow', description: 'Tehzeeb meets modern satirical comedy.', price: 299, language: 'Urdu' },
-      { title: 'The Great Indian Roast', category: 'Comedy Shows', date: '2026-05-03', location: 'Bangalore', description: 'Unfiltered, unapologetic comedy special.', price: 899, language: 'English' },
+      { title: 'Anubhav Singh Bassi Tour', category: 'Comedy Shows', date: '2026-05-10', location: 'Mumbai', description: 'Hilarious storytelling by Anubhav Singh Bassi.', price: 999, language: 'Hindi' },
+      { title: 'Abhishek Upmanyu Solo', category: 'Comedy Shows', date: '2026-05-15', location: 'Delhi', description: 'Unfiltered observational comedy by Abhishek Upmanyu.', price: 1200, language: 'Hindi' },
+      { title: 'Zakir Khan Live', category: 'Comedy Shows', date: '2026-05-20', location: 'Bangalore', description: 'The Sakht Launda brings his poetic comedy live.', price: 1500, language: 'Hindi/Urdu' },
+      { title: 'Samay Raina Standup', category: 'Comedy Shows', date: '2026-05-25', location: 'Pune', description: 'Dark humor and witty punchlines by Samay Raina.', price: 899, language: 'Hindi/English' },
+      { title: 'Gaurav Kapoor Live', category: 'Comedy Shows', date: '2026-06-01', location: 'Hyderabad', description: 'Relatable middle-class stories and crowd work.', price: 799, language: 'Hindi' },
 
       // Exhibitions (5)
-      { title: 'Mughal Heritage Artifacts Expo', category: 'Exhibitions', date: '2026-04-09', location: 'Agra', description: 'Rare manuscripts and jewelry from the era.', price: 100, language: 'English' },
-      { title: 'Handloom & Textiles of India', category: 'Exhibitions', date: '2026-04-13', location: 'Surat', description: 'Showcasing weaves from Banarasi to Kanjeevaram.', price: 50, language: 'Hindi' },
-      { title: 'Modern Indian Masters - Art Gallery', category: 'Exhibitions', date: '2026-04-19', location: 'Mumbai', description: 'Paintings from M.F. Husain and Amrita Sher-Gil.', price: 0, language: 'English' },
-      { title: 'Tribal Crafts Bazaar', category: 'Exhibitions', date: '2026-04-23', location: 'Ranchi', description: 'Support indigenous artisans and craft makers.', price: 0, language: 'Hindi' },
-      { title: 'Chronicles of Chola Dynasty', category: 'Exhibitions', date: '2026-04-29', location: 'Madurai', description: 'Bronze sculptures and historical archaelogy.', price: 150, language: 'Tamil' },
+      { title: 'Auto Expo 2026', category: 'Exhibitions', date: '2026-01-14', location: 'Greater Noida', description: 'Asia\'s largest automotive show featuring future mobility.', price: 500, language: 'English/Hindi' },
+      { title: 'India Art Fair 2026', category: 'Exhibitions', date: '2026-02-05', location: 'New Delhi', description: 'South Asia\'s leading platform for modern and contemporary art.', price: 800, language: 'English' },
+      { title: 'Comic Con India', category: 'Exhibitions', date: '2026-11-15', location: 'Bangalore', description: 'The greatest pop-culture experience in the subcontinent.', price: 1000, language: 'English' },
+      { title: 'India International Trade Fair', category: 'Exhibitions', date: '2026-11-14', location: 'Delhi', description: 'Massive B2B and B2C multi-product exhibition at Pragati Maidan.', price: 150, language: 'English/Hindi' },
+      { title: 'Mughal Heritage Artifacts Expo', category: 'Exhibitions', date: '2026-04-20', location: 'Agra', description: 'Rare manuscripts and jewelry from the era.', price: 100, language: 'English' },
 
       // Spirituality & Wellness (5)
-      { title: 'Sri Rama Navami Kalyana Mahotsavam', category: 'Spirituality & Wellness', date: '2026-04-20', location: 'Hyderabad', description: 'Celebrate the grand festival with soulful chants.', price: 250, language: 'Telugu' },
-      { title: 'Himalayan Yoga Retreat', category: 'Spirituality & Wellness', date: '2026-05-01', location: 'Rishikesh', description: 'A rejuvenating weekend of asanas and dhyana.', price: 5000, language: 'English' },
-      { title: 'Vipassana Intro Session', category: 'Spirituality & Wellness', date: '2026-05-06', location: 'Igatpuri', description: 'Learn the ancient meditation technique of silence.', price: 0, language: 'Hindi' },
-      { title: 'Ganga Aarti Experience', category: 'Spirituality & Wellness', date: '2026-05-08', location: 'Varanasi', description: 'Immersive spiritual gathering at the Dashashwamedh Ghat.', price: 50, language: 'Hindi' },
-      { title: 'Sufi Whirling Meditation', category: 'Spirituality & Wellness', date: '2026-05-12', location: 'Ajmer', description: 'Connect to the divine through rhythmic motion.', price: 300, language: 'Urdu' },
+      { title: 'Himalayan Yoga Retreat', category: 'Spirituality & Wellness', date: '2026-05-01', location: 'Rishikesh', description: 'A rejuvenating week of traditional asanas and meditation.', price: 15000, language: 'English' },
+      { title: 'Kerala Ayurveda Panchakarma', category: 'Spirituality & Wellness', date: '2026-06-15', location: 'Kerala', description: 'Deep tissue detox and healing with traditional Ayurveda.', price: 25000, language: 'English/Malayalam' },
+      { title: 'Vipassana Silent Meditation', category: 'Spirituality & Wellness', date: '2026-07-10', location: 'Dharamshala', description: '10-day silent inner journey to profound peace.', price: 0, language: 'Hindi/English' },
+      { title: 'Osho Ashram Inner Peace', category: 'Spirituality & Wellness', date: '2026-08-05', location: 'Pune', description: 'Dynamic meditation techniques and soulful gatherings.', price: 4000, language: 'English' },
+      { title: 'Isha Yoga Inner Engineering', category: 'Spirituality & Wellness', date: '2026-09-20', location: 'Coimbatore', description: 'Tools to engineer inner joy and wellbeing.', price: 3000, language: 'English/Tamil' },
 
       // Meetups (5)
-      { title: 'Indian Literature Book Club', category: 'Meetups', date: '2026-04-14', location: 'Delhi', description: 'Discussing contemporary Indian authors and poets.', price: 0, language: 'English' },
-      { title: 'Regional Filmmakers Mixer', category: 'Meetups', date: '2026-04-18', location: 'Hyderabad', description: 'Networking event for indie directors and writers.', price: 150, language: 'Telugu' },
-      { title: 'Heritage Walk - Old City', category: 'Meetups', date: '2026-04-24', location: 'Ahmedabad', description: 'Weekend heritage walk exploring ancient pols.', price: 200, language: 'Gujarati' },
-      { title: 'NRI Returnees Connect', category: 'Meetups', date: '2026-04-30', location: 'Bangalore', description: 'A support and networking group for returning Indians.', price: 300, language: 'English' },
-      { title: 'Culinary Enthusiasts Potluck', category: 'Meetups', date: '2026-05-04', location: 'Kolkata', description: 'Bring your family\'s secret recipe dish to share!', price: 0, language: 'Bengali' }
+      { title: 'Indian Literature Book Club', category: 'Meetups', date: '2026-04-18', location: 'Delhi', description: 'Discussing contemporary Indian authors and poets.', price: 0, language: 'English/Hindi' },
+      { title: 'Regional Filmmakers Mixer', category: 'Meetups', date: '2026-04-25', location: 'Hyderabad', description: 'Networking event for indie directors and writers.', price: 150, language: 'Telugu/English' },
+      { title: 'Heritage Walk - Old City', category: 'Meetups', date: '2026-05-02', location: 'Ahmedabad', description: 'Weekend heritage walk exploring ancient pols.', price: 200, language: 'Gujarati/Hindi' },
+      { title: 'Tech Founders Connect', category: 'Meetups', date: '2026-05-10', location: 'Bangalore', description: 'A support and networking group for tech startup founders.', price: 300, language: 'English' },
+      { title: 'Culinary Enthusiasts Potluck', category: 'Meetups', date: '2026-05-15', location: 'Kolkata', description: 'Bring your family\'s secret recipe dish to share!', price: 0, language: 'Bengali/English' }
     ];
 
     for (const ev of events) {

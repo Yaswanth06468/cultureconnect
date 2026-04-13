@@ -38,9 +38,12 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                             <h5 className="text-[10px] font-bold uppercase tracking-widest text-orange-700 mb-4 flex items-center gap-2">
                                 <span className="w-1.5 h-1.5 rounded-full bg-orange-700"></span> Ingredients
                             </h5>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-col gap-2">
                                 {(activeSwap.ingredients || []).map((ing, i) => (
-                                    <span key={i} className="px-3 py-1.5 bg-orange-50 text-orange-800 text-[10px] font-bold rounded-lg border border-orange-100 italic">{ing}</span>
+                                    <div key={i} className="flex items-center gap-3 p-3 bg-white text-orange-900 text-sm font-medium rounded-lg border border-orange-100 shadow-sm">
+                                        <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                                        {ing}
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -48,7 +51,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                             <h5 className="text-[10px] font-bold uppercase tracking-widest text-orange-700 mb-4 flex items-center gap-2">
                                 <span className="w-1.5 h-1.5 rounded-full bg-orange-700"></span> The Process
                             </h5>
-                            <p className="text-sm text-text-secondary leading-relaxed bg-[#fdfaf5] p-6 rounded-xl border border-orange-50 italic font-light">
+                            <p className="text-base text-gray-800 leading-relaxed bg-white p-6 rounded-xl border border-orange-100 shadow-sm font-medium">
                                 {activeSwap.recipe}
                             </p>
                         </div>
@@ -90,7 +93,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
 
         language: {
             title: 'The Oral Heritage',
-            subtitle: 'Speak 3 Words',
+            subtitle: 'Speak 3-4 Words',
             icon: '🗣️',
             color: 'teal',
             requirements: [
