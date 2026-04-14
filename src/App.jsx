@@ -11,11 +11,9 @@ import CulturalDances from './pages/CulturalDances';
 import CityFoodExplorer from './pages/CityFoodExplorer';
 import CultureSwap from './pages/CultureSwap';
 import Navbar from './components/Navbar';
-import SplashAnimation from './components/SplashAnimation';
 import { API_BASE_URL } from './config';
 
 function App() {
-  const [showSplash, setShowSplash] = useState(true);
   useEffect(() => {
     // Wake up the Render server as soon as the user enters the site
     const wakeUpServer = async () => {
@@ -30,7 +28,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      {showSplash && <SplashAnimation onComplete={() => setShowSplash(false)} />}
       <div className="min-h-screen bg-bg-primary text-text-primary">
         <Navbar />
         <Routes>
