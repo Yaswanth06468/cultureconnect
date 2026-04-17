@@ -261,6 +261,28 @@ const CultureSwap = () => {
     const [showNotification, setShowNotification] = useState('');
 
     const [partners, setPartners] = useState([]);
+    const [savedLearnings, setSavedLearnings] = useState(() => {
+        try {
+            const stored = localStorage.getItem('cultureSwapLearnings');
+            return stored ? JSON.parse(stored) : [];
+        } catch (e) { return []; }
+    });
+    const [currentNote, setCurrentNote] = useState('');
+    const [showSavePrompt, setShowSavePrompt] = useState(false);
+    const [seenPartnerIds, setSeenPartnerIds] = useState(() => {
+        try {
+            const stored = localStorage.getItem('cultureSwapSeenIds');
+            return stored ? JSON.parse(stored) : [];
+        } catch (e) { return []; }
+    });
+
+    useEffect(() => {
+        localStorage.setItem('cultureSwapLearnings', JSON.stringify(savedLearnings));
+    }, [savedLearnings]);
+
+    useEffect(() => {
+        localStorage.setItem('cultureSwapSeenIds', JSON.stringify(seenPartnerIds));
+    }, [seenPartnerIds]);
 
     useEffect(() => {
         const fetchPreview = async () => {
@@ -278,8 +300,16 @@ const CultureSwap = () => {
     const startMatch = async () => {
         setIsMatching(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/culture-swap/random`);
-            const data = await response.json();
+            const excludeParam = seenPartnerIds.length > 0 ? `?exclude=${seenPartnerIds.join(',')}` : '';
+            let response = await fetch(`${API_BASE_URL}/api/culture-swap/random${excludeParam}`);
+            let data = await response.json();
+            
+            // If all partners exhausted, reset the seen list and try again
+            if (data.error && seenPartnerIds.length > 0) {
+                setSeenPartnerIds([]);
+                response = await fetch(`${API_BASE_URL}/api/culture-swap/random`);
+                data = await response.json();
+            }
             
             if (data && !data.error) {
                 setTimeout(() => {
@@ -287,6 +317,9 @@ const CultureSwap = () => {
                     setIsMatching(false);
                     setCompletedTasks([]);
                     setTimeLeft(24 * 3600);
+                    setShowSavePrompt(false);
+                    setCurrentNote('');
+                    setSeenPartnerIds(prev => [...prev, data._id]);
                 }, 2000);
             } else {
                 throw new Error("No partners found");
@@ -348,6 +381,32 @@ const CultureSwap = () => {
         else if (activeSwap.culture.includes('Berber')) utterance.lang = 'ar-MA';
         
         window.speechSynthesis.speak(utterance);
+    };
+
+    const cleanName = (name) => name ? name.replace(/\d+$/g, '').trim() : name;
+
+    const saveLearning = () => {
+        if (!currentNote.trim() || !activeSwap) return;
+        const newLearning = {
+            id: Date.now(),
+            name: cleanName(activeSwap.name),
+            culture: activeSwap.culture,
+            avatar: activeSwap.avatar,
+            food: activeSwap.food,
+            routine: activeSwap.routine,
+            note: currentNote.trim(),
+            timestamp: new Date().toISOString(),
+            tasksCompleted: completedTasks.length
+        };
+        setSavedLearnings(prev => [newLearning, ...prev]);
+        setCurrentNote('');
+        setShowSavePrompt(false);
+        setShowNotification('Learning saved to your Cultural Journal! 📝');
+        setTimeout(() => setShowNotification(''), 4000);
+    };
+
+    const deleteLearning = (id) => {
+        setSavedLearnings(prev => prev.filter(l => l.id !== id));
     };
 
     return (
@@ -489,7 +548,7 @@ const CultureSwap = () => {
                                         <div className="absolute inset-2 border-2 border-dashed border-accent-gold/20 rounded-full group-hover:rotate-45 transition-transform duration-700"></div>
                                         {activeSwap.avatar}
                                     </div>
-                                    <h2 className="text-3xl font-serif font-medium text-text-primary leading-tight mb-2">{activeSwap.name}</h2>
+                                    <h2 className="text-3xl font-serif font-medium text-text-primary leading-tight mb-2">{cleanName(activeSwap.name)}</h2>
                                     <p className="text-[10px] font-bold text-accent-terra uppercase tracking-[0.2em] mb-4">{activeSwap.culture}</p>
                                     
                                     <div className="flex items-center justify-center gap-2 text-xs text-text-secondary bg-white/80 py-2 px-4 rounded-full w-fit mx-auto border border-black/5">
@@ -548,7 +607,7 @@ const CultureSwap = () => {
                                 <div className="relative z-10">
                                     <span className="text-accent-terra uppercase tracking-[0.3em] text-[10px] font-bold mb-3 block">Current Assignment</span>
                                     <h3 className="text-4xl font-serif font-medium text-text-primary mb-3 leading-tight">Your Lifestyle Blueprint</h3>
-                                    <p className="text-text-secondary font-light text-base leading-relaxed max-w-lg">Adopt these essential elements of <span className="text-text-primary font-medium">{activeSwap.name}'s</span> world to bridge the cultural distance.</p>
+                                    <p className="text-text-secondary font-light text-base leading-relaxed max-w-lg">Adopt these essential elements of <span className="text-text-primary font-medium">{cleanName(activeSwap.name)}'s</span> world to bridge the cultural distance.</p>
                                 </div>
                             </div>
 
@@ -699,8 +758,127 @@ const CultureSwap = () => {
                                 </div>
                             </div>
 
+                            {/* Save Learnings Prompt */}
+                            <div className="bg-white border border-black/5 rounded-[2rem] p-8 shadow-sm relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-1 h-full bg-amber-400 opacity-20"></div>
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-xl border border-amber-100">📝</div>
+                                        <div>
+                                            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-700">Cultural Journal</h4>
+                                            <p className="text-sm text-text-secondary font-light">Record what you learned from this swap</p>
+                                        </div>
+                                    </div>
+                                    {!showSavePrompt && (
+                                        <button
+                                            onClick={() => setShowSavePrompt(true)}
+                                            className="px-6 py-2.5 bg-amber-50 text-amber-800 text-[10px] font-bold rounded-full uppercase tracking-widest hover:bg-amber-100 transition-all border border-amber-200"
+                                        >
+                                            Write Note
+                                        </button>
+                                    )}
+                                </div>
+                                
+                                {showSavePrompt && (
+                                    <div className="animate-fade-in">
+                                        <textarea
+                                            value={currentNote}
+                                            onChange={(e) => setCurrentNote(e.target.value)}
+                                            placeholder={`What did you learn from ${cleanName(activeSwap.name)}? Write about the food, rituals, language, or anything that inspired you...`}
+                                            className="w-full h-32 p-4 bg-[#faf7f2] border border-[#f0ece6] rounded-xl text-sm text-text-primary placeholder:text-text-secondary/40 focus:outline-none focus:border-amber-300 focus:ring-2 focus:ring-amber-100 resize-none font-light leading-relaxed transition-all"
+                                        />
+                                        <div className="flex items-center justify-end gap-3 mt-4">
+                                            <button
+                                                onClick={() => { setShowSavePrompt(false); setCurrentNote(''); }}
+                                                className="px-6 py-2.5 text-[10px] font-bold text-text-secondary uppercase tracking-widest hover:text-text-primary transition-colors"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={saveLearning}
+                                                disabled={!currentNote.trim()}
+                                                className={`px-8 py-2.5 text-[10px] font-bold rounded-full uppercase tracking-widest transition-all shadow-md ${
+                                                    currentNote.trim()
+                                                        ? 'bg-amber-600 text-white hover:bg-amber-700 hover:shadow-lg'
+                                                        : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                                                }`}
+                                            >
+                                                Save to Journal ✓
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
                         </div>
 
+                    </div>
+                )}
+
+                {/* My Cultural Journal */}
+                {savedLearnings.length > 0 && (
+                    <div className="mt-16 animate-fade-in">
+                        <div className="text-center mb-10">
+                            <span className="text-accent-terra uppercase tracking-widest text-xs font-bold mb-3 block">Your Collection</span>
+                            <h2 className="text-3xl md:text-4xl font-serif font-medium text-text-primary mb-3">
+                                Cultural <span className="italic font-light">Journal</span>
+                            </h2>
+                            <p className="text-text-secondary font-light max-w-lg mx-auto">
+                                A personal archive of wisdom gathered from each cultural exchange.
+                            </p>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {savedLearnings.map((learning) => (
+                                <div 
+                                    key={learning.id} 
+                                    className="bg-white border border-black/5 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-500 relative overflow-hidden group"
+                                >
+                                    <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-accent-terra via-accent-gold to-accent-teal opacity-40 group-hover:opacity-100 transition-opacity"></div>
+                                    
+                                    <div className="flex items-start justify-between mb-5">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-12 h-12 rounded-full bg-[#faf7f2] flex items-center justify-center text-2xl border border-[#f0ece6] shadow-inner">
+                                                {learning.avatar}
+                                            </div>
+                                            <div>
+                                                <h4 className="font-serif font-medium text-text-primary text-lg leading-tight">{learning.name}</h4>
+                                                <p className="text-[9px] font-bold text-accent-terra uppercase tracking-[0.2em]">{learning.culture}</p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => deleteLearning(learning.id)}
+                                            className="w-8 h-8 rounded-full bg-[#faf7f2] hover:bg-red-50 flex items-center justify-center text-xs text-text-secondary hover:text-red-500 transition-all opacity-0 group-hover:opacity-100"
+                                            title="Remove entry"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                    
+                                    <p className="text-sm text-text-primary leading-relaxed font-light mb-5 whitespace-pre-wrap">
+                                        {learning.note}
+                                    </p>
+                                    
+                                    <div className="flex items-center justify-between pt-4 border-t border-black/5">
+                                        <div className="flex items-center gap-4">
+                                            {learning.food && (
+                                                <span className="text-[9px] font-bold text-orange-600 uppercase tracking-wider flex items-center gap-1">
+                                                    <span>🥘</span> {learning.food}
+                                                </span>
+                                            )}
+                                            {learning.routine && (
+                                                <span className="text-[9px] font-bold text-blue-600 uppercase tracking-wider flex items-center gap-1">
+                                                    <span>⚡</span> {learning.routine}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className="text-[9px] font-bold text-text-secondary/40 uppercase tracking-wider">
+                                            {new Date(learning.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>

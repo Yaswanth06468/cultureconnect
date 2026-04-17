@@ -383,10 +383,12 @@ app.get('/api/bookings', authenticateToken, async (req, res) => {
 
 app.get('/api/culture-swap/random', async (req, res) => {
     try {
-        const count = await CulturePartner.countDocuments();
+        const excludeIds = req.query.exclude ? req.query.exclude.split(',').filter(id => id.trim()) : [];
+        const query = excludeIds.length > 0 ? { _id: { $nin: excludeIds } } : {};
+        const count = await CulturePartner.countDocuments(query);
         if (count === 0) return res.status(404).json({ error: 'No cultural partners found' });
         const random = Math.floor(Math.random() * count);
-        const partner = await CulturePartner.findOne().skip(random);
+        const partner = await CulturePartner.findOne(query).skip(random);
         res.json(partner);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch random partner' });
