@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { API_BASE_URL } from '../config';
 
 const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask, playWord }) => {
@@ -252,6 +252,323 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
     );
 };
 
+const LiveSessionModal = ({ activeSwap, onClose, cleanName }) => {
+    const localVideoRef = useRef(null);
+    const [stream, setStream] = useState(null);
+    const [isMuted, setIsMuted] = useState(false);
+    const [isVideoOff, setIsVideoOff] = useState(false);
+    const [callDuration, setCallDuration] = useState(0);
+    const [chatMessages, setChatMessages] = useState([]);
+    const [chatInput, setChatInput] = useState('');
+    const [isConnecting, setIsConnecting] = useState(true);
+    const [showChat, setShowChat] = useState(false);
+    const chatEndRef = useRef(null);
+
+    // Auto-greet messages from partner
+    const partnerGreetings = [
+        `Namaste! Welcome to our live session! 🙏`,
+        `I'm so excited to share my culture with you today!`,
+        `Feel free to ask me anything about ${activeSwap?.culture || 'my culture'}!`,
+    ];
+
+    useEffect(() => {
+        const startCamera = async () => {
+            try {
+                const mediaStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { width: 1280, height: 720, facingMode: 'user' }, 
+                    audio: true 
+                });
+                setStream(mediaStream);
+                if (localVideoRef.current) {
+                    localVideoRef.current.srcObject = mediaStream;
+                }
+                // Simulate connection delay
+                setTimeout(() => setIsConnecting(false), 2500);
+            } catch (err) {
+                console.error('Camera access denied:', err);
+                setIsConnecting(false);
+            }
+        };
+        startCamera();
+
+        return () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        };
+    }, []);
+
+    // Update video srcObject when stream changes
+    useEffect(() => {
+        if (localVideoRef.current && stream) {
+            localVideoRef.current.srcObject = stream;
+        }
+    }, [stream]);
+
+    // Call duration timer
+    useEffect(() => {
+        if (!isConnecting) {
+            const timer = setInterval(() => setCallDuration(prev => prev + 1), 1000);
+            return () => clearInterval(timer);
+        }
+    }, [isConnecting]);
+
+    // Auto partner messages
+    useEffect(() => {
+        if (!isConnecting) {
+            partnerGreetings.forEach((msg, i) => {
+                setTimeout(() => {
+                    setChatMessages(prev => [...prev, { 
+                        id: Date.now() + i, 
+                        sender: 'partner', 
+                        text: msg, 
+                        time: new Date() 
+                    }]);
+                }, (i + 1) * 3000);
+            });
+        }
+    }, [isConnecting]);
+
+    // Auto-scroll chat
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [chatMessages]);
+
+    const formatCallTime = (s) => {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    };
+
+    const toggleMute = () => {
+        if (stream) {
+            stream.getAudioTracks().forEach(track => { track.enabled = !track.enabled; });
+            setIsMuted(!isMuted);
+        }
+    };
+
+    const toggleVideo = () => {
+        if (stream) {
+            stream.getVideoTracks().forEach(track => { track.enabled = !track.enabled; });
+            setIsVideoOff(!isVideoOff);
+        }
+    };
+
+    const endCall = () => {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+        onClose();
+    };
+
+    const sendChat = (e) => {
+        e.preventDefault();
+        if (!chatInput.trim()) return;
+        setChatMessages(prev => [...prev, { 
+            id: Date.now(), 
+            sender: 'you', 
+            text: chatInput.trim(), 
+            time: new Date() 
+        }]);
+        setChatInput('');
+
+        // Simulate partner reply
+        const replies = [
+            'That\'s a wonderful question! Let me show you...',
+            'Yes! This is very important in our culture.',
+            'I love sharing this with you! 😊',
+            'We do this every day, it brings us closer to our roots.',
+            'The secret is passed down through generations!',
+            'Would you like to try it yourself?',
+        ];
+        setTimeout(() => {
+            setChatMessages(prev => [...prev, {
+                id: Date.now(),
+                sender: 'partner',
+                text: replies[Math.floor(Math.random() * replies.length)],
+                time: new Date()
+            }]);
+        }, 1500 + Math.random() * 2000);
+    };
+
+    if (!activeSwap) return null;
+
+    return (
+        <div className="fixed inset-0 z-[200] bg-[#0a0a0a] flex">
+            {/* Connecting Overlay */}
+            {isConnecting && (
+                <div className="absolute inset-0 z-50 bg-[#0a0a0a] flex flex-col items-center justify-center gap-8">
+                    <div className="w-28 h-28 rounded-full bg-white/5 flex items-center justify-center text-6xl border border-white/10 animate-pulse">
+                        {activeSwap.avatar}
+                    </div>
+                    <div className="text-center">
+                        <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.4em] mb-3">Connecting to</p>
+                        <h3 className="text-3xl font-serif text-white font-medium mb-2">{cleanName(activeSwap.name)}</h3>
+                        <p className="text-white/30 text-sm font-light">{activeSwap.culture}</p>
+                    </div>
+                    <div className="flex gap-2 mt-4">
+                        <div className="w-2 h-2 rounded-full bg-accent-terra animate-bounce" style={{ animationDelay: '0s' }}></div>
+                        <div className="w-2 h-2 rounded-full bg-accent-terra animate-bounce" style={{ animationDelay: '0.15s' }}></div>
+                        <div className="w-2 h-2 rounded-full bg-accent-terra animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+                    </div>
+                </div>
+            )}
+
+            {/* Main Video Area */}
+            <div className={`flex-1 relative transition-all duration-500 ${showChat ? 'mr-[380px]' : ''}`}>
+                {/* Partner Video (Simulated) */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1a1520] via-[#0f1923] to-[#0a0a0a] flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="w-36 h-36 rounded-full bg-white/5 mx-auto mb-8 flex items-center justify-center text-7xl border-2 border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)]">
+                            {activeSwap.avatar}
+                        </div>
+                        <h3 className="text-2xl font-serif text-white font-medium mb-1">{cleanName(activeSwap.name)}</h3>
+                        <p className="text-white/30 text-xs font-bold uppercase tracking-[0.3em] mb-6">{activeSwap.culture} · {activeSwap.location}</p>
+                        <div className="flex items-center justify-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span className="text-green-400 text-[10px] font-bold uppercase tracking-widest">Connected</span>
+                        </div>
+                    </div>
+                    {/* Ambient decorative elements */}
+                    <div className="absolute top-10 left-10 w-64 h-64 bg-accent-terra/5 rounded-full blur-[100px]"></div>
+                    <div className="absolute bottom-10 right-10 w-48 h-48 bg-accent-teal/5 rounded-full blur-[80px]"></div>
+                </div>
+
+                {/* Local Video (Your Camera) */}
+                <div className="absolute bottom-28 right-6 w-[280px] h-[200px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10 bg-black group hover:w-[340px] hover:h-[240px] transition-all duration-500 z-20">
+                    {!isVideoOff ? (
+                        <video 
+                            ref={localVideoRef} 
+                            autoPlay 
+                            playsInline 
+                            muted 
+                            className="w-full h-full object-cover mirror-video"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center">
+                            <div className="text-center">
+                                <div className="text-4xl mb-2">📷</div>
+                                <p className="text-white/30 text-[10px] font-bold uppercase tracking-widest">Camera Off</p>
+                            </div>
+                        </div>
+                    )}
+                    <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
+                        <p className="text-white text-[9px] font-bold uppercase tracking-widest">You</p>
+                    </div>
+                    {isMuted && (
+                        <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-red-500/80 flex items-center justify-center">
+                            <span className="text-white text-xs">🔇</span>
+                        </div>
+                    )}
+                </div>
+
+                {/* Top Bar */}
+                <div className="absolute top-0 left-0 right-0 p-6 flex items-center justify-between z-30 bg-gradient-to-b from-black/60 to-transparent">
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 bg-red-500/20 backdrop-blur-md px-4 py-2 rounded-full border border-red-500/30">
+                            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                            <span className="text-red-400 text-[10px] font-bold uppercase tracking-widest">Live</span>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
+                            <span className="text-white/80 text-sm font-mono font-bold tabular-nums">{formatCallTime(callDuration)}</span>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Free Cultural Exchange</span>
+                    </div>
+                </div>
+
+                {/* Bottom Controls */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 flex items-center justify-center gap-4 z-30 bg-gradient-to-t from-black/80 to-transparent">
+                    <button 
+                        onClick={toggleMute}
+                        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all text-xl shadow-lg ${isMuted ? 'bg-red-500 text-white scale-110' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/25 border border-white/10'}`}
+                        title={isMuted ? 'Unmute' : 'Mute'}
+                    >
+                        {isMuted ? '🔇' : '🎤'}
+                    </button>
+                    <button 
+                        onClick={toggleVideo}
+                        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all text-xl shadow-lg ${isVideoOff ? 'bg-red-500 text-white scale-110' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/25 border border-white/10'}`}
+                        title={isVideoOff ? 'Turn on camera' : 'Turn off camera'}
+                    >
+                        {isVideoOff ? '📷' : '🎥'}
+                    </button>
+                    <button 
+                        onClick={() => setShowChat(!showChat)}
+                        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all text-xl shadow-lg ${showChat ? 'bg-accent-terra text-white scale-110' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/25 border border-white/10'}`}
+                        title="Toggle Chat"
+                    >
+                        💬
+                    </button>
+                    <div className="w-px h-8 bg-white/10 mx-2"></div>
+                    <button 
+                        onClick={endCall}
+                        className="w-16 h-14 rounded-full bg-red-600 hover:bg-red-700 flex items-center justify-center transition-all text-xl shadow-lg hover:scale-110 border border-red-500"
+                        title="End Call"
+                    >
+                        📞
+                    </button>
+                </div>
+            </div>
+
+            {/* Chat Panel */}
+            <div className={`fixed top-0 right-0 h-full w-[380px] bg-[#111318] border-l border-white/5 flex flex-col transition-transform duration-500 z-40 ${showChat ? 'translate-x-0' : 'translate-x-full'}`}>
+                <div className="p-6 border-b border-white/5">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h4 className="text-white font-serif text-lg font-medium">Live Chat</h4>
+                            <p className="text-white/30 text-[10px] font-bold uppercase tracking-widest mt-1">with {cleanName(activeSwap.name)}</p>
+                        </div>
+                        <button onClick={() => setShowChat(false)} className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all text-sm">✕</button>
+                    </div>
+                </div>
+                
+                <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                    {chatMessages.length === 0 && (
+                        <div className="text-center py-12">
+                            <div className="text-4xl mb-4">💬</div>
+                            <p className="text-white/20 text-sm font-light">Start a conversation about their culture!</p>
+                        </div>
+                    )}
+                    {chatMessages.map((msg) => (
+                        <div key={msg.id} className={`flex ${msg.sender === 'you' ? 'justify-end' : 'justify-start'}`}>
+                            <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${msg.sender === 'you' 
+                                ? 'bg-accent-terra/80 text-white rounded-br-md' 
+                                : 'bg-white/5 text-white/80 rounded-bl-md border border-white/5'}`}
+                            >
+                                <p className="text-sm font-light leading-relaxed">{msg.text}</p>
+                                <p className="text-[8px] mt-1.5 opacity-40 font-bold uppercase tracking-widest">
+                                    {msg.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                    <div ref={chatEndRef} />
+                </div>
+
+                <form onSubmit={sendChat} className="p-4 border-t border-white/5">
+                    <div className="flex items-center gap-3">
+                        <input
+                            type="text"
+                            value={chatInput}
+                            onChange={(e) => setChatInput(e.target.value)}
+                            placeholder="Ask about their culture..."
+                            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-accent-terra/50 focus:ring-1 focus:ring-accent-terra/20 transition-all"
+                        />
+                        <button 
+                            type="submit"
+                            className="w-11 h-11 rounded-xl bg-accent-terra hover:bg-accent-terra/80 flex items-center justify-center text-white transition-all shadow-lg"
+                        >
+                            ➤
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
 const CultureSwap = () => {
     const [isMatching, setIsMatching] = useState(false);
     const [activeSwap, setActiveSwap] = useState(null);
@@ -275,6 +592,7 @@ const CultureSwap = () => {
             return stored ? JSON.parse(stored) : [];
         } catch (e) { return []; }
     });
+    const [showLiveSession, setShowLiveSession] = useState(false);
 
     useEffect(() => {
         localStorage.setItem('cultureSwapLearnings', JSON.stringify(savedLearnings));
@@ -434,6 +752,15 @@ const CultureSwap = () => {
                 playWord={playWord}
              />
 
+             {/* Render Live Session Modal */}
+             {showLiveSession && activeSwap && (
+                <LiveSessionModal 
+                    activeSwap={activeSwap} 
+                    onClose={() => setShowLiveSession(false)} 
+                    cleanName={cleanName}
+                />
+             )}
+
             <div className="container mx-auto max-w-5xl relative">
                 
                 <div className="text-center mb-16">
@@ -583,6 +910,14 @@ const CultureSwap = () => {
                                     className="w-full mt-10 py-4 text-[10px] font-bold text-accent-terra uppercase tracking-[0.3em] bg-accent-terra/10 rounded-2xl hover:bg-accent-terra/20 transition-all border border-accent-terra/30"
                                 >
                                     {isMatching ? 'Finding Partner...' : 'Swap with another person 🔄'}
+                                </button>
+
+                                <button 
+                                    onClick={() => setShowLiveSession(true)}
+                                    className="w-full mt-3 py-4 text-[10px] font-bold text-white uppercase tracking-[0.3em] bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl hover:from-green-700 hover:to-emerald-700 transition-all shadow-lg hover:shadow-green-500/20 flex items-center justify-center gap-3 group"
+                                >
+                                    <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse group-hover:bg-green-200"></span>
+                                    Go Live with {cleanName(activeSwap.name)} 🎥
                                 </button>
                             </div>
 
@@ -914,6 +1249,9 @@ const CultureSwap = () => {
                 }
                 .animate-slide-up {
                     animation: slide-up 1s ease-out forwards;
+                }
+                .mirror-video {
+                    transform: scaleX(-1);
                 }
             `}} />
         </div>
