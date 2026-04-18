@@ -613,10 +613,10 @@ const Translator = () => {
                             {inputMode === 'voice' ? (
                                 <button
                                     onClick={toggleListening}
-                                    className={`px-8 py-3 rounded-lg font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-md ${
+                                    className={`px-8 py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-md ${
                                         isListening 
-                                        ? 'bg-accent-terra hover:bg-red-800 animate-pulse' 
-                                        : 'bg-text-primary hover:bg-text-secondary'
+                                        ? 'bg-accent-terra text-white hover:bg-red-800 animate-pulse' 
+                                        : 'bg-text-primary text-inverse hover:bg-text-secondary'
                                     }`}
                                 >
                                     {isListening ? (
@@ -713,7 +713,7 @@ const Translator = () => {
                                         title={tone.label}
                                         className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border shadow-sm ${
                                             selectedTone === tone.id 
-                                            ? 'bg-text-primary text-white border-text-primary scale-110' 
+                                            ? 'bg-text-primary text-inverse border-text-primary scale-110' 
                                             : 'bg-white text-text-muted border-black/10 hover:border-text-primary hover:scale-105'
                                         }`}
                                     >

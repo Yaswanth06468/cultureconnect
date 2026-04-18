@@ -198,22 +198,22 @@ const Feed = () => {
                             accept="image/*"
                             onChange={(e) => setImage(e.target.files[0])}
                             className="p-2 border border-text-secondary theme-transition"
-                            style={{ backgroundColor: 'var(--theme-bg-primary)' }}
+                            style={{ backgroundColor: 'var(--theme-input-bg)', color: 'var(--theme-text-primary)' }}
                         />
                         <textarea
                             placeholder="Describe your cultural moment..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="p-3 border border-text-secondary bg-white min-h-[100px]"
+                            className="p-3 border border-text-secondary bg-bg-input text-text-primary min-h-[100px] theme-transition"
                         ></textarea>
                         <input
                             type="text"
                             placeholder="Tag (e.g., Food, Architecture, Dance)"
                             value={tag}
                             onChange={(e) => setTag(e.target.value)}
-                            className="p-3 border border-text-secondary bg-white"
+                            className="p-3 border border-text-secondary bg-bg-input text-text-primary theme-transition"
                         />
-                        <button type="submit" className="self-start px-6 py-2 bg-text-primary text-bg-primary font-bold hover:bg-accent-blue transition-colors">
+                        <button type="submit" className="self-start px-6 py-2 bg-text-primary text-inverse font-bold hover:bg-accent-blue transition-colors theme-transition">
                             Post
                         </button>
                     </form>

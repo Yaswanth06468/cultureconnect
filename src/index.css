@@ -7,6 +7,8 @@
     /* Standard Grey / Dynamic */
     --color-bg-accent: var(--theme-bg-accent);
     /* Darker Grey / Dynamic */
+    --color-bg-input: var(--theme-input-bg);
+    /* Inputs bg / Dynamic */
 
     --color-accent-gold: #ffcc00;
     /* Harsh Yellow/Gold */
@@ -25,6 +27,8 @@
     /* Dark Grey / Dynamic */
     --color-text-muted: var(--theme-text-muted);
     /* Muted Grey / Dynamic */
+    --color-text-inverse: var(--theme-text-inverse);
+    /* Dark text on light / Light text on dark */
 
     --font-sans: Arial, Helvetica, sans-serif;
     --font-serif: "Times New Roman", Times, serif;
@@ -40,8 +44,10 @@
     --theme-text-primary: #000000;
     --theme-text-secondary: #333333;
     --theme-text-muted: #666666;
+    --theme-text-inverse: #ffffff;
     --theme-border: rgba(0, 0, 0, 0.05);
     --theme-card-bg: #ffffff;
+    --theme-input-bg: #ffffff;
     --theme-hero-gradient: radial-gradient(circle at center, #fffcf9 0%, #fdefe6 50%, #fdf5e6 100%);
     --theme-shadow: rgba(0, 0, 0, 0.08);
     --theme-overlay: rgba(255, 255, 255, 0.85);
@@ -57,8 +63,10 @@
     --theme-text-primary: #f5ecd7; /* Parchment White */
     --theme-text-secondary: #d2b48c; /* Tan */
     --theme-text-muted: #8b7355; /* Sepia */
+    --theme-text-inverse: #1a0f0a; /* Dark text for light buttons */
     --theme-border: rgba(245, 236, 215, 0.12);
     --theme-card-bg: #22140e; /* Deep Chocolate */
+    --theme-input-bg: #2d1c15; /* Darker Mocha for inputs */
     --theme-hero-gradient: radial-gradient(circle at center, #2d1c15 0%, #1a0f0a 100%);
     --theme-shadow: rgba(0, 0, 0, 0.55);
     --theme-overlay: rgba(26, 15, 10, 0.9);

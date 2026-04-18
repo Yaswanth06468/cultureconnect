@@ -239,7 +239,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                             if (!completedTasks.includes(task)) toggleTask(task);
                             onClose();
                         }}
-                        className={`px-10 py-4 font-bold rounded-lg transition-colors shadow-lg flex items-center gap-3 mx-auto ${completedTasks.includes(task) ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-text-primary text-white hover:bg-[#111]'}`}
+                        className={`px-10 py-4 font-bold rounded-lg transition-colors shadow-lg flex items-center gap-3 mx-auto ${completedTasks.includes(task) ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-text-primary text-inverse hover:bg-bg-accent'}`}
                     >
                         {completedTasks.includes(task) ? 'Task Completed ✓' : 'Accept Challenge & Start'}
                     </button>
@@ -799,7 +799,7 @@ const CultureSwap = () => {
                                     onClick={startMatch}
                                     disabled={isMatching}
                                     className={`relative px-12 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform active:scale-95 shadow-xl group/btn overflow-hidden
-                                        ${isMatching ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-text-primary text-white hover:shadow-2xl hover:-translate-y-1'}`}
+                                        ${isMatching ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-text-primary text-inverse hover:shadow-2xl hover:-translate-y-1'}`}
                                 >
                                     <span className="relative z-10">{isMatching ? 'Calculating Affinity...' : 'Commence Lifestyle Swap'}</span>
                                     {!isMatching && <div className="absolute inset-0 bg-gradient-to-r from-accent-terra/20 to-accent-gold/20 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>}

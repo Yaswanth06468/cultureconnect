@@ -491,7 +491,7 @@ const DetailPanel = ({ city, onNotify, foodReviews, onAddReview }) => {
                           className="w-full bg-[#fdfdfd] font-serif italic text-sm placeholder:font-sans placeholder:not-italic border border-black/10 rounded-lg p-3 outline-none focus:border-accent-terra transition-colors resize-none"
                           rows={2}
                        />
-                       <button type="submit" className="self-end px-5 py-2 bg-text-primary text-white text-[10px] uppercase font-bold tracking-widest rounded-lg hover:bg-accent-terra transition-colors shadow-md">
+                       <button type="submit" className="self-end px-5 py-2 bg-text-primary text-inverse text-[10px] uppercase font-bold tracking-widest rounded-lg hover:bg-accent-terra transition-colors shadow-md">
                          Share Experience
                        </button>
                      </form>
