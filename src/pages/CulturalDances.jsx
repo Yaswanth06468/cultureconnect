@@ -7,7 +7,7 @@ const dancesData = [
         state: "Andhra Pradesh",
         description: "Kuchipudi is a classical dance style from Andhra Pradesh. It is known for its graceful movements, quick footwork, and dramatic character. It uniquely combines speech, mime, and pure dance. It shares many elements with Bharatanatyam but includes a unique element where the dancer performs on the edges of a brass plate (Tarangam).",
         imageUrl: "/images/dances/kuchipudi.jpg",
-        videoId: "52S_Z9V9B7g"
+        videoId: "YbRX_cdTap8"
     },
     {
         id: 2,
@@ -15,7 +15,7 @@ const dancesData = [
         state: "Tamil Nadu",
         description: "Bharatanatyam is one of the oldest and most popular classical Indian dance forms. It is known for its fixed upper torso, bent legs, and spectacular footwork combined with a sophisticated vocabulary of sign language. Known for its fixed upper torso, legs bent or knees flexed out combined with spectacular footwork, it is considered the mother of many other Indian classical dance forms.",
         imageUrl: "https://images.unsplash.com/photo-1569851935333-6ca1448cc299?auto=format&fit=crop&q=80&w=1000",
-        videoId: "JWhA3ldZcyY"
+        videoId: "qVVRECTe6ys"
     },
     {
         id: 3,
@@ -23,7 +23,7 @@ const dancesData = [
         state: "Kerala",
         description: "Kathakali is a major form of classical Indian dance. It is a story play genre of art, but one distinguished by the elaborately colorful make-up, costumes and face masks that the traditionally male actor-dancers wear. The stories are generally based on Hindu epics like the Ramayana and Mahabharata, performed with intense facial expressions and hand gestures.",
         imageUrl: "/images/dances/kathakali.jpg",
-        videoId: "OlW3pHeOqfQ"
+        videoId: "cl9wNFQU2NI"
     },
     {
         id: 4,
@@ -31,7 +31,7 @@ const dancesData = [
         state: "Uttar Pradesh",
         description: "Kathak is traditionally attributed to the traveling bards of ancient northern India known as Kathakars or storytellers. It is characterized by rhythmic foot movements, adorned with small bells, and graceful gestures. Characterized by intricate footwork and precise rhythmic patterns (tatkar), Kathak dancers use their graceful hand movements and facial expressions to narrate ancient epic tales.",
         imageUrl: "https://images.unsplash.com/photo-1756382616831-998e8baf9675?auto=format&fit=crop&q=80&w=1000",
-        videoId: "fR1S06-hOkg"
+        videoId: "1odxGD7Unig"
     },
     {
         id: 5,
@@ -39,7 +39,7 @@ const dancesData = [
         state: "Odisha",
         description: "Odissi is traditionally a dance-drama genre of performance art, where the artists and musicians play out a mythical story or a spiritual message. It is known for its tribhangi (three-part break) posture. Characterized by the Tribhangi posture, which involves independent movement of the head, chest, and pelvis. It often narrates stories of Lord Krishna.",
         imageUrl: "/images/dances/odissi_generated.png",
-        videoId: "P85xU6-0vX0"
+        videoId: "-tAmSrLGAYM"
     },
     {
         id: 6,
@@ -47,7 +47,7 @@ const dancesData = [
         state: "Manipur",
         description: "Manipuri dance is a team performance, with its own unique costumes especially the barrel-shaped, elegantly decorated skirt. The dance is characterized by smooth and graceful movements. Also known as Jagoi, it is particularly known for its Hindu Vaishnavism themes, exquisite costumes, and gentle, fluid, and graceful movements.",
         imageUrl: "https://images.unsplash.com/photo-1632292611299-980426b386a1?auto=format&fit=crop&q=80&w=1000",
-        videoId: "FInBUnv8t_Y"
+        videoId: "LhNEOOqz1q0"
     },
     {
         id: 7,
@@ -55,7 +55,7 @@ const dancesData = [
         state: "Assam",
         description: "Sattriya is a classical dance form that originated in the Krishna-centered Vaishnavism monasteries of Assam. It usually depicts mythological stories and is an artistic way of presenting spiritual teachings. Originally performed in monasteries by male monks, it is deeply rooted in the Vaishnava tradition and portrays mythological stories.",
         imageUrl: "/images/dances/sattriya.jpg",
-        videoId: "9q8SndmN1_0"
+        videoId: "iF-DkJZX_L8"
     },
     {
         id: 8,
@@ -63,7 +63,7 @@ const dancesData = [
         state: "Gujarat",
         description: "Garba is a form of dance which originates from the state of Gujarat in India. The name is derived from the Sanskrit term Garbha (womb). Many traditional garbas are performed around a centrally lit lamp or a picture or statue of the Goddess Shakti. It is traditionally performed during the nine-day Hindu festival Navaratri. The circular patterns of Garba symbolize the Hindu view of time, with the rings of dancers revolving in cycles.",
         imageUrl: "/images/dances/garba.jpg",
-        videoId: "x2w7S8-q2A0"
+        videoId: "ySwS8Aq4MK8"
     },
     {
         id: 9,
@@ -71,7 +71,7 @@ const dancesData = [
         state: "Punjab",
         description: "Bhangra is a vibrant and energetic folk dance of Punjab. It was initially performed by farmers to celebrate the harvest season but now it is a popular dance form across the globe, performed at festivals and weddings. It was originally performed during the harvest season. Today, it is a globally recognized dance form characterized by its energetic jumps and vibrant costumes.",
         imageUrl: "/images/dances/bhangra.jpg",
-        videoId: "1-72yFm0a-Y"
+        videoId: "coXG9ExCeK0"
     },
     {
         id: 10,
@@ -79,7 +79,7 @@ const dancesData = [
         state: "Maharashtra",
         description: "Lavani is a combination of traditional song and dance, which particularly performed to the beats of Dholki, a percussion instrument. It is noted for its powerful rhythm and fast tempo. It is a combination of traditional song and dance performed to the beats of a Dholki, known for its powerful rhythm and expressiveness.",
         imageUrl: "/images/dances/lavani.jpg",
-        videoId: "e6t9L2d7N-P"
+        videoId: "hLXWjjJgnTc"
     },
     {
         id: 11,
@@ -87,7 +87,7 @@ const dancesData = [
         state: "Rajasthan",
         description: "Ghoomar is a traditional folk dance of Rajasthan, performed by women in flowing skirts called ghagharas. It is characterized by graceful circular movements and twirling, accompanied by traditional songs. A traditional women's folk dance characterized by spinning in circles to the rhythmic beats of local instruments, displaying the rich culture of the desert state.",
         imageUrl: "/images/dances/ghoomar_generated.png",
-        videoId: "p5n1w9k6X-M"
+        videoId: "KEsA2PLSCLg"
     },
     {
         id: 12,
@@ -95,7 +95,7 @@ const dancesData = [
         state: "Assam",
         description: "The Bihu dance is a folk dance from the state of Assam, related to the Bihu festival and an important part of Assamese culture. Performed by both young men and women, the Bihu dance is characterized by brisk steps and rapid hand movements. This joyous dance celebrates the Assamese New Year and spring festival. It features rapid hand movements and a rhythmic swaying of the hips.",
         imageUrl: "/images/dances/bihu.jpg",
-        videoId: "u8r3M5v2W-K"
+        videoId: "Qo-23UeuGsY"
     },
     {
         id: 13,
@@ -103,7 +103,7 @@ const dancesData = [
         state: "Karnataka",
         description: "Yakshagana is a traditional theater form that combines dance, music, dialogue, costume, make-up, and stage techniques with a unique style and form. It is traditionally performed in the coastal districts of Karnataka. A traditional theatre form combining dance, music, dialogue, and heavy makeup, mostly depicting stories from the Ramayana and Mahabharata.",
         imageUrl: "/images/dances/yakshagana.jpg",
-        videoId: "g0_N-O5F2uY"
+        videoId: "KMmAdlSk6R4"
     },
     {
         id: 14,
@@ -111,7 +111,7 @@ const dancesData = [
         state: "West Bengal",
         description: "Chhau is a semi-classical Indian dance with martial, tribal, and folk traditions. It is performed by men from the states of West Bengal, Odisha, and Jharkhand. Purulia Chhau is famous for its massive, colorful masks. A semi-classical Indian dance with martial, tribal, and folk origins. Performers wear striking masks and enact episodes from epics.",
         imageUrl: "/images/dances/chhau.jpg",
-        videoId: "OlW3pHeOqfQ"
+        videoId: "Hrt5nwN_-ig"
     },
     {
         id: 15,
@@ -119,7 +119,7 @@ const dancesData = [
         state: "Mizoram",
         description: "Also known as the Bamboo Dance, Cheraw is a ritual dance performed in Mizoram. It consists of four people holding two pairs of long bamboo staves which are clapped together in a rhythmic fashion. The dancers step in and out of the bamboo squares with great precision and grace, synchronized to the beating of the drums and local musical instruments.",
         imageUrl: "/images/dances/cheraw.jpg",
-        videoId: "k2r5T8j1Y-M"
+        videoId: "lx4tmANuVTE"
     },
     {
         id: 16,
@@ -127,7 +127,7 @@ const dancesData = [
         state: "Jammu & Kashmir",
         description: "Rouf is a beautiful and graceful dance performed by women in the Kashmir Valley. It is mostly performed during the spring season and on special occasions like Eid and the harvest season. The dancers form two rows facing each other and perform subtle footwork while singing traditional folk songs that celebrate the beauty of nature and seasonal changes.",
         imageUrl: "/images/dances/rouf.jpg",
-        videoId: "7S23Q1n9a5M?start=60"
+        videoId: "enet0gL42u0"
     },
     {
         id: 17,
@@ -135,7 +135,7 @@ const dancesData = [
         state: "Arunachal Pradesh",
         description: "Bardo Chham is a ritual masked dance of the Sherdukpen community of Arunachal Pradesh. The dance depicts the victory of good over evil and is performed with large masks and colorful costumes. Each mask represents a different animal, and the performance is believed to ward off evil spirits and bring prosperity and harmony to the community.",
         imageUrl: "/images/dances/bardo_chham.jpg",
-        videoId: "tYyK19e07jI?start=120"
+        videoId: "5-6_Q2dhWqM"
     },
     {
         id: 18,
@@ -143,7 +143,7 @@ const dancesData = [
         state: "Bihar",
         description: "Bidesiya is a form of Bhojpuri folk theater that originated in the 20th century. It deals with social issues such as the pain of migration, the plight of women, and the conflict between tradition and modernity. The performances combine music, dance, and dialogue to tell poignant stories that resonate deeply with the rural population and celebrate Bihari resilience.",
         imageUrl: "/images/dances/bidesiya.jpg",
-        videoId: "s7h3N9f1K-O"
+        videoId: "lGNw3_CzbJM"
     },
     {
         id: 19,
@@ -151,7 +151,7 @@ const dancesData = [
         state: "Chhattisgarh",
         description: "Karma dance is a traditional dance of Central India, performed by tribal communities. It is performed during the Karma festival to worship the Karma tree, a symbol of fertility and prosperity. Dancers link arms and move in a circular motion, accompanied by the rhythmic beats of the Mandar drum and folk songs that celebrate the bounty of nature and communal harmony.",
         imageUrl: "/images/dances/karma_naach.jpg",
-        videoId: "m9q4V6p8Z-L"
+        videoId: "QPyiEncGQ8A"
     },
     {
         id: 20,
@@ -159,7 +159,7 @@ const dancesData = [
         state: "Goa",
         description: "Fugdi is a Goan folk dance performed by women in the Konkan region. It is usually performed during religious festivals like Ganesh Chaturthi and Vrata. The dance starts at a slow pace but gradually becomes extremely fast, with dancers spinning in pairs while holding hands and creating a unique rhythmic sound with their breath and movements.",
         imageUrl: "/images/dances/fugdi.jpg",
-        videoId: "vH_9q5j0Y6M"
+        videoId: "H6oaod7PXGg"
     },
     {
         id: 21,
@@ -167,7 +167,7 @@ const dancesData = [
         state: "Haryana",
         description: "Phag is a popular seasonal folk dance of Haryana, performed by farmers to celebrate the month of Phalgun and the onset of spring. It is a mixed dance performed by both men and women to the beats of the Dhol, Tasha, and Nagara. The dance reflects the joy of a good harvest and the vibrant, energetic spirit of the Haryanvi culture.",
         imageUrl: "/images/dances/phag_dance.jpg",
-        videoId: "7S23Q1n9a5M?start=180"
+        videoId: "NsI3LBNWlZo"
     },
     {
         id: 22,
@@ -175,7 +175,7 @@ const dancesData = [
         state: "Himachal Pradesh",
         description: "Nati is the most popular folk dance of Himachal Pradesh, specifically in the Kullu and Shimla regions. It is a slow and graceful community dance performed in a circular formation with dancers traditionally dressed in colorful Himachali caps and waistcoats. It holds the Guinness World Record for the largest folk dance performance in a single location, showcasing mountain heritage.",
         imageUrl: "/images/dances/nati.jpg",
-        videoId: "7S23Q1n9a5M?start=240"
+        videoId: "TISEdtdS-UA"
     },
     {
         id: 23,
@@ -183,7 +183,7 @@ const dancesData = [
         state: "Madhya Pradesh",
         description: "Matki is a folk dance of the Malwa region in Madhya Pradesh, usually performed at weddings and festivals. It is performed by women who balance several earthen pots (matkis) on their heads while dancing to the rhythmic beats of a dhol. The skill lies in maintaining perfect balance while executing complex footwork and graceful hand gestures that tell local stories.",
         imageUrl: "/images/dances/matki_dance.jpg",
-        videoId: "7S23Q1n9a5M?start=300"
+        videoId: "bhpF_I5uSv8"
     },
     {
         id: 24,
@@ -191,7 +191,7 @@ const dancesData = [
         state: "Meghalaya",
         description: "Laho is a traditional folk dance of the Jaintia people in Meghalaya, often performed during communal festivals. It is performed by men and women who link arms and move in synchronized steps, usually accompanied by a musician playing the drum and flute. The dance is a celebration of community bonds and is performed without any complex props, focusing on rhythmic togetherness.",
         imageUrl: "/images/dances/laho.jpg",
-        videoId: "7S23Q1n9a5M?start=360"
+        videoId: "JWhA3ldZcyY"
     },
     {
         id: 25,
@@ -199,7 +199,7 @@ const dancesData = [
         state: "Nagaland",
         description: "Also known as Sua Lua, Chang Lo is a folk dance of the Chang tribe of Nagaland. Traditionally performed to celebrate victory over enemies, it is now performed during the Poanglem festival to mark the harvest. The dancers wear traditional warrior attire, including colorful feathers and ornaments, performing vigorous and rhythmic movements that honor tribal legacy.",
         imageUrl: "/images/dances/chang_lo.jpg",
-        videoId: "7S23Q1n9a5M?start=420"
+        videoId: "x4V8qbCPQaA"
     },
     {
         id: 26,
@@ -207,7 +207,7 @@ const dancesData = [
         state: "Sikkim",
         description: "The Singhi Chham, or Snow Lion Dance, is a spectacular masked dance from Sikkim. The snow lion is a cultural symbol of the Himalayan region, representing strength, courage, and fearlessness. Performers wear elaborate furry costumes and masks to mimic the movements of the mythical lion, accompanied by traditional monastic music and rhythmic drum beats.",
         imageUrl: "/images/dances/singhi_chham.jpg",
-        videoId: "7S23Q1n9a5M?start=480"
+        videoId: "-xK7juKbojs"
     },
     {
         id: 27,
@@ -215,7 +215,7 @@ const dancesData = [
         state: "Telangana",
         description: "Perini Shivatandavam is an ancient dance form from Telangana that originated during the Kakatiya dynasty. It is a vigorous and rhythmic dance traditionally performed by warriors to invoke the power of Lord Shiva before battle. The dance is characterized by 'Prerana' (inspiration), featuring intense footwork and powerful movements that reflect a deep spiritual and warrior spirit.",
         imageUrl: "/images/dances/perini.jpg",
-        videoId: "7S23Q1n9a5M?start=540"
+        videoId: "Wew_7ibd1QQ"
     },
     {
         id: 28,
@@ -223,7 +223,7 @@ const dancesData = [
         state: "Tripura",
         description: "Hojagiri is a unique folk dance of the Reang community in Tripura. It is a balance dance where women balance bottles and lamps on their heads and hands while performing intricate rhythmic movements with their lower bodies. The dance requires years of practice and incredible core strength to maintain balance while moving to the beats of the Khamb and Sumui instruments.",
         imageUrl: "/images/dances/hojagiri.jpg",
-        videoId: "7S23Q1n9a5M?start=600"
+        videoId: "mNbvWAGM3_Q"
     },
     {
         id: 29,
@@ -231,7 +231,7 @@ const dancesData = [
         state: "Uttarakhand",
         description: "Choliya is a martial folk dance from the Kumaon region of Uttarakhand, dating back over a thousand years. It is a sword dance that was traditionally performed by Rajputs at wedding processions to ward off evil spirits. The dancers, dressed in traditional white attire with colorful belts, perform stylized combat sequences with swords and shields to the accompaniment of trumpets.",
         imageUrl: "/images/dances/choliya.jpg",
-        videoId: "7S23Q1n9a5M?start=660"
+        videoId: "IUuv67larS4"
     },
     {
         id: 30,
@@ -239,7 +239,7 @@ const dancesData = [
         state: "Ladakh",
         description: "Shondol is the royal dance of Ladakh, often referred to as the 'King of Dances'. It was traditionally performed for the royalty of Ladakh on special occasions and is known for its slow, elegant movements. The dancers wear the traditional 'Perak' headgear adorned with turquoise stones and 'Sulma' robes, moving gracefully to the sounds of traditional Ladakhi instruments.",
         imageUrl: "/images/dances/shondol.jpg",
-        videoId: "7S23Q1n9a5M?start=720"
+        videoId: "0YFeEdfeeuw"
     },
     {
         id: 31,
@@ -247,7 +247,7 @@ const dancesData = [
         state: "Jharkhand",
         description: "Paika is a vibrant martial folk dance from Jharkhand, traditionally performed by the Munda community. Dancers hold swords and shields, showcasing a stylized display of warrior spirit and weapon worship. The performance is characterized by acrobatic movements, high jumps, and rhythmic footwork, accompanied by the energetic beats of the Nagara and Dhak drums.",
         imageUrl: "/images/dances/paika.png",
-        videoId: "7S23Q1n9a5M?start=780"
+        videoId: "gEyAHPvsWe4"
     },
     {
         id: 32,
@@ -255,7 +255,7 @@ const dancesData = [
         state: "Kerala",
         description: "Mohiniyattam is a classical dance form from Kerala, known for its sheer elegance and feminine grace. The name literally means 'dance of the enchantress', and it is characterized by fluid, swaying movements of the torso that resemble the gentle motion of palm leaves in the wind. The dancers wear exquisite white and gold 'Kasavu' sarees and perform stories of love and devotion.",
         imageUrl: "/images/dances/mohiniyattam.png",
-        videoId: "7S23Q1n9a5M?start=840"
+        videoId: "RgGMRVM_M_k"
     },
     {
         id: 33,
@@ -263,7 +263,7 @@ const dancesData = [
         state: "Andaman and Nicobar Islands",
         description: "Nicobari dance is the most prominent folk dance of the Andaman and Nicobar Islands, performed by the Nicobarese tribe during the 'Ossuary Feast'. Dancers move in a circular formation, swaying rhythmically to traditional chants and vocal rhythms. They often wear traditional costumes made of green coconut and plantain leaves, celebrating their deep connection with nature and ancestral spirits.",
         imageUrl: "/images/dances/nicobari.png",
-        videoId: "7S23Q1n9a5M?start=900"
+        videoId: "YjgEbP70aEo"
     },
     {
         id: 34,
@@ -271,7 +271,7 @@ const dancesData = [
         state: "Dadra and Nagar Haveli and Daman and Diu",
         description: "Tarpa is a joyous harvest dance performed by the Varli and Kokna tribes of Dadra and Nagar Haveli. Dancers hold each other's waists and move in a grand spiral or circular formation around a musician playing the 'Tarpa', a large wind instrument made of gourd and bamboo. The dance symbolizes the cycle of life and is performed late into the night during the harvest season.",
         imageUrl: "/images/dances/tarpa.png",
-        videoId: "7S23Q1n9a5M?start=960"
+        videoId: "9SgNamf7drQ"
     },
     {
         id: 35,
@@ -279,7 +279,7 @@ const dancesData = [
         state: "Lakshadweep",
         description: "Kolkali is a rhythmic folk dance popular in the Lakshadweep Islands, performed exclusively by men using short wooden sticks. The dancers form pairs and move in circles, striking their sticks together in a coordinated and increasingly fast-paced rhythm. It is a highly energetic performance that requires great agility and synchronization, reflecting the maritime culture of the islands.",
         imageUrl: "/images/dances/kolkali.png",
-        videoId: "7S23Q1n9a5M?start=1020"
+        videoId: "YCWPAqsuqNA"
     },
     {
         id: 36,
@@ -287,7 +287,7 @@ const dancesData = [
         state: "Puducherry",
         description: "Garadi is a traditional dance from Puducherry, believed to have originated during the celebration of Lord Rama's victory in the Ramayana. Male dancers perform monkey-like postures and gestures, wearing colorful costumes and ten iron rings called 'Anjali' on each leg. The rings create a rhythmic chiming sound as the dancers move to the beats of the large 'Ramadolu' drums.",
         imageUrl: "/images/dances/garadi.png",
-        videoId: "7S23Q1n9a5M?start=1080"
+        videoId: "wcqKn735Ex8"
     }
 ];
 
@@ -296,6 +296,7 @@ const CulturalDances = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedState, setSelectedState] = useState("All");
     const [showVideo, setShowVideo] = useState(false);
+    const [playingInlineVideoId, setPlayingInlineVideoId] = useState(null);
 
     const states = useMemo(() => {
         const uniqueStates = ["All", ...new Set(dancesData.map(d => d.state))];
@@ -371,18 +372,41 @@ const CulturalDances = () => {
                                 }}
                                 onClick={() => handleSelectDance(dance)}
                             >
-                                <div className="h-4/5 w-full relative overflow-hidden">
-                                    <img 
-                                         src={dance.imageUrl} 
-                                         alt={dance.name}
-                                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                         loading="lazy"
-                                         onError={(e) => {
-                                             e.target.onerror = null; 
-                                             e.target.src = "https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&q=80&w=1000";
-                                         }}
-                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40"></div>
+                                <div className="h-4/5 w-full relative overflow-hidden bg-black">
+                                    {playingInlineVideoId === dance.id ? (
+                                        <iframe 
+                                            src={`https://www.youtube.com/embed/${dance.videoId}${dance.videoId.includes('?') ? '&' : '?'}autoplay=1&mute=0&rel=0&controls=1`}
+                                            title={dance.name}
+                                            className="w-full h-full"
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                        ></iframe>
+                                    ) : (
+                                        <>
+                                            <img 
+                                                src={dance.imageUrl} 
+                                                alt={dance.name}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                loading="lazy"
+                                                onError={(e) => {
+                                                    e.target.onerror = null; 
+                                                    e.target.src = "https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&q=80&w=1000";
+                                                }}
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40"></div>
+                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <button 
+                                                    onClick={(e) => { e.stopPropagation(); setPlayingInlineVideoId(dance.id); }}
+                                                    className="w-16 h-16 bg-accent-terra/90 text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 ring-4 ring-white/20"
+                                                >
+                                                    <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M4.5 3.5v13L16 10 4.5 3.5z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                                 <div className="absolute bottom-0 left-0 w-full p-4 bg-bg-secondary h-1/5 flex items-center justify-between border-t border-black/10" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                                     <h3 className="text-lg font-serif font-bold text-text-primary truncate" style={{ color: 'var(--theme-text-primary)' }}>{dance.name}</h3>
