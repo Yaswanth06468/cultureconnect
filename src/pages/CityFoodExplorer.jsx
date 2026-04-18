@@ -516,17 +516,26 @@ const GeoStatusBanner = ({ status, nearestCity, onEnable, onDisable }) => {
     unsupported: { bg: '#fdf4ff', border: '#e9d5ff', icon: '❌', text: 'Geolocation is not supported by your browser.', textColor: '#9333ea', btnText: null, showBtn: false, showDisable: false },
   };
   const c = configs[status] || configs.idle;
-  return (
-    <div style={{ background: c.bg, border: `1.5px solid ${c.border}`, borderRadius: 14, padding: '14px 18px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+    <div className="theme-transition" style={{ 
+      background: 'var(--theme-bg-secondary)', 
+      border: `1.5px solid var(--theme-border)`, 
+      borderRadius: 14, 
+      padding: '14px 18px', 
+      marginBottom: 20, 
+      display: 'flex', 
+      alignItems: 'center', 
+      gap: 12, 
+      flexWrap: 'wrap' 
+    }}>
       <span style={{ fontSize: 22 }}>{c.icon}</span>
-      <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: c.textColor }}>{c.text}</span>
+      <span className="theme-transition" style={{ flex: 1, fontSize: 13, fontWeight: 600, color: 'var(--theme-text-primary)' }}>{c.text}</span>
       {c.showBtn && (
         <button onClick={onEnable} style={{ background: c.btnColor, color: '#fff', border: 'none', borderRadius: 10, padding: '8px 16px', fontSize: 13, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>
           {c.btnText}
         </button>
       )}
       {c.showDisable && (
-        <button onClick={onDisable} style={{ background: '#fff', color: '#64748b', border: '1.5px solid #cbd5e1', borderRadius: 10, padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
+        <button onClick={onDisable} className="theme-transition" style={{ background: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)', border: '1.5px solid var(--theme-border)', borderRadius: 10, padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
           ⏹ Stop
         </button>
       )}

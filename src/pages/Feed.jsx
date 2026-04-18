@@ -184,9 +184,9 @@ const Feed = () => {
                 <span>Cultural Feed</span>
             </h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="flex flex-col gap-10">
                 {/* Main Feed Column */}
-                <div className="lg:col-span-2">
+                <div className="w-full">
                     {/* Create Post Section */}
             {token ? (
                 <div className="mb-12 p-6 border rounded-xl theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
@@ -321,40 +321,6 @@ const Feed = () => {
         </div>
 
 
-                {/* Sidebar Column */}
-                <div className="lg:col-span-1 hidden lg:block">
-                    <div className="p-6 border rounded-xl sticky top-32 shadow-sm theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
-                        <h3 className="text-xl font-serif font-bold mb-6 flex items-center gap-2">
-                            <span>📅</span> Upcoming Experiences
-                        </h3>
-                        {events.length === 0 ? (
-                            <p className="text-sm text-text-secondary italic">No upcoming events.</p>
-                        ) : (
-                            <div className="space-y-4">
-                                {events.map(event => (
-                                    <Link to="/events" key={event.id} className="block group">
-                                        <div className="border border-black/10 rounded-lg p-3 bg-white hover:border-accent-blue transition-colors">
-                                            {event.image_url && (
-                                                <img 
-                                                    src={event.image_url.startsWith('http') ? event.image_url : `${API_BASE_URL}${event.image_url}`} 
-                                                    alt={event.title} 
-                                                    className="w-full h-32 object-cover rounded mb-3"
-                                                />
-                                            )}
-                                            <h4 className="font-bold text-text-primary group-hover:text-accent-blue transition-colors line-clamp-1">{event.title}</h4>
-                                            <div className="text-xs text-text-secondary mt-2 flex flex-col gap-1.5">
-                                                <span className="flex items-center gap-2"><span>📍</span> {event.location || 'Virtual'}</span>
-                                                <span className="flex items-center gap-2"><span>⏰</span> {event.date ? new Date(event.date).toLocaleDateString() : 'TBD'}</span>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
-                        <Link to="/events" className="mt-8 block text-center text-sm font-bold text-accent-terra border border-accent-terra py-2 rounded hover:bg-accent-terra hover:text-white transition-colors">
-                            View All Events
-                        </Link>
-                    </div>
                 </div>
             </div>
         </div>

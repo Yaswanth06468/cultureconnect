@@ -56,12 +56,64 @@ const Translator = () => {
         }
     ];
 
+    const PROFANITY_KEYWORDS = [
+        'fuck', 'shit', 'bitch', 'asshole', 'puta', 'mierda', 'pendejo',
+        'merde', 'connard', 'scheisse', 'saala', 'kamina', 'harami',
+        'lanja', 'munda', 'pichoda', 'bastard', 'slut'
+    ];
+
+    const [isBlocked, setIsBlocked] = useState(() => localStorage.getItem('isBlocked') === 'true');
+    const [violationCount, setViolationCount] = useState(() => parseInt(localStorage.getItem('violationCount') || '0'));
+
     const checkSensitivity = (text, targetLang) => {
+        const lowerText = text.toLowerCase();
+        const foundProfanity = PROFANITY_KEYWORDS.find(word => lowerText.includes(word));
+
+        if (foundProfanity) {
+            const newCount = violationCount + 1;
+            setViolationCount(newCount);
+            localStorage.setItem('violationCount', newCount.toString());
+
+            if (newCount >= 2) {
+                setIsBlocked(true);
+                localStorage.setItem('isBlocked', 'true');
+                return;
+            }
+
+            setActiveAlert({
+                message: "⚠️ SECURITY ALERT: Offensive language detected.",
+                suggestion: "Your account will be PERMANENTLY BLOCKED on the next offense. Please maintain cultural respect.",
+                isViolation: true
+            });
+            return;
+        }
+
         const found = CULTURAL_SENSITIVITY_ALERTS.find(alert => 
             alert.pattern.test(text) && (alert.targetLangs.includes(targetLang) || targetLang === 'random')
         );
         setActiveAlert(found || null);
     };
+
+    if (isBlocked) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-black text-white p-6 text-center">
+                <div className="max-w-md p-10 border-2 border-red-600 rounded-3xl animate-scale-in">
+                    <span className="text-8xl mb-6 block">🚫</span>
+                    <h1 className="text-4xl font-serif font-bold mb-4">Account Permanently Blocked</h1>
+                    <p className="text-red-400 font-bold mb-6">Violated Cultural Respect Policy (Multiple Offenses)</p>
+                    <p className="text-gray-400 text-sm mb-8">
+                        This system detects offensive language and bad words in every language. Your access has been revoked to protect the community.
+                    </p>
+                    <button 
+                        onClick={() => window.location.href = '/'}
+                        className="px-8 py-3 bg-red-600 text-white font-bold rounded-full hover:bg-red-700 transition-colors"
+                    >
+                        Return Home
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
     const [speechRate, setSpeechRate] = useState(1);
@@ -595,13 +647,7 @@ const Translator = () => {
                                 <span className="text-xs font-bold text-text-muted uppercase text-[10px] font-black">Voice Out</span>
                             </label>
 
-                            <button
-                                onClick={() => setInputMode(inputMode === 'voice' ? 'text' : 'voice')}
-                                className="px-5 py-3 border border-black/10 text-text-muted rounded-lg font-bold flex items-center gap-2 hover:bg-bg-secondary transition-colors"
-                                title={inputMode === 'voice' ? 'Switch to Typing' : 'Switch to Voice'}
-                            >
-                                {inputMode === 'voice' ? '⌨️ Type' : '🎤 Voice'}
-                            </button>
+
 
                             <button
                                 onClick={clearText}
@@ -726,16 +772,20 @@ const Translator = () => {
 
                     {/* Cultural Sensitivity Alert Banner */}
                     {activeAlert && (
-                        <div className="mb-8 p-6 rounded-2xl border-2 border-accent-terra bg-accent-terra/5 animate-bounce-subtle shadow-xl relative overflow-hidden group">
-                           <div className="absolute top-0 left-0 w-2 h-full bg-accent-terra"></div>
+                        <div className={`mb-8 p-6 rounded-row rounded-2xl border-2 animate-bounce-subtle shadow-xl relative overflow-hidden group ${activeAlert.isViolation ? 'border-red-600 bg-red-600/10' : 'border-accent-terra bg-accent-terra/5'}`}>
+                           <div className={`absolute top-0 left-0 w-2 h-full ${activeAlert.isViolation ? 'bg-red-600' : 'bg-accent-terra'}`}></div>
                            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 relative z-10">
-                               <div className="w-16 h-16 rounded-full bg-accent-terra text-white flex items-center justify-center text-3xl shadow-lg group-hover:rotate-12 transition-transform">
-                                   ⚠️
+                               <div className={`w-16 h-16 rounded-full text-white flex items-center justify-center text-3xl shadow-lg group-hover:rotate-12 transition-transform ${activeAlert.isViolation ? 'bg-red-600' : 'bg-accent-terra'}`}>
+                                   {activeAlert.isViolation ? '🚫' : '⚠️'}
                                </div>
                                <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <h3 className="text-xl font-serif font-bold text-accent-terra">Cultural Sensitivity Warning</h3>
-                                        <span className="text-[10px] bg-accent-terra text-white px-2 py-0.5 rounded-full font-black uppercase">Critical Insight</span>
+                                        <h3 className={`text-xl font-serif font-bold ${activeAlert.isViolation ? 'text-red-600' : 'text-accent-terra'}`}>
+                                            {activeAlert.isViolation ? 'SECURITY VIOLATION' : 'Cultural Sensitivity Warning'}
+                                        </h3>
+                                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-black uppercase ${activeAlert.isViolation ? 'bg-red-600 text-white' : 'bg-accent-terra text-white'}`}>
+                                            {activeAlert.isViolation ? 'Offence 1 of 2' : 'Critical Insight'}
+                                        </span>
                                     </div>
                                     <p className="text-text-primary text-base font-medium mb-3">
                                         “{activeAlert.message}”
@@ -828,8 +878,8 @@ const Translator = () => {
                             <button 
                                 onClick={savePhrase}
                                 disabled={!transcript || !translatedText}
-                                className={`px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition-all shadow-sm
-                                    ${(!transcript || !translatedText) ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-accent-gold text-black hover:bg-yellow-500 hover:-translate-y-0.5'}`}
+                                className={`px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition-all shadow-sm border border-white/10
+                                    ${(!transcript || !translatedText) ? 'bg-black/20 text-text-muted cursor-not-allowed' : 'bg-accent-gold text-black hover:bg-yellow-500 hover:-translate-y-0.5'}`}
                             >
                                 <span>⭐</span> Save Current Translation
                             </button>
