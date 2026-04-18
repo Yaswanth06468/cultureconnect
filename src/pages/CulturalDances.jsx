@@ -314,7 +314,7 @@ const CulturalDances = () => {
 
     const handleSelectDance = (dance) => {
         setSelectedDance(dance);
-        setShowVideo(true);
+        setShowVideo(false);
     };
 
     return (
@@ -372,41 +372,18 @@ const CulturalDances = () => {
                                 }}
                                 onClick={() => handleSelectDance(dance)}
                             >
-                                <div className="h-4/5 w-full relative overflow-hidden bg-black">
-                                    {playingInlineVideoId === dance.id ? (
-                                        <iframe 
-                                            src={`https://www.youtube.com/embed/${dance.videoId}${dance.videoId.includes('?') ? '&' : '?'}autoplay=1&mute=0&rel=0&controls=1`}
-                                            title={dance.name}
-                                            className="w-full h-full"
-                                            frameBorder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                        ></iframe>
-                                    ) : (
-                                        <>
-                                            <img 
-                                                src={dance.imageUrl} 
-                                                alt={dance.name}
-                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                                loading="lazy"
-                                                onError={(e) => {
-                                                    e.target.onerror = null; 
-                                                    e.target.src = "https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&q=80&w=1000";
-                                                }}
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40"></div>
-                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <button 
-                                                    onClick={(e) => { e.stopPropagation(); setPlayingInlineVideoId(dance.id); }}
-                                                    className="w-16 h-16 bg-accent-terra/90 text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 ring-4 ring-white/20"
-                                                >
-                                                    <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M4.5 3.5v13L16 10 4.5 3.5z" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </>
-                                    )}
+                                <div className="h-4/5 w-full relative overflow-hidden">
+                                    <img 
+                                            src={dance.imageUrl} 
+                                            alt={dance.name}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                            loading="lazy"
+                                            onError={(e) => {
+                                                e.target.onerror = null; 
+                                                e.target.src = "https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&q=80&w=1000";
+                                            }}
+                                        />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40"></div>
                                 </div>
                                 <div className="absolute bottom-0 left-0 w-full p-4 bg-bg-secondary h-1/5 flex items-center justify-between border-t border-black/10" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                                     <h3 className="text-lg font-serif font-bold text-text-primary truncate" style={{ color: 'var(--theme-text-primary)' }}>{dance.name}</h3>
@@ -436,7 +413,7 @@ const CulturalDances = () => {
                             <div className="relative h-64 md:h-[500px] w-full bg-black group">
                                 {showVideo ? (
                                     <iframe 
-                                        src={`https://www.youtube.com/embed/${selectedDance.videoId}${selectedDance.videoId.includes('?') ? '&' : '?'}autoplay=1&rel=0`}
+                                        src={`https://www.youtube.com/embed/${selectedDance.videoId}?autoplay=1&mute=0&rel=0&controls=0&modestbranding=1&playsinline=1&start=30&end=60`}
                                         title={selectedDance.name}
                                         className="w-full h-full"
                                         frameBorder="0"
