@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 
 const dancesData = [
     {
@@ -295,6 +295,22 @@ const CulturalDances = () => {
     const [selectedDance, setSelectedDance] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedState, setSelectedState] = useState("All");
+    const iframeRef = useRef(null);
+
+    // Auto-unmute after the video starts playing (bypass browser autoplay restriction)
+    useEffect(() => {
+        if (selectedDance && iframeRef.current) {
+            const timer = setTimeout(() => {
+                try {
+                    iframeRef.current.contentWindow.postMessage(
+                        JSON.stringify({ event: 'command', func: 'unMute' }),
+                        '*'
+                    );
+                } catch (e) { /* cross-origin, ignore */ }
+            }, 1500);
+            return () => clearTimeout(timer);
+        }
+    }, [selectedDance]);
 
     const states = useMemo(() => {
         const uniqueStates = ["All", ...new Set(dancesData.map(d => d.state))];
@@ -409,7 +425,8 @@ const CulturalDances = () => {
                         >
                             <div className="relative h-64 md:h-[500px] w-full bg-black group">
                                 <iframe 
-                                    src={`https://www.youtube.com/embed/${selectedDance.videoId}?autoplay=1&mute=1&rel=0&controls=1&modestbranding=1&playsinline=1&start=30&end=60`}
+                                    ref={iframeRef}
+                                    src={`https://www.youtube.com/embed/${selectedDance.videoId}?autoplay=1&mute=1&rel=0&controls=1&modestbranding=1&playsinline=1&start=5&enablejsapi=1&origin=${window.location.origin}`}
                                     title={selectedDance.name}
                                     className="w-full h-full pointer-events-auto"
                                     frameBorder="0"
