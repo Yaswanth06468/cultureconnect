@@ -616,7 +616,7 @@ const Translator = () => {
                                     className={`px-8 py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-md ${
                                         isListening 
                                         ? 'bg-accent-terra text-white hover:bg-red-800 animate-pulse' 
-                                        : 'bg-text-primary text-inverse hover:bg-text-secondary'
+                                        : 'bg-btn text-btn hover:opacity-90 transition-all shadow-lg'
                                     }`}
                                 >
                                     {isListening ? (
@@ -713,7 +713,7 @@ const Translator = () => {
                                         title={tone.label}
                                         className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border shadow-sm ${
                                             selectedTone === tone.id 
-                                            ? 'bg-text-primary text-inverse border-text-primary scale-110' 
+                                            ? 'bg-btn text-btn border-border scale-110 shadow-lg' 
                                             : 'bg-white text-text-muted border-black/10 hover:border-text-primary hover:scale-105'
                                         }`}
                                     >

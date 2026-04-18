@@ -239,7 +239,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
                             if (!completedTasks.includes(task)) toggleTask(task);
                             onClose();
                         }}
-                        className={`px-10 py-4 font-bold rounded-lg transition-colors shadow-lg flex items-center gap-3 mx-auto ${completedTasks.includes(task) ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-text-primary text-inverse hover:bg-bg-accent'}`}
+                        className={`px-10 py-4 font-bold rounded-lg transition-colors shadow-lg flex items-center gap-3 mx-auto ${completedTasks.includes(task) ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-btn text-btn hover:opacity-90'}`}
                     >
                         {completedTasks.includes(task) ? 'Task Completed ✓' : 'Accept Challenge & Start'}
                     </button>
@@ -783,7 +783,7 @@ const CultureSwap = () => {
                             <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-accent-teal/5 rounded-full blur-3xl group-hover:bg-accent-teal/10 transition-all duration-1000"></div>
 
                             <div className="relative z-10">
-                                <div className="w-28 h-28 md:w-40 md:h-40 bg-[#faf7f2] rounded-full mx-auto mb-10 flex items-center justify-center text-6xl border border-[#f0ece6] shadow-inner relative overflow-hidden">
+                                <div className="w-28 h-28 md:w-40 md:h-40 bg-bg-secondary rounded-full mx-auto mb-10 flex items-center justify-center text-6xl border border-border shadow-inner relative overflow-hidden theme-transition">
                                     <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5"></div>
                                     <span className={!isMatching ? 'animate-handshake relative z-10' : 'animate-spin-slow relative z-10'}>
                                         {isMatching ? '🌍' : '🤝'}
@@ -799,7 +799,7 @@ const CultureSwap = () => {
                                     onClick={startMatch}
                                     disabled={isMatching}
                                     className={`relative px-12 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform active:scale-95 shadow-xl group/btn overflow-hidden
-                                        ${isMatching ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-text-primary text-inverse hover:shadow-2xl hover:-translate-y-1'}`}
+                                        ${isMatching ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-btn text-btn hover:shadow-2xl hover:-translate-y-1'}`}
                                 >
                                     <span className="relative z-10">{isMatching ? 'Calculating Affinity...' : 'Commence Lifestyle Swap'}</span>
                                     {!isMatching && <div className="absolute inset-0 bg-gradient-to-r from-accent-terra/20 to-accent-gold/20 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>}
@@ -821,7 +821,7 @@ const CultureSwap = () => {
                                 { icon: '🗣️', title: 'Oral Heritage', desc: 'Learn the music of their tongue', color: 'teal' },
                                 { icon: '🧩', title: 'Visual Soul', desc: 'Connect through art and rhythm', color: 'terra' }
                             ].map((feat, i) => (
-                                <div key={i} className="bg-white/50 backdrop-blur-sm border border-black/5 p-8 rounded-2xl hover:bg-white transition-all duration-500 group">
+                                <div key={i} className="bg-bg-secondary/50 backdrop-blur-sm border border-border p-8 rounded-2xl hover:bg-bg-secondary transition-all duration-500 group theme-transition">
                                     <div className={`w-12 h-12 rounded-xl bg-${feat.color === 'terra' ? 'accent-terra' : `accent-${feat.color}`}/5 flex items-center justify-center text-2xl border border-black/5 mb-4 group-hover:scale-110 transition-transform`}>
                                         {feat.icon}
                                     </div>

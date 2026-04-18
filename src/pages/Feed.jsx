@@ -213,7 +213,7 @@ const Feed = () => {
                             onChange={(e) => setTag(e.target.value)}
                             className="p-3 border border-text-secondary bg-bg-input text-text-primary theme-transition"
                         />
-                        <button type="submit" className="self-start px-6 py-2 bg-text-primary text-inverse font-bold hover:bg-accent-blue transition-colors theme-transition">
+                        <button type="submit" className="self-start px-8 py-3 bg-btn text-btn font-bold hover:bg-accent-blue hover:text-white transition-all duration-300 theme-transition rounded-lg shadow-md">
                             Post
                         </button>
                     </form>
