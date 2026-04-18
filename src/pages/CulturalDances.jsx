@@ -19,7 +19,7 @@ const dancesData = [
         id: 3,
         name: "Kathakali",
         state: "Kerala",
-        description: "Kathakali is a major form of classical Indian dance. It is a story play genre of art, but one distinguished by the elaborately colorful make-up, costumes and face masks that the traditionally male actor-dancers wear.",
+        description: "Kathakali is a major form of classical Indian dance. It is a story play genre of art, but one distinguished by the elaborately colorful make-up, costumes and face masks that the traditionally male actor-dancers wear. The stories are generally based on Hindu epics like the Ramayana and Mahabharata, performed with intense facial expressions and hand gestures.",
         imageUrl: "/images/dances/kathakali.jpg"
     },
     {
@@ -103,113 +103,155 @@ const dancesData = [
         id: 15,
         name: "Cheraw Dance",
         state: "Mizoram",
-        description: "Also known as the Bamboo Dance, Cheraw is a ritual dance performed in Mizoram. It consists of four people holding two pairs of long bamboo staves which are clapped together in a rhythmic fashion.",
+        description: "Also known as the Bamboo Dance, Cheraw is a ritual dance performed in Mizoram. It consists of four people holding two pairs of long bamboo staves which are clapped together in a rhythmic fashion. The dancers step in and out of the bamboo squares with great precision and grace, synchronized to the beating of the drums and local musical instruments.",
         imageUrl: "/images/dances/cheraw.jpg"
     },
     {
         id: 16,
         name: "Rouf",
         state: "Jammu & Kashmir",
-        description: "Rouf is a beautiful and graceful dance performed by women in the Kashmir Valley. It is mostly performed during the spring season and on special occasions like Eid and the harvest season.",
+        description: "Rouf is a beautiful and graceful dance performed by women in the Kashmir Valley. It is mostly performed during the spring season and on special occasions like Eid and the harvest season. The dancers form two rows facing each other and perform subtle footwork while singing traditional folk songs that celebrate the beauty of nature and seasonal changes.",
         imageUrl: "/images/dances/rouf.jpg"
     },
     {
         id: 17,
         name: "Bardo Chham",
         state: "Arunachal Pradesh",
-        description: "Bardo Chham is a ritual masked dance of the Sherdukpen community of Arunachal Pradesh. The dance depicts the victory of good over evil and is performed with large masks and colorful costumes.",
+        description: "Bardo Chham is a ritual masked dance of the Sherdukpen community of Arunachal Pradesh. The dance depicts the victory of good over evil and is performed with large masks and colorful costumes. Each mask represents a different animal, and the performance is believed to ward off evil spirits and bring prosperity and harmony to the community.",
         imageUrl: "/images/dances/bardo_chham.jpg"
     },
     {
         id: 18,
         name: "Bidesiya",
         state: "Bihar",
-        description: "Bidesiya is a form of Bhojpuri folk theater that originated in the 20th century. It deals with social issues such as the pain of migration, the plight of women, and the conflict between tradition and modernity.",
+        description: "Bidesiya is a form of Bhojpuri folk theater that originated in the 20th century. It deals with social issues such as the pain of migration, the plight of women, and the conflict between tradition and modernity. The performances combine music, dance, and dialogue to tell poignant stories that resonate deeply with the rural population and celebrate Bihari resilience.",
         imageUrl: "/images/dances/bidesiya.jpg"
     },
     {
         id: 19,
         name: "Karma Naach",
         state: "Chhattisgarh",
-        description: "Karma dance is a traditional dance of Central India, performed by communities in Chhattisgarh, Jharkhand, and Madhya Pradesh. It is performed during the Karma festival to worship the Karma tree, a symbol of fertility.",
+        description: "Karma dance is a traditional dance of Central India, performed by tribal communities. It is performed during the Karma festival to worship the Karma tree, a symbol of fertility and prosperity. Dancers link arms and move in a circular motion, accompanied by the rhythmic beats of the Mandar drum and folk songs that celebrate the bounty of nature and communal harmony.",
         imageUrl: "/images/dances/karma_naach.jpg"
     },
     {
         id: 20,
         name: "Fugdi",
         state: "Goa",
-        description: "Fugdi is a Goan folk dance performed by women in the Konkan region. It is usually performed during religious festivals like Ganesh Chaturthi and Vrata. The dance is fast-paced and involves rhythmic clapping.",
+        description: "Fugdi is a Goan folk dance performed by women in the Konkan region. It is usually performed during religious festivals like Ganesh Chaturthi and Vrata. The dance starts at a slow pace but gradually becomes extremely fast, with dancers spinning in pairs while holding hands and creating a unique rhythmic sound with their breath and movements.",
         imageUrl: "/images/dances/fugdi.jpg"
     },
     {
         id: 21,
         name: "Phag Dance",
         state: "Haryana",
-        description: "Phag is a popular seasonal folk dance of Haryana, performed by farmers to celebrate the month of Phalgun (spring). It is a mixed dance performed by both men and women to the beats of the Dhol and Tasha.",
+        description: "Phag is a popular seasonal folk dance of Haryana, performed by farmers to celebrate the month of Phalgun and the onset of spring. It is a mixed dance performed by both men and women to the beats of the Dhol, Tasha, and Nagara. The dance reflects the joy of a good harvest and the vibrant, energetic spirit of the Haryanvi culture.",
         imageUrl: "/images/dances/phag_dance.jpg"
     },
     {
         id: 22,
         name: "Nati",
         state: "Himachal Pradesh",
-        description: "Nati is the most popular folk dance of Himachal Pradesh. It is a slow and graceful community dance performed in a circular or semi-circular formation. It holds the Guinness World Record for the largest folk dance.",
+        description: "Nati is the most popular folk dance of Himachal Pradesh, specifically in the Kullu and Shimla regions. It is a slow and graceful community dance performed in a circular formation with dancers traditionally dressed in colorful Himachali caps and waistcoats. It holds the Guinness World Record for the largest folk dance performance in a single location, showcasing mountain heritage.",
         imageUrl: "/images/dances/nati.jpg"
     },
     {
         id: 23,
         name: "Matki Dance",
         state: "Madhya Pradesh",
-        description: "Matki is a folk dance of the Malwa region in Madhya Pradesh. It is performed by women who balance several earthen pots (matkis) on their heads while dancing to the rhythmic beats of a dhol.",
+        description: "Matki is a folk dance of the Malwa region in Madhya Pradesh, usually performed at weddings and festivals. It is performed by women who balance several earthen pots (matkis) on their heads while dancing to the rhythmic beats of a dhol. The skill lies in maintaining perfect balance while executing complex footwork and graceful hand gestures that tell local stories.",
         imageUrl: "/images/dances/matki_dance.jpg"
     },
     {
         id: 24,
         name: "Laho",
         state: "Meghalaya",
-        description: "Laho is a traditional folk dance of the Jaintia people in Meghalaya. It is performed during communal festivals where men and women dance together in groups, usually accompanied by a musician playing the drum.",
+        description: "Laho is a traditional folk dance of the Jaintia people in Meghalaya, often performed during communal festivals. It is performed by men and women who link arms and move in synchronized steps, usually accompanied by a musician playing the drum and flute. The dance is a celebration of community bonds and is performed without any complex props, focusing on rhythmic togetherness.",
         imageUrl: "/images/dances/laho.jpg"
     },
     {
         id: 25,
         name: "Chang Lo",
         state: "Nagaland",
-        description: "Also known as Sua Lua, Chang Lo is a folk dance of the Chang tribe of Nagaland. Traditionally performed to celebrate victory over enemies, it is now performed during the Poanglem festival to mark the harvest.",
+        description: "Also known as Sua Lua, Chang Lo is a folk dance of the Chang tribe of Nagaland. Traditionally performed to celebrate victory over enemies, it is now performed during the Poanglem festival to mark the harvest. The dancers wear traditional warrior attire, including colorful feathers and ornaments, performing vigorous and rhythmic movements that honor tribal legacy.",
         imageUrl: "/images/dances/chang_lo.jpg"
     },
     {
         id: 26,
         name: "Singhi Chham",
         state: "Sikkim",
-        description: "The Singhi Chham, or Snow Lion Dance, is a masked dance from Sikkim. The snow lion is a cultural symbol of Tibet and the Himalayan region, representing strength, courage, and fearlessness.",
+        description: "The Singhi Chham, or Snow Lion Dance, is a spectacular masked dance from Sikkim. The snow lion is a cultural symbol of the Himalayan region, representing strength, courage, and fearlessness. Performers wear elaborate furry costumes and masks to mimic the movements of the mythical lion, accompanied by traditional monastic music and rhythmic drum beats.",
         imageUrl: "/images/dances/singhi_chham.jpg"
     },
     {
         id: 27,
         name: "Perini Shivatandavam",
         state: "Telangana",
-        description: "Perini Shivatandavam is an ancient dance form from Telangana that originated during the Kakatiya dynasty. It is a vigorous and rhythmic dance traditionally performed by warriors to invoke the power of Lord Shiva.",
+        description: "Perini Shivatandavam is an ancient dance form from Telangana that originated during the Kakatiya dynasty. It is a vigorous and rhythmic dance traditionally performed by warriors to invoke the power of Lord Shiva before battle. The dance is characterized by 'Prerana' (inspiration), featuring intense footwork and powerful movements that reflect a deep spiritual and warrior spirit.",
         imageUrl: "/images/dances/perini.jpg"
     },
     {
         id: 28,
         name: "Hojagiri",
         state: "Tripura",
-        description: "Hojagiri is a folk dance of the Reang community in Tripura. It is a unique balance dance where women balance bottles and lamps on their heads and hands while performing intricate rhythmic movements.",
+        description: "Hojagiri is a unique folk dance of the Reang community in Tripura. It is a balance dance where women balance bottles and lamps on their heads and hands while performing intricate rhythmic movements with their lower bodies. The dance requires years of practice and incredible core strength to maintain balance while moving to the beats of the Khamb and Sumui instruments.",
         imageUrl: "/images/dances/hojagiri.jpg"
     },
     {
         id: 29,
         name: "Choliya",
         state: "Uttarakhand",
-        description: "Choliya is a martial folk dance from the Kumaon region of Uttarakhand. It is a sword dance that dates back over a thousand years and was traditionally performed by Rajputs at wedding processions.",
+        description: "Choliya is a martial folk dance from the Kumaon region of Uttarakhand, dating back over a thousand years. It is a sword dance that was traditionally performed by Rajputs at wedding processions to ward off evil spirits. The dancers, dressed in traditional white attire with colorful belts, perform stylized combat sequences with swords and shields to the accompaniment of trumpets.",
         imageUrl: "/images/dances/choliya.jpg"
     },
     {
         id: 30,
         name: "Shondol",
         state: "Ladakh",
-        description: "Shondol is the royal dance of Ladakh, famously known as the 'Royal Dance of Ladakh'. It was traditionally performed for the King of Ladakh on special occasions and involve graceful movements with prayer flags.",
+        description: "Shondol is the royal dance of Ladakh, often referred to as the 'King of Dances'. It was traditionally performed for the royalty of Ladakh on special occasions and is known for its slow, elegant movements. The dancers wear the traditional 'Perak' headgear adorned with turquoise stones and 'Sulma' robes, moving gracefully to the sounds of traditional Ladakhi instruments.",
         imageUrl: "/images/dances/shondol.jpg"
+    },
+    {
+        id: 31,
+        name: "Paika Dance",
+        state: "Jharkhand",
+        description: "Paika is a vibrant martial folk dance from Jharkhand, traditionally performed by the Munda community. Dancers hold swords and shields, showcasing a stylized display of warrior spirit and weapon worship. The performance is characterized by acrobatic movements, high jumps, and rhythmic footwork, accompanied by the energetic beats of the Nagara and Dhak drums.",
+        imageUrl: "/images/dances/paika.png"
+    },
+    {
+        id: 32,
+        name: "Mohiniyattam",
+        state: "Kerala",
+        description: "Mohiniyattam is a classical dance form from Kerala, known for its sheer elegance and feminine grace. The name literally means 'dance of the enchantress', and it is characterized by fluid, swaying movements of the torso that resemble the gentle motion of palm leaves in the wind. The dancers wear exquisite white and gold 'Kasavu' sarees and perform stories of love and devotion.",
+        imageUrl: "/images/dances/mohiniyattam.png"
+    },
+    {
+        id: 33,
+        name: "Nicobari Dance",
+        state: "Andaman and Nicobar Islands",
+        description: "Nicobari dance is the most prominent folk dance of the Andaman and Nicobar Islands, performed by the Nicobarese tribe during the 'Ossuary Feast'. Dancers move in a circular formation, swaying rhythmically to traditional chants and vocal rhythms. They often wear traditional costumes made of green coconut and plantain leaves, celebrating their deep connection with nature and ancestral spirits.",
+        imageUrl: "/images/dances/nicobari.png"
+    },
+    {
+        id: 34,
+        name: "Tarpa Dance",
+        state: "Dadra and Nagar Haveli and Daman and Diu",
+        description: "Tarpa is a joyous harvest dance performed by the Varli and Kokna tribes of Dadra and Nagar Haveli. Dancers hold each other's waists and move in a grand spiral or circular formation around a musician playing the 'Tarpa', a large wind instrument made of gourd and bamboo. The dance symbolizes the cycle of life and is performed late into the night during the harvest season.",
+        imageUrl: "/images/dances/tarpa.png"
+    },
+    {
+        id: 35,
+        name: "Kolkali",
+        state: "Lakshadweep",
+        description: "Kolkali is a rhythmic folk dance popular in the Lakshadweep Islands, performed exclusively by men using short wooden sticks. The dancers form pairs and move in circles, striking their sticks together in a coordinated and increasingly fast-paced rhythm. It is a highly energetic performance that requires great agility and synchronization, reflecting the maritime culture of the islands.",
+        imageUrl: "/images/dances/kolkali.png"
+    },
+    {
+        id: 36,
+        name: "Garadi",
+        state: "Puducherry",
+        description: "Garadi is a traditional dance from Puducherry, believed to have originated during the celebration of Lord Rama's victory in the Ramayana. Male dancers perform monkey-like postures and gestures, wearing colorful costumes and ten iron rings called 'Anjali' on each leg. The rings create a rhythmic chiming sound as the dancers move to the beats of the large 'Ramadolu' drums.",
+        imageUrl: "/images/dances/garadi.png"
     }
 ];
 
