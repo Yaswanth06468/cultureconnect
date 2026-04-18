@@ -180,7 +180,9 @@ const Feed = () => {
     return (
         <div className="min-h-screen pt-24 pb-12 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
         <div className="container mx-auto px-6 max-w-6xl">
-            <h1 className="text-4xl font-serif font-bold text-text-primary mb-8 border-b-2 pb-4 theme-transition" style={{ borderColor: 'var(--theme-border)' }}>Cultural Feed</h1>
+            <h1 className="text-4xl font-serif font-bold text-text-primary mb-8 border-b-2 pb-4 theme-transition animate-slide-up-reveal" style={{ borderColor: 'var(--theme-border)' }}>
+                <span>Cultural Feed</span>
+            </h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Main Feed Column */}

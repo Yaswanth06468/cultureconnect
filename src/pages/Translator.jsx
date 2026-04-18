@@ -513,11 +513,11 @@ const Translator = () => {
     return (
         <div className="min-h-screen pt-24 pb-12 px-6 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
             <div className="container mx-auto max-w-5xl">
-                <div className="mb-10 text-center animate-fade-in-up">
+                <div className="mb-10 text-center animate-slide-up-reveal">
                     <h1 className="text-4xl md:text-5xl font-serif font-bold text-text-primary mb-4">
-                        Voice Translator
+                        <span>Voice Translator</span>
                     </h1>
-                    <p className="text-lg text-text-muted max-w-2xl mx-auto">
+                    <p className="text-lg text-text-muted max-w-2xl mx-auto animate-fade-in-up delay-300">
                         Speak and translate with <span className="text-accent-terra font-bold">Emotion-Aware AI</span> that understands cultural context and social nuances.
                     </p>
                 </div>

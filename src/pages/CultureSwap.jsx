@@ -763,12 +763,12 @@ const CultureSwap = () => {
 
             <div className="container mx-auto max-w-5xl relative">
                 
-                <div className="text-center mb-16">
+                <div className="text-center mb-16 animate-slide-up-reveal">
                     <span className="text-accent-terra uppercase tracking-widest text-xs font-bold mb-4 block">Lifestyle Exchange</span>
                     <h1 className="text-4xl md:text-6xl font-serif font-medium text-text-primary mb-6">
-                        Culture <span className="italic font-light">Swap</span>
+                        <span>Culture <span className="italic font-light">Swap</span></span>
                     </h1>
-                    <p className="text-lg text-text-secondary max-w-2xl mx-auto font-light">
+                    <p className="text-lg text-text-secondary max-w-2xl mx-auto font-light animate-fade-in-up delay-300">
                         Don't just chat. <span className="text-text-primary font-bold">Exchange lifestyles.</span>
                     </p>
                 </div>

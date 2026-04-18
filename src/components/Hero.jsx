@@ -9,31 +9,31 @@ const Hero = () => {
             <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
                 {/* Text Content */}
-                <div className="z-20 order-2 md:order-1">
+                <div className="z-20 order-2 md:order-1 animate-slide-left">
                     <div className="mb-6 inline-flex items-center gap-3">
                         <span className="w-12 h-[1px] bg-accent-gold"></span>
                         <span className="text-accent-gold uppercase tracking-[0.2em] text-xs font-semibold">Bridging Worlds</span>
                     </div>
 
                     <h1
-                        className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold mb-8 leading-[1.1]"
+                        className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold mb-8 leading-[1.1] animate-slide-up-reveal"
                         style={{ color: 'var(--theme-text-primary)' }}
                     >
-                        Connect Through <br />
+                        <span>Connect Through <br /></span>
                         <span className="italic text-accent-terra">Heritage.</span>
                     </h1>
 
                     <p
-                        className="text-lg md:text-xl max-w-lg mb-10 leading-relaxed font-light"
+                        className="text-lg md:text-xl max-w-lg mb-10 leading-relaxed font-light animate-fade-in-up delay-300"
                         style={{ color: 'var(--theme-text-secondary)' }}
                     >
-                        A digital sanctuary preserving the world's rich traditions. diverse stories, and authentic voices.
+                        A digital sanctuary preserving the world's rich traditions, diverse stories, and authentic voices.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-6">
+                    <div className="flex flex-col sm:flex-row gap-6 animate-fade-in-up delay-500">
                         <Link
                             to="/dances"
-                            className="px-8 py-4 font-medium transition-colors duration-300 text-center"
+                            className="px-8 py-4 font-medium transition-colors duration-300 text-center hover:bg-accent-terra hover:text-white"
                             style={{
                                 backgroundColor: 'var(--theme-text-primary)',
                                 color: 'var(--theme-bg-primary)',
@@ -43,7 +43,7 @@ const Hero = () => {
                         </Link>
                         <a
                             href="#about"
-                            className="px-8 py-4 font-medium transition-colors duration-300 text-center"
+                            className="px-8 py-4 font-medium transition-colors duration-300 text-center hover:bg-bg-secondary"
                             style={{
                                 border: `1px solid var(--theme-border)`,
                                 color: 'var(--theme-text-primary)',
