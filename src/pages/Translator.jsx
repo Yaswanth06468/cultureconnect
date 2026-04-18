@@ -13,6 +13,53 @@ const Translator = () => {
     const isSpeakingRef = useRef(false);
     const currentAudioRef = useRef(null);
     const finalizedTranscriptRef = useRef(''); // Holds the confirmed English text
+    const [activeAlert, setActiveAlert] = useState(null);
+
+    const CULTURAL_SENSITIVITY_ALERTS = [
+        {
+            pattern: /\b(what|what do you want)\b/i,
+            targetLangs: ['ja', 'ko'],
+            message: "Directly asking 'What?' can sound blunt or demanding in Japanese/Korean social norms.",
+            suggestion: "Use 'Excuse me' or 'Could you clarify that?' (Sumimasen/Jeogyo)."
+        },
+        {
+            pattern: /\b(stupid|idiot|dumb)\b/i,
+            targetLangs: ['ar', 'hi', 'zh-CN'],
+            message: "Even in casual context, these words carry high social stigma and can escalate conflicts rapidly in these cultures.",
+            suggestion: "Use 'Misunderstanding' or 'Incorrect'."
+        },
+        {
+            pattern: /\b(no|i can't|refuse)\b/i,
+            targetLangs: ['ja', 'ko', 'zh-CN'],
+            message: "In high-context East Asian cultures, direct negation is often avoided to 'save face'.",
+            suggestion: "Try 'It might be difficult' (Muzukashii) or 'I will consider it' (Kangaete okimasu)."
+        },
+        {
+            pattern: /\b(hurry up|fast|now)\b/i,
+            targetLangs: ['fr', 'it', 'es'],
+            message: "Demanding speed can be seen as extreme micro-aggression in slower-paced social interactions.",
+            suggestion: "Use 'As soon as possible' (Dès que possible) or 'When you have a moment'."
+        },
+        {
+            pattern: /\b(okay|ok)\b/i,
+            targetLangs: ['ar'],
+            message: "In some contexts, a simple 'OK' can be perceived as dismissive or lacking respect for the detail of the conversation.",
+            suggestion: "Use 'Insha'Allah' (If God wills) or 'Tayeb' (Good/Fine)."
+        },
+        {
+            pattern: /\b(you)\b/i,
+            targetLangs: ['ja'],
+            message: "Specifying 'Anata' (You) is often unnecessary and can sound overly familiar or accusatory.",
+            suggestion: "Omit the pronoun or use the person's name + '-san'."
+        }
+    ];
+
+    const checkSensitivity = (text, targetLang) => {
+        const found = CULTURAL_SENSITIVITY_ALERTS.find(alert => 
+            alert.pattern.test(text) && (alert.targetLangs.includes(targetLang) || targetLang === 'random')
+        );
+        setActiveAlert(found || null);
+    };
 
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
     const [speechRate, setSpeechRate] = useState(1);
@@ -136,6 +183,8 @@ const Translator = () => {
                     
                     const toneToUse = selectedToneRef.current !== 'default' ? selectedToneRef.current : detected.toLowerCase();
                     const finalTone = toneToUse.charAt(0).toUpperCase() + toneToUse.slice(1);
+
+                    checkSensitivity(newestFinalPiece, currentLang);
 
                     translateText(newestFinalPiece, sourceLangRef.current, currentLang).then((translatedPiece) => {
                         if (translatedPiece) {
@@ -415,6 +464,7 @@ const Translator = () => {
         setTranscript('');
         setTranslatedText('');
         finalizedTranscriptRef.current = '';
+        setActiveAlert(null);
     };
 
     return (
@@ -600,6 +650,48 @@ const Translator = () => {
                         </div>
                     </div>
 
+                    {/* Cultural Sensitivity Alert Banner */}
+                    {activeAlert && (
+                        <div className="mb-8 p-6 rounded-2xl border-2 border-accent-terra bg-accent-terra/5 animate-bounce-subtle shadow-xl relative overflow-hidden group">
+                           <div className="absolute top-0 left-0 w-2 h-full bg-accent-terra"></div>
+                           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 relative z-10">
+                               <div className="w-16 h-16 rounded-full bg-accent-terra text-white flex items-center justify-center text-3xl shadow-lg group-hover:rotate-12 transition-transform">
+                                   ⚠️
+                               </div>
+                               <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <h3 className="text-xl font-serif font-bold text-accent-terra">Cultural Sensitivity Warning</h3>
+                                        <span className="text-[10px] bg-accent-terra text-white px-2 py-0.5 rounded-full font-black uppercase">Critical Insight</span>
+                                    </div>
+                                    <p className="text-text-primary text-base font-medium mb-3">
+                                        “{activeAlert.message}”
+                                    </p>
+                                    <div className="bg-white/60 p-3 rounded-lg border border-accent-terra/20 inline-flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                        <p className="text-sm font-bold text-accent-terra flex items-center gap-2">
+                                            <span>💡 Suggested alternative:</span>
+                                            <span className="text-text-primary italic">“{activeAlert.suggestion}”</span>
+                                        </p>
+                                        <button 
+                                            onClick={() => speakText(activeAlert.suggestion, 'en-US')}
+                                            className="text-[10px] font-black uppercase tracking-widest bg-accent-terra text-white px-3 py-1 rounded hover:bg-red-800 transition-colors flex items-center gap-1 shadow-sm"
+                                        >
+                                            🔊 Listen
+                                        </button>
+                                    </div>
+                               </div>
+                               <button 
+                                    onClick={() => setActiveAlert(null)}
+                                    className="p-2 text-accent-terra hover:bg-accent-terra/10 rounded-full transition-colors self-start md:self-center"
+                               >
+                                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                   </svg>
+                               </button>
+                           </div>
+                           <div className="absolute -bottom-10 -right-10 text-[10rem] text-accent-terra/5 font-serif italic pointer-events-none select-none">Respect</div>
+                        </div>
+                    )}
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Original Speech */}
                         <div className="flex flex-col h-[400px]">
@@ -618,7 +710,7 @@ const Translator = () => {
                                 <span className="w-2 h-2 rounded-full bg-accent-teal"></span>
                                 Translated {targetLang !== 'random' && `(${languages.find(l => l.code === targetLang)?.name})`}
                             </h2>
-                            <div className="flex-1 p-6 border border-black/10 rounded-xl overflow-y-auto whitespace-pre-wrap text-text-primary text-lg leading-relaxed shadow-inner font-sans scroll-smooth" style={{ background: '#faf5ef' }}>
+                            <div className="flex-1 p-6 border rounded-xl overflow-y-auto whitespace-pre-wrap text-text-primary text-lg leading-relaxed shadow-inner font-sans scroll-smooth theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
                                 {translatedText || <div className="w-full h-full flex items-center justify-center text-text-muted italic opacity-50">Translation will appear here...</div>}
                             </div>
                         </div>
