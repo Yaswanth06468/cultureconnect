@@ -853,7 +853,7 @@ const CultureSwap = () => {
                         
                         {/* Live Status Sidebar - The Passport */}
                         <div className="lg:col-span-4 flex flex-col gap-6">
-                            <div className="bg-white border border-black/5 rounded-[2rem] p-8 shadow-xl relative overflow-hidden">
+                            <div className="border border-black/5 rounded-[2rem] p-8 shadow-xl relative overflow-hidden theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-accent-gold/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
                                 
                                 <div className="flex items-center justify-between mb-8 relative z-10">
@@ -870,15 +870,15 @@ const CultureSwap = () => {
                                     </div>
                                 </div>
                                 
-                                <div className="text-center mb-10 relative z-10 bg-[#faf7f2]/50 p-8 rounded-3xl border border-[#f0ece6]">
-                                    <div className="w-24 h-24 rounded-full bg-white mx-auto mb-6 flex items-center justify-center text-5xl shadow-sm border border-black/5 relative group/avatar">
+                                <div className="text-center mb-10 relative z-10 p-8 rounded-3xl border theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
+                                    <div className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center text-5xl shadow-sm border relative group/avatar theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)', borderColor: 'var(--theme-border)' }}>
                                         <div className="absolute inset-2 border-2 border-dashed border-accent-gold/20 rounded-full group-hover:rotate-45 transition-transform duration-700"></div>
                                         {activeSwap.avatar}
                                     </div>
                                     <h2 className="text-3xl font-serif font-medium text-text-primary leading-tight mb-2">{cleanName(activeSwap.name)}</h2>
                                     <p className="text-[10px] font-bold text-accent-terra uppercase tracking-[0.2em] mb-4">{activeSwap.culture}</p>
                                     
-                                    <div className="flex items-center justify-center gap-2 text-xs text-text-secondary bg-white/80 py-2 px-4 rounded-full w-fit mx-auto border border-black/5">
+                                    <div className="flex items-center justify-center gap-2 text-xs text-text-secondary py-2 px-4 rounded-full w-fit mx-auto border theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)', borderColor: 'var(--theme-border)' }}>
                                         <span className="opacity-60">Located in</span>
                                         <span className="font-bold text-text-primary">{activeSwap.location}</span>
                                     </div>
@@ -921,7 +921,7 @@ const CultureSwap = () => {
                                 </button>
                             </div>
 
-                            <div className="bg-text-primary p-10 rounded-[2rem] text-white shadow-2xl relative overflow-hidden group">
+                            <div className="p-10 rounded-[2rem] shadow-2xl relative overflow-hidden group theme-transition" style={{ backgroundColor: 'var(--theme-btn-bg)', color: 'var(--theme-btn-text)' }}>
                                 <div className="relative z-10">
                                     <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent-gold mb-6 opacity-60">Cultural Wisdom</h4>
                                     <p className="font-serif italic text-xl leading-relaxed font-light mb-8 group-hover:translate-x-1 transition-transform">
@@ -937,7 +937,7 @@ const CultureSwap = () => {
                         <div className="lg:col-span-8 flex flex-col gap-6 animate-slide-up">
                             
                             {/* Theme Header */}
-                            <div className="bg-white border border-black/5 rounded-[2rem] p-10 shadow-sm relative overflow-hidden group">
+                            <div className="border border-black/5 rounded-[2rem] p-10 shadow-sm relative overflow-hidden group theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                                 <div className="absolute top-0 left-0 w-1 h-full bg-accent-terra opacity-20 group-hover:opacity-100 transition-opacity"></div>
                                 <div className="relative z-10">
                                     <span className="text-accent-terra uppercase tracking-[0.3em] text-[10px] font-bold mb-3 block">Current Assignment</span>
@@ -951,9 +951,10 @@ const CultureSwap = () => {
                                 {/* Food Task Card */}
                                 <div 
                                     onClick={() => setSelectedTask('food')}
-                                    className="group relative bg-white border border-[#f0f0f0] rounded-[2rem] p-3 shadow-md hover:shadow-2xl transition-all cursor-pointer h-[420px] overflow-hidden"
+                                    className="group relative border border-[#f0f0f0] rounded-[2rem] p-3 shadow-md hover:shadow-2xl transition-all cursor-pointer h-[420px] overflow-hidden theme-transition"
+                                    style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}
                                 >
-                                     <div className="absolute inset-3 rounded-[1.5rem] bg-[#faf7f2] overflow-hidden">
+                                     <div className="absolute inset-3 rounded-[1.5rem] overflow-hidden theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
                                          <img 
                                             src={activeSwap.foodImage} 
                                             alt={activeSwap.food} 
@@ -969,7 +970,7 @@ const CultureSwap = () => {
                                             </div>
                                             <h3 className="text-3xl font-serif font-medium text-white mb-6 leading-tight">{activeSwap.food}</h3>
                                             <div className="flex items-center justify-between">
-                                                <span className="px-6 py-2.5 bg-white text-text-primary text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg transform group-hover:scale-105 transition-transform">Explore Cuisine</span>
+                                                <span className="px-6 py-2.5 text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg transform group-hover:scale-105 transition-transform theme-transition" style={{ backgroundColor: 'var(--theme-text-primary)', color: 'var(--theme-text-inverse)' }}>Explore Cuisine</span>
                                                 {completedTasks.includes('food') && <span className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm shadow-[0_0_20px_rgba(34,197,94,0.5)]">✓</span>}
                                             </div>
                                         </div>
@@ -987,9 +988,10 @@ const CultureSwap = () => {
                                 {/* Ritual Task Card */}
                                 <div 
                                     onClick={() => setSelectedTask('ritual')}
-                                    className="group relative bg-white border border-[#f0f0f0] rounded-[2rem] p-3 shadow-md hover:shadow-2xl transition-all cursor-pointer h-[420px] overflow-hidden"
+                                    className="group relative border border-[#f0f0f0] rounded-[2rem] p-3 shadow-md hover:shadow-2xl transition-all cursor-pointer h-[420px] overflow-hidden theme-transition"
+                                    style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}
                                 >
-                                     <div className="absolute inset-3 rounded-[1.5rem] bg-[#faf7f2] overflow-hidden">
+                                     <div className="absolute inset-3 rounded-[1.5rem] overflow-hidden theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
                                          <img 
                                             src={activeSwap.ritualImage} 
                                             alt={activeSwap.routine} 
@@ -1005,7 +1007,7 @@ const CultureSwap = () => {
                                             </div>
                                             <h3 className="text-3xl font-serif font-medium text-white mb-6 leading-tight">{activeSwap.routine}</h3>
                                             <div className="flex items-center justify-between">
-                                                <span className="px-6 py-2.5 bg-white text-text-primary text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg transform group-hover:scale-105 transition-transform">Practice Ritual</span>
+                                                <span className="px-6 py-2.5 text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg transform group-hover:scale-105 transition-transform theme-transition" style={{ backgroundColor: 'var(--theme-text-primary)', color: 'var(--theme-text-inverse)' }}>Practice Ritual</span>
                                                 {completedTasks.includes('ritual') && <span className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm shadow-[0_0_20px_rgba(34,197,94,0.5)]">✓</span>}
                                             </div>
                                         </div>
@@ -1023,9 +1025,10 @@ const CultureSwap = () => {
                                 {/* Language Task Card */}
                                 <div 
                                     onClick={() => setSelectedTask('language')}
-                                    className="group relative bg-white border border-[#f0f0f0] rounded-[2rem] p-3 shadow-md hover:shadow-2xl transition-all cursor-pointer h-[420px] overflow-hidden"
+                                    className="group relative border border-[#f0f0f0] rounded-[2rem] p-3 shadow-md hover:shadow-2xl transition-all cursor-pointer h-[420px] overflow-hidden theme-transition"
+                                    style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}
                                 >
-                                     <div className="absolute inset-3 rounded-[1.5rem] bg-[#faf7f2] overflow-hidden">
+                                     <div className="absolute inset-3 rounded-[1.5rem] overflow-hidden theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
                                          <img 
                                             src={activeSwap.languageImage} 
                                             alt="Cultural Script" 
@@ -1041,7 +1044,7 @@ const CultureSwap = () => {
                                             </div>
                                             <h3 className="text-3xl font-serif font-medium text-white mb-6 leading-tight">Word Mimicry</h3>
                                             <div className="flex items-center justify-between">
-                                                <span className="px-6 py-2.5 bg-white text-text-primary text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg transform group-hover:scale-105 transition-transform">Speak Language</span>
+                                                <span className="px-6 py-2.5 text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg transform group-hover:scale-105 transition-transform theme-transition" style={{ backgroundColor: 'var(--theme-text-primary)', color: 'var(--theme-text-inverse)' }}>Speak Language</span>
                                                 {completedTasks.includes('language') && <span className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm shadow-[0_0_20px_rgba(34,197,94,0.5)]">✓</span>}
                                             </div>
                                         </div>
@@ -1059,9 +1062,10 @@ const CultureSwap = () => {
                                 {/* Visual Task Card */}
                                 <div 
                                     onClick={() => setSelectedTask('visual')}
-                                    className="group relative bg-white border border-[#f0f0f0] rounded-[2rem] p-3 shadow-md hover:shadow-2xl transition-all cursor-pointer h-[420px] overflow-hidden"
+                                    className="group relative border border-[#f0f0f0] rounded-[2rem] p-3 shadow-md hover:shadow-2xl transition-all cursor-pointer h-[420px] overflow-hidden theme-transition"
+                                    style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}
                                 >
-                                     <div className="absolute inset-3 rounded-[1.5rem] bg-[#faf7f2] overflow-hidden">
+                                     <div className="absolute inset-3 rounded-[1.5rem] overflow-hidden theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
                                          <img 
                                             src={activeSwap.visualImage} 
                                             alt="Traditional Art" 
@@ -1077,7 +1081,7 @@ const CultureSwap = () => {
                                             </div>
                                             <h3 className="text-3xl font-serif font-medium text-white mb-6 leading-tight">Art & Rhythm</h3>
                                             <div className="flex items-center justify-between">
-                                                <span className="px-6 py-2.5 bg-white text-text-primary text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg transform group-hover:scale-105 transition-transform">Feel the Flow</span>
+                                                <span className="px-6 py-2.5 text-[10px] font-bold rounded-full uppercase tracking-widest shadow-lg transform group-hover:scale-105 transition-transform theme-transition" style={{ backgroundColor: 'var(--theme-text-primary)', color: 'var(--theme-text-inverse)' }}>Feel the Flow</span>
                                                 {completedTasks.includes('visual') && <span className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm shadow-[0_0_20px_rgba(34,197,94,0.5)]">✓</span>}
                                             </div>
                                         </div>
@@ -1094,7 +1098,7 @@ const CultureSwap = () => {
                             </div>
 
                             {/* Save Learnings Prompt */}
-                            <div className="bg-white border border-black/5 rounded-[2rem] p-8 shadow-sm relative overflow-hidden">
+                            <div className="border border-black/5 rounded-[2rem] p-8 shadow-sm relative overflow-hidden theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                                 <div className="absolute top-0 left-0 w-1 h-full bg-amber-400 opacity-20"></div>
                                 <div className="flex items-center justify-between mb-4">
                                     <div className="flex items-center gap-3">

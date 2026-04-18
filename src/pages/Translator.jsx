@@ -57,9 +57,24 @@ const Translator = () => {
     ];
 
     const PROFANITY_KEYWORDS = [
-        'fuck', 'shit', 'bitch', 'asshole', 'puta', 'mierda', 'pendejo',
-        'merde', 'connard', 'scheisse', 'saala', 'kamina', 'harami',
-        'lanja', 'munda', 'pichoda', 'bastard', 'slut'
+        // English
+        'fuck', 'shit', 'bitch', 'asshole', 'bastard', 'slut', 'whore', 'cunt', 'dick', 'pussy', 'faggot', 'nigger', 'rape', 'porn', 'sex', 'ass', 'bollocks', 'bugger', 'cock', 'piss',
+        // Spanish
+        'puta', 'mierda', 'pendejo', 'cabron', 'joder', 'maricon', 'hijo de puta', 'chingar',
+        // French
+        'merde', 'connard', 'salope', 'encule', 'putain', 'bordel',
+        // German
+        'scheisse', 'arschloch', 'fotze', 'wichser', 'ficker',
+        // Hindi/Urdu
+        'saala', 'kamina', 'harami', 'behenchod', 'madarchod', 'chutiya', 'gandu', 'bhosadike', 'randi', 'lodu',
+        // Telugu
+        'lanja', 'munda', 'pichoda', 'nee abba', 'kodaka', 'na kodaka', 'yedhava', 'donga', 'pichi',
+        // Tamil
+        'thevidiya', 'omala', 'baadu', 'punda', 'sunni', 'koothi',
+        // Kannada
+        'bolimaga', 'soole', 'kalla',
+        // Generic / Slang
+        'idiot', 'stupid', 'dumb', 'clown'
     ];
 
     const [isBlocked, setIsBlocked] = useState(() => localStorage.getItem('isBlocked') === 'true');
@@ -67,31 +82,38 @@ const Translator = () => {
 
     const checkSensitivity = (text, targetLang) => {
         const lowerText = text.toLowerCase();
-        const foundProfanity = PROFANITY_KEYWORDS.find(word => lowerText.includes(word));
+        
+        // Detect Profanity with Word Boundaries
+        const profanityPattern = new RegExp(`\\b(${PROFANITY_KEYWORDS.join('|')})\\b`, 'i');
+        const foundProfanity = profanityPattern.test(lowerText);
 
         if (foundProfanity) {
-            const newCount = violationCount + 1;
+            // Directly read the most current count from storage to handle async lag
+            const currentCount = parseInt(localStorage.getItem('violationCount') || '0');
+            const newCount = currentCount + 1;
+            
             setViolationCount(newCount);
             localStorage.setItem('violationCount', newCount.toString());
 
             if (newCount >= 2) {
                 setIsBlocked(true);
                 localStorage.setItem('isBlocked', 'true');
-                return;
+                return true; // Signal a block occurred
             }
 
             setActiveAlert({
-                message: "⚠️ SECURITY ALERT: Offensive language detected.",
-                suggestion: "Your account will be PERMANENTLY BLOCKED on the next offense. Please maintain cultural respect.",
+                message: "🚨 SECURITY VIOLATION: Inappropriate language detected.",
+                suggestion: "ONE STRIKE REMAINING. Your account will be PERMANENTLY BLOCKED on the next offense. Maintain respect.",
                 isViolation: true
             });
-            return;
+            return true;
         }
 
         const found = CULTURAL_SENSITIVITY_ALERTS.find(alert => 
             alert.pattern.test(text) && (alert.targetLangs.includes(targetLang) || targetLang === 'random')
         );
         setActiveAlert(found || null);
+        return false;
     };
 
     if (isBlocked) {
@@ -238,7 +260,8 @@ const Translator = () => {
                     const toneToUse = selectedToneRef.current !== 'default' ? selectedToneRef.current : detected.toLowerCase();
                     const finalTone = toneToUse.charAt(0).toUpperCase() + toneToUse.slice(1);
 
-                    checkSensitivity(newestFinalPiece, currentLang);
+                    const wasBlocked = checkSensitivity(newestFinalPiece, currentLang);
+                    if (wasBlocked) return;
 
                     translateText(newestFinalPiece, sourceLangRef.current, currentLang).then((translatedPiece) => {
                         if (translatedPiece) {
@@ -541,7 +564,8 @@ const Translator = () => {
 
         const toneToUse = selectedTone !== 'default' ? selectedTone : detected.toLowerCase();
         
-        checkSensitivity(manualText, currentLang);
+        const wasBlocked = checkSensitivity(manualText, currentLang);
+        if (wasBlocked) return;
 
         const translatedPiece = await translateText(manualText, sourceLang, currentLang);
         if (translatedPiece) {

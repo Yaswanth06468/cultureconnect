@@ -516,6 +516,7 @@ const GeoStatusBanner = ({ status, nearestCity, onEnable, onDisable }) => {
     unsupported: { bg: '#fdf4ff', border: '#e9d5ff', icon: '❌', text: 'Geolocation is not supported by your browser.', textColor: '#9333ea', btnText: null, showBtn: false, showDisable: false },
   };
   const c = configs[status] || configs.idle;
+  return (
     <div className="theme-transition" style={{ 
       background: 'var(--theme-bg-secondary)', 
       border: `1.5px solid var(--theme-border)`, 
