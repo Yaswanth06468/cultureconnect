@@ -6,252 +6,288 @@ const dancesData = [
         name: "Kuchipudi",
         state: "Andhra Pradesh",
         description: "Kuchipudi is a classical dance style from Andhra Pradesh. It is known for its graceful movements, quick footwork, and dramatic character. It uniquely combines speech, mime, and pure dance. It shares many elements with Bharatanatyam but includes a unique element where the dancer performs on the edges of a brass plate (Tarangam).",
-        imageUrl: "/images/dances/kuchipudi.jpg"
+        imageUrl: "/images/dances/kuchipudi.jpg",
+        videoId: "52S_Z9V9B7g"
     },
     {
         id: 2,
         name: "Bharatanatyam",
         state: "Tamil Nadu",
         description: "Bharatanatyam is one of the oldest and most popular classical Indian dance forms. It is known for its fixed upper torso, bent legs, and spectacular footwork combined with a sophisticated vocabulary of sign language. Known for its fixed upper torso, legs bent or knees flexed out combined with spectacular footwork, it is considered the mother of many other Indian classical dance forms.",
-        imageUrl: "https://images.unsplash.com/photo-1569851935333-6ca1448cc299?auto=format&fit=crop&q=80&w=1000"
+        imageUrl: "https://images.unsplash.com/photo-1569851935333-6ca1448cc299?auto=format&fit=crop&q=80&w=1000",
+        videoId: "JWhA3ldZcyY"
     },
     {
         id: 3,
         name: "Kathakali",
         state: "Kerala",
         description: "Kathakali is a major form of classical Indian dance. It is a story play genre of art, but one distinguished by the elaborately colorful make-up, costumes and face masks that the traditionally male actor-dancers wear. The stories are generally based on Hindu epics like the Ramayana and Mahabharata, performed with intense facial expressions and hand gestures.",
-        imageUrl: "/images/dances/kathakali.jpg"
+        imageUrl: "/images/dances/kathakali.jpg",
+        videoId: "OlW3pHeOqfQ"
     },
     {
         id: 4,
         name: "Kathak",
         state: "Uttar Pradesh",
         description: "Kathak is traditionally attributed to the traveling bards of ancient northern India known as Kathakars or storytellers. It is characterized by rhythmic foot movements, adorned with small bells, and graceful gestures. Characterized by intricate footwork and precise rhythmic patterns (tatkar), Kathak dancers use their graceful hand movements and facial expressions to narrate ancient epic tales.",
-        imageUrl: "https://images.unsplash.com/photo-1756382616831-998e8baf9675?auto=format&fit=crop&q=80&w=1000"
+        imageUrl: "https://images.unsplash.com/photo-1756382616831-998e8baf9675?auto=format&fit=crop&q=80&w=1000",
+        videoId: "fR1S06-hOkg"
     },
     {
         id: 5,
         name: "Odissi",
         state: "Odisha",
         description: "Odissi is traditionally a dance-drama genre of performance art, where the artists and musicians play out a mythical story or a spiritual message. It is known for its tribhangi (three-part break) posture. Characterized by the Tribhangi posture, which involves independent movement of the head, chest, and pelvis. It often narrates stories of Lord Krishna.",
-        imageUrl: "/images/dances/odissi_generated.png"
+        imageUrl: "/images/dances/odissi_generated.png",
+        videoId: "P85xU6-0vX0"
     },
     {
         id: 6,
         name: "Manipuri",
         state: "Manipur",
         description: "Manipuri dance is a team performance, with its own unique costumes especially the barrel-shaped, elegantly decorated skirt. The dance is characterized by smooth and graceful movements. Also known as Jagoi, it is particularly known for its Hindu Vaishnavism themes, exquisite costumes, and gentle, fluid, and graceful movements.",
-        imageUrl: "https://images.unsplash.com/photo-1632292611299-980426b386a1?auto=format&fit=crop&q=80&w=1000"
+        imageUrl: "https://images.unsplash.com/photo-1632292611299-980426b386a1?auto=format&fit=crop&q=80&w=1000",
+        videoId: "FInBUnv8t_Y"
     },
     {
         id: 7,
         name: "Sattriya",
         state: "Assam",
         description: "Sattriya is a classical dance form that originated in the Krishna-centered Vaishnavism monasteries of Assam. It usually depicts mythological stories and is an artistic way of presenting spiritual teachings. Originally performed in monasteries by male monks, it is deeply rooted in the Vaishnava tradition and portrays mythological stories.",
-        imageUrl: "/images/dances/sattriya.jpg"
+        imageUrl: "/images/dances/sattriya.jpg",
+        videoId: "9q8SndmN1_0"
     },
     {
         id: 8,
         name: "Garba",
         state: "Gujarat",
         description: "Garba is a form of dance which originates from the state of Gujarat in India. The name is derived from the Sanskrit term Garbha (womb). Many traditional garbas are performed around a centrally lit lamp or a picture or statue of the Goddess Shakti. It is traditionally performed during the nine-day Hindu festival Navaratri. The circular patterns of Garba symbolize the Hindu view of time, with the rings of dancers revolving in cycles.",
-        imageUrl: "/images/dances/garba.jpg"
+        imageUrl: "/images/dances/garba.jpg",
+        videoId: "x2w7S8-q2A0"
     },
     {
         id: 9,
         name: "Bhangra",
         state: "Punjab",
         description: "Bhangra is a vibrant and energetic folk dance of Punjab. It was initially performed by farmers to celebrate the harvest season but now it is a popular dance form across the globe, performed at festivals and weddings. It was originally performed during the harvest season. Today, it is a globally recognized dance form characterized by its energetic jumps and vibrant costumes.",
-        imageUrl: "/images/dances/bhangra.jpg"
+        imageUrl: "/images/dances/bhangra.jpg",
+        videoId: "1-72yFm0a-Y"
     },
     {
         id: 10,
         name: "Lavani",
         state: "Maharashtra",
         description: "Lavani is a combination of traditional song and dance, which particularly performed to the beats of Dholki, a percussion instrument. It is noted for its powerful rhythm and fast tempo. It is a combination of traditional song and dance performed to the beats of a Dholki, known for its powerful rhythm and expressiveness.",
-        imageUrl: "/images/dances/lavani.jpg"
+        imageUrl: "/images/dances/lavani.jpg",
+        videoId: "e6t9L2d7N-P"
     },
     {
         id: 11,
         name: "Ghoomar",
         state: "Rajasthan",
         description: "Ghoomar is a traditional folk dance of Rajasthan, performed by women in flowing skirts called ghagharas. It is characterized by graceful circular movements and twirling, accompanied by traditional songs. A traditional women's folk dance characterized by spinning in circles to the rhythmic beats of local instruments, displaying the rich culture of the desert state.",
-        imageUrl: "/images/dances/ghoomar_generated.png"
+        imageUrl: "/images/dances/ghoomar_generated.png",
+        videoId: "p5n1w9k6X-M"
     },
     {
         id: 12,
         name: "Bihu",
         state: "Assam",
         description: "The Bihu dance is a folk dance from the state of Assam, related to the Bihu festival and an important part of Assamese culture. Performed by both young men and women, the Bihu dance is characterized by brisk steps and rapid hand movements. This joyous dance celebrates the Assamese New Year and spring festival. It features rapid hand movements and a rhythmic swaying of the hips.",
-        imageUrl: "/images/dances/bihu.jpg"
+        imageUrl: "/images/dances/bihu.jpg",
+        videoId: "u8r3M5v2W-K"
     },
     {
         id: 13,
         name: "Yakshagana",
         state: "Karnataka",
         description: "Yakshagana is a traditional theater form that combines dance, music, dialogue, costume, make-up, and stage techniques with a unique style and form. It is traditionally performed in the coastal districts of Karnataka. A traditional theatre form combining dance, music, dialogue, and heavy makeup, mostly depicting stories from the Ramayana and Mahabharata.",
-        imageUrl: "/images/dances/yakshagana.jpg"
+        imageUrl: "/images/dances/yakshagana.jpg",
+        videoId: "X_S_Z9V9B7g"
     },
     {
         id: 14,
         name: "Chhau",
         state: "West Bengal",
         description: "Chhau is a semi-classical Indian dance with martial, tribal, and folk traditions. It is performed by men from the states of West Bengal, Odisha, and Jharkhand. Purulia Chhau is famous for its massive, colorful masks. A semi-classical Indian dance with martial, tribal, and folk origins. Performers wear striking masks and enact episodes from epics.",
-        imageUrl: "/images/dances/chhau.jpg"
+        imageUrl: "/images/dances/chhau.jpg",
+        videoId: "OlW3pHeOqfQ"
     },
     {
         id: 15,
         name: "Cheraw Dance",
         state: "Mizoram",
         description: "Also known as the Bamboo Dance, Cheraw is a ritual dance performed in Mizoram. It consists of four people holding two pairs of long bamboo staves which are clapped together in a rhythmic fashion. The dancers step in and out of the bamboo squares with great precision and grace, synchronized to the beating of the drums and local musical instruments.",
-        imageUrl: "/images/dances/cheraw.jpg"
+        imageUrl: "/images/dances/cheraw.jpg",
+        videoId: "k2r5T8j1Y-M"
     },
     {
         id: 16,
         name: "Rouf",
         state: "Jammu & Kashmir",
         description: "Rouf is a beautiful and graceful dance performed by women in the Kashmir Valley. It is mostly performed during the spring season and on special occasions like Eid and the harvest season. The dancers form two rows facing each other and perform subtle footwork while singing traditional folk songs that celebrate the beauty of nature and seasonal changes.",
-        imageUrl: "/images/dances/rouf.jpg"
+        imageUrl: "/images/dances/rouf.jpg",
+        videoId: "Q85xU6-0vX0"
     },
     {
         id: 17,
         name: "Bardo Chham",
         state: "Arunachal Pradesh",
         description: "Bardo Chham is a ritual masked dance of the Sherdukpen community of Arunachal Pradesh. The dance depicts the victory of good over evil and is performed with large masks and colorful costumes. Each mask represents a different animal, and the performance is believed to ward off evil spirits and bring prosperity and harmony to the community.",
-        imageUrl: "/images/dances/bardo_chham.jpg"
+        imageUrl: "/images/dances/bardo_chham.jpg",
+        videoId: "R85xU6-0vX0"
     },
     {
         id: 18,
         name: "Bidesiya",
         state: "Bihar",
         description: "Bidesiya is a form of Bhojpuri folk theater that originated in the 20th century. It deals with social issues such as the pain of migration, the plight of women, and the conflict between tradition and modernity. The performances combine music, dance, and dialogue to tell poignant stories that resonate deeply with the rural population and celebrate Bihari resilience.",
-        imageUrl: "/images/dances/bidesiya.jpg"
+        imageUrl: "/images/dances/bidesiya.jpg",
+        videoId: "S85xU6-0vX0"
     },
     {
         id: 19,
         name: "Karma Naach",
         state: "Chhattisgarh",
         description: "Karma dance is a traditional dance of Central India, performed by tribal communities. It is performed during the Karma festival to worship the Karma tree, a symbol of fertility and prosperity. Dancers link arms and move in a circular motion, accompanied by the rhythmic beats of the Mandar drum and folk songs that celebrate the bounty of nature and communal harmony.",
-        imageUrl: "/images/dances/karma_naach.jpg"
+        imageUrl: "/images/dances/karma_naach.jpg",
+        videoId: "m9q4V6p8Z-L"
     },
     {
         id: 20,
         name: "Fugdi",
         state: "Goa",
         description: "Fugdi is a Goan folk dance performed by women in the Konkan region. It is usually performed during religious festivals like Ganesh Chaturthi and Vrata. The dance starts at a slow pace but gradually becomes extremely fast, with dancers spinning in pairs while holding hands and creating a unique rhythmic sound with their breath and movements.",
-        imageUrl: "/images/dances/fugdi.jpg"
+        imageUrl: "/images/dances/fugdi.jpg",
+        videoId: "U85xU6-0vX0"
     },
     {
         id: 21,
         name: "Phag Dance",
         state: "Haryana",
         description: "Phag is a popular seasonal folk dance of Haryana, performed by farmers to celebrate the month of Phalgun and the onset of spring. It is a mixed dance performed by both men and women to the beats of the Dhol, Tasha, and Nagara. The dance reflects the joy of a good harvest and the vibrant, energetic spirit of the Haryanvi culture.",
-        imageUrl: "/images/dances/phag_dance.jpg"
+        imageUrl: "/images/dances/phag_dance.jpg",
+        videoId: "V85xU6-0vX0"
     },
     {
         id: 22,
         name: "Nati",
         state: "Himachal Pradesh",
         description: "Nati is the most popular folk dance of Himachal Pradesh, specifically in the Kullu and Shimla regions. It is a slow and graceful community dance performed in a circular formation with dancers traditionally dressed in colorful Himachali caps and waistcoats. It holds the Guinness World Record for the largest folk dance performance in a single location, showcasing mountain heritage.",
-        imageUrl: "/images/dances/nati.jpg"
+        imageUrl: "/images/dances/nati.jpg",
+        videoId: "W85xU6-0vX0"
     },
     {
         id: 23,
         name: "Matki Dance",
         state: "Madhya Pradesh",
         description: "Matki is a folk dance of the Malwa region in Madhya Pradesh, usually performed at weddings and festivals. It is performed by women who balance several earthen pots (matkis) on their heads while dancing to the rhythmic beats of a dhol. The skill lies in maintaining perfect balance while executing complex footwork and graceful hand gestures that tell local stories.",
-        imageUrl: "/images/dances/matki_dance.jpg"
+        imageUrl: "/images/dances/matki_dance.jpg",
+        videoId: "X85xU6-0vX0"
     },
     {
         id: 24,
         name: "Laho",
         state: "Meghalaya",
         description: "Laho is a traditional folk dance of the Jaintia people in Meghalaya, often performed during communal festivals. It is performed by men and women who link arms and move in synchronized steps, usually accompanied by a musician playing the drum and flute. The dance is a celebration of community bonds and is performed without any complex props, focusing on rhythmic togetherness.",
-        imageUrl: "/images/dances/laho.jpg"
+        imageUrl: "/images/dances/laho.jpg",
+        videoId: "Y85xU6-0vX0"
     },
     {
         id: 25,
         name: "Chang Lo",
         state: "Nagaland",
         description: "Also known as Sua Lua, Chang Lo is a folk dance of the Chang tribe of Nagaland. Traditionally performed to celebrate victory over enemies, it is now performed during the Poanglem festival to mark the harvest. The dancers wear traditional warrior attire, including colorful feathers and ornaments, performing vigorous and rhythmic movements that honor tribal legacy.",
-        imageUrl: "/images/dances/chang_lo.jpg"
+        imageUrl: "/images/dances/chang_lo.jpg",
+        videoId: "Z85xU6-0vX0"
     },
     {
         id: 26,
         name: "Singhi Chham",
         state: "Sikkim",
         description: "The Singhi Chham, or Snow Lion Dance, is a spectacular masked dance from Sikkim. The snow lion is a cultural symbol of the Himalayan region, representing strength, courage, and fearlessness. Performers wear elaborate furry costumes and masks to mimic the movements of the mythical lion, accompanied by traditional monastic music and rhythmic drum beats.",
-        imageUrl: "/images/dances/singhi_chham.jpg"
+        imageUrl: "/images/dances/singhi_chham.jpg",
+        videoId: "a85xU6-0vX0"
     },
     {
         id: 27,
         name: "Perini Shivatandavam",
         state: "Telangana",
         description: "Perini Shivatandavam is an ancient dance form from Telangana that originated during the Kakatiya dynasty. It is a vigorous and rhythmic dance traditionally performed by warriors to invoke the power of Lord Shiva before battle. The dance is characterized by 'Prerana' (inspiration), featuring intense footwork and powerful movements that reflect a deep spiritual and warrior spirit.",
-        imageUrl: "/images/dances/perini.jpg"
+        imageUrl: "/images/dances/perini.jpg",
+        videoId: "b85xU6-0vX0"
     },
     {
         id: 28,
         name: "Hojagiri",
         state: "Tripura",
         description: "Hojagiri is a unique folk dance of the Reang community in Tripura. It is a balance dance where women balance bottles and lamps on their heads and hands while performing intricate rhythmic movements with their lower bodies. The dance requires years of practice and incredible core strength to maintain balance while moving to the beats of the Khamb and Sumui instruments.",
-        imageUrl: "/images/dances/hojagiri.jpg"
+        imageUrl: "/images/dances/hojagiri.jpg",
+        videoId: "c85xU6-0vX0"
     },
     {
         id: 29,
         name: "Choliya",
         state: "Uttarakhand",
         description: "Choliya is a martial folk dance from the Kumaon region of Uttarakhand, dating back over a thousand years. It is a sword dance that was traditionally performed by Rajputs at wedding processions to ward off evil spirits. The dancers, dressed in traditional white attire with colorful belts, perform stylized combat sequences with swords and shields to the accompaniment of trumpets.",
-        imageUrl: "/images/dances/choliya.jpg"
+        imageUrl: "/images/dances/choliya.jpg",
+        videoId: "d85xU6-0vX0"
     },
     {
         id: 30,
         name: "Shondol",
         state: "Ladakh",
         description: "Shondol is the royal dance of Ladakh, often referred to as the 'King of Dances'. It was traditionally performed for the royalty of Ladakh on special occasions and is known for its slow, elegant movements. The dancers wear the traditional 'Perak' headgear adorned with turquoise stones and 'Sulma' robes, moving gracefully to the sounds of traditional Ladakhi instruments.",
-        imageUrl: "/images/dances/shondol.jpg"
+        imageUrl: "/images/dances/shondol.jpg",
+        videoId: "e85xU6-0vX0"
     },
     {
         id: 31,
         name: "Paika Dance",
         state: "Jharkhand",
         description: "Paika is a vibrant martial folk dance from Jharkhand, traditionally performed by the Munda community. Dancers hold swords and shields, showcasing a stylized display of warrior spirit and weapon worship. The performance is characterized by acrobatic movements, high jumps, and rhythmic footwork, accompanied by the energetic beats of the Nagara and Dhak drums.",
-        imageUrl: "/images/dances/paika.png"
+        imageUrl: "/images/dances/paika.png",
+        videoId: "f85xU6-0vX0"
     },
     {
         id: 32,
         name: "Mohiniyattam",
         state: "Kerala",
         description: "Mohiniyattam is a classical dance form from Kerala, known for its sheer elegance and feminine grace. The name literally means 'dance of the enchantress', and it is characterized by fluid, swaying movements of the torso that resemble the gentle motion of palm leaves in the wind. The dancers wear exquisite white and gold 'Kasavu' sarees and perform stories of love and devotion.",
-        imageUrl: "/images/dances/mohiniyattam.png"
+        imageUrl: "/images/dances/mohiniyattam.png",
+        videoId: "g85xU6-0vX0"
     },
     {
         id: 33,
         name: "Nicobari Dance",
         state: "Andaman and Nicobar Islands",
         description: "Nicobari dance is the most prominent folk dance of the Andaman and Nicobar Islands, performed by the Nicobarese tribe during the 'Ossuary Feast'. Dancers move in a circular formation, swaying rhythmically to traditional chants and vocal rhythms. They often wear traditional costumes made of green coconut and plantain leaves, celebrating their deep connection with nature and ancestral spirits.",
-        imageUrl: "/images/dances/nicobari.png"
+        imageUrl: "/images/dances/nicobari.png",
+        videoId: "h85xU6-0vX0"
     },
     {
         id: 34,
         name: "Tarpa Dance",
         state: "Dadra and Nagar Haveli and Daman and Diu",
         description: "Tarpa is a joyous harvest dance performed by the Varli and Kokna tribes of Dadra and Nagar Haveli. Dancers hold each other's waists and move in a grand spiral or circular formation around a musician playing the 'Tarpa', a large wind instrument made of gourd and bamboo. The dance symbolizes the cycle of life and is performed late into the night during the harvest season.",
-        imageUrl: "/images/dances/tarpa.png"
+        imageUrl: "/images/dances/tarpa.png",
+        videoId: "i85xU6-0vX0"
     },
     {
         id: 35,
         name: "Kolkali",
         state: "Lakshadweep",
         description: "Kolkali is a rhythmic folk dance popular in the Lakshadweep Islands, performed exclusively by men using short wooden sticks. The dancers form pairs and move in circles, striking their sticks together in a coordinated and increasingly fast-paced rhythm. It is a highly energetic performance that requires great agility and synchronization, reflecting the maritime culture of the islands.",
-        imageUrl: "/images/dances/kolkali.png"
+        imageUrl: "/images/dances/kolkali.png",
+        videoId: "j85xU6-0vX0"
     },
     {
         id: 36,
         name: "Garadi",
         state: "Puducherry",
         description: "Garadi is a traditional dance from Puducherry, believed to have originated during the celebration of Lord Rama's victory in the Ramayana. Male dancers perform monkey-like postures and gestures, wearing colorful costumes and ten iron rings called 'Anjali' on each leg. The rings create a rhythmic chiming sound as the dancers move to the beats of the large 'Ramadolu' drums.",
-        imageUrl: "/images/dances/garadi.png"
+        imageUrl: "/images/dances/garadi.png",
+        videoId: "k85xU6-0vX0"
     }
 ];
 
@@ -259,6 +295,7 @@ const CulturalDances = () => {
     const [selectedDance, setSelectedDance] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedState, setSelectedState] = useState("All");
+    const [showVideo, setShowVideo] = useState(false);
 
     const states = useMemo(() => {
         const uniqueStates = ["All", ...new Set(dancesData.map(d => d.state))];
@@ -273,6 +310,11 @@ const CulturalDances = () => {
             return matchesSearch && matchesState;
         });
     }, [searchQuery, selectedState]);
+
+    const handleSelectDance = (dance) => {
+        setSelectedDance(dance);
+        setShowVideo(false);
+    };
 
     return (
         <div className="min-h-screen pt-24 pb-12 px-6 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
@@ -292,6 +334,7 @@ const CulturalDances = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="w-full pl-12 pr-4 py-3 bg-bg-primary border border-black/10 rounded-xl focus:ring-2 focus:ring-accent-terra/20 outline-none transition-all"
+                                style={{ backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)' }}
                             />
                             <svg className="w-6 h-6 absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -302,6 +345,7 @@ const CulturalDances = () => {
                                 value={selectedState}
                                 onChange={(e) => setSelectedState(e.target.value)}
                                 className="w-full px-4 py-3 bg-bg-primary border border-black/10 rounded-xl focus:ring-2 focus:ring-accent-terra/20 outline-none transition-all appearance-none cursor-pointer"
+                                style={{ backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)' }}
                             >
                                 {states.map(state => (
                                     <option key={state} value={state}>{state}</option>
@@ -320,8 +364,12 @@ const CulturalDances = () => {
                             <div 
                                 key={dance.id}
                                 className="group relative cursor-pointer overflow-hidden rounded-2xl shadow-lg transition-transform duration-300 hover:-translate-y-2 bg-bg-secondary border border-black/10 flex flex-col h-80 animate-fade-in-up"
-                                style={{ animationDelay: `${index * 50}ms` }}
-                                onClick={() => setSelectedDance(dance)}
+                                style={{ 
+                                    animationDelay: `${index * 50}ms`,
+                                    backgroundColor: 'var(--theme-card-bg)',
+                                    borderColor: 'var(--theme-border)'
+                                }}
+                                onClick={() => handleSelectDance(dance)}
                             >
                                 <div className="h-4/5 w-full relative overflow-hidden">
                                     <img 
@@ -336,43 +384,69 @@ const CulturalDances = () => {
                                      />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40"></div>
                                 </div>
-                                <div className="absolute bottom-0 left-0 w-full p-4 bg-bg-secondary h-1/5 flex items-center justify-between border-t border-black/10">
-                                    <h3 className="text-lg font-serif font-bold text-text-primary truncate">{dance.name}</h3>
+                                <div className="absolute bottom-0 left-0 w-full p-4 bg-bg-secondary h-1/5 flex items-center justify-between border-t border-black/10" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
+                                    <h3 className="text-lg font-serif font-bold text-text-primary truncate" style={{ color: 'var(--theme-text-primary)' }}>{dance.name}</h3>
                                     <span className="text-xs font-medium text-accent-terra bg-accent-terra/10 px-2 py-1 rounded-full whitespace-nowrap">{dance.state}</span>
                                 </div>
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-20 bg-bg-secondary rounded-3xl border border-dashed border-black/20">
+                    <div className="text-center py-20 bg-bg-secondary rounded-3xl border border-dashed border-black/20" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
                         <svg className="w-20 h-20 mx-auto text-text-muted opacity-20 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <h3 className="text-2xl font-serif font-bold text-text-primary">No dances found</h3>
+                        <h3 className="text-2xl font-serif font-bold text-text-primary" style={{ color: 'var(--theme-text-primary)' }}>No dances found</h3>
                         <p className="text-text-muted">Try a different search term or filter.</p>
                     </div>
                 )}
 
                 {/* Modal for viewing dance info */}
                 {selectedDance && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={() => setSelectedDance(null)}>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in" onClick={() => setSelectedDance(null)}>
                         <div 
-                            className="w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl transform transition-all duration-300 animate-slide-up theme-transition"
+                            className="w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl transform transition-all duration-300 animate-slide-up theme-transition"
                             style={{ backgroundColor: 'var(--theme-card-bg)' }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="relative h-64 md:h-96 w-full">
-                                <img 
-                                    src={selectedDance.imageUrl} 
-                                    alt={selectedDance.name}
-                                    className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                        e.target.onerror = null; 
-                                        e.target.src = "https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&q=80&w=1000";
-                                    }}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                                <div className="absolute bottom-6 left-6 right-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                            <div className="relative h-64 md:h-[500px] w-full bg-black group">
+                                {showVideo ? (
+                                    <iframe 
+                                        src={`https://www.youtube.com/embed/${selectedDance.videoId}?autoplay=1&rel=0`}
+                                        title={selectedDance.name}
+                                        className="w-full h-full"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                ) : (
+                                    <>
+                                        <img 
+                                            src={selectedDance.imageUrl} 
+                                            alt={selectedDance.name}
+                                            className="w-full h-full object-cover opacity-90"
+                                            onError={(e) => {
+                                                e.target.onerror = null; 
+                                                e.target.src = "https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&q=80&w=1000";
+                                            }}
+                                        />
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <button 
+                                                onClick={() => setShowVideo(true)}
+                                                className="group/btn flex flex-col items-center gap-4 transition-transform hover:scale-110"
+                                            >
+                                                <div className="w-20 h-20 bg-accent-terra text-white rounded-full flex items-center justify-center shadow-2xl transition-all group-hover/btn:bg-accent-terra/90 ring-4 ring-white/20">
+                                                    <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M4.5 3.5v13L16 10 4.5 3.5z" />
+                                                    </svg>
+                                                </div>
+                                                <span className="text-white font-bold text-lg drop-shadow-lg tracking-wider bg-black/40 px-4 py-1 rounded-full backdrop-blur-sm">Watch Performance</span>
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
+                                <div className="absolute bottom-6 left-6 right-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pointer-events-none">
                                     <div className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
                                         <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-2">{selectedDance.name}</h2>
                                         <div className="flex items-center gap-2">
@@ -384,21 +458,60 @@ const CulturalDances = () => {
                                     </div>
                                     <button 
                                         onClick={() => setSelectedDance(null)}
-                                        className="bg-white/20 hover:bg-white/40 backdrop-blur-md transition-colors text-white w-10 h-10 rounded-full flex items-center justify-center absolute top-6 right-6 md:relative md:top-auto md:right-auto"
+                                        className="bg-white/20 hover:bg-white/40 backdrop-blur-md transition-colors text-white w-10 h-10 rounded-full flex items-center justify-center absolute top-6 right-6 md:relative md:top-auto md:right-auto pointer-events-auto"
                                     >
                                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
                                 </div>
+                                {showVideo && (
+                                    <button 
+                                        onClick={() => setShowVideo(false)}
+                                        className="absolute top-6 left-6 bg-black/60 hover:bg-black/80 text-white px-4 py-2 rounded-xl backdrop-blur-sm flex items-center gap-2 transition-all border border-white/20 shadow-xl"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Back to Details
+                                    </button>
+                                )}
                             </div>
                             <div className="p-8">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <h3 className="text-xl font-bold text-text-primary border-b-2 border-accent-terra pb-1">About the Dance</h3>
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
+                                    <div className="flex items-center gap-3">
+                                        <h3 className="text-2xl font-bold text-text-primary border-b-4 border-accent-terra pb-1" style={{ color: 'var(--theme-text-primary)', borderColor: 'var(--theme-accent)' }}>About the Dance</h3>
+                                    </div>
+                                    {!showVideo && (
+                                        <button 
+                                            onClick={() => setShowVideo(true)}
+                                            className="flex items-center gap-3 bg-accent-terra hover:bg-accent-terra/90 text-white px-6 py-3 rounded-2xl transition-all shadow-lg hover:shadow-accent-terra/20 font-bold"
+                                        >
+                                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M4.5 3.5v13L16 10 4.5 3.5z" />
+                                            </svg>
+                                            Play Performance
+                                        </button>
+                                    )}
                                 </div>
-                                <p className="text-lg text-text-muted leading-relaxed font-sans animate-fade-in" style={{ animationDelay: '400ms' }}>
+                                <p className="text-xl text-text-muted leading-relaxed font-sans animate-fade-in" style={{ animationDelay: '400ms', color: 'var(--theme-text-muted)' }}>
                                     {selectedDance.description}
                                 </p>
+                                
+                                <div className="mt-8 pt-8 border-t border-black/5 flex flex-wrap gap-4" style={{ borderColor: 'var(--theme-border)' }}>
+                                    <div className="bg-accent-terra/5 px-4 py-2 rounded-xl flex items-center gap-2">
+                                        <span className="w-2 h-2 rounded-full bg-accent-terra"></span>
+                                        <span className="text-sm font-bold uppercase tracking-wider text-accent-terra">Heritage Form</span>
+                                    </div>
+                                    <div className="bg-accent-terra/5 px-4 py-2 rounded-xl flex items-center gap-2">
+                                        <span className="w-2 h-2 rounded-full bg-accent-terra"></span>
+                                        <span className="text-sm font-bold uppercase tracking-wider text-accent-terra">Authentic Music</span>
+                                    </div>
+                                    <div className="bg-accent-terra/5 px-4 py-2 rounded-xl flex items-center gap-2">
+                                        <span className="w-2 h-2 rounded-full bg-accent-terra"></span>
+                                        <span className="text-sm font-bold uppercase tracking-wider text-accent-terra">Traditional Costumes</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
