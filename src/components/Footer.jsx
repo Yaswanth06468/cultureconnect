@@ -2,21 +2,41 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
-        <footer className="bg-bg-accent py-20 border-t border-black/5 text-text-primary">
+        <footer
+            className="py-20 theme-transition"
+            style={{
+                backgroundColor: 'var(--theme-bg-accent)',
+                borderTop: '1px solid var(--theme-border)',
+                color: 'var(--theme-text-primary)',
+            }}
+        >
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                     <div className="col-span-1 md:col-span-2">
-                        <Link to="/" className="text-2xl font-serif font-bold text-text-primary tracking-tight mb-6 block">
+                        <Link
+                            to="/"
+                            className="text-2xl font-serif font-bold tracking-tight mb-6 block"
+                            style={{ color: 'var(--theme-text-primary)' }}
+                        >
                             Culture<span className="font-light italic text-accent-terra">Connect</span>
                         </Link>
-                        <p className="text-text-secondary max-w-sm mb-8 font-light leading-relaxed">
+                        <p
+                            className="max-w-sm mb-8 font-light leading-relaxed"
+                            style={{ color: 'var(--theme-text-secondary)' }}
+                        >
                             Connect deeply with cultures, languages, and people. A platform for authentic global understanding.
                         </p>
                     </div>
 
                     <div>
-                        <h4 className="text-sm font-bold uppercase tracking-widest mb-6 text-text-primary opacity-60">Platform</h4>
-                        <ul className="space-y-4 text-text-secondary font-light text-sm">
+                        <h4
+                            className="text-sm font-bold uppercase tracking-widest mb-6 opacity-60"
+                            style={{ color: 'var(--theme-text-primary)' }}
+                        >Platform</h4>
+                        <ul
+                            className="space-y-4 font-light text-sm"
+                            style={{ color: 'var(--theme-text-secondary)' }}
+                        >
                             <li><Link to="/dances" className="hover:text-accent-terra transition-colors">Explore</Link></li>
                             <li><Link to="/feed" className="hover:text-accent-terra transition-colors">Communities</Link></li>
                             <li><Link to="/events" className="hover:text-accent-terra transition-colors">Events</Link></li>
@@ -25,8 +45,14 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className="text-sm font-bold uppercase tracking-widest mb-6 text-text-primary opacity-60">Company</h4>
-                        <ul className="space-y-4 text-text-secondary font-light text-sm">
+                        <h4
+                            className="text-sm font-bold uppercase tracking-widest mb-6 opacity-60"
+                            style={{ color: 'var(--theme-text-primary)' }}
+                        >Company</h4>
+                        <ul
+                            className="space-y-4 font-light text-sm"
+                            style={{ color: 'var(--theme-text-secondary)' }}
+                        >
                             <li><a href="#about" className="hover:text-accent-terra transition-colors">About Us</a></li>
                             <li><a href="#about" className="hover:text-accent-terra transition-colors">Mission</a></li>
                             <li><a href="#" className="hover:text-accent-terra transition-colors">Blog</a></li>
@@ -35,11 +61,17 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4 text-text-muted text-xs font-medium uppercase tracking-wider">
+                <div
+                    className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium uppercase tracking-wider"
+                    style={{
+                        borderTop: '1px solid var(--theme-border)',
+                        color: 'var(--theme-text-muted)',
+                    }}
+                >
                     <p>&copy; 2026 Culture Connect.</p>
                     <div className="flex gap-8">
-                        <a href="#" className="hover:text-text-primary transition-colors">Privacy</a>
-                        <a href="#" className="hover:text-text-primary transition-colors">Terms</a>
+                        <a href="#" className="hover:text-accent-terra transition-colors" style={{ color: 'var(--theme-text-muted)' }}>Privacy</a>
+                        <a href="#" className="hover:text-accent-terra transition-colors" style={{ color: 'var(--theme-text-muted)' }}>Terms</a>
                     </div>
                 </div>
             </div>

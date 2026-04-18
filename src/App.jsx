@@ -11,6 +11,7 @@ import CulturalDances from './pages/CulturalDances';
 import CityFoodExplorer from './pages/CityFoodExplorer';
 import CultureSwap from './pages/CultureSwap';
 import Navbar from './components/Navbar';
+import { ThemeProvider } from './context/ThemeContext';
 import { API_BASE_URL } from './config';
 
 function App() {
@@ -27,23 +28,25 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-bg-primary text-text-primary">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/events" element={<EventsBoard />} />
-          <Route path="/translate" element={<Translator />} />
-          <Route path="/dances" element={<CulturalDances />} />
-          <Route path="/city-food" element={<CityFoodExplorer />} />
-          <Route path="/culture-swap" element={<CultureSwap />} />
-          <Route path="/profile/:username" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)', transition: 'background-color 0.4s ease, color 0.4s ease' }}>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/events" element={<EventsBoard />} />
+            <Route path="/translate" element={<Translator />} />
+            <Route path="/dances" element={<CulturalDances />} />
+            <Route path="/city-food" element={<CityFoodExplorer />} />
+            <Route path="/culture-swap" element={<CultureSwap />} />
+            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

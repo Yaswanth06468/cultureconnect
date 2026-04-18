@@ -35,34 +35,66 @@ const features = [
 
 const Features = () => {
     return (
-        <section id="discover" className="py-24 bg-bg-primary relative border-t border-black/5">
+        <section
+            id="discover"
+            className="py-24 relative theme-transition"
+            style={{
+                backgroundColor: 'var(--theme-bg-primary)',
+                borderTop: '1px solid var(--theme-border)',
+            }}
+        >
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
                     <div className="max-w-xl">
-                        <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6 text-text-primary">
+                        <h2
+                            className="text-3xl md:text-5xl font-serif font-medium mb-6"
+                            style={{ color: 'var(--theme-text-primary)' }}
+                        >
                             Experience the <span className="italic text-accent-gold">Unseen</span>
                         </h2>
-                        <p className="text-text-secondary text-lg font-light leading-relaxed">
+                        <p
+                            className="text-lg font-light leading-relaxed"
+                            style={{ color: 'var(--theme-text-secondary)' }}
+                        >
                             Our platform provides structured, inclusive spaces for meaningful cultural exchange, moving beyond surface-level tourism to deep understanding.
                         </p>
                     </div>
-                    <div className="hidden md:block w-24 h-[1px] bg-text-primary/20 mb-4"></div>
+                    <div
+                        className="hidden md:block w-24 h-[1px] mb-4"
+                        style={{ backgroundColor: 'color-mix(in srgb, var(--theme-text-primary) 20%, transparent)' }}
+                    ></div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-text-primary/5 pt-12">
+                <div
+                    className="grid grid-cols-1 md:grid-cols-3 gap-12 pt-12"
+                    style={{ borderTop: '1px solid var(--theme-border)' }}
+                >
                     {features.map((feature, index) => (
                         <div
                             key={index}
                             className="group"
                         >
-                            <div className="mb-6 p-4 inline-block bg-bg-secondary transition-colors group-hover:bg-bg-accent">
+                            <div
+                                className="mb-6 p-4 inline-block transition-colors theme-transition"
+                                style={{ backgroundColor: 'var(--theme-bg-secondary)' }}
+                            >
                                 {feature.icon}
                             </div>
-                            <h3 className="text-xl font-serif font-medium mb-3 text-text-primary">{feature.title}</h3>
-                            <p className="text-text-secondary leading-relaxed font-light mb-6">
+                            <h3
+                                className="text-xl font-serif font-medium mb-3"
+                                style={{ color: 'var(--theme-text-primary)' }}
+                            >{feature.title}</h3>
+                            <p
+                                className="leading-relaxed font-light mb-6"
+                                style={{ color: 'var(--theme-text-secondary)' }}
+                            >
                                 {feature.description}
                             </p>
-                            <Link to={feature.href} className="text-sm font-bold uppercase tracking-widest text-text-primary hover:text-accent-terra transition-colors flex items-center gap-2">
+                            <Link
+                                to={feature.href}
+                                className="text-sm font-bold uppercase tracking-widest transition-colors flex items-center gap-2"
+                                style={{ color: 'var(--theme-text-primary)' }}
+                            >
                                 Explore
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

@@ -30,15 +30,25 @@ const cultures = [
 
 const CulturalShowcase = () => {
     return (
-        <section className="py-24 bg-bg-secondary overflow-hidden">
+        <section
+            className="py-24 overflow-hidden theme-transition"
+            style={{ backgroundColor: 'var(--theme-bg-secondary)' }}
+        >
             <div className="container mx-auto px-4 mb-12 flex justify-between items-end">
                 <div>
                     <span className="text-accent-teal uppercase tracking-widest text-xs font-bold mb-2 block">Curated Journeys</span>
-                    <h2 className="text-3xl md:text-4xl font-serif font-medium text-text-primary">
+                    <h2
+                        className="text-3xl md:text-4xl font-serif font-medium"
+                        style={{ color: 'var(--theme-text-primary)' }}
+                    >
                         Cultural <span className="italic font-light text-accent-terra">Highlights</span>
                     </h2>
                 </div>
-                <Link to="/dances" className="hidden md:flex items-center gap-2 text-text-primary hover:text-accent-terra transition-colors font-medium text-sm border-b border-transparent hover:border-accent-terra pb-0.5">
+                <Link
+                    to="/dances"
+                    className="hidden md:flex items-center gap-2 transition-colors font-medium text-sm border-b border-transparent hover:border-accent-terra pb-0.5"
+                    style={{ color: 'var(--theme-text-primary)' }}
+                >
                     View All Destinations
                 </Link>
             </div>

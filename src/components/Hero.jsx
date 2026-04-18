@@ -2,7 +2,10 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
     return (
-        <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" style={{ background: 'radial-gradient(circle at center, #fffcf9 0%, #fdefe6 50%, #fdf5e6 100%)' }}>
+        <section
+            className="relative min-h-screen flex items-center pt-20 overflow-hidden theme-transition"
+            style={{ background: 'var(--theme-hero-gradient)' }}
+        >
             <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
                 {/* Text Content */}
@@ -12,20 +15,40 @@ const Hero = () => {
                         <span className="text-accent-gold uppercase tracking-[0.2em] text-xs font-semibold">Bridging Worlds</span>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold mb-8 leading-[1.1] text-text-primary">
+                    <h1
+                        className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold mb-8 leading-[1.1]"
+                        style={{ color: 'var(--theme-text-primary)' }}
+                    >
                         Connect Through <br />
                         <span className="italic text-accent-terra">Heritage.</span>
                     </h1>
 
-                    <p className="text-lg md:text-xl text-text-secondary max-w-lg mb-10 leading-relaxed font-light">
+                    <p
+                        className="text-lg md:text-xl max-w-lg mb-10 leading-relaxed font-light"
+                        style={{ color: 'var(--theme-text-secondary)' }}
+                    >
                         A digital sanctuary preserving the world's rich traditions. diverse stories, and authentic voices.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-6">
-                        <Link to="/dances" className="px-8 py-4 bg-text-primary text-bg-primary font-medium hover:bg-accent-terra transition-colors duration-300 text-center">
+                        <Link
+                            to="/dances"
+                            className="px-8 py-4 font-medium transition-colors duration-300 text-center"
+                            style={{
+                                backgroundColor: 'var(--theme-text-primary)',
+                                color: 'var(--theme-bg-primary)',
+                            }}
+                        >
                             Start Exploring
                         </Link>
-                        <a href="#about" className="px-8 py-4 border border-text-primary/20 text-text-primary font-medium hover:border-text-primary transition-colors duration-300 text-center">
+                        <a
+                            href="#about"
+                            className="px-8 py-4 font-medium transition-colors duration-300 text-center"
+                            style={{
+                                border: `1px solid var(--theme-border)`,
+                                color: 'var(--theme-text-primary)',
+                            }}
+                        >
                             Our Mission
                         </a>
                     </div>

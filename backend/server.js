@@ -107,6 +107,12 @@ const CulturePartnerSchema = new mongoose.Schema({
     culture: String,
     avatar: String,
     location: String,
+    bio: String,
+    interests: [String],
+    profilePhoto: String,
+    verified: { type: Boolean, default: false },
+    country: String,
+    age: Number,
     food: String,
     ingredients: [String],
     foodImage: String,
@@ -392,6 +398,32 @@ app.get('/api/culture-swap/random', async (req, res) => {
         res.json(partner);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch random partner' });
+    }
+});
+
+// Get all partners for browsing (deduplicated by culture)
+app.get('/api/culture-swap/partners', async (req, res) => {
+    try {
+        // Get one unique partner per culture to show diverse profiles
+        const partners = await CulturePartner.aggregate([
+            { $group: { _id: '$culture', doc: { $first: '$$ROOT' } } },
+            { $replaceRoot: { newRoot: '$doc' } },
+            { $sort: { name: 1 } }
+        ]);
+        res.json(partners);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch partners' });
+    }
+});
+
+// Get a specific partner by ID
+app.get('/api/culture-swap/partner/:id', async (req, res) => {
+    try {
+        const partner = await CulturePartner.findById(req.params.id);
+        if (!partner) return res.status(404).json({ error: 'Partner not found' });
+        res.json(partner);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch partner' });
     }
 });
 

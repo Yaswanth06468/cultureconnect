@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+    const { isDark } = useTheme();
 
     const [username, setUsername] = useState(localStorage.getItem('username'));
     const [token, setToken] = useState(localStorage.getItem('token'));
@@ -44,12 +46,17 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-transparent ${isScrolled ? 'bg-bg-primary py-4 border-black/5 shadow-sm' : 'bg-transparent py-6'
-                }`}
+            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b theme-transition`}
+            style={{
+                backgroundColor: isScrolled ? 'var(--theme-bg-primary)' : 'transparent',
+                borderColor: isScrolled ? 'var(--theme-border)' : 'transparent',
+                padding: isScrolled ? '1rem 0' : '1.5rem 0',
+                boxShadow: isScrolled ? `0 1px 8px var(--theme-shadow)` : 'none',
+            }}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
-                <Link to="/" className="text-2xl font-serif font-bold text-text-primary tracking-tight mr-8 flex-shrink-0">
+                <Link to="/" className="text-2xl font-serif font-bold tracking-tight mr-8 flex-shrink-0" style={{ color: 'var(--theme-text-primary)' }}>
                     Culture<span className="font-light italic text-accent-terra">Connect</span>
                 </Link>
 
@@ -60,7 +67,10 @@ const Navbar = () => {
                             <a
                                 key={link.name}
                                 href={link.href}
-                                className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium tracking-wide uppercase"
+                                className="transition-colors text-sm font-medium tracking-wide uppercase"
+                                style={{ color: 'var(--theme-text-secondary)' }}
+                                onMouseEnter={e => e.target.style.color = 'var(--theme-text-primary)'}
+                                onMouseLeave={e => e.target.style.color = 'var(--theme-text-secondary)'}
                             >
                                 {link.name}
                             </a>
@@ -68,7 +78,10 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 to={link.href}
-                                className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium tracking-wide uppercase"
+                                className="transition-colors text-sm font-medium tracking-wide uppercase"
+                                style={{ color: 'var(--theme-text-secondary)' }}
+                                onMouseEnter={e => e.target.style.color = 'var(--theme-text-primary)'}
+                                onMouseLeave={e => e.target.style.color = 'var(--theme-text-secondary)'}
                             >
                                 {link.name}
                             </Link>
@@ -81,16 +94,39 @@ const Navbar = () => {
                     {token ? (
                         <>
                             <span className="text-sm font-bold text-accent-teal">Hi, {username}</span>
-                            <button onClick={handleLogout} className="px-6 py-2 border border-text-primary text-text-primary text-sm font-medium hover:bg-bg-secondary transition-colors duration-300">
+                            <button
+                                onClick={handleLogout}
+                                className="px-6 py-2 text-sm font-medium transition-colors duration-300 theme-transition"
+                                style={{
+                                    border: `1px solid var(--theme-text-primary)`,
+                                    color: 'var(--theme-text-primary)',
+                                }}
+                                onMouseEnter={e => e.target.style.backgroundColor = 'var(--theme-bg-secondary)'}
+                                onMouseLeave={e => e.target.style.backgroundColor = 'transparent'}
+                            >
                                 Logout
                             </button>
                         </>
                     ) : (
                         <>
-                            <Link to="/login" className="px-6 py-2 border border-text-primary text-text-primary text-sm font-medium hover:bg-bg-secondary transition-colors duration-300">
+                            <Link
+                                to="/login"
+                                className="px-6 py-2 text-sm font-medium transition-colors duration-300 theme-transition"
+                                style={{
+                                    border: `1px solid var(--theme-text-primary)`,
+                                    color: 'var(--theme-text-primary)',
+                                }}
+                            >
                                 Login
                             </Link>
-                            <Link to="/signup" className="px-6 py-2 bg-text-primary text-bg-primary text-sm font-medium hover:bg-accent-terra transition-colors duration-300">
+                            <Link
+                                to="/signup"
+                                className="px-6 py-2 text-sm font-medium transition-colors duration-300 theme-transition"
+                                style={{
+                                    backgroundColor: 'var(--theme-text-primary)',
+                                    color: 'var(--theme-bg-primary)',
+                                }}
+                            >
                                 Sign Up
                             </Link>
                         </>
@@ -99,7 +135,8 @@ const Navbar = () => {
 
                 {/* Mobile Menu Button */}
                 <button
-                    className="md:hidden text-text-primary focus:outline-none"
+                    className="md:hidden focus:outline-none"
+                    style={{ color: 'var(--theme-text-primary)' }}
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     aria-label="Toggle menu"
                 >
@@ -115,13 +152,20 @@ const Navbar = () => {
 
             {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
-                <div className="md:hidden absolute top-full left-0 w-full bg-bg-primary border-b border-black/5 p-6 flex flex-col gap-6 animate-fade-in shadow-xl">
+                <div
+                    className="md:hidden absolute top-full left-0 w-full p-6 flex flex-col gap-6 animate-fade-in shadow-xl theme-transition"
+                    style={{
+                        backgroundColor: 'var(--theme-bg-primary)',
+                        borderBottom: `1px solid var(--theme-border)`,
+                    }}
+                >
                     {navLinks.map((link) => (
                         link.href.startsWith('/#') ? (
                             <a
                                 key={link.name}
                                 href={link.href}
-                                className="text-text-primary hover:text-accent-terra text-xl font-serif font-medium"
+                                className="text-xl font-serif font-medium"
+                                style={{ color: 'var(--theme-text-primary)' }}
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 {link.name}
@@ -130,7 +174,8 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 to={link.href}
-                                className="text-text-primary hover:text-accent-terra text-xl font-serif font-medium"
+                                className="text-xl font-serif font-medium"
+                                style={{ color: 'var(--theme-text-primary)' }}
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 {link.name}
@@ -138,22 +183,37 @@ const Navbar = () => {
                         )
                     ))}
                     {token ? (
-                        <button onClick={handleLogout} className="w-full py-3 border border-text-primary text-text-primary font-medium">
+                        <button
+                            onClick={handleLogout}
+                            className="w-full py-3 font-medium"
+                            style={{
+                                border: `1px solid var(--theme-text-primary)`,
+                                color: 'var(--theme-text-primary)',
+                            }}
+                        >
                             Logout
                         </button>
                     ) : (
                         <div className="flex flex-col gap-3">
-                            <Link 
-                                to="/login" 
+                            <Link
+                                to="/login"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full text-center py-3 border border-text-primary text-text-primary font-medium"
+                                className="w-full text-center py-3 font-medium"
+                                style={{
+                                    border: `1px solid var(--theme-text-primary)`,
+                                    color: 'var(--theme-text-primary)',
+                                }}
                             >
                                 Login
                             </Link>
-                            <Link 
-                                to="/signup" 
+                            <Link
+                                to="/signup"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full text-center py-3 bg-text-primary text-bg-primary font-medium"
+                                className="w-full text-center py-3 font-medium"
+                                style={{
+                                    backgroundColor: 'var(--theme-text-primary)',
+                                    color: 'var(--theme-bg-primary)',
+                                }}
                             >
                                 Sign Up
                             </Link>

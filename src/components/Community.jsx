@@ -21,11 +21,18 @@ const testimonials = [
 
 const Community = () => {
     return (
-        <section id="community" className="py-24 bg-bg-primary relative">
+        <section
+            id="community"
+            className="py-24 relative theme-transition"
+            style={{ backgroundColor: 'var(--theme-bg-primary)' }}
+        >
             <div className="container mx-auto px-6">
                 <div className="text-center mb-16">
                     <span className="text-accent-teal uppercase tracking-widest text-xs font-bold mb-4 block">Our Community</span>
-                    <h2 className="text-3xl md:text-5xl font-serif font-medium mb-4 text-text-primary">
+                    <h2
+                        className="text-3xl md:text-5xl font-serif font-medium mb-4"
+                        style={{ color: 'var(--theme-text-primary)' }}
+                    >
                         Voices of <span className="italic font-light text-accent-gold">Connection</span>
                     </h2>
                 </div>
@@ -34,17 +41,35 @@ const Community = () => {
                     {testimonials.map((item, index) => (
                         <div
                             key={index}
-                            className="bg-bg-secondary p-8 border border-transparent hover:border-black/5 transition-colors duration-300 relative group"
+                            className="p-8 transition-colors duration-300 relative group theme-transition"
+                            style={{
+                                backgroundColor: 'var(--theme-bg-secondary)',
+                                border: '1px solid transparent',
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--theme-border)'}
+                            onMouseLeave={e => e.currentTarget.style.borderColor = 'transparent'}
                         >
-                            <p className="text-text-secondary leading-relaxed mb-8 font-light relative z-10">
+                            <p
+                                className="leading-relaxed mb-8 font-light relative z-10"
+                                style={{ color: 'var(--theme-text-secondary)' }}
+                            >
                                 {item.text}
                             </p>
 
-                            <div className="flex items-center gap-4 border-t border-black/5 pt-6">
+                            <div
+                                className="flex items-center gap-4 pt-6"
+                                style={{ borderTop: '1px solid var(--theme-border)' }}
+                            >
                                 <div>
-                                    <h4 className="font-medium text-text-primary text-base font-serif">{item.name}</h4>
+                                    <h4
+                                        className="font-medium text-base font-serif"
+                                        style={{ color: 'var(--theme-text-primary)' }}
+                                    >{item.name}</h4>
                                     <p className="text-accent-teal text-xs uppercase tracking-wider font-bold mb-0.5">{item.role}</p>
-                                    <p className="text-text-muted text-xs">{item.location}</p>
+                                    <p
+                                        className="text-xs"
+                                        style={{ color: 'var(--theme-text-muted)' }}
+                                    >{item.location}</p>
                                 </div>
                             </div>
                         </div>
