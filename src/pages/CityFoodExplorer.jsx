@@ -333,8 +333,8 @@ const FoodNotification = ({ notif, onClose }) => {
   return (
     <div style={{
       position: 'fixed', bottom: 24, right: 24, zIndex: 999,
-      background: '#fff', borderRadius: 16, padding: '18px 22px', maxWidth: 340,
-      boxShadow: '0 8px 40px rgba(0,0,0,0.18)', border: `2px solid ${notif.color}`,
+      background: 'var(--theme-card-bg)', borderRadius: 16, padding: '18px 22px', maxWidth: 340,
+      boxShadow: '0 8px 40px var(--theme-shadow)', border: `2px solid ${notif.color}`,
       animation: 'slideIn 0.4s cubic-bezier(.34,1.56,.64,1)'
     }}>
       <style>{`@keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}} @keyframes shrink{from{width:100%}to{width:0%}}`}</style>
@@ -648,7 +648,7 @@ const CityFoodExplorer = () => {
   });
 
   return (
-    <div className="min-h-screen pt-20 pb-16" style={{ background: 'linear-gradient(135deg, #fffdf2 0%, #fff0e5 50%, #ffece6 100%)' }}>
+    <div className="min-h-screen pt-20 pb-16 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
       {/* Header */}
       <div className="container mx-auto max-w-7xl px-6">
         <div className="text-center py-12 mb-8">
@@ -678,7 +678,7 @@ const CityFoodExplorer = () => {
         />
 
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-3 mb-6 p-5 bg-bg-secondary rounded-2xl border border-black/5">
+        <div className="flex flex-col md:flex-row gap-3 mb-6 p-5 bg-bg-secondary rounded-2xl border theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
           <div className="relative flex-1">
             <svg className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             <input type="text" placeholder="Search city, state or dish…" value={search} onChange={e => setSearch(e.target.value)}

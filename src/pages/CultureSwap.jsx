@@ -176,7 +176,7 @@ const TaskDetailModal = ({ task, activeSwap, onClose, completedTasks, toggleTask
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 overflow-y-auto">
             <div className="absolute inset-0 bg-[#4a2c2a]/60 backdrop-blur-sm" onClick={onClose}></div>
-            <div className="relative bg-white w-full max-w-4xl rounded-2xl p-8 md:p-12 shadow-xl border border-black/5 animate-scale-up-long my-auto overflow-hidden">
+            <div className="relative w-full max-w-4xl rounded-2xl p-8 md:p-12 shadow-xl border animate-scale-up-long my-auto overflow-hidden theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                 <button 
                     onClick={onClose}
                     className="absolute top-6 right-6 w-10 h-10 rounded-full bg-[#fdf8f3] hover:bg-[#f0ece6] flex items-center justify-center text-xl transition-all"
@@ -728,7 +728,7 @@ const CultureSwap = () => {
     };
 
     return (
-        <div className="min-h-screen pt-24 pb-12 px-6 bg-[#fdf8f3] font-sans relative overflow-hidden">
+        <div className="min-h-screen pt-24 pb-12 px-6 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
              {/* Notification Banner */}
              {showNotification && (
                  <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-[150] animate-slide-up">
@@ -776,7 +776,7 @@ const CultureSwap = () => {
                 {!activeSwap ? (
                     <div className="space-y-12 animate-fade-in">
                         {/* Main Interaction Card */}
-                        <div className="bg-white border border-black/5 rounded-[2rem] p-10 md:p-20 text-center shadow-[0_20px_50px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+                        <div className="border rounded-[2rem] p-10 md:p-20 text-center shadow-lg relative overflow-hidden group theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                             {/* Decorative Background Elements */}
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-terra via-accent-gold to-accent-teal"></div>
                             <div className="absolute -top-24 -right-24 w-64 h-64 bg-accent-gold/5 rounded-full blur-3xl group-hover:bg-accent-gold/10 transition-all duration-1000"></div>

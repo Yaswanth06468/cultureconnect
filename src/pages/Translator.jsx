@@ -418,7 +418,7 @@ const Translator = () => {
     };
 
     return (
-        <div className="min-h-screen pt-24 pb-12 px-6" style={{ background: 'linear-gradient(135deg, #fff3e0 0%, #fbe9e7 50%, #f3e5f5 100%)' }}>
+        <div className="min-h-screen pt-24 pb-12 px-6 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
             <div className="container mx-auto max-w-5xl">
                 <div className="mb-10 text-center animate-fade-in-up">
                     <h1 className="text-4xl md:text-5xl font-serif font-bold text-text-primary mb-4">
@@ -429,7 +429,7 @@ const Translator = () => {
                     </p>
                 </div>
 
-                <div className="border border-black/10 rounded-2xl p-6 md:p-10 shadow-lg transition-transform duration-300 transform hover:-translate-y-1" style={{ background: '#fdf8f3' }}>
+                <div className="border rounded-2xl p-6 md:p-10 shadow-lg transition-transform duration-300 transform hover:-translate-y-1 theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                     <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 mb-8">
                         <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto">
                             <div className="flex flex-col w-full md:w-auto">
@@ -607,7 +607,7 @@ const Translator = () => {
                                 <span className="w-2 h-2 rounded-full bg-accent-blue"></span>
                                 {languages.find(l => l.code === sourceLang)?.name} Speech
                             </h2>
-                            <div className="flex-1 p-6 border border-black/10 rounded-xl overflow-y-auto whitespace-pre-wrap text-text-primary text-lg leading-relaxed shadow-inner font-sans scroll-smooth" style={{ background: '#faf5ef' }}>
+                            <div className="flex-1 p-6 border rounded-xl overflow-y-auto whitespace-pre-wrap text-text-primary text-lg leading-relaxed shadow-inner font-sans scroll-smooth theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
                                 {transcript || <div className="w-full h-full flex items-center justify-center text-text-muted italic opacity-50">Your speech will appear here...</div>}
                             </div>
                         </div>
@@ -625,7 +625,7 @@ const Translator = () => {
                     </div>
 
                     {/* Cultural Adaptation Info Panel */}
-                    <div className="mt-8 p-6 bg-white border border-black/10 rounded-xl shadow-sm animate-fade-in">
+                    <div className="mt-8 p-6 border rounded-xl shadow-sm animate-fade-in theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                         <div className="flex items-center gap-3 mb-4">
                             <span className="text-2xl">🌍</span>
                             <div>
@@ -670,13 +670,13 @@ const Translator = () => {
                         </div>
 
                         {phrasebook.length === 0 ? (
-                            <div className="text-center py-10 bg-bg-primary rounded-xl border border-dashed border-black/20 text-text-muted">
+                            <div className="text-center py-10 rounded-xl border border-dashed text-text-muted theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)', borderColor: 'var(--theme-border)' }}>
                                 No phrases saved yet. Translate something and click "Save" to build your cultural phrasebook!
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {phrasebook.map((phrase) => (
-                                    <div key={phrase.id} className="bg-bg-secondary p-5 rounded-xl border border-black/10 shadow-sm relative group transition-transform hover:-translate-y-1">
+                                    <div key={phrase.id} className="p-5 rounded-xl border shadow-sm relative group transition-transform hover:-translate-y-1 theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
                                         <button 
                                             onClick={() => deletePhrase(phrase.id)}
                                             className="absolute top-3 right-3 text-text-muted hover:text-accent-terra opacity-0 group-hover:opacity-100 transition-opacity"

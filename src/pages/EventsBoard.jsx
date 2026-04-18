@@ -70,14 +70,14 @@ const EventCard = ({ event, idx, onDelete, role, onBook }) => {
       onMouseLeave={() => setHovered(false)}
       onClick={() => onBook(event)}
       style={{
-        background: '#fff', 
+        backgroundColor: 'var(--theme-card-bg)', 
         borderRadius: 20, 
         overflow: 'hidden', 
         cursor: 'pointer',
-        boxShadow: hovered ? '0 25px 50px -12px rgba(0, 0, 0, 0.15)' : '0 10px 15px -3px rgba(0, 0, 0, 0.05)',
+        boxShadow: hovered ? '0 25px 50px -12px var(--theme-shadow)' : '0 10px 15px -3px rgba(0, 0, 0, 0.05)',
         transform: hovered ? 'translateY(-8px)' : 'translateY(0)',
         transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-        border: '1px solid rgba(0,0,0,0.05)',
+        border: '1px solid var(--theme-border)',
       }}
     >
       {/* Poster / Hero Image with Glassmorphism Overlay */}
@@ -445,8 +445,8 @@ const BookingModal = ({ event, onClose, token, navigate }) => {
       )}
 
       <div style={{
-        background: '#fff', borderRadius: 24, width: '100%', maxWidth: 480,
-        boxShadow: '0 32px 100px rgba(0,0,0,0.35)',
+        backgroundColor: 'var(--theme-bg-primary)', borderRadius: 24, width: '100%', maxWidth: 480,
+        boxShadow: '0 32px 100px var(--theme-shadow)',
         maxHeight: '90vh', overflowY: 'auto',
         animation: 'modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
         position: 'relative',
@@ -938,7 +938,7 @@ const EventsBoard = () => {
   });
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #fdf6ee 0%, #fef3e2 50%, #fdf0e8 100%)', paddingTop: 72, fontFamily: 'Inter, Arial, sans-serif' }}>
+    <div className="theme-transition" style={{ minHeight: '100vh', backgroundColor: 'var(--theme-bg-primary)', paddingTop: 72, fontFamily: 'Inter, Arial, sans-serif' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         :root { font-family: 'Inter', sans-serif; }
@@ -1031,11 +1031,11 @@ const EventsBoard = () => {
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 16px', display: 'flex', gap: 24, alignItems: 'flex-start' }}>
 
         {/* ── Left Sidebar ──────────────────────────────────────────────────── */}
-        <aside style={{
-          width: sidebarOpen ? 240 : 0, flexShrink: 0, background: '#fdf8f3', borderRadius: 14,
-          boxShadow: '0 2px 16px rgba(0,0,0,0.07)', overflow: 'hidden',
+        <aside className="theme-transition" style={{
+          width: sidebarOpen ? 240 : 0, flexShrink: 0, backgroundColor: 'var(--theme-bg-secondary)', borderRadius: 14,
+          boxShadow: '0 2px 16px var(--theme-shadow)', overflow: 'hidden',
           transition: 'width 0.2s ease', padding: sidebarOpen ? '4px 0' : 0,
-          border: sidebarOpen ? '1px solid #f0f0f0' : 'none',
+          border: sidebarOpen ? '1px solid var(--theme-border)' : 'none',
         }}>
           {sidebarOpen && (
             <div style={{ padding: '0 18px' }}>
@@ -1051,16 +1051,16 @@ const EventsBoard = () => {
                       style={{
                         padding: '5px 12px', borderRadius: 16, border: '1.5px solid',
                         fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                        background: dateFilter === val ? '#8b6f5e' : '#fff',
-                        color: dateFilter === val ? '#fff' : '#555',
-                        borderColor: dateFilter === val ? '#8b6f5e' : '#e5e7eb',
+                        background: dateFilter === val ? '#8b6f5e' : 'var(--theme-bg-primary)',
+                        color: dateFilter === val ? '#fff' : 'var(--theme-text-primary)',
+                        borderColor: dateFilter === val ? '#8b6f5e' : 'var(--theme-border)',
                       }}>{lbl}</button>
                   ))}
                 </div>
                 <label style={{ fontSize: 12, color: '#888', fontWeight: 600, display: 'block', marginBottom: 4 }}>Custom Date</label>
                 <input type="date" value={customDate}
                   onChange={e => { setCustomDate(e.target.value); setDateFilter('custom'); }}
-                  style={{ width: '100%', padding: '7px 10px', border: '1.5px solid #e5e7eb', borderRadius: 8, fontSize: 13, outline: 'none', boxSizing: 'border-box', color: '#111' }}
+                  style={{ width: '100%', padding: '7px 10px', border: '1.5px solid var(--theme-border)', borderRadius: 8, fontSize: 13, outline: 'none', boxSizing: 'border-box', backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)' }}
                 />
               </div>
 
@@ -1071,17 +1071,17 @@ const EventsBoard = () => {
                   {activeLanguage !== 'All Languages' && <button onClick={() => setActiveLanguage('All Languages')} style={{ background: 'none', border: 'none', color: '#8b6f5e', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>Clear</button>}
                 </div>
                 {LANGUAGES.map(lang => (
-                  <div key={lang} className="filter-check" onClick={() => setActiveLanguage(lang)}
+                  <div key={lang} className="filter-check theme-transition" onClick={() => setActiveLanguage(lang)}
                     style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 4px', borderRadius: 6, cursor: 'pointer' }}>
                     <div style={{
                       width: 16, height: 16, borderRadius: 4, border: '2px solid',
-                      borderColor: activeLanguage === lang ? '#8b6f5e' : '#d1d5db',
-                      background: activeLanguage === lang ? '#8b6f5e' : '#fff',
+                      borderColor: activeLanguage === lang ? '#8b6f5e' : 'var(--theme-border)',
+                      backgroundColor: activeLanguage === lang ? '#8b6f5e' : 'var(--theme-bg-primary)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                     }}>
                       {activeLanguage === lang && <span style={{ color: '#fff', fontSize: 10, fontWeight: 900 }}>✓</span>}
                     </div>
-                    <span style={{ fontSize: 13, color: activeLanguage === lang ? '#8b6f5e' : '#444', fontWeight: activeLanguage === lang ? 700 : 400 }}>{lang}</span>
+                    <span style={{ fontSize: 13, color: activeLanguage === lang ? '#8b6f5e' : 'var(--theme-text-primary)', fontWeight: activeLanguage === lang ? 700 : 400 }}>{lang}</span>
                   </div>
                 ))}
               </div>
@@ -1093,15 +1093,15 @@ const EventsBoard = () => {
                   {activePriceIdx !== 0 && <button onClick={() => setActivePriceIdx(0)} style={{ background: 'none', border: 'none', color: '#8b6f5e', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>Clear</button>}
                 </div>
                 {PRICE_RANGES.map((pr, i) => (
-                  <div key={pr.label} className="filter-check" onClick={() => setActivePriceIdx(i)}
+                  <div key={pr.label} className="filter-check theme-transition" onClick={() => setActivePriceIdx(i)}
                     style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 4px', borderRadius: 6, cursor: 'pointer' }}>
                     <div style={{
                       width: 16, height: 16, borderRadius: '50%', border: '2px solid',
-                      borderColor: activePriceIdx === i ? '#8b6f5e' : '#d1d5db',
-                      background: activePriceIdx === i ? '#8b6f5e' : '#fff',
+                      borderColor: activePriceIdx === i ? '#8b6f5e' : 'var(--theme-border)',
+                      backgroundColor: activePriceIdx === i ? '#8b6f5e' : 'var(--theme-bg-primary)',
                       flexShrink: 0,
                     }} />
-                    <span style={{ fontSize: 13, color: activePriceIdx === i ? '#8b6f5e' : '#444', fontWeight: activePriceIdx === i ? 700 : 400 }}>{pr.label}</span>
+                    <span style={{ fontSize: 13, color: activePriceIdx === i ? '#8b6f5e' : 'var(--theme-text-primary)', fontWeight: activePriceIdx === i ? 700 : 400 }}>{pr.label}</span>
                   </div>
                 ))}
               </div>
@@ -1121,8 +1121,8 @@ const EventsBoard = () => {
         <div style={{ flex: 1, minWidth: 0 }}>
           {/* Toolbar row */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18, flexWrap: 'wrap' }}>
-            <button onClick={() => setSidebarOpen(o => !o)}
-              style={{ background: '#fff', border: '1.5px solid #e5e7eb', borderRadius: 8, padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, color: '#444' }}>
+            <button className="theme-transition" onClick={() => setSidebarOpen(o => !o)}
+              style={{ backgroundColor: 'var(--theme-bg-primary)', border: '1.5px solid var(--theme-border)', borderRadius: 8, padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, color: 'var(--theme-text-primary)' }}>
               {sidebarOpen ? '◀ Filters' : '▶ Filters'}
             </button>
             <span style={{ fontSize: 14, color: '#888', fontWeight: 500 }}>
@@ -1141,7 +1141,7 @@ const EventsBoard = () => {
 
           {/* Events grid */}
           {filtered.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px 20px', background: '#fdf8f3', borderRadius: 14, border: '1px solid #f0f0f0' }}>
+            <div style={{ textAlign: 'center', padding: '80px 20px', backgroundColor: 'var(--theme-bg-secondary)', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
               <div style={{ fontSize: 56, marginBottom: 16 }}>🎭</div>
               <h3 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 800, color: '#111' }}>No events found</h3>
               <p style={{ margin: 0, color: '#888', fontSize: 14 }}>Try adjusting your filters or be the first to host an event!</p>

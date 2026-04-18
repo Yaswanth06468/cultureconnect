@@ -178,16 +178,16 @@ const Feed = () => {
     };
 
     return (
-        <div className="min-h-screen pt-24 pb-12" style={{ background: 'linear-gradient(135deg, #fffafa 0%, #f4e9e9 100%)' }}>
+        <div className="min-h-screen pt-24 pb-12 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
         <div className="container mx-auto px-6 max-w-6xl">
-            <h1 className="text-4xl font-serif font-bold text-text-primary mb-8 border-b-2 border-black pb-4">Cultural Feed</h1>
+            <h1 className="text-4xl font-serif font-bold text-text-primary mb-8 border-b-2 pb-4 theme-transition" style={{ borderColor: 'var(--theme-border)' }}>Cultural Feed</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Main Feed Column */}
                 <div className="lg:col-span-2">
                     {/* Create Post Section */}
             {token ? (
-                <div className="mb-12 p-6 border border-black/20 rounded-xl" style={{ background: '#fdf8f3' }}>
+                <div className="mb-12 p-6 border rounded-xl theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                     <h2 className="text-2xl font-serif font-bold mb-4">Share Your Culture</h2>
                     {error && <p className="text-accent-terra font-bold mb-4">{error}</p>}
 
@@ -197,7 +197,8 @@ const Feed = () => {
                             type="file"
                             accept="image/*"
                             onChange={(e) => setImage(e.target.files[0])}
-                            className="p-2 border border-text-secondary bg-white"
+                            className="p-2 border border-text-secondary theme-transition"
+                            style={{ backgroundColor: 'var(--theme-bg-primary)' }}
                         />
                         <textarea
                             placeholder="Describe your cultural moment..."
@@ -218,7 +219,7 @@ const Feed = () => {
                     </form>
                 </div>
             ) : (
-                <div className="mb-12 p-6 border border-black/20 rounded-xl text-center" style={{ background: '#fdf8f3' }}>
+                <div className="mb-12 p-6 border rounded-xl text-center theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                     <p className="font-bold text-lg">Log in to share your own cultural moment.</p>
                 </div>
             )}
@@ -229,8 +230,8 @@ const Feed = () => {
                     <p className="text-center text-text-secondary italic">No posts yet. Be the first to share!</p>
                 ) : (
                     posts.map(post => (
-                        <div key={post.id} className="border border-black/10 shadow-sm rounded-xl overflow-hidden" style={{ background: '#fdf8f3' }}>
-                            <div className="p-4 border-b border-black/10 flex justify-between items-center" style={{ background: '#f9efe5' }}>
+                        <div key={post.id} className="border shadow-sm rounded-xl overflow-hidden theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
+                            <div className="p-4 border-b flex justify-between items-center theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
                                 <Link to={`/profile/${post.username}`} className="font-bold text-lg hover:text-accent-blue hover:underline">
                                     {post.username}
                                 </Link>
@@ -274,7 +275,7 @@ const Feed = () => {
 
                                 {/* Comments Section */}
                                 {visibleComments[post.id] && (
-                                    <div className="mt-6 border-t border-black/10 pt-4 p-4 rounded-lg" style={{ background: '#f9efe5' }}>
+                                    <div className="mt-6 border-t pt-4 p-4 rounded-lg theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
                                         <div className="flex flex-col gap-3 mb-4 max-h-48 overflow-y-auto">
                                             {visibleComments[post.id].length === 0 ? (
                                                 <p className="text-sm text-text-muted italic">No comments yet.</p>
@@ -320,7 +321,7 @@ const Feed = () => {
 
                 {/* Sidebar Column */}
                 <div className="lg:col-span-1 hidden lg:block">
-                    <div className="p-6 border border-black/20 rounded-xl sticky top-32 shadow-sm" style={{ background: '#fdf8f3' }}>
+                    <div className="p-6 border rounded-xl sticky top-32 shadow-sm theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                         <h3 className="text-xl font-serif font-bold mb-6 flex items-center gap-2">
                             <span>📅</span> Upcoming Experiences
                         </h3>

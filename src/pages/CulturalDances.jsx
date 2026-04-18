@@ -233,7 +233,7 @@ const CulturalDances = () => {
     }, [searchQuery, selectedState]);
 
     return (
-        <div className="min-h-screen pt-24 pb-12 px-6" style={{ background: 'linear-gradient(135deg, #fffde7 0%, #fff8e1 50%, #f1f8e9 100%)' }}>
+        <div className="min-h-screen pt-24 pb-12 px-6 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
             <div className="container mx-auto max-w-7xl">
                 <div className="mb-12 text-center animate-fade-in-up">
                     <h1 className="text-4xl md:text-5xl font-serif font-bold text-text-primary mb-4">
@@ -244,7 +244,7 @@ const CulturalDances = () => {
                     </p>
 
                     {/* Filters and Search */}
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-4 max-w-4xl mx-auto bg-bg-secondary p-6 rounded-2xl shadow-sm border border-black/5">
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-4 max-w-4xl mx-auto bg-bg-secondary p-6 rounded-2xl shadow-sm border border-black/5 theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
                         <div className="relative w-full md:w-2/3">
                             <input 
                                 type="text"
@@ -317,7 +317,8 @@ const CulturalDances = () => {
                 {selectedDance && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={() => setSelectedDance(null)}>
                         <div 
-                            className="bg-bg-primary w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl transform transition-all duration-300 animate-slide-up"
+                            className="w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl transform transition-all duration-300 animate-slide-up theme-transition"
+                            style={{ backgroundColor: 'var(--theme-card-bg)' }}
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="relative h-64 md:h-96 w-full">
