@@ -295,8 +295,6 @@ const CulturalDances = () => {
     const [selectedDance, setSelectedDance] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedState, setSelectedState] = useState("All");
-    const [showVideo, setShowVideo] = useState(false);
-    const [playingInlineVideoId, setPlayingInlineVideoId] = useState(null);
 
     const states = useMemo(() => {
         const uniqueStates = ["All", ...new Set(dancesData.map(d => d.state))];
@@ -314,7 +312,6 @@ const CulturalDances = () => {
 
     const handleSelectDance = (dance) => {
         setSelectedDance(dance);
-        setShowVideo(false);
     };
 
     return (
@@ -411,41 +408,14 @@ const CulturalDances = () => {
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="relative h-64 md:h-[500px] w-full bg-black group">
-                                {showVideo ? (
-                                    <iframe 
-                                        src={`https://www.youtube.com/embed/${selectedDance.videoId}?autoplay=1&mute=0&rel=0&controls=0&modestbranding=1&playsinline=1&start=30&end=60`}
-                                        title={selectedDance.name}
-                                        className="w-full h-full"
-                                        frameBorder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                    ></iframe>
-                                ) : (
-                                    <>
-                                        <img 
-                                            src={selectedDance.imageUrl} 
-                                            alt={selectedDance.name}
-                                            className="w-full h-full object-cover opacity-90"
-                                            onError={(e) => {
-                                                e.target.onerror = null; 
-                                                e.target.src = "https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&q=80&w=1000";
-                                            }}
-                                        />
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <button 
-                                                onClick={() => setShowVideo(true)}
-                                                className="group/btn flex flex-col items-center gap-4 transition-transform hover:scale-110"
-                                            >
-                                                <div className="w-20 h-20 bg-accent-terra text-white rounded-full flex items-center justify-center shadow-2xl transition-all group-hover/btn:bg-accent-terra/90 ring-4 ring-white/20">
-                                                    <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M4.5 3.5v13L16 10 4.5 3.5z" />
-                                                    </svg>
-                                                </div>
-                                                <span className="text-white font-bold text-lg drop-shadow-lg tracking-wider bg-black/40 px-4 py-1 rounded-full backdrop-blur-sm">Watch Performance</span>
-                                            </button>
-                                        </div>
-                                    </>
-                                )}
+                                <iframe 
+                                    src={`https://www.youtube.com/embed/${selectedDance.videoId}?autoplay=1&mute=0&rel=0&controls=0&modestbranding=1&playsinline=1&start=30&end=60`}
+                                    title={selectedDance.name}
+                                    className="w-full h-full pointer-events-auto"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
                                 <div className="absolute bottom-6 left-6 right-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pointer-events-none">
                                     <div className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
@@ -466,17 +436,6 @@ const CulturalDances = () => {
                                         </svg>
                                     </button>
                                 </div>
-                                {showVideo && (
-                                    <button 
-                                        onClick={() => setShowVideo(false)}
-                                        className="absolute top-6 left-6 bg-black/60 hover:bg-black/80 text-white px-4 py-2 rounded-xl backdrop-blur-sm flex items-center gap-2 transition-all border border-white/20 shadow-xl"
-                                    >
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        Back to Details
-                                    </button>
-                                )}
                             </div>
                             <div className="p-8">
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
