@@ -51,20 +51,20 @@
 }
 
 :root.dark {
-    --theme-bg-primary: #0f0f0f;
-    --theme-bg-secondary: #1a1a1a;
-    --theme-bg-accent: #252525;
-    --theme-text-primary: #f0f0f0;
-    --theme-text-secondary: #b0b0b0;
-    --theme-text-muted: #777777;
-    --theme-border: rgba(255, 255, 255, 0.08);
-    --theme-card-bg: #1e1e1e;
-    --theme-hero-gradient: radial-gradient(circle at center, #141414 0%, #1a1210 50%, #181410 100%);
-    --theme-shadow: rgba(0, 0, 0, 0.4);
-    --theme-overlay: rgba(0, 0, 0, 0.85);
-    --theme-toggle-bg: #333333;
-    --theme-toggle-knob: #0f0f0f;
-    --theme-toggle-icon: #6c63ff;
+    --theme-bg-primary: #1a0f0a; /* Dark Mahogany */
+    --theme-bg-secondary: #261811; /* Mocha */
+    --theme-bg-accent: #332119; /* Oak Brown */
+    --theme-text-primary: #f5ecd7; /* Parchment White */
+    --theme-text-secondary: #d2b48c; /* Tan */
+    --theme-text-muted: #8b7355; /* Sepia */
+    --theme-border: rgba(245, 236, 215, 0.12);
+    --theme-card-bg: #22140e; /* Deep Chocolate */
+    --theme-hero-gradient: radial-gradient(circle at center, #2d1c15 0%, #1a0f0a 100%);
+    --theme-shadow: rgba(0, 0, 0, 0.55);
+    --theme-overlay: rgba(26, 15, 10, 0.9);
+    --theme-toggle-bg: #3d2b22;
+    --theme-toggle-knob: #1a0f0a;
+    --theme-toggle-icon: #e3a857; /* Amber Gold */
 }
 
 @layer base {
