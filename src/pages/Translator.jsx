@@ -14,6 +14,8 @@ const Translator = () => {
     const currentAudioRef = useRef(null);
     const finalizedTranscriptRef = useRef(''); // Holds the confirmed English text
     const [activeAlert, setActiveAlert] = useState(null);
+    const [inputMode, setInputMode] = useState('voice'); // 'voice' or 'text'
+    const [manualText, setManualText] = useState('');
 
     const CULTURAL_SENSITIVITY_ALERTS = [
         {
@@ -463,8 +465,49 @@ const Translator = () => {
     const clearText = () => {
         setTranscript('');
         setTranslatedText('');
+        setManualText('');
         finalizedTranscriptRef.current = '';
         setActiveAlert(null);
+    };
+
+    const handleManualTranslate = async () => {
+        if (!manualText.trim()) return;
+        
+        let currentLang = targetLang;
+        let displayLangName = '';
+        const voiceEnabled = isVoiceEnabled;
+
+        if (currentLang === 'random') {
+            const randLang = languages[Math.floor(Math.random() * languages.length)];
+            currentLang = randLang.code;
+            displayLangName = randLang.name;
+        }
+
+        const detected = analyzeMood(manualText);
+        setDetectedEmotion(detected);
+        setTranscript(manualText);
+
+        const toneToUse = selectedTone !== 'default' ? selectedTone : detected.toLowerCase();
+        
+        checkSensitivity(manualText, currentLang);
+
+        const translatedPiece = await translateText(manualText, sourceLang, currentLang);
+        if (translatedPiece) {
+            const finalTone = toneToUse.charAt(0).toUpperCase() + toneToUse.slice(1);
+            const emoji = {
+                'Happy': '😊', 'Angry': '😡', 'Polite': '🙏', 
+                'Formal': '💼', 'Casual': '👕', 'Neutral': '✨'
+            }[finalTone] || '✨';
+
+            let final = translatedPiece;
+            const prefix = targetLang === 'random' ? `[${displayLangName}] ` : '';
+            setTranslatedText(prefix + emoji + ' ' + final);
+
+            if (voiceEnabled) {
+                const langObj = languages.find(l => l.code === currentLang);
+                speakText(translatedPiece, langObj ? langObj.ttsCode : currentLang);
+            }
+        }
     };
 
     return (
@@ -549,8 +592,16 @@ const Translator = () => {
                                     <div className={`block w-10 h-6 rounded-full transition-colors ${isVoiceEnabled ? 'bg-accent-teal' : 'bg-gray-300'}`}></div>
                                     <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${isVoiceEnabled ? 'transform translate-x-4' : ''}`}></div>
                                 </div>
-                                <span className="text-sm font-semibold text-text-muted uppercase text-[10px] font-black">Voice Out</span>
+                                <span className="text-xs font-bold text-text-muted uppercase text-[10px] font-black">Voice Out</span>
                             </label>
+
+                            <button
+                                onClick={() => setInputMode(inputMode === 'voice' ? 'text' : 'voice')}
+                                className="px-5 py-3 border border-black/10 text-text-muted rounded-lg font-bold flex items-center gap-2 hover:bg-bg-secondary transition-colors"
+                                title={inputMode === 'voice' ? 'Switch to Typing' : 'Switch to Voice'}
+                            >
+                                {inputMode === 'voice' ? '⌨️ Type' : '🎤 Voice'}
+                            </button>
 
                             <button
                                 onClick={clearText}
@@ -558,33 +609,56 @@ const Translator = () => {
                             >
                                 Clear
                             </button>
-                            <button
-                                onClick={toggleListening}
-                                className={`px-8 py-3 rounded-lg font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-md ${
-                                    isListening 
-                                    ? 'bg-accent-terra hover:bg-red-800 animate-pulse' 
-                                    : 'bg-text-primary hover:bg-text-secondary'
-                                }`}
-                            >
-                                {isListening ? (
-                                    <>
-                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H10a1 1 0 01-1-1v-4z" />
-                                        </svg>
-                                        Stop Recording
-                                    </>
-                                ) : (
-                                    <>
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                                        </svg>
-                                        Speak to Translate
-                                    </>
-                                )}
-                            </button>
+                            
+                            {inputMode === 'voice' ? (
+                                <button
+                                    onClick={toggleListening}
+                                    className={`px-8 py-3 rounded-lg font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-md ${
+                                        isListening 
+                                        ? 'bg-accent-terra hover:bg-red-800 animate-pulse' 
+                                        : 'bg-text-primary hover:bg-text-secondary'
+                                    }`}
+                                >
+                                    {isListening ? (
+                                        <>
+                                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H10a1 1 0 01-1-1v-4z" />
+                                            </svg>
+                                            Stop Recording
+                                        </>
+                                    ) : (
+                                        <>
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                            </svg>
+                                            Speak to Translate
+                                        </>
+                                    )}
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleManualTranslate}
+                                    className="px-8 py-3 rounded-lg font-medium text-white bg-accent-teal hover:bg-green-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md"
+                                >
+                                    Translate Text
+                                </button>
+                            )}
                         </div>
                     </div>
+
+                    {/* Manual Input Area (Conditional) */}
+                    {inputMode === 'text' && (
+                        <div className="mb-8 animate-fade-in">
+                            <textarea 
+                                value={manualText}
+                                onChange={(e) => setManualText(e.target.value)}
+                                placeholder="Type your phrase here (e.g., 'What do you want?') to test cultural sensitivity..."
+                                className="w-full h-24 p-4 border border-accent-teal/30 rounded-xl bg-bg-secondary outline-none focus:border-accent-teal transition-all text-lg font-serif italic theme-transition"
+                                style={{ backgroundColor: 'var(--theme-bg-secondary)', color: 'var(--theme-text-primary)', borderColor: 'var(--theme-border)' }}
+                            />
+                        </div>
+                    )}
 
                     {/* AI Emotion & Cultural Tone Detector */}
                     <div className="mb-8 p-6 rounded-xl border border-dashed border-accent-teal/30 bg-accent-teal/5 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
