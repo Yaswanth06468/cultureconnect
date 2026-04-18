@@ -961,12 +961,12 @@ const EventsBoard = () => {
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(220,38,38,0.15) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(234,179,8,0.08) 0%, transparent 40%)' }} />
         <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
-            <div>
+            <div className="animate-slide-up-reveal">
               <div style={{ fontSize: 11, letterSpacing: 2, fontWeight: 700, color: '#f5d0a9', textTransform: 'uppercase', marginBottom: 6 }}>📍 Cultural Events</div>
               <h1 style={{ margin: 0, fontSize: 32, fontWeight: 900, color: '#fff', lineHeight: 1.2 }}>
-                Upcoming Events <span style={{ color: '#ef4444' }}>&</span> Experiences
+                <span>Upcoming Events <span style={{ color: '#ef4444' }}>&</span> Experiences</span>
               </h1>
-              <p style={{ margin: '8px 0 0', color: 'rgba(255,255,255,0.6)', fontSize: 14, fontWeight: 400 }}>
+              <p className="animate-fade-in-up delay-300" style={{ margin: '8px 0 0', color: 'rgba(255,255,255,0.6)', fontSize: 14, fontWeight: 400 }}>
                 Discover cultural festivals, music, dance, workshops and more
               </p>
             </div>

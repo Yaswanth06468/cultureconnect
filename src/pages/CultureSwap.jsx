@@ -798,7 +798,7 @@ const CultureSwap = () => {
                                 <button
                                     onClick={startMatch}
                                     disabled={isMatching}
-                                    className={`relative px-12 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform active:scale-95 shadow-xl group/btn overflow-hidden
+                                    className={`relative px-12 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform active:scale-95 shadow-xl group/btn overflow-hidden border border-white/20
                                         ${isMatching ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-btn text-btn hover:shadow-2xl hover:-translate-y-1'}`}
                                 >
                                     <span className="relative z-10">{isMatching ? 'Calculating Affinity...' : 'Commence Lifestyle Swap'}</span>

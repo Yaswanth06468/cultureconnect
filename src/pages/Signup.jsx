@@ -33,8 +33,10 @@ const Signup = () => {
     };
 
     return (
-        <div className="container mx-auto px-6 py-24 max-w-md">
-            <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary">Sign Up</h2>
+        <div className="container mx-auto px-6 py-24 max-w-md animate-scale-in">
+            <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary animate-slide-up-reveal">
+                <span>Sign Up</span>
+            </h2>
             {error && <p className="text-accent-terra mb-4 font-bold">{error}</p>}
             <form onSubmit={handleSignup} className="flex flex-col gap-4 border border-black/10 p-8 bg-bg-secondary">
                 <label className="text-text-primary font-bold">Username

@@ -235,15 +235,13 @@ const CulturalDances = () => {
     return (
         <div className="min-h-screen pt-24 pb-12 px-6 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
             <div className="container mx-auto max-w-7xl">
-                <div className="mb-12 text-center animate-fade-in-up">
+                <div className="mb-12 text-center animate-slide-up-reveal">
                     <h1 className="text-4xl md:text-5xl font-serif font-bold text-text-primary mb-4">
-                        Cultural Dances of India
+                        <span>Cultural Dances of India</span>
                     </h1>
-                    <p className="text-lg text-text-muted max-w-2xl mx-auto mb-10">
+                    <p className="text-lg text-text-muted max-w-2xl mx-auto mb-10 animate-fade-in-up delay-300">
                         Explore the rich heritage of India through its diverse and beautiful classical and folk dance forms from every state.
                     </p>
-
-                    {/* Filters and Search */}
                     <div className="flex flex-col md:flex-row items-center justify-center gap-4 max-w-4xl mx-auto bg-bg-secondary p-6 rounded-2xl shadow-sm border border-black/5 theme-transition" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
                         <div className="relative w-full md:w-2/3">
                             <input 

@@ -613,10 +613,10 @@ const Translator = () => {
                             {inputMode === 'voice' ? (
                                 <button
                                     onClick={toggleListening}
-                                    className={`px-8 py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-md ${
+                                    className={`px-8 py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-md border border-white/20 ${
                                         isListening 
                                         ? 'bg-accent-terra text-white hover:bg-red-800 animate-pulse' 
-                                        : 'bg-btn text-btn hover:opacity-90 transition-all shadow-lg'
+                                        : 'bg-btn text-btn hover:opacity-90'
                                     }`}
                                 >
                                     {isListening ? (

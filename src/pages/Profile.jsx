@@ -133,8 +133,10 @@ const Profile = () => {
     };
 
     if (error) {
-        return <div className="container mx-auto px-6 py-24 text-center">
-            <h1 className="text-3xl font-bold mb-4">Error</h1>
+        return <div className="container mx-auto px-6 py-24 max-w-md animate-scale-in">
+            <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary animate-slide-up-reveal">
+                <span>Error</span>
+            </h2>
             <p>{error}</p>
         </div>;
     }
@@ -144,17 +146,19 @@ const Profile = () => {
     }
 
     return (
-        <div className="container mx-auto px-6 py-24 max-w-3xl">
-            <div className="mb-12 p-8 border border-black/20 bg-bg-secondary text-center relative">
+        <div className="container mx-auto px-6 py-24 max-w-3xl animate-scale-in">
+            <div className="mb-12 p-8 border border-black/20 bg-bg-secondary text-center relative animate-slide-up-reveal">
                 {role === 'admin' && (
                     <button onClick={handleDeleteUser} className="absolute top-4 right-4 bg-accent-terra text-white font-bold text-xs px-3 py-1 hover:bg-red-700">
-                        Delete User
+                        Delete This User
                     </button>
                 )}
                 <div className="w-24 h-24 mx-auto bg-text-primary text-bg-primary flex items-center justify-center text-4xl font-bold mb-4">
                     {profileUser.username[0].toUpperCase()}
                 </div>
-                <h1 className="text-4xl font-serif font-bold text-text-primary">{profileUser.username}</h1>
+                <h1 className="text-4xl font-serif font-bold text-text-primary">
+                    <span>{profileUser.username}</span>
+                </h1>
                 <p className="text-text-secondary mt-2">Shared {posts.length} cultural moments</p>
             </div>
 

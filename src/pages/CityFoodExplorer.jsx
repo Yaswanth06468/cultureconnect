@@ -651,12 +651,12 @@ const CityFoodExplorer = () => {
     <div className="min-h-screen pt-20 pb-16 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
       {/* Header */}
       <div className="container mx-auto max-w-7xl px-6">
-        <div className="text-center py-12 mb-8">
+        <div className="text-center py-12 mb-8 animate-slide-up-reveal">
           <span className="inline-block text-xs font-bold tracking-widest uppercase bg-bg-secondary border border-black/10 text-text-muted px-4 py-2 rounded-full mb-5">📍 City Food Guide · 65+ Cities</span>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-text-primary mb-4">
-            Discover India's <span className="text-accent-terra">City Flavors</span>
+            <span>Discover India's <span className="text-accent-terra">City Flavors</span></span>
           </h1>
-          <p className="text-text-muted text-lg max-w-xl mx-auto">
+          <p className="text-text-muted text-lg max-w-xl mx-auto animate-fade-in-up delay-300">
             Traveling to a new city? Enable auto-detection and get notified automatically when you arrive — from Andhra Pradesh to Ladakh.
           </p>
           <div className="flex justify-center gap-12 mt-8">
