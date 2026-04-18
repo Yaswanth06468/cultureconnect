@@ -442,17 +442,6 @@ const CulturalDances = () => {
                                     <div className="flex items-center gap-3">
                                         <h3 className="text-2xl font-bold text-text-primary border-b-4 border-accent-terra pb-1" style={{ color: 'var(--theme-text-primary)', borderColor: 'var(--theme-accent)' }}>About the Dance</h3>
                                     </div>
-                                    {!showVideo && (
-                                        <button 
-                                            onClick={() => setShowVideo(true)}
-                                            className="flex items-center gap-3 bg-accent-terra hover:bg-accent-terra/90 text-white px-6 py-3 rounded-2xl transition-all shadow-lg hover:shadow-accent-terra/20 font-bold"
-                                        >
-                                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M4.5 3.5v13L16 10 4.5 3.5z" />
-                                            </svg>
-                                            Play Performance
-                                        </button>
-                                    )}
                                 </div>
                                 <p className="text-xl text-text-muted leading-relaxed font-sans animate-fade-in" style={{ animationDelay: '400ms', color: 'var(--theme-text-muted)' }}>
                                     {selectedDance.description}
