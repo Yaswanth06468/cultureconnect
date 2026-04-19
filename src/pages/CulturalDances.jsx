@@ -417,69 +417,76 @@ const CulturalDances = () => {
 
                 {/* Modal for viewing dance info */}
                 {selectedDance && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in" onClick={() => setSelectedDance(null)}>
+                    <div className="fixed inset-0 z-50 flex flex-col items-center overflow-y-auto p-4 md:py-8 bg-black/80 backdrop-blur-md animate-fade-in" onClick={() => setSelectedDance(null)}>
+                        {/* Spacer to vertically center on large screens */}
+                        <div className="flex-shrink-0 hidden md:block md:my-auto" />
                         <div 
-                            className="w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl transform transition-all duration-300 animate-slide-up theme-transition"
+                            className="w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl transform transition-all duration-300 animate-slide-up theme-transition flex-shrink-0 my-auto"
                             style={{ backgroundColor: 'var(--theme-card-bg)' }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="relative h-64 md:h-[500px] w-full bg-black group">
-                                <iframe 
-                                    ref={iframeRef}
-                                    src={`https://www.youtube.com/embed/${selectedDance.videoId}?autoplay=1&mute=1&rel=0&controls=1&modestbranding=1&playsinline=1&start=5&enablejsapi=1&origin=${window.location.origin}`}
-                                    title={selectedDance.name}
-                                    className="w-full h-full pointer-events-auto"
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
-                                <div className="absolute bottom-6 left-6 right-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pointer-events-none">
-                                    <div className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                                        <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-2">{selectedDance.name}</h2>
-                                        <div className="flex items-center gap-2">
-                                            <svg className="w-5 h-5 text-accent-terra" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                                            </svg>
-                                            <span className="text-lg font-medium text-white/90">{selectedDance.state}</span>
-                                        </div>
-                                    </div>
-                                    <button 
-                                        onClick={() => setSelectedDance(null)}
-                                        className="bg-white/20 hover:bg-white/40 backdrop-blur-md transition-colors text-white w-10 h-10 rounded-full flex items-center justify-center absolute top-6 right-6 md:relative md:top-auto md:right-auto pointer-events-auto"
-                                    >
-                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
+                            {/* Close button - always visible at top right */}
+                            <div className="relative">
+                                <button 
+                                    onClick={() => setSelectedDance(null)}
+                                    className="absolute top-3 right-3 z-10 bg-black/50 hover:bg-black/70 backdrop-blur-md transition-colors text-white w-10 h-10 rounded-full flex items-center justify-center pointer-events-auto"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+
+                                {/* Video container - aspect-ratio based so it never clips */}
+                                <div className="relative w-full bg-black" style={{ aspectRatio: '16/9' }}>
+                                    <iframe 
+                                        ref={iframeRef}
+                                        src={`https://www.youtube.com/embed/${selectedDance.videoId}?autoplay=1&mute=1&rel=0&controls=1&modestbranding=1&playsinline=1&start=5&enablejsapi=1&origin=${window.location.origin}`}
+                                        title={selectedDance.name}
+                                        className="absolute inset-0 w-full h-full pointer-events-auto"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
                                 </div>
                             </div>
-                            <div className="p-8">
-                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
-                                    <div className="flex items-center gap-3">
-                                        <h3 className="text-2xl font-bold text-text-primary border-b-4 border-accent-terra pb-1" style={{ color: 'var(--theme-text-primary)', borderColor: 'var(--theme-accent)' }}>About the Dance</h3>
+
+                            {/* Dance info - below the video, always visible */}
+                            <div className="p-5 md:p-8">
+                                <div className="mb-4 md:mb-6">
+                                    <h2 className="text-2xl md:text-4xl font-serif font-bold mb-1" style={{ color: 'var(--theme-text-primary)' }}>{selectedDance.name}</h2>
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-4 h-4 text-accent-terra" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                                        </svg>
+                                        <span className="text-base font-medium" style={{ color: 'var(--theme-text-muted)' }}>{selectedDance.state}</span>
                                     </div>
                                 </div>
-                                <p className="text-xl text-text-muted leading-relaxed font-sans animate-fade-in" style={{ animationDelay: '400ms', color: 'var(--theme-text-muted)' }}>
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-4 md:mb-6">
+                                    <div className="flex items-center gap-3">
+                                        <h3 className="text-xl md:text-2xl font-bold text-text-primary border-b-4 border-accent-terra pb-1" style={{ color: 'var(--theme-text-primary)', borderColor: 'var(--theme-accent)' }}>About the Dance</h3>
+                                    </div>
+                                </div>
+                                <p className="text-base md:text-xl text-text-muted leading-relaxed font-sans animate-fade-in" style={{ animationDelay: '400ms', color: 'var(--theme-text-muted)' }}>
                                     {selectedDance.description}
                                 </p>
                                 
-                                <div className="mt-8 pt-8 border-t border-black/5 flex flex-wrap gap-4" style={{ borderColor: 'var(--theme-border)' }}>
-                                    <div className="bg-accent-terra/5 px-4 py-2 rounded-xl flex items-center gap-2">
+                                <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-black/5 flex flex-wrap gap-3 md:gap-4" style={{ borderColor: 'var(--theme-border)' }}>
+                                    <div className="bg-accent-terra/5 px-3 md:px-4 py-2 rounded-xl flex items-center gap-2">
                                         <span className="w-2 h-2 rounded-full bg-accent-terra"></span>
-                                        <span className="text-sm font-bold uppercase tracking-wider text-accent-terra">Heritage Form</span>
+                                        <span className="text-xs md:text-sm font-bold uppercase tracking-wider text-accent-terra">Heritage Form</span>
                                     </div>
-                                    <div className="bg-accent-terra/5 px-4 py-2 rounded-xl flex items-center gap-2">
+                                    <div className="bg-accent-terra/5 px-3 md:px-4 py-2 rounded-xl flex items-center gap-2">
                                         <span className="w-2 h-2 rounded-full bg-accent-terra"></span>
-                                        <span className="text-sm font-bold uppercase tracking-wider text-accent-terra">Authentic Music</span>
+                                        <span className="text-xs md:text-sm font-bold uppercase tracking-wider text-accent-terra">Authentic Music</span>
                                     </div>
-                                    <div className="bg-accent-terra/5 px-4 py-2 rounded-xl flex items-center gap-2">
+                                    <div className="bg-accent-terra/5 px-3 md:px-4 py-2 rounded-xl flex items-center gap-2">
                                         <span className="w-2 h-2 rounded-full bg-accent-terra"></span>
-                                        <span className="text-sm font-bold uppercase tracking-wider text-accent-terra">Traditional Costumes</span>
+                                        <span className="text-xs md:text-sm font-bold uppercase tracking-wider text-accent-terra">Traditional Costumes</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div className="flex-shrink-0 hidden md:block md:my-auto" />
                     </div>
                 )}
             </div>
