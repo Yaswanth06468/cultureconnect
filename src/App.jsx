@@ -20,6 +20,8 @@ function App() {
     const wakeUpServer = async () => {
       try {
         await fetch(`${API_BASE_URL}/api/ping`);
+        // Notify owner about the new visit
+        await fetch(`${API_BASE_URL}/api/track-visit`);
       } catch (err) {
         console.log('Server is still waking up...');
       }

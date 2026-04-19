@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
@@ -8,6 +11,7 @@ import path from 'path';
 import fs from 'fs';
 import * as dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
@@ -36,6 +40,16 @@ mongoose.connect(process.env.MONGODB_URI)
         console.error(err);
         process.exit(1); // Stop server if database is not reachable, to avoid 500 errors in routes later
     });
+
+// Email Transporter for notifications
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
 
 // Schemas
 const UserSchema = new mongoose.Schema({
@@ -425,6 +439,40 @@ app.get('/api/culture-swap/partner/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch partner' });
     }
+});
+
+app.get('/api/track-visit', (req, res) => {
+    const userEmail = 'yaswanthkumar0567@gmail.com';
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: userEmail,
+        subject: '🚀 Site Visit Notification - Culture Connect',
+        text: `Hello Yaswanth,\n\nSomeone just opened your website: Culture Connect!\n\nTimestamp: ${new Date().toLocaleString()}\n\nBest regards,\nYour Website Bot`,
+        html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                <h1 style="color: #6366f1;">🚀 New Visitor!</h1>
+                <p>Hello Yaswanth,</p>
+                <p>Someone just opened your website: <strong>Culture Connect</strong>!</p>
+                <p style="background: #f3f4f6; padding: 10px; border-radius: 5px;">
+                    <strong>Timestamp:</strong> ${new Date().toLocaleString()}
+                </p>
+                <p>Keep up the great work!</p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="font-size: 12px; color: #666;">This is an automated notification from your Culture Connect backend.</p>
+            </div>
+        `
+    };
+
+    // Send email asynchronously so we don't delay the response
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending visit notification email:', error);
+        } else {
+            console.log('Visit notification email sent:', info.response);
+        }
+    });
+
+    res.json({ message: 'Visit tracked' });
 });
 
 app.listen(PORT, () => {
