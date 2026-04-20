@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 const Hero = () => {
+    const { isDark } = useTheme();
+
     return (
         <section
             className="relative min-h-screen flex items-center pt-20 overflow-hidden theme-transition"
             style={{ background: 'var(--theme-hero-gradient)' }}
         >
+            {/* ... rest of the section ... */}
             <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
                 {/* Text Content */}
@@ -57,11 +61,11 @@ const Hero = () => {
 
                 {/* Hero Image */}
                 <div className="relative order-1 md:order-2 h-[50vh] md:h-[80vh] w-full flex items-center justify-center">
-                    <div className="w-full h-full overflow-hidden rounded-2xl transition-all duration-500">
+                    <div className="w-full h-full overflow-hidden rounded-2xl transition-all duration-500 shadow-2xl">
                         <img
-                            src="/hero_cultural.png"
-                            alt="Indian Cultural Heritage"
-                            className="w-full h-full object-cover"
+                            src={isDark ? "/hero_dark.png" : "/hero_cultural.png"}
+                            alt={isDark ? "Intricate Cultural Mandala" : "Indian Cultural Heritage"}
+                            className="w-full h-full object-cover transition-opacity duration-700"
                         />
                     </div>
                 </div>
