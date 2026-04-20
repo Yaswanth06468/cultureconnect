@@ -47,6 +47,19 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// Verify email configuration on startup
+if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    transporter.verify((error, success) => {
+        if (error) {
+            console.error('Email Transporter verification failed:', error);
+        } else {
+            console.log('Email server is ready to take our messages');
+        }
+    });
+} else {
+    console.warn('WARNING: EMAIL_USER or EMAIL_PASS environment variables are missing. Visit notifications will not work.');
+}
+
 
 // Schemas
 const UserSchema = new mongoose.Schema({
@@ -464,8 +477,12 @@ app.get('/api/track-visit', (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Error sending visit notification email:', error);
+            // Log specific error details if available
+            if (error.code === 'EAUTH') {
+                console.error('Email Authentication Failed: Please check your EMAIL_USER and EMAIL_PASS.');
+            }
         } else {
-            console.log('Visit notification email sent:', info.response);
+            console.log('Visit notification email sent successfully:', info.response);
         }
     });
 

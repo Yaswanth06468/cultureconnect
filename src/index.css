@@ -12,16 +12,11 @@
     --color-bg-btn: var(--theme-btn-bg);
     /* Primary buttons bg / Dynamic */
 
-    --color-accent-gold: #ffcc00;
-    /* Harsh Yellow/Gold */
-    --color-accent-terra: #cc0000;
-    /* Standard Red */
-    --color-accent-teal: #008000;
-    /* Standard Green */
-    --color-accent-purple: #800080;
-    /* Standard Purple */
-    --color-accent-blue: #0000ff;
-    /* Standard Blue */
+    --color-accent-gold: var(--theme-accent-gold);
+    --color-accent-terra: var(--theme-accent-terra);
+    --color-accent-teal: var(--theme-accent-teal);
+    --color-accent-purple: var(--theme-accent-purple);
+    --color-accent-blue: var(--theme-accent-blue);
 
     --color-text-primary: var(--theme-text-primary);
     /* Pure Black / Dynamic */
@@ -43,44 +38,65 @@
 /* ========== DARK / LIGHT MODE via CSS custom properties ========== */
 :root {
     --theme-bg-primary: #ffffff;
-    --theme-bg-secondary: #f0f0f0;
-    --theme-bg-accent: #e0e0e0;
-    --theme-text-primary: #000000;
-    --theme-text-secondary: #333333;
-    --theme-text-muted: #666666;
+    --theme-bg-secondary: #ffffff;
+    --theme-bg-accent: #f8f9fa;
+    --theme-text-primary: #111111;
+    --theme-text-secondary: #444444;
+    --theme-text-muted: #777777;
     --theme-text-inverse: #ffffff;
-    --theme-border: rgba(0, 0, 0, 0.05);
+    --theme-border: #eeeeee;
     --theme-card-bg: #ffffff;
     --theme-input-bg: #ffffff;
-    --theme-btn-bg: #000000;
+    --theme-btn-bg: #111111;
     --theme-btn-text: #ffffff;
-    --theme-hero-gradient: radial-gradient(circle at center, #fffcf9 0%, #fdefe6 50%, #fdf5e6 100%);
-    --theme-shadow: rgba(0, 0, 0, 0.08);
-    --theme-overlay: rgba(255, 255, 255, 0.85);
+    --theme-hero-gradient: #ffffff;
+    --theme-shadow: rgba(0, 0, 0, 0.05);
+    --theme-overlay: rgba(255, 255, 255, 0.95);
     --theme-toggle-bg: #e0e0e0;
     --theme-toggle-knob: #ffffff;
     --theme-toggle-icon: #ffcc00;
+    
+    --theme-accent-gold: #ffcc00;
+    --theme-accent-terra: #cc0000;
+    --theme-accent-teal: #008000;
+    --theme-accent-purple: #800080;
+    --theme-accent-blue: #0000ff;
 }
 
 :root.dark {
-    --theme-bg-primary: #1a0f0a; /* Dark Mahogany */
-    --theme-bg-secondary: #261811; /* Mocha */
-    --theme-bg-accent: #332119; /* Oak Brown */
-    --theme-text-primary: #f5ecd7; /* Parchment White */
-    --theme-text-secondary: #d2b48c; /* Tan */
-    --theme-text-muted: #8b7355; /* Sepia */
-    --theme-text-inverse: #1a0f0a;
-    --theme-border: rgba(245, 236, 215, 0.12);
-    --theme-card-bg: #22140e; /* Deep Chocolate */
-    --theme-input-bg: #2d1c15; /* Mocha Input */
-    --theme-btn-bg: #4a2c21; /* Rich Brown Button */
-    --theme-btn-text: #f5ecd7; /* Parchment text on dark button */
-    --theme-hero-gradient: radial-gradient(circle at center, #2d1c15 0%, #1a0f0a 100%);
-    --theme-shadow: rgba(0, 0, 0, 0.55);
-    --theme-overlay: rgba(26, 15, 10, 0.9);
-    --theme-toggle-bg: #3d2b22;
-    --theme-toggle-knob: #1a0f0a;
-    --theme-toggle-icon: #e3a857; /* Amber Gold */
+    /* DJ Mixed Color Theme - Vibrant and Energetic */
+    --theme-bg-primary: #050505;
+    --theme-bg-secondary: #0c0c0e;
+    --theme-bg-accent: #16161e;
+    --theme-text-primary: #ffffff;
+    --theme-text-secondary: #bbbbbb;
+    --theme-text-muted: #888888;
+    --theme-text-inverse: #000000;
+    --theme-border: rgba(0, 242, 255, 0.15); /* Neon Cyan hint */
+    --theme-card-bg: rgba(15, 15, 20, 0.8);
+    --theme-input-bg: rgba(25, 25, 35, 0.9);
+    --theme-btn-bg: linear-gradient(135deg, #ff00cc, #3333ff); /* Magenta to Electric Blue */
+    --theme-btn-text: #ffffff;
+    --theme-hero-gradient: radial-gradient(circle at top right, #1a0b2e 0%, #050505 60%, #001a1a 100%);
+    --theme-shadow: 0 0 20px rgba(255, 0, 204, 0.2);
+    --theme-overlay: rgba(5, 5, 5, 0.9);
+    --theme-toggle-bg: #1a1a1a;
+    --theme-toggle-knob: #ffffff;
+    --theme-toggle-icon: #ff00cc;
+
+    --theme-accent-gold: #fbff00;
+    --theme-accent-terra: #ff006e;
+    --theme-accent-teal: #00fbff;
+    --theme-accent-purple: #be0aff;
+    --theme-accent-blue: #3333ff;
+
+    /* Mixed Background Effect for DJ Feel */
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(255, 0, 204, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(51, 51, 255, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 251, 255, 0.08) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(255, 153, 0, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
 }
 
 @layer base {
