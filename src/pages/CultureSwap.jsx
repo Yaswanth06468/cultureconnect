@@ -1000,8 +1000,7 @@ const CultureSwap = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+
 
                         {/* Feature Highlights */}
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

@@ -482,14 +482,6 @@ const Translator = () => {
 
     const toggleListening = () => {
         if (!recognitionRef.current) {
-            alert("Speech recognition is not supported in this browser.");
-            return;
-        }
-
-        if (isListening) {
-            try {
-    const toggleListening = () => {
-        if (!recognitionRef.current) {
             setStatusMessage('Not Supported');
             alert("Voice recognition is not supported in this browser. Please use the 'Text Mode' or try Chrome/Safari.");
             return;
