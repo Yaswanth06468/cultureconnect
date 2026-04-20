@@ -871,10 +871,28 @@ const CultureSwap = () => {
                                     {!isMatching && <div className="absolute inset-0 bg-gradient-to-r from-accent-terra/20 to-accent-gold/20 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>}
                                 </button>
 
-                                <div className="mt-8 flex items-center justify-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-text-secondary/60">
-                                    <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> 1.2k Active Swaps</span>
-                                    <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                                    <span className="flex items-center gap-2">94% Cultural Affinity</span>
+                                <div className="mt-12 flex flex-col items-center gap-6">
+                                    <div className="flex -space-x-3 overflow-hidden">
+                                        {[
+                                            { img: 'https://i.pravatar.cc/100?u=1', color: 'border-accent-terra' },
+                                            { img: 'https://i.pravatar.cc/100?u=2', color: 'border-accent-gold' },
+                                            { img: 'https://i.pravatar.cc/100?u=3', color: 'border-accent-teal' },
+                                            { img: 'https://i.pravatar.cc/100?u=4', color: 'border-accent-blue' },
+                                            { img: 'https://i.pravatar.cc/100?u=5', color: 'border-accent-terra' },
+                                        ].map((user, i) => (
+                                            <div key={i} className={`inline-block h-10 w-10 rounded-full border-2 ${user.color} ring-2 ring-transparent group-hover:ring-white/20 transition-all duration-500`}>
+                                                <img className="h-full w-full rounded-full object-cover" src={user.img} alt="" />
+                                            </div>
+                                        ))}
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/20 bg-black/40 backdrop-blur-md text-[10px] font-black text-white/80">
+                                            +82
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.3em] text-text-secondary/60">
+                                        <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> 1,248 CULTURE SWAPPERS LIVE</span>
+                                        <span className="w-1 h-1 rounded-full bg-white/10"></span>
+                                        <span className="flex items-center gap-2">94% CULTURAL MATCH RATE</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
