@@ -65,7 +65,7 @@
 
 :root.dark {
     /* DJ Mixed Color Theme - Vibrant and Energetic */
-    --theme-bg-primary: transparent !important;
+    --theme-bg-primary: transparent;
     --theme-bg-secondary: #0c0c0e;
     --theme-bg-accent: #16161e;
     --theme-text-primary: #ffffff;

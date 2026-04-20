@@ -10,7 +10,6 @@ import Translator from './pages/Translator';
 import CulturalDances from './pages/CulturalDances';
 import CityFoodExplorer from './pages/CityFoodExplorer';
 import CultureSwap from './pages/CultureSwap';
-import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
 import { ThemeProvider } from './context/ThemeContext';
 import { API_BASE_URL } from './config';
@@ -43,7 +42,6 @@ function App() {
             <Route path="/dances" element={<CulturalDances />} />
             <Route path="/city-food" element={<CityFoodExplorer />} />
             <Route path="/culture-swap" element={<CultureSwap />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
