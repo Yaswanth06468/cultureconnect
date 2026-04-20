@@ -615,7 +615,7 @@ const CultureSwap = () => {
                 // Fetch real global stats
                 const statsRes = await fetch(`${API_BASE_URL}/api/culture-swap/stats`);
                 const statsData = await statsRes.json();
-                if (statsData.totalSwaps) setGlobalSwaps(statsData.totalSwaps);
+                if (typeof statsData.totalSwaps === 'number') setGlobalSwaps(statsData.totalSwaps);
             } catch (err) {
                 console.error("Failed to fetch previews or stats", err);
             }
@@ -669,7 +669,10 @@ const CultureSwap = () => {
 
         setIsMatching(true);
         
-        // Immediate increment with local fallback
+        // Optimistic update for immediate feedback
+        setGlobalSwaps(prev => prev + 1);
+        
+        // Backend increment
         fetch(`${API_BASE_URL}/api/culture-swap/increment`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -682,15 +685,11 @@ const CultureSwap = () => {
                     if (res.ok && typeof data.totalSwaps === 'number') {
                         setGlobalSwaps(data.totalSwaps);
                     }
-                } else {
-                    // If not JSON, it's likely an HTML 404/Error page. Fallback to local increment
-                    setGlobalSwaps(prev => prev + 1);
-                    console.warn("Backend returned non-JSON. Local fallback used.");
                 }
             })
             .catch(e => {
                 console.error("Stats increment failed:", e);
-                setGlobalSwaps(prev => prev + 1); // Local fallback
+                // We already incremented optimistically, so if it fails, the UI is still correct for the session
             });
 
         try {
