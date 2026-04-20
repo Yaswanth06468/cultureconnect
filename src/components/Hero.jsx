@@ -32,11 +32,12 @@ const Hero = () => {
 
                     <div className="flex flex-col sm:flex-row gap-6 animate-fade-in-up delay-500">
                         <Link
-                            to="/dances"
-                            className="px-8 py-4 font-medium transition-colors duration-300 text-center hover:bg-accent-terra hover:text-white"
+                            to="/feed"
+                            className="px-10 py-5 text-lg font-serif font-black transition-all duration-500 text-center hover:scale-105 active:scale-95 shadow-xl hover:shadow-accent-teal/20"
                             style={{
-                                backgroundColor: 'var(--theme-text-primary)',
-                                color: 'var(--theme-bg-primary)',
+                                background: 'linear-gradient(135deg, #00fbff, #0080ff)',
+                                color: '#000000',
+                                borderRadius: '999px'
                             }}
                         >
                             Start Exploring

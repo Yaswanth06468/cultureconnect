@@ -13,7 +13,8 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
     const [isDark, setIsDark] = useState(() => {
         const saved = localStorage.getItem('theme');
-        return saved === 'dark';
+        if (saved) return saved === 'dark';
+        return true; // Default to dark mode (DJ Theme)
     });
 
     useEffect(() => {

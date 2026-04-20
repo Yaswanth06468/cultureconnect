@@ -43,13 +43,7 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b theme-transition`}
-            style={{
-                backgroundColor: isScrolled ? 'var(--theme-bg-primary)' : 'transparent',
-                borderColor: isScrolled ? 'var(--theme-border)' : 'transparent',
-                padding: isScrolled ? '1rem 0' : '1.5rem 0',
-                boxShadow: isScrolled ? `0 1px 8px var(--theme-shadow)` : 'none',
-            }}
+            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b theme-transition navbar-glass-mobile ${isScrolled || isMobileMenuOpen ? 'navbar-glass navbar-persistent py-3' : 'bg-transparent py-4'}`}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}

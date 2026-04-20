@@ -206,9 +206,25 @@
     line-height: 1;
 }
 
-/* ========== Smooth transitions for themed elements ========== */
+/* ========== Theme Transitions & Utils ========== */
 .theme-transition {
     transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.navbar-glass {
+    background-color: var(--theme-bg-primary) !important;
+    border-color: var(--theme-border) !important;
+    box-shadow: 0 4px 20px var(--theme-shadow) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+}
+
+@media (max-width: 768px) {
+    .navbar-glass-mobile {
+        background-color: var(--theme-bg-primary) !important;
+        border-color: var(--theme-border) !important;
+        box-shadow: 0 4px 20px var(--theme-shadow) !important;
+        backdrop-filter: blur(15px) saturate(180%) !important;
+    }
 }
 
 /* ========== Custom Animations ========== */

@@ -62,14 +62,21 @@ const Footer = () => {
                 </div>
 
                 <div
-                    className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium uppercase tracking-wider"
+                    className="pt-8 flex flex-col items-center justify-center gap-4 text-xs font-medium uppercase tracking-wider text-center"
                     style={{
                         borderTop: '1px solid var(--theme-border)',
                         color: 'var(--theme-text-muted)',
                     }}
                 >
-                    <p>&copy; 2026 Culture.</p>
-                    <div className="flex gap-8">
+                    <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                        <p>&copy; 2026 Culture.</p>
+                        <span className="hidden md:inline-block opacity-30">|</span>
+                        <p className="flex items-center gap-1.5">
+                            Made with <span className="text-accent-terra animate-pulse text-lg">♥</span> by <span className="text-text-primary font-black ml-1">Yaswanth</span>
+                        </p>
+                    </div>
+                    
+                    <div className="flex gap-8 mt-2 opacity-50">
                         <a href="#" className="hover:text-accent-terra transition-colors" style={{ color: 'var(--theme-text-muted)' }}>Privacy</a>
                         <a href="#" className="hover:text-accent-terra transition-colors" style={{ color: 'var(--theme-text-muted)' }}>Terms</a>
                     </div>
