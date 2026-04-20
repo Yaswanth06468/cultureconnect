@@ -159,7 +159,7 @@ const CulturePartnerSchema = new mongoose.Schema({
 const CulturePartner = mongoose.model('CulturePartner', CulturePartnerSchema);
 
 const StatsSchema = new mongoose.Schema({
-    totalSwaps: { type: Number, default: 1240 }, // Base count for launch
+    totalSwaps: { type: Number, default: 0 }, // Reset to 0 for real tracking
     lastUpdated: { type: Date, default: Date.now }
 });
 const Stats = mongoose.model('Stats', StatsSchema);
@@ -461,7 +461,7 @@ app.get('/api/culture-swap/stats', async (req, res) => {
     try {
         let stats = await Stats.findOne();
         if (!stats) {
-            stats = new Stats({ totalSwaps: 1240 });
+            stats = new Stats({ totalSwaps: 0 });
             await stats.save();
         }
         res.json({ totalSwaps: stats.totalSwaps });
@@ -474,7 +474,7 @@ app.post('/api/culture-swap/increment', async (req, res) => {
     try {
         let stats = await Stats.findOne();
         if (!stats) {
-            stats = new Stats({ totalSwaps: 1241 });
+            stats = new Stats({ totalSwaps: 1 });
         } else {
             stats.totalSwaps += 1;
             stats.lastUpdated = Date.now();

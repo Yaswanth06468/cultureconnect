@@ -602,7 +602,7 @@ const CultureSwap = () => {
         localStorage.setItem('cultureSwapSeenIds', JSON.stringify(seenPartnerIds));
     }, [seenPartnerIds]);
 
-    const [globalSwaps, setGlobalSwaps] = useState(1248);
+    const [globalSwaps, setGlobalSwaps] = useState(0);
 
     useEffect(() => {
         const fetchPreview = async () => {
