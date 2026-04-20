@@ -29,8 +29,8 @@
     --color-text-btn: var(--theme-btn-text);
     /* Button text / Dynamic */
 
-    --font-sans: Arial, Helvetica, sans-serif;
-    --font-serif: "Times New Roman", Times, serif;
+    --font-sans: "Outfit", sans-serif;
+    --font-serif: "Playfair Display", serif;
 
     --image-gradient-main: linear-gradient(135deg, #fdfbf7 0%, #f4f1ea 100%);
 }

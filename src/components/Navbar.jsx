@@ -39,6 +39,7 @@ const Navbar = () => {
         { name: 'Cultural Dances', href: '/dances' },
         { name: '🍽️ City Food', href: '/city-food' },
         { name: '🌏 Culture Swap', href: '/culture-swap' },
+        { name: 'Dashboard', href: '/dashboard' },
         { name: 'Discover', href: '/#discover' },
         { name: 'Community', href: '/#community' },
         { name: 'About', href: '/#about' },
