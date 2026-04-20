@@ -6,7 +6,7 @@ const Hero = () => {
 
     return (
         <section
-            className="relative min-h-screen flex items-start pt-16 md:pt-28 overflow-hidden theme-transition"
+            className="relative min-h-screen flex items-start pt-[68px] md:pt-[72px] overflow-hidden theme-transition"
             style={{ background: 'var(--theme-hero-gradient)' }}
         >
             {/* ... rest of the section ... */}
