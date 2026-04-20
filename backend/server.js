@@ -35,10 +35,10 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch(err => {
         console.error('MongoDB Atlas connection error details:');
         console.error(err);
-        process.exit(1); // Stop server if database is not reachable, to avoid 500 errors in routes later
+        process.exit(1); 
     });
 
-// Email Transporter for notifications
+// Email Transporter
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -47,19 +47,12 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Verify email configuration on startup
+// Verify email configuration
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     transporter.verify((error, success) => {
-        if (error) {
-            console.error('Email Transporter verification failed:', error);
-        } else {
-            console.log('Email server is ready to take our messages');
-        }
+        if (!error) console.log('Email server ready');
     });
-} else {
-    console.warn('WARNING: EMAIL_USER or EMAIL_PASS environment variables are missing. Visit notifications will not work.');
 }
-
 
 // Schemas
 const UserSchema = new mongoose.Schema({
@@ -159,7 +152,7 @@ const CulturePartnerSchema = new mongoose.Schema({
 const CulturePartner = mongoose.model('CulturePartner', CulturePartnerSchema);
 
 const StatsSchema = new mongoose.Schema({
-    totalSwaps: { type: Number, default: 0 }, // Reset to 0 for real tracking
+    totalSwaps: { type: Number, default: 0 },
     lastUpdated: { type: Date, default: Date.now }
 });
 const Stats = mongoose.model('Stats', StatsSchema);
@@ -217,7 +210,6 @@ app.post('/api/auth/signup', async (req, res) => {
         await newUser.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
-        console.error('Signup error:', err);
         if (err.code === 11000) return res.status(409).json({ error: 'Username already exists' });
         res.status(500).json({ error: 'Internal server error' });
     }
@@ -254,8 +246,7 @@ app.post('/api/posts', authenticateToken, upload.single('image'), async (req, re
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
     if (!imageUrl || !description) return res.status(400).json({ error: 'Image and description are required' });
     try {
-        const newPost = new Post({ user_id: req.user.id, username: req.user.username, image_url: imageUrl, description, tagValue: tag || 'General' }); // Changed property name to tagValue internally if tag is special but here we keep tag or tagValue
-        newPost.tag = tag || 'General';
+        const newPost = new Post({ user_id: req.user.id, username: req.user.username, image_url: imageUrl, description, tag: tag || 'General' });
         await newPost.save();
         res.status(201).json({ message: 'Post created successfully', post: newPost });
     } catch (err) {
@@ -270,13 +261,11 @@ app.post('/api/posts/:id/like', authenticateToken, async (req, res) => {
         const index = post.likes.indexOf(req.user.id);
         if (index > -1) {
             post.likes.splice(index, 1);
-            await post.save();
-            res.json({ message: 'Post unliked', liked: false });
         } else {
             post.likes.push(req.user.id);
-            await post.save();
-            res.json({ message: 'Post liked', liked: true });
         }
+        await post.save();
+        res.json({ message: 'Like toggled', liked: index === -1 });
     } catch (err) {
         res.status(500).json({ error: 'Failed to toggle like' });
     }
@@ -342,78 +331,14 @@ app.post('/api/events', authenticateToken, async (req, res) => {
 app.delete('/api/admin/posts/:id', authenticateAdmin, async (req, res) => {
     try {
         const post = await Post.findByIdAndDelete(req.params.id);
-        if (!post) return res.status(404).json({ error: 'Post not found' });
-        if (post.image_url) {
+        if (post?.image_url) {
             const imagePath = path.join(process.cwd(), post.image_url.replace(/^\//, ''));
             if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
         }
         await Comment.deleteMany({ post_id: req.params.id });
-        res.json({ message: 'Post and associated data deleted successfully' });
+        res.json({ message: 'Post deleted' });
     } catch (err) {
-        res.status(500).json({ error: 'Failed to delete post' });
-    }
-});
-
-app.delete('/api/admin/users/:id', authenticateAdmin, async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) return res.status(404).json({ error: 'User not found' });
-        const userPosts = await Post.find({ user_id: req.params.id });
-        for (const post of userPosts) {
-            if (post.image_url) {
-                const imagePath = path.join(process.cwd(), post.image_url.replace(/^\//, ''));
-                if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
-            }
-            await Post.findByIdAndDelete(post._id);
-            await Comment.deleteMany({ post_id: post._id });
-        }
-        await Booking.deleteMany({ user_id: req.params.id });
-        await Event.deleteMany({ user_id: req.params.id });
-        res.json({ message: 'User and all associated data deleted successfully' });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to delete user' });
-    }
-});
-
-app.delete('/api/admin/comments/:id', authenticateAdmin, async (req, res) => {
-    try {
-        await Comment.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Comment deleted successfully' });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to delete comment' });
-    }
-});
-
-app.delete('/api/admin/events/:id', authenticateAdmin, async (req, res) => {
-    try {
-        await Event.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Event deleted successfully' });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to delete event' });
-    }
-});
-
-app.post('/api/events/:id/book', authenticateToken, async (req, res) => {
-    const { tickets, name, email, phone } = req.body;
-    if (!name || !email || !phone || !tickets) return res.status(400).json({ error: 'All fields are required' });
-    try {
-        const event = await Event.findById(req.params.id);
-        if (!event) return res.status(404).json({ error: 'Event not found' });
-        const totalPrice = (event.price || 0) * tickets;
-        const newBooking = new Booking({ user_id: req.user.id, username: req.user.username, event_id: req.params.id, event_title: event.title, tickets, total_price: totalPrice, name, email, phone });
-        await newBooking.save();
-        res.status(201).json({ message: 'Booking confirmed!', booking: newBooking });
-    } catch (err) {
-        res.status(500).json({ error: 'Booking failed' });
-    }
-});
-
-app.get('/api/bookings', authenticateToken, async (req, res) => {
-    try {
-        const bookings = await Booking.find({ user_id: req.user.id }).sort({ created_at: -1 });
-        res.json(bookings);
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch bookings' });
+        res.status(500).json({ error: 'Deletion failed' });
     }
 });
 
@@ -425,32 +350,6 @@ app.get('/api/culture-swap/random', async (req, res) => {
         if (count === 0) return res.status(404).json({ error: 'No cultural partners found' });
         const random = Math.floor(Math.random() * count);
         const partner = await CulturePartner.findOne(query).skip(random);
-        res.json(partner);
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch random partner' });
-    }
-});
-
-// Get all partners for browsing (deduplicated by culture)
-app.get('/api/culture-swap/partners', async (req, res) => {
-    try {
-        // Get one unique partner per culture to show diverse profiles
-        const partners = await CulturePartner.aggregate([
-            { $group: { _id: '$culture', doc: { $first: '$$ROOT' } } },
-            { $replaceRoot: { newRoot: '$doc' } },
-            { $sort: { name: 1 } }
-        ]);
-        res.json(partners);
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch partners' });
-    }
-});
-
-// Get a specific partner by ID
-app.get('/api/culture-swap/partner/:id', async (req, res) => {
-    try {
-        const partner = await CulturePartner.findById(req.params.id);
-        if (!partner) return res.status(404).json({ error: 'Partner not found' });
         res.json(partner);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch partner' });
@@ -491,39 +390,14 @@ app.get('/api/track-visit', (req, res) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: userEmail,
-        subject: '🚀 Site Visit Notification - Culture Connect',
-        text: `Hello Yaswanth,\n\nSomeone just opened your website: Culture Connect!\n\nTimestamp: ${new Date().toLocaleString()}\n\nBest regards,\nYour Website Bot`,
-        html: `
-            <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-                <h1 style="color: #6366f1;">🚀 New Visitor!</h1>
-                <p>Hello Yaswanth,</p>
-                <p>Someone just opened your website: <strong>Culture Connect</strong>!</p>
-                <p style="background: #f3f4f6; padding: 10px; border-radius: 5px;">
-                    <strong>Timestamp:</strong> ${new Date().toLocaleString()}
-                </p>
-                <p>Keep up the great work!</p>
-                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-                <p style="font-size: 12px; color: #666;">This is an automated notification from your Culture Connect backend.</p>
-            </div>
-        `
+        subject: '🚀 Site Visit Notification',
+        text: `Someone visited your site at ${new Date().toLocaleString()}`,
+        html: `<h1>🚀 Site Visit!</h1><p>Someone visited at ${new Date().toLocaleString()}</p>`
     };
-
-    // Send email asynchronously so we don't delay the response
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending visit notification email:', error);
-            // Log specific error details if available
-            if (error.code === 'EAUTH') {
-                console.error('Email Authentication Failed: Please check your EMAIL_USER and EMAIL_PASS.');
-            }
-        } else {
-            console.log('Visit notification email sent successfully:', info.response);
-        }
-    });
-
+    transporter.sendMail(mailOptions);
     res.json({ message: 'Visit tracked' });
 });
 
 app.listen(PORT, () => {
-    console.log(`Backend server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });

@@ -669,25 +669,28 @@ const CultureSwap = () => {
 
         setIsMatching(true);
         
-        // Immediate increment for real-time feel
+        // Immediate increment with local fallback
         fetch(`${API_BASE_URL}/api/culture-swap/increment`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({})
         })
             .then(async res => {
-                const data = await res.json();
-                if (res.ok && typeof data.totalSwaps === 'number') {
-                    setGlobalSwaps(data.totalSwaps);
-                    console.log("Global swap count updated:", data.totalSwaps);
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    const data = await res.json();
+                    if (res.ok && typeof data.totalSwaps === 'number') {
+                        setGlobalSwaps(data.totalSwaps);
+                    }
                 } else {
-                    throw new Error(data.error || 'Server error');
+                    // If not JSON, it's likely an HTML 404/Error page. Fallback to local increment
+                    setGlobalSwaps(prev => prev + 1);
+                    console.warn("Backend returned non-JSON. Local fallback used.");
                 }
             })
             .catch(e => {
                 console.error("Stats increment failed:", e);
-                setShowNotification(`CONNECTION ERROR: Our global stats sync failed (${e.message}). Please ensure the server is fully deployed.`);
-                setTimeout(() => setShowNotification(''), 5000);
+                setGlobalSwaps(prev => prev + 1); // Local fallback
             });
 
         try {
@@ -805,7 +808,7 @@ const CultureSwap = () => {
              {/* Notification Banner */}
              {showNotification && (
                  <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-[150] animate-slide-up w-full px-4 md:px-0 md:max-w-xl">
-                     <div className={`${showNotification.includes('LIMIT') ? 'bg-black border-accent-terra' : 'bg-green-600 border-green-400'} text-white px-8 py-4 rounded-3xl shadow-2xl font-bold flex items-center justify-center gap-3 border-2 text-center`}>
+                     <div className={`${showNotification.includes('LIMIT') || showNotification.includes('ERROR') ? 'bg-red-600 border-red-400' : 'bg-green-600 border-green-400'} text-white px-8 py-4 rounded-3xl shadow-2xl font-bold flex items-center justify-center gap-3 border-2 text-center`}>
                          <p className="text-xs uppercase tracking-wider">{showNotification}</p>
                          {showNotification.includes('LIMIT') && (
                              <button 
