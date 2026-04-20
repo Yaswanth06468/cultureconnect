@@ -670,15 +670,25 @@ const CultureSwap = () => {
         setIsMatching(true);
         
         // Immediate increment for real-time feel
-        fetch(`${API_BASE_URL}/api/culture-swap/increment`, { method: 'POST' })
-            .then(res => res.json())
-            .then(d => { 
-                if (d && typeof d.totalSwaps === 'number') {
-                    setGlobalSwaps(d.totalSwaps);
-                    console.log("Global swap count updated:", d.totalSwaps);
+        fetch(`${API_BASE_URL}/api/culture-swap/increment`, { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        })
+            .then(async res => {
+                const data = await res.json();
+                if (res.ok && typeof data.totalSwaps === 'number') {
+                    setGlobalSwaps(data.totalSwaps);
+                    console.log("Global swap count updated:", data.totalSwaps);
+                } else {
+                    throw new Error(data.error || 'Server error');
                 }
             })
-            .catch(e => console.error("Stats increment failed:", e));
+            .catch(e => {
+                console.error("Stats increment failed:", e);
+                setShowNotification(`CONNECTION ERROR: Our global stats sync failed (${e.message}). Please ensure the server is fully deployed.`);
+                setTimeout(() => setShowNotification(''), 5000);
+            });
 
         try {
             const excludeParam = seenPartnerIds.length > 0 ? `?exclude=${seenPartnerIds.join(',')}` : '';
