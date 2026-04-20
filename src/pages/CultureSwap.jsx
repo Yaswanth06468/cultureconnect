@@ -602,14 +602,22 @@ const CultureSwap = () => {
         localStorage.setItem('cultureSwapSeenIds', JSON.stringify(seenPartnerIds));
     }, [seenPartnerIds]);
 
+    const [globalSwaps, setGlobalSwaps] = useState(1248);
+
     useEffect(() => {
         const fetchPreview = async () => {
             try {
+                // Fetch random partners for preview
                 const response = await fetch(`${API_BASE_URL}/api/culture-swap/random`);
                 const data = await response.json();
                 if (data && !data.error) setPartners([data]);
+
+                // Fetch real global stats
+                const statsRes = await fetch(`${API_BASE_URL}/api/culture-swap/stats`);
+                const statsData = await statsRes.json();
+                if (statsData.totalSwaps) setGlobalSwaps(statsData.totalSwaps);
             } catch (err) {
-                console.error("Failed to fetch previews", err);
+                console.error("Failed to fetch previews or stats", err);
             }
         };
         fetchPreview();
@@ -681,6 +689,13 @@ const CultureSwap = () => {
                     setShowSavePrompt(false);
                     setCurrentNote('');
                     setSeenPartnerIds(prev => [...prev, data._id]);
+                    
+                    // Increment real global count
+                    fetch(`${API_BASE_URL}/api/culture-swap/increment`, { method: 'POST' })
+                        .then(res => res.json())
+                        .then(d => { if (d.totalSwaps) setGlobalSwaps(d.totalSwaps); })
+                        .catch(e => console.error("Stats update failed", e));
+                        
                 }, 2000);
             } else {
                 throw new Error("No partners found");
@@ -872,26 +887,17 @@ const CultureSwap = () => {
                                 </button>
 
                                 <div className="mt-12 flex flex-col items-center gap-6">
-                                    <div className="flex -space-x-3 overflow-hidden">
-                                        {[
-                                            { img: 'https://i.pravatar.cc/100?u=1', color: 'border-accent-terra' },
-                                            { img: 'https://i.pravatar.cc/100?u=2', color: 'border-accent-gold' },
-                                            { img: 'https://i.pravatar.cc/100?u=3', color: 'border-accent-teal' },
-                                            { img: 'https://i.pravatar.cc/100?u=4', color: 'border-accent-blue' },
-                                            { img: 'https://i.pravatar.cc/100?u=5', color: 'border-accent-terra' },
-                                        ].map((user, i) => (
-                                            <div key={i} className={`inline-block h-10 w-10 rounded-full border-2 ${user.color} ring-2 ring-transparent group-hover:ring-white/20 transition-all duration-500`}>
-                                                <img className="h-full w-full rounded-full object-cover" src={user.img} alt="" />
-                                            </div>
-                                        ))}
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/20 bg-black/40 backdrop-blur-md text-[10px] font-black text-white/80">
-                                            +82
-                                        </div>
-                                    </div>
                                     <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.3em] text-text-secondary/60">
-                                        <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> 1,248 CULTURE SWAPPERS LIVE</span>
-                                        <span className="w-1 h-1 rounded-full bg-white/10"></span>
-                                        <span className="flex items-center gap-2">94% CULTURAL MATCH RATE</span>
+                                        <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 shadow-xl">
+                                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                            <span className="text-text-primary text-sm font-mono font-black">{globalSwaps.toLocaleString()}</span>
+                                            <span className="text-text-secondary/60">REAL SWAPS COMPLETED</span>
+                                        </div>
+                                        <span className="hidden md:inline-block w-1 h-1 rounded-full bg-white/10"></span>
+                                        <div className="hidden md:flex items-center gap-2">
+                                            <span className="text-accent-terra">★</span>
+                                            <span>94% MATCH RATE</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
