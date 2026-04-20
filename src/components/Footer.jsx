@@ -18,7 +18,7 @@ const Footer = () => {
                             className="text-2xl font-serif font-bold tracking-tight mb-6 block"
                             style={{ color: 'var(--theme-text-primary)' }}
                         >
-                            Culture<span className="font-light italic text-accent-terra">Connect</span>
+                            Culture
                         </Link>
                         <p
                             className="max-w-sm mb-8 font-light leading-relaxed"
@@ -68,7 +68,7 @@ const Footer = () => {
                         color: 'var(--theme-text-muted)',
                     }}
                 >
-                    <p>&copy; 2026 Culture Connect.</p>
+                    <p>&copy; 2026 Culture.</p>
                     <div className="flex gap-8">
                         <a href="#" className="hover:text-accent-terra transition-colors" style={{ color: 'var(--theme-text-muted)' }}>Privacy</a>
                         <a href="#" className="hover:text-accent-terra transition-colors" style={{ color: 'var(--theme-text-muted)' }}>Terms</a>

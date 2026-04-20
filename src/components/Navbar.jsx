@@ -58,7 +58,7 @@ const Navbar = () => {
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="text-2xl font-serif font-bold tracking-tight mr-8 flex-shrink-0" style={{ color: 'var(--theme-text-primary)' }}>
-                    Culture<span className="font-light italic text-accent-terra">Connect</span>
+                    Culture
                 </Link>
 
                 {/* Desktop Links */}
