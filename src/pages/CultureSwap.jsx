@@ -615,7 +615,50 @@ const CultureSwap = () => {
         fetchPreview();
     }, []);
 
+    const [swapCount, setSwapCount] = useState(() => {
+        try {
+            const storedDate = localStorage.getItem('cultureSwapDate');
+            const today = new Date().toDateString();
+            if (storedDate === today) {
+                return parseInt(localStorage.getItem('cultureSwapCount') || '0');
+            }
+            return 0;
+        } catch (e) { return 0; }
+    });
+
+    const isPremium = localStorage.getItem('isPremium') === 'true';
+
+    const checkAndIncrementSwap = () => {
+        if (isPremium) return true;
+
+        const today = new Date().toDateString();
+        const storedDate = localStorage.getItem('cultureSwapDate');
+        let currentCount = 0;
+
+        if (storedDate === today) {
+            currentCount = parseInt(localStorage.getItem('cultureSwapCount') || '0');
+        } else {
+            localStorage.setItem('cultureSwapDate', today);
+            localStorage.setItem('cultureSwapCount', '0');
+        }
+
+        if (currentCount >= 3) {
+            return false;
+        }
+
+        const nextCount = currentCount + 1;
+        setSwapCount(nextCount);
+        localStorage.setItem('cultureSwapCount', nextCount.toString());
+        return true;
+    };
+
     const startMatch = async () => {
+        if (!checkAndIncrementSwap()) {
+            setShowNotification('DAILY LIMIT REACHED: You have used your 3 free swaps for today. UPGRADE TO PREMIUM for unlimited cultural sessions! 💎');
+            setTimeout(() => setShowNotification(''), 6000);
+            return;
+        }
+
         setIsMatching(true);
         try {
             const excludeParam = seenPartnerIds.length > 0 ? `?exclude=${seenPartnerIds.join(',')}` : '';
@@ -731,10 +774,20 @@ const CultureSwap = () => {
         <div className="min-h-screen pt-24 pb-12 px-6 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
              {/* Notification Banner */}
              {showNotification && (
-                 <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-[150] animate-slide-up">
-                     <div className="bg-green-600 text-white px-8 py-4 rounded-full shadow-2xl font-bold flex items-center gap-3 border-2 border-green-400">
-                         <span className="text-2xl">🎉</span>
-                         {showNotification}
+                 <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-[150] animate-slide-up w-full px-4 md:px-0 md:max-w-xl">
+                     <div className={`${showNotification.includes('LIMIT') ? 'bg-black border-accent-terra' : 'bg-green-600 border-green-400'} text-white px-8 py-4 rounded-3xl shadow-2xl font-bold flex items-center justify-center gap-3 border-2 text-center`}>
+                         <p className="text-xs uppercase tracking-wider">{showNotification}</p>
+                         {showNotification.includes('LIMIT') && (
+                             <button 
+                                onClick={() => {
+                                    localStorage.setItem('isPremium', 'true');
+                                    window.location.reload();
+                                }}
+                                className="ml-4 px-6 py-2 bg-accent-terra text-white text-[10px] uppercase font-black tracking-widest rounded-full hover:scale-105 transition-transform whitespace-nowrap"
+                             >
+                                Get Premium
+                             </button>
+                         )}
                      </div>
                  </div>
              )}
@@ -794,6 +847,19 @@ const CultureSwap = () => {
                                 <p className="text-text-secondary mb-12 max-w-xl mx-auto leading-relaxed text-lg font-light">
                                     Our algorithmic matchmaking bridges borders. Connect with a stranger today to swap <span className="text-text-primary font-medium border-b border-accent-gold/30">traditional recipes</span>, morning <span className="text-text-primary font-medium border-b border-accent-blue/30">rituals</span>, and <span className="text-text-primary font-medium border-b border-accent-terra/30">ancestral words</span> for one complete cycle of the sun.
                                 </p>
+
+                                {!isPremium && (
+                                    <div className="mb-8 flex items-center justify-center gap-4">
+                                        <div className="flex gap-1">
+                                            {[1, 2, 3].map(i => (
+                                                <div key={i} className={`w-3 h-3 rounded-full border-2 border-accent-terra ${i <= swapCount ? 'bg-accent-terra' : 'bg-transparent'}`}></div>
+                                            ))}
+                                        </div>
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-terra">
+                                            {3 - swapCount} Free Swaps Remaining Today
+                                        </p>
+                                    </div>
+                                )}
 
                                 <button
                                     onClick={startMatch}
