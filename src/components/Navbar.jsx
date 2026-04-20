@@ -47,8 +47,18 @@ const Navbar = () => {
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
-                <Link to="/" className="text-2xl font-serif font-bold tracking-tight mr-8 flex-shrink-0" style={{ color: 'var(--theme-text-primary)' }}>
-                    Culture
+                <Link to="/" className="flex items-center gap-3 mr-8 flex-shrink-0 group">
+                    <div className="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                        <img 
+                            src="/culture_premium_logo_v2.png" 
+                            alt="Culture Logo" 
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-accent-terra/20 to-transparent"></div>
+                    </div>
+                    <span className="text-2xl font-serif font-black tracking-tighter" style={{ color: 'var(--theme-text-primary)' }}>
+                        CULTURE
+                    </span>
                 </Link>
 
                 {/* Desktop Links */}
