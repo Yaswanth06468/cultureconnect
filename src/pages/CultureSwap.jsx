@@ -668,6 +668,18 @@ const CultureSwap = () => {
         }
 
         setIsMatching(true);
+        
+        // Immediate increment for real-time feel
+        fetch(`${API_BASE_URL}/api/culture-swap/increment`, { method: 'POST' })
+            .then(res => res.json())
+            .then(d => { 
+                if (d && typeof d.totalSwaps === 'number') {
+                    setGlobalSwaps(d.totalSwaps);
+                    console.log("Global swap count updated:", d.totalSwaps);
+                }
+            })
+            .catch(e => console.error("Stats increment failed:", e));
+
         try {
             const excludeParam = seenPartnerIds.length > 0 ? `?exclude=${seenPartnerIds.join(',')}` : '';
             let response = await fetch(`${API_BASE_URL}/api/culture-swap/random${excludeParam}`);
@@ -689,13 +701,6 @@ const CultureSwap = () => {
                     setShowSavePrompt(false);
                     setCurrentNote('');
                     setSeenPartnerIds(prev => [...prev, data._id]);
-                    
-                    // Increment real global count
-                    fetch(`${API_BASE_URL}/api/culture-swap/increment`, { method: 'POST' })
-                        .then(res => res.json())
-                        .then(d => { if (d.totalSwaps) setGlobalSwaps(d.totalSwaps); })
-                        .catch(e => console.error("Stats update failed", e));
-                        
                 }, 2000);
             } else {
                 throw new Error("No partners found");
