@@ -64,8 +64,8 @@
 }
 
 :root.dark {
-    /* DJ Mixed Color Theme - Vibrant and Energetic */
-    --theme-bg-primary: transparent;
+    /* Deep Purple Culture Theme */
+    --theme-bg-primary: #1a0b2e;
     --theme-bg-secondary: #0c0c0e;
     --theme-bg-accent: #16161e;
     --theme-text-primary: #ffffff;
@@ -103,14 +103,14 @@
         transition: background-color 0.4s ease, color 0.4s ease;
     }
 
-    /* Dark Mode Body Background - The DJ Mix Theme */
+    /* Dark Mode Body Background - Deep Cultural Purple Theme */
     :root.dark body {
-        background-color: #050505;
+        background-color: #1a0b2e;
         background-image: 
-            radial-gradient(at 0% 0%, rgba(255, 0, 204, 0.3) 0px, transparent 50%),
-            radial-gradient(at 100% 0%, rgba(51, 51, 255, 0.3) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(0, 251, 255, 0.3) 0px, transparent 50%),
-            radial-gradient(at 0% 100%, rgba(255, 100, 0, 0.2) 0px, transparent 50%);
+            radial-gradient(at 0% 0%, rgba(190, 10, 255, 0.2) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(51, 51, 255, 0.2) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(255, 0, 204, 0.15) 0px, transparent 50%),
+            radial-gradient(at 50% 50%, rgba(26, 11, 46, 0.8) 0px, transparent 100%);
         background-attachment: fixed;
         background-size: cover;
     }

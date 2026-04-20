@@ -269,21 +269,8 @@ const Translator = () => {
                                 // Strict duplicate check
                                 if (prev.includes(translatedPiece)) return prev;
                                 
-                                const emoji = {
-                                    'Happy': '😊', 'Angry': '😡', 'Polite': '🙏', 
-                                    'Formal': '💼', 'Casual': '👕', 'Neutral': '✨'
-                                }[finalTone] || '✨';
-                                
-                                let final = translatedPiece;
-                                if (currentLang === 'hi') {
-                                    const toneLower = toneToUse.toLowerCase();
-                                    if (toneLower === 'polite' && !final.includes('कृपया')) final = 'कृपया ' + final;
-                                    if (toneLower === 'formal' && !final.includes('कीजिए')) final = final.replace('करो', 'कीजिए').replace('करें', 'कीजिए');
-                                    if (toneLower === 'angry' && !final.includes('!')) final += '!';
-                                }
-
                                 const prefix = targetLangRef.current === 'random' ? `[${displayLangName}] ` : '';
-                                return prev + prefix + emoji + ' ' + final + '. ';
+                                return prev + prefix + translatedPiece + '. ';
                             });
                             
                             if (voiceEnabled) {
@@ -569,15 +556,8 @@ const Translator = () => {
 
         const translatedPiece = await translateText(manualText, sourceLang, currentLang);
         if (translatedPiece) {
-            const finalTone = toneToUse.charAt(0).toUpperCase() + toneToUse.slice(1);
-            const emoji = {
-                'Happy': '😊', 'Angry': '😡', 'Polite': '🙏', 
-                'Formal': '💼', 'Casual': '👕', 'Neutral': '✨'
-            }[finalTone] || '✨';
-
-            let final = translatedPiece;
             const prefix = targetLang === 'random' ? `[${displayLangName}] ` : '';
-            setTranslatedText(prefix + emoji + ' ' + final);
+            setTranslatedText(prefix + translatedPiece);
 
             if (voiceEnabled) {
                 const langObj = languages.find(l => l.code === currentLang);
