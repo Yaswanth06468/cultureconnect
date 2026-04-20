@@ -69,7 +69,7 @@ const Navbar = () => {
                             to={link.href}
                             className="transition-all flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/5 group"
                         >
-                            <span className="text-white/40 group-hover:text-accent-teal transition-colors">{link.icon}</span>
+                            <span className="opacity-40 group-hover:opacity-100 group-hover:text-accent-teal transition-all" style={{ color: 'var(--theme-text-primary)' }}>{link.icon}</span>
                             <span 
                                 className="text-[12px] font-serif font-black uppercase tracking-widest transition-colors"
                                 style={{ color: 'var(--theme-text-secondary)' }}
@@ -159,7 +159,7 @@ const Navbar = () => {
                             className="flex items-center gap-6 group"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <span className="text-white/40 group-hover:text-accent-teal transition-colors scale-125">{link.icon}</span>
+                            <span className="opacity-40 group-hover:opacity-100 group-hover:text-accent-teal transition-all scale-150" style={{ color: 'var(--theme-text-primary)' }}>{link.icon}</span>
                             <span className="text-3xl font-serif font-black tracking-tight" style={{ color: 'var(--theme-text-primary)' }}>
                                 {link.name}
                             </span>

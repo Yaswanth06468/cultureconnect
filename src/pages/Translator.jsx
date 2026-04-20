@@ -16,6 +16,7 @@ const Translator = () => {
     const [activeAlert, setActiveAlert] = useState(null);
     const [inputMode, setInputMode] = useState('voice'); // 'voice' or 'text'
     const [manualText, setManualText] = useState('');
+    const [statusMessage, setStatusMessage] = useState('Ready');
 
     const CULTURAL_SENSITIVITY_ALERTS = [
         {
@@ -487,6 +488,15 @@ const Translator = () => {
 
         if (isListening) {
             try {
+    const toggleListening = () => {
+        if (!recognitionRef.current) {
+            setStatusMessage('Not Supported');
+            alert("Voice recognition is not supported in this browser. Please use the 'Text Mode' or try Chrome/Safari.");
+            return;
+        }
+
+        if (isListening) {
+            try {
                 recognitionRef.current.stop();
                 if ('speechSynthesis' in window) window.speechSynthesis.cancel();
                 isSpeakingRef.current = false;
@@ -494,11 +504,13 @@ const Translator = () => {
                 console.error("Stop failed:", e);
             }
             setIsListening(false);
+            setStatusMessage('Ready');
         } else {
             try {
                 // Reset tracking
                 lastTranslatedIndexRef.current = -1;
                 isSpeakingRef.current = false;
+                setStatusMessage('Initializing...');
 
                 // Stop any current speaking to avoid immediate feedback ignore
                 if (currentAudioRef.current) {
@@ -507,19 +519,27 @@ const Translator = () => {
                 }
                 if ('speechSynthesis' in window) window.speechSynthesis.cancel();
                 
-                // Audio context warm-up
-                const silentAudio = new window.Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
-                silentAudio.play().catch(() => {});
+                // Audio context warm-up - CRITICAL FOR MOBILE
+                try {
+                    const silentAudio = new window.Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
+                    silentAudio.play().catch(() => {});
+                } catch (err) {}
                 
                 // Set the correct speech recognition language based on sourceLang
                 const sourceLangObj = languages.find(l => l.code === sourceLang);
                 recognitionRef.current.lang = sourceLangObj ? sourceLangObj.ttsCode : 'en-US';
 
+                // Fresh start
                 recognitionRef.current.start();
                 setIsListening(true);
+                setStatusMessage('Listening...');
             } catch (e) {
                 console.error("Could not start listening", e);
                 setIsListening(false);
+                setStatusMessage('Error');
+                if (e.name === 'NotAllowedError' || e.message?.includes('denied')) {
+                   setStatusMessage('Mic Blocked');
+                }
             }
         }
     };
@@ -663,28 +683,31 @@ const Translator = () => {
                             {inputMode === 'voice' ? (
                                 <button
                                     onClick={toggleListening}
-                                    className={`px-8 py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-md border border-white/20 ${
+                                    className={`px-8 py-3 rounded-lg font-medium transition-all duration-300 flex flex-col items-center justify-center shadow-md border border-white/20 min-w-[200px] ${
                                         isListening 
-                                        ? 'bg-accent-terra text-white hover:bg-red-800 animate-pulse' 
+                                        ? 'bg-accent-terra text-white hover:bg-red-800' 
                                         : 'bg-btn text-btn hover:opacity-90'
                                     }`}
                                 >
-                                    {isListening ? (
-                                        <>
-                                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H10a1 1 0 01-1-1v-4z" />
-                                            </svg>
-                                            Stop Recording
-                                        </>
-                                    ) : (
-                                        <>
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                                            </svg>
-                                            Speak to Translate
-                                        </>
-                                    )}
+                                    <div className="flex items-center gap-2">
+                                        {isListening ? (
+                                            <>
+                                                <svg className="w-5 h-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H10a1 1 0 01-1-1v-4z" />
+                                                </svg>
+                                                <span>Stop</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                                </svg>
+                                                <span>Speak</span>
+                                            </>
+                                        )}
+                                    </div>
+                                    <span className="text-[10px] font-black uppercase tracking-widest mt-1 opacity-60">Status: {statusMessage}</span>
                                 </button>
                             ) : (
                                 <button

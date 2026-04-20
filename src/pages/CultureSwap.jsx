@@ -648,6 +648,7 @@ const CultureSwap = () => {
         } else {
             localStorage.setItem('cultureSwapDate', today);
             localStorage.setItem('cultureSwapCount', '0');
+            currentCount = 0;
         }
 
         if (currentCount >= 3) {
@@ -658,6 +659,13 @@ const CultureSwap = () => {
         setSwapCount(nextCount);
         localStorage.setItem('cultureSwapCount', nextCount.toString());
         return true;
+    };
+
+    const upgradeToPremium = () => {
+        if (window.confirm("UNLIMITED CULTURAL SESSIONS?\n\nUpgrade to Culture+ Premium for $9.99/mo to unlock:\n✅ Unlimited Swaps\n✅ Verification Badge\n✅ High-Speed Sessions\n\n(This is a simulation. Click OK to unlock for this session)")) {
+            localStorage.setItem('isPremium', 'true');
+            window.location.reload();
+        }
     };
 
     const startMatch = async () => {
@@ -860,48 +868,123 @@ const CultureSwap = () => {
 
                 {!activeSwap ? (
                     <div className="space-y-12 animate-fade-in">
-                        {/* Main Interaction Card */}
-                        <div className="border rounded-[2rem] p-10 md:p-20 text-center shadow-lg relative overflow-hidden group theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
-                            {/* Decorative Background Elements */}
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-terra via-accent-gold to-accent-teal"></div>
-                            <div className="absolute -top-24 -right-24 w-64 h-64 bg-accent-gold/5 rounded-full blur-3xl group-hover:bg-accent-gold/10 transition-all duration-1000"></div>
-                            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-accent-teal/5 rounded-full blur-3xl group-hover:bg-accent-teal/10 transition-all duration-1000"></div>
-
-                            <div className="relative z-10">
-                                <div className="w-28 h-28 md:w-40 md:h-40 bg-bg-secondary rounded-full mx-auto mb-10 flex items-center justify-center text-6xl border border-border shadow-inner relative overflow-hidden theme-transition">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5"></div>
-                                    <span className={!isMatching ? 'animate-handshake relative z-10' : 'animate-spin-slow relative z-10'}>
-                                        {isMatching ? '🌍' : '🤝'}
-                                    </span>
+                        {/* Status Stats - Top Bar */}
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-6 px-10 py-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] shadow-2xl theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
+                            <div className="flex items-center gap-6">
+                                <div className="flex items-center gap-3 bg-green-500/10 px-6 py-2 rounded-full border border-green-500/20">
+                                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse-slow"></span>
+                                    <span className="text-sm font-mono font-black text-green-500">{globalSwaps.toLocaleString()}</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-green-500/60">Swaps Live</span>
                                 </div>
-                                
-                                <h2 className="text-4xl md:text-5xl font-serif font-medium text-text-primary mb-6 tracking-tight">Walk a mile in <span className="italic font-light opacity-60">their</span> shoes.</h2>
-                                <p className="text-text-secondary mb-12 max-w-xl mx-auto leading-relaxed text-lg font-light">
-                                    Our algorithmic matchmaking bridges borders. Connect with a stranger today to swap <span className="text-text-primary font-medium border-b border-accent-gold/30">traditional recipes</span>, morning <span className="text-text-primary font-medium border-b border-accent-blue/30">rituals</span>, and <span className="text-text-primary font-medium border-b border-accent-terra/30">ancestral words</span> for one complete cycle of the sun.
-                                </p>
-
-                                {!isPremium && (
-                                    <div className="mb-8 flex items-center justify-center gap-4">
-                                        <div className="flex gap-1">
-                                            {[1, 2, 3].map(i => (
-                                                <div key={i} className={`w-3 h-3 rounded-full border-2 border-accent-terra ${i <= swapCount ? 'bg-accent-terra' : 'bg-transparent'}`}></div>
-                                            ))}
-                                        </div>
-                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-terra">
-                                            {3 - swapCount} Free Swaps Remaining Today
-                                        </p>
-                                    </div>
-                                )}
-
-                                <button
-                                    onClick={startMatch}
-                                    disabled={isMatching}
-                                    className={`relative px-12 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform active:scale-95 shadow-xl group/btn overflow-hidden border border-white/20
-                                        ${isMatching ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-btn text-btn hover:shadow-2xl hover:-translate-y-1'}`}
+                                <div className="hidden sm:block w-px h-8 bg-white/5"></div>
+                                <div className="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted">
+                                    <span className="text-accent-gold">★</span> 98% AUTHENTICITY SCORE
+                                </div>
+                            </div>
+                            
+                            {!isPremium && (
+                                <button 
+                                    onClick={upgradeToPremium}
+                                    className="flex items-center gap-3 px-6 py-2 rounded-full bg-accent-gold/10 border border-accent-gold/30 hover:bg-accent-gold/20 transition-all group"
                                 >
-                                    <span className="relative z-10">{isMatching ? 'Calculating Affinity...' : 'Commence Lifestyle Swap'}</span>
-                                    {!isMatching && <div className="absolute inset-0 bg-gradient-to-r from-accent-terra/20 to-accent-gold/20 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>}
+                                    <span className="text-sm">💎</span>
+                                    <span className="text-[10px] uppercase font-black tracking-[0.25em] text-accent-gold group-hover:tracking-[0.3em] transition-all">Go Premium</span>
                                 </button>
+                            )}
+                        </div>
+
+                        {/* Main Interaction Dashboard */}
+                        <div className="border rounded-[3rem] p-10 md:p-20 text-center shadow-2xl relative overflow-hidden group theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-terra via-accent-gold to-accent-teal"></div>
+                            
+                            <div className="relative z-10 flex flex-col items-center">
+                                <h2 className="text-4xl md:text-6xl font-serif font-black mb-12 animate-slide-up-reveal" style={{ color: 'var(--theme-text-primary)' }}>
+                                    Ready for your <span className="text-accent-terra italic">Daily Session?</span>
+                                </h2>
+                                
+                                <div className="flex flex-col md:flex-row gap-8 items-stretch w-full max-w-4xl text-left">
+                                    {/* Status Card */}
+                                    <div className="flex-1 p-10 rounded-[2.5rem] border border-white/5 bg-white/5 backdrop-blur-md flex flex-col justify-between group/status hover:border-white/10 transition-all">
+                                        <div>
+                                            <div className="flex items-center justify-between mb-8">
+                                                <span className="text-xs font-black uppercase tracking-widest text-text-muted">Daily Limit Status</span>
+                                                <div className={`px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest transition-all ${isPremium ? 'bg-accent-gold text-black shadow-[0_0_20px_rgba(251,255,0,0.3)]' : 'bg-white/10 text-white'}`}>
+                                                    {isPremium ? 'PREMIUM' : 'FREE'}
+                                                </div>
+                                            </div>
+                                            <div className="text-7xl font-serif font-black mb-2 flex items-baseline gap-2" style={{ color: 'var(--theme-text-primary)' }}>
+                                                {isPremium ? '∞' : (3 - swapCount)}
+                                                {!isPremium && <span className="text-xl text-text-muted opacity-40">/ 3</span>}
+                                            </div>
+                                            <p className="text-sm text-text-secondary font-light leading-relaxed">
+                                                {isPremium ? 'Enjoy unlimited cultural exchanges around the world.' : `You have ${3 - swapCount} free swaps left for today. Our network resets at 00:00.`}
+                                            </p>
+                                        </div>
+                                        
+                                        {!isPremium && (
+                                            <div className="mt-10 pt-10 border-t border-white/5">
+                                                <div className="flex items-center gap-3 mb-6">
+                                                    <span className="text-2xl">🌍</span>
+                                                    <span className="text-[10px] text-accent-gold font-black uppercase tracking-widest">Culture+ Premium</span>
+                                                </div>
+                                                <ul className="space-y-3 mt-4">
+                                                    {['Unlimited Matchmaking', 'Verified Heritage Badge', 'Fast-Track Sessions'].map((feature, i) => (
+                                                        <li key={i} className="flex items-center gap-3 text-xs text-text-muted">
+                                                            <span className="text-accent-gold">✓</span> {feature}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Action Card */}
+                                    <div className={`flex-1 p-10 rounded-[2.5rem] flex flex-col items-center justify-center text-center transition-all duration-700 ${swapCount >= 3 && !isPremium ? 'border-2 border-accent-gold/40 bg-accent-gold/5' : 'border border-white/5 bg-white/5'}`}>
+                                        {swapCount >= 3 && !isPremium ? (
+                                            <div className="animate-fade-in w-full">
+                                                <div className="w-24 h-24 bg-accent-gold/10 rounded-full flex items-center justify-center text-5xl mx-auto mb-8 shadow-inner border border-accent-gold/20">💎</div>
+                                                <h3 className="text-3xl font-serif font-black mb-4">Daily Limit Met</h3>
+                                                <p className="text-sm text-text-muted mb-10 max-w-[200px] mx-auto font-light leading-relaxed">
+                                                    Upgrade to unlock the global network and continue swapping lifestyles.
+                                                </p>
+                                                <button
+                                                    onClick={upgradeToPremium}
+                                                    className="w-full py-5 rounded-2xl font-serif font-black text-xl transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(251,255,0,0.2)] hover:shadow-accent-gold/40"
+                                                    style={{ background: 'linear-gradient(135deg, #fbff00, #ff9d00)', color: '#000' }}
+                                                >
+                                                    GET PREMIUM
+                                                </button>
+                                                <p className="mt-6 text-[10px] font-black uppercase tracking-widest text-text-muted opacity-40">Cancel Anytime</p>
+                                            </div>
+                                        ) : (
+                                            <div className="w-full">
+                                                <div className="w-32 h-32 md:w-40 md:h-40 bg-bg-secondary rounded-full mx-auto mb-10 flex items-center justify-center text-6xl border border-border shadow-inner relative overflow-hidden theme-transition">
+                                                    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5"></div>
+                                                    <span className={!isMatching ? 'animate-handshake relative z-10' : 'animate-spin-slow relative z-10'}>
+                                                        {isMatching ? '🌍' : '🤝'}
+                                                    </span>
+                                                </div>
+                                                <p className="text-xs text-text-muted mb-10 italic max-w-[200px] mx-auto font-light">
+                                                    {isMatching ? 'Searching our global nodes...' : "Commence your 24-hour cultural adoption cycle."}
+                                                </p>
+                                                <button
+                                                    onClick={startMatch}
+                                                    disabled={isMatching}
+                                                    className="relative group p-1 rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl hover:shadow-accent-terra/40 w-full"
+                                                >
+                                                    <div className="absolute inset-0 bg-gradient-to-r from-accent-terra to-accent-gold animate-spin-slow"></div>
+                                                    <div className="relative py-6 bg-black rounded-full transition-colors group-hover:bg-transparent">
+                                                        <span className="text-xl font-serif font-black tracking-widest text-white group-hover:text-black">
+                                                            {isMatching ? 'MATCHING...' : 'COMMENCE SWAP'}
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                                 <div className="mt-12 flex flex-col items-center gap-6">
                                     <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.3em] text-text-secondary/60">
