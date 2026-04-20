@@ -229,6 +229,8 @@ const Translator = () => {
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     const t = event.results[i][0].transcript;
                     if (event.results[i].isFinal) {
+                        // Prevent duplicate processing of the exact same transcript piece
+                        if (newestFinalPiece === t) continue;
                         newestFinalPiece = t;
                         isFinalPiece = true;
                     } else {
@@ -429,8 +431,15 @@ const Translator = () => {
             currentAudioRef.current = audio;
             audio.playbackRate = speechRateRef.current;
             
+            isSpeakingRef.current = true; // Set IMMEDIATELY to prevent mic feedback
+            
             audio.onplay = () => { isSpeakingRef.current = true; };
-            audio.onended = () => { isSpeakingRef.current = false; };
+            audio.onended = () => { 
+                // Add a small cooldown before allowing listening again to avoid catching echo
+                setTimeout(() => {
+                    isSpeakingRef.current = false;
+                }, 1000);
+            };
             audio.onerror = () => { isSpeakingRef.current = false; };
 
             const playPromise = audio.play();
@@ -472,8 +481,13 @@ const Translator = () => {
             }
 
             utterance.rate = speechRateRef.current * 0.95;
+            isSpeakingRef.current = true;
             utterance.onstart = () => { isSpeakingRef.current = true; };
-            utterance.onend = () => { isSpeakingRef.current = false; };
+            utterance.onend = () => { 
+                setTimeout(() => {
+                    isSpeakingRef.current = false;
+                }, 1000);
+            };
             utterance.onerror = () => { isSpeakingRef.current = false; };
             
             window.speechSynthesis.speak(utterance);

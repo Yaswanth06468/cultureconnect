@@ -221,13 +221,10 @@
 
 @media (max-width: 768px) {
     .navbar-glass-mobile {
-        background-color: #ffffff !important;
-        --theme-bg-primary: #ffffff;
-        --theme-text-primary: #111111;
-        --theme-text-secondary: #444444;
-        --theme-border: #eeeeee;
-        --theme-shadow: rgba(0, 0, 0, 0.1);
-        color: #111111 !important;
+        background-color: var(--theme-bg-primary) !important;
+        border-color: var(--theme-border) !important;
+        box-shadow: 0 4px 30px var(--theme-shadow) !important;
+        backdrop-filter: blur(20px) saturate(200%) !important;
     }
 }
 
