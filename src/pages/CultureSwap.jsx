@@ -833,6 +833,32 @@ const CultureSwap = () => {
     };
 
 
+    const DEMO_PARTNER = { 
+        _id: 'demo_123',
+        name: 'Kento Momota',
+        culture: 'Kyoto, Japan 🇯🇵',
+        avatar: '🎴',
+        location: 'Kyoto Heritage District',
+        bio: 'Preserving the art of traditional tea ceremonies and Zen calligraphy.',
+        interests: ['Tea Ceremony', 'Calligraphy', 'Zen Gardens'],
+        food: 'Authentic Matcha Soba',
+        foodImage: 'https://images.unsplash.com/photo-1545601445-4d6a0a056a2e?q=80&w=800&auto=format&fit=crop',
+        ingredients: ['Matcha Powder', 'Buckwheat Soba', 'Dashi Broth', 'Fresh Wasabi'],
+        recipe: 'Whisk the ceremonial grade matcha into the dashi. Boil soba for exactly 4 minutes. Serve cold with a side of mindful silence.',
+        routine: 'The Dawn Calligraphy',
+        ritualDetails: 'Wake up at 5:00 AM. Grind fresh ink. Focus on a single character for 30 minutes to center your spirit for the day.',
+        ritualImage: 'https://images.unsplash.com/photo-1510172951991-856a654063f9?q=80&w=800&auto=format&fit=crop',
+        words: [
+            { word: 'Komorebi', translation: 'Sunlight filtering through trees', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=400' },
+            { word: 'Wabi-sabi', translation: 'Beauty in imperfection', image: 'https://images.unsplash.com/photo-1493106819501-66d381c466f1?q=80&w=400' },
+            { word: 'Ikigai', translation: 'Reason for being', image: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=400' }
+        ],
+        languageSignificance: 'Each word is a brushstroke on the canvas of our culture.',
+        languageImage: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop',
+        visualImage: 'https://images.unsplash.com/photo-1480796275266-4125b2923f1f?q=80&w=800&auto=format&fit=crop',
+        artDescription: 'The minimalist aesthetic of Zen architecture creates a harmony between structure and emptiness.'
+    };
+
     const startMatch = async () => {
         if (!checkAndIncrementSwap()) {
             setShowNotification('DAILY LIMIT REACHED: You have used your 3 free swaps for today. UPGRADE TO PREMIUM for unlimited cultural sessions! 💎');
@@ -841,36 +867,20 @@ const CultureSwap = () => {
         }
 
         setIsMatching(true);
-        
-        // Optimistic update for immediate feedback
         setGlobalSwaps(prev => prev + 1);
         
-        // Backend increment
+        // Backend increment (silent)
         fetch(`${API_BASE_URL}/api/culture-swap/increment`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({})
-        })
-            .then(async res => {
-                const contentType = res.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
-                    const data = await res.json();
-                    if (res.ok && typeof data.totalSwaps === 'number') {
-                        setGlobalSwaps(data.totalSwaps);
-                    }
-                }
-            })
-            .catch(e => {
-                console.error("Stats increment failed:", e);
-                // We already incremented optimistically, so if it fails, the UI is still correct for the session
-            });
+        }).catch(() => {});
 
         try {
             const excludeParam = seenPartnerIds.length > 0 ? `?exclude=${seenPartnerIds.join(',')}` : '';
             let response = await fetch(`${API_BASE_URL}/api/culture-swap/random${excludeParam}`);
             let data = await response.json();
             
-            // If all partners exhausted, reset the seen list and try again
             if (data.error && seenPartnerIds.length > 0) {
                 setSeenPartnerIds([]);
                 response = await fetch(`${API_BASE_URL}/api/culture-swap/random`);
@@ -888,14 +898,23 @@ const CultureSwap = () => {
                     setSeenPartnerIds(prev => [...prev, data._id]);
                 }, 2000);
             } else {
-                throw new Error("No partners found");
+                throw new Error("No partners in DB");
             }
         } catch (err) {
-            console.error("Match failed", err);
-            setIsMatching(false);
-            alert("Connection error. Our global network is currently congested. Please try again.");
+            console.warn("Connection error or empty DB, switching to DEMO MODE...");
+            setTimeout(() => {
+                setActiveSwap(DEMO_PARTNER);
+                setIsMatching(false);
+                setCompletedTasks([]);
+                setTimeLeft(24 * 3600);
+                setShowSavePrompt(false);
+                setCurrentNote('');
+                setShowNotification('DEMO MODE: Using a curated cultural sample for your preview! 🌏');
+                setTimeout(() => setShowNotification(''), 4000);
+            }, 2000);
         }
     };
+
 
     useEffect(() => {
         let timer;
@@ -1068,7 +1087,7 @@ const CultureSwap = () => {
                         </div>
 
                         {/* Main Interaction Dashboard */}
-                        <div className="border rounded-[3rem] p-10 md:p-20 text-center shadow-2xl relative overflow-hidden group theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
+                        <div className="border-2 rounded-[3.5rem] p-10 md:p-20 text-center shadow-[0_30px_100px_rgba(0,0,0,0.08)] relative overflow-hidden group theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-terra via-accent-gold to-accent-teal"></div>
                             
                             <div className="relative z-10 flex flex-col items-center">
@@ -1078,7 +1097,7 @@ const CultureSwap = () => {
                                 
                                 <div className="flex flex-col md:flex-row gap-8 items-stretch w-full max-w-4xl text-left">
                                     {/* Status Card */}
-                                    <div className="flex-1 p-10 rounded-[2.5rem] border border-white/5 bg-white/5 backdrop-blur-md flex flex-col justify-between group/status hover:border-white/10 transition-all">
+                                    <div className="flex-1 p-10 rounded-[3rem] border-2 bg-white/5 backdrop-blur-md flex flex-col justify-between group/status hover:border-accent-gold/30 transition-all duration-500" style={{ borderColor: 'var(--theme-border)' }}>
                                         <div>
                                             <div className="flex items-center justify-between mb-8">
                                                 <span className="text-xs font-black uppercase tracking-widest text-text-muted">Daily Limit Status</span>
@@ -1113,7 +1132,7 @@ const CultureSwap = () => {
                                     </div>
 
                                     {/* Action Card */}
-                                    <div className={`flex-1 p-10 rounded-[2.5rem] flex flex-col items-center justify-center text-center transition-all duration-700 ${swapCount >= 3 && !isPremium ? 'border-2 border-accent-gold/40 bg-accent-gold/5' : 'border border-white/5 bg-white/5'}`}>
+                                    <div className={`flex-1 p-10 rounded-[3rem] border-2 flex flex-col items-center justify-center text-center transition-all duration-700 group/action hover:scale-[1.02] ${swapCount >= 3 && !isPremium ? 'border-accent-gold/40 bg-accent-gold/5' : 'bg-white/5'}`} style={{ borderColor: swapCount >= 3 && !isPremium ? '' : 'var(--theme-border)' }}>
                                         {swapCount >= 3 && !isPremium ? (
                                             <div className="animate-fade-in w-full">
                                                 <div className="w-24 h-24 bg-accent-gold/10 rounded-full flex items-center justify-center text-5xl mx-auto mb-8 shadow-inner border border-accent-gold/20">💎</div>
@@ -1132,7 +1151,7 @@ const CultureSwap = () => {
                                             </div>
                                         ) : (
                                             <div className="w-full">
-                                                <div className="w-32 h-32 md:w-40 md:h-40 bg-bg-secondary rounded-full mx-auto mb-10 flex items-center justify-center text-6xl border border-border shadow-inner relative overflow-hidden theme-transition">
+                                                <div className="w-32 h-32 md:w-40 md:h-40 bg-bg-secondary rounded-full mx-auto mb-10 flex items-center justify-center text-6xl border-2 border-border shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] relative overflow-hidden theme-transition">
                                                     <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5"></div>
                                                     <span className={!isMatching ? 'animate-handshake relative z-10' : 'animate-spin-slow relative z-10'}>
                                                         {isMatching ? '🌍' : '🤝'}
@@ -1162,7 +1181,7 @@ const CultureSwap = () => {
 
                                 <div className="mt-12 flex flex-col items-center gap-6">
                                     <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.3em] text-text-secondary/60">
-                                        <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 shadow-xl">
+                                        <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md px-6 py-3 rounded-full border-2 border-[var(--theme-border)] shadow-xl">
                                             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                                             <span className="text-text-primary text-sm font-mono font-black">{globalSwaps.toLocaleString()}</span>
                                             <span className="text-text-secondary/60">REAL SWAPS COMPLETED</span>
