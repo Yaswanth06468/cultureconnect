@@ -569,6 +569,162 @@ const LiveSessionModal = ({ activeSwap, onClose, cleanName }) => {
     );
 };
 
+const PaymentModal = ({ onClose, onSuccess }) => {
+    const [step, setStep] = useState(1);
+    const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '', name: '' });
+    const [isProcessing, setIsProcessing] = useState(false);
+
+    const handlePayment = (e) => {
+        e.preventDefault();
+        setIsProcessing(true);
+        setTimeout(() => {
+            setIsProcessing(false);
+            setStep(3);
+            setTimeout(() => {
+                onSuccess();
+            }, 2500);
+        }, 3000);
+    };
+
+    return (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
+            <div className="relative w-full max-w-xl bg-[#111318] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_100px_rgba(251,255,0,0.1)]">
+                {/* Header Decor */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-gold to-accent-terra"></div>
+                
+                {step === 1 && (
+                    <div className="p-10 text-center animate-fade-in">
+                        <div className="w-20 h-20 bg-accent-gold/10 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-8 border border-white/5">💎</div>
+                        <h2 className="text-4xl font-serif text-white font-medium mb-4">Culture+ <span className="italic font-light">Premium</span></h2>
+                        <p className="text-white/40 text-sm font-light mb-10 max-w-sm mx-auto">
+                            Elevate your cultural experience with unlimited matchmaking and exclusive verified features.
+                        </p>
+                        
+                        <div className="bg-white/5 rounded-3xl p-8 mb-10 border border-white/5">
+                            <div className="flex items-baseline justify-center gap-2 mb-2">
+                                <span className="text-white/40 text-lg font-light">$</span>
+                                <span className="text-5xl font-serif text-white font-medium">9.99</span>
+                                <span className="text-white/40 text-sm font-light">/month</span>
+                            </div>
+                            <p className="text-[10px] text-accent-gold font-bold uppercase tracking-[0.2em]">Unlimited Exchanges • Verified Badge</p>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4 mb-10">
+                            {['Unlimited Swaps', 'HD Video Calls', 'Heritage Badge', 'Priority Matching'].map((f, i) => (
+                                <div key={i} className="flex items-center gap-3 text-left bg-white/3 p-4 rounded-2xl border border-white/5">
+                                    <span className="text-accent-gold">✓</span>
+                                    <span className="text-[10px] text-white/70 font-bold uppercase tracking-widest">{f}</span>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <button 
+                            onClick={() => setStep(2)}
+                            className="w-full py-5 bg-accent-gold text-black rounded-2xl font-serif font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(251,255,0,0.2)]"
+                        >
+                            UPGRADE NOW
+                        </button>
+                        <button onClick={onClose} className="mt-6 text-[10px] text-white/30 uppercase font-bold tracking-widest hover:text-white/60 transition-colors">Maybe Later</button>
+                    </div>
+                )}
+
+                {step === 2 && (
+                    <div className="p-10 animate-fade-in">
+                        <div className="flex items-center gap-4 mb-10">
+                            <button onClick={() => setStep(1)} className="text-white/40 hover:text-white">←</button>
+                            <h3 className="text-2xl font-serif text-white">Payment Method</h3>
+                        </div>
+                        
+                        <form onSubmit={handlePayment} className="space-y-6">
+                            <div className="space-y-2">
+                                <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Card Number</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="4242 4242 4242 4242"
+                                    required
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
+                                    value={cardData.number}
+                                    onChange={(e) => setCardData({...cardData, number: e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19)})}
+                                />
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Expiry Date</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="MM / YY"
+                                        required
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
+                                        value={cardData.expiry}
+                                        onChange={(e) => setCardData({...cardData, expiry: e.target.value.replace(/\D/g, '').replace(/(.{2})/, '$1 / ').trim().slice(0, 7)})}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">CVC</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="•••"
+                                        required
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
+                                        value={cardData.cvc}
+                                        onChange={(e) => setCardData({...cardData, cvc: e.target.value.replace(/\D/g, '').slice(0, 3)})}
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="space-y-2 mb-10">
+                                <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Cardholder Name</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="Yaswanth Kumar"
+                                    required
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-sans uppercase text-xs tracking-widest"
+                                    value={cardData.name}
+                                    onChange={(e) => setCardData({...cardData, name: e.target.value})}
+                                />
+                            </div>
+                            
+                            <button 
+                                type="submit"
+                                disabled={isProcessing}
+                                className="w-full py-5 bg-white text-black rounded-2xl font-serif font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl relative overflow-hidden"
+                            >
+                                {isProcessing ? (
+                                    <div className="flex items-center justify-center gap-3">
+                                        <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
+                                        <span>PROCESSING...</span>
+                                    </div>
+                                ) : 'AUTHORIZE PAYMENT'}
+                            </button>
+                        </form>
+                        
+                        <div className="flex items-center justify-center gap-6 mt-8 opacity-20">
+                            {['VISA', 'MASTERCARD', 'AMEX'].map(p => (
+                                <span key={p} className="text-[8px] font-black tracking-[0.3em] text-white italic">{p}</span>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {step === 3 && (
+                    <div className="p-16 text-center animate-scale-in">
+                        <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-8 shadow-[0_0_50px_rgba(34,197,94,0.4)] border-4 border-white/20 animate-bounce">✓</div>
+                        <h2 className="text-4xl font-serif text-white font-medium mb-4">Welcome to <span className="text-accent-gold italic">Premium</span></h2>
+                        <p className="text-white/40 text-sm font-light mb-10">
+                            Your cultural passport is now unlimited. Authenticating your membership...
+                        </p>
+                        <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full bg-accent-gold animate-loading-bar"></div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
 const CultureSwap = () => {
     const [isMatching, setIsMatching] = useState(false);
     const [activeSwap, setActiveSwap] = useState(null);
@@ -593,6 +749,8 @@ const CultureSwap = () => {
         } catch (e) { return []; }
     });
     const [showLiveSession, setShowLiveSession] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+
 
     useEffect(() => {
         localStorage.setItem('cultureSwapLearnings', JSON.stringify(savedLearnings));
@@ -662,11 +820,18 @@ const CultureSwap = () => {
     };
 
     const upgradeToPremium = () => {
-        if (window.confirm("UNLIMITED CULTURAL SESSIONS?\n\nUpgrade to Culture+ Premium for $9.99/mo to unlock:\n✅ Unlimited Swaps\n✅ Verification Badge\n✅ High-Speed Sessions\n\n(This is a simulation. Click OK to unlock for this session)")) {
-            localStorage.setItem('isPremium', 'true');
-            window.location.reload();
-        }
+        setShowPaymentModal(true);
     };
+
+    const handlePremiumSuccess = () => {
+        localStorage.setItem('isPremium', 'true');
+        setShowPaymentModal(false);
+        setShowNotification('WELCOME TO CULTURE+ PREMIUM! Your unlimited access starts now! 💎');
+        // Refresh state locally without full page reload if possible, 
+        // but reload is safer for theme and global checks
+        setTimeout(() => window.location.reload(), 2000);
+    };
+
 
     const startMatch = async () => {
         if (!checkAndIncrementSwap()) {
@@ -853,6 +1018,15 @@ const CultureSwap = () => {
                     cleanName={cleanName}
                 />
              )}
+
+             {/* Render Payment Modal */}
+             {showPaymentModal && (
+                 <PaymentModal 
+                    onClose={() => setShowPaymentModal(false)}
+                    onSuccess={handlePremiumSuccess}
+                 />
+             )}
+
 
             <div className="container mx-auto max-w-5xl relative">
                 
@@ -1445,6 +1619,20 @@ const CultureSwap = () => {
                 }
                 .mirror-video {
                     transform: scaleX(-1);
+                }
+                @keyframes loading-bar {
+                    from { width: 0%; }
+                    to { width: 100%; }
+                }
+                .animate-loading-bar {
+                    animation: loading-bar 2.5s ease-out forwards;
+                }
+                @keyframes scale-in {
+                    from { opacity: 0; transform: scale(0.9); }
+                    to { opacity: 1; transform: scale(1); }
+                }
+                .animate-scale-in {
+                    animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                 }
             `}} />
         </div>
