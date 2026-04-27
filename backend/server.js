@@ -50,9 +50,18 @@ const transporter = nodemailer.createTransport({
 // Verify email configuration
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     transporter.verify((error, success) => {
-        if (!error) console.log('Email server ready');
+        if (error) {
+            console.log('Email server not available (non-critical):', error.message);
+        } else {
+            console.log('Email server ready');
+        }
     });
 }
+
+// Prevent unhandled promise rejections from crashing
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection (non-critical):', reason?.message || reason);
+});
 
 // Schemas
 const UserSchema = new mongoose.Schema({
