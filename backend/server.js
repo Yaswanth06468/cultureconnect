@@ -57,9 +57,20 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
 // Schemas
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
 });
 const User = mongoose.model('User', UserSchema);
+
+const LoginLogSchema = new mongoose.Schema({
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    username: { type: String, required: true },
+    ip: String,
+    userAgent: String,
+    loginAt: { type: Date, default: Date.now },
+    isAdmin: { type: Boolean, default: false }
+});
+const LoginLog = mongoose.model('LoginLog', LoginLogSchema);
 
 const PostSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -191,10 +202,19 @@ function authenticateAdmin(req, res, next) {
 }
 
 // Routes
-app.post('/api/admin/login', (req, res) => {
+app.post('/api/admin/login', async (req, res) => {
     const { username, password } = req.body;
     if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
         const token = jwt.sign({ id: 'admin', username: 'ADMIN', role: 'admin' }, JWT_SECRET, { expiresIn: '8h' });
+        // Log admin login
+        try {
+            await new LoginLog({
+                username: 'ADMIN',
+                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown',
+                userAgent: req.headers['user-agent'] || 'unknown',
+                isAdmin: true
+            }).save();
+        } catch (e) { /* non-critical */ }
         res.json({ message: 'Admin login successful', token, username: 'ADMIN', role: 'admin' });
     } else {
         res.status(401).json({ error: 'Invalid admin credentials' });
@@ -222,6 +242,16 @@ app.post('/api/auth/login', async (req, res) => {
         const user = await User.findOne({ username });
         if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ error: 'Invalid credentials' });
         const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+        // Log user login
+        try {
+            await new LoginLog({
+                user_id: user._id,
+                username: user.username,
+                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown',
+                userAgent: req.headers['user-agent'] || 'unknown',
+                isAdmin: false
+            }).save();
+        } catch (e) { /* non-critical */ }
         res.json({ message: 'Login successful', token, username: user.username });
     } catch (err) {
         res.status(500).json({ error: 'Internal server error' });
@@ -342,17 +372,144 @@ app.delete('/api/admin/posts/:id', authenticateAdmin, async (req, res) => {
     }
 });
 
+// ========== ADMIN DASHBOARD ENDPOINTS ==========
+
+// Get all users
+app.get('/api/admin/users', authenticateAdmin, async (req, res) => {
+    try {
+        const users = await User.find({}, { password: 0 }).sort({ createdAt: -1 }).lean();
+        const usersWithStats = await Promise.all(users.map(async (u) => {
+            const postCount = await Post.countDocuments({ user_id: u._id });
+            const commentCount = await Comment.countDocuments({ user_id: u._id });
+            const bookingCount = await Booking.countDocuments({ user_id: u._id });
+            const lastLogin = await LoginLog.findOne({ user_id: u._id }).sort({ loginAt: -1 }).lean();
+            return {
+                ...u,
+                id: u._id.toString(),
+                postCount,
+                commentCount,
+                bookingCount,
+                lastLogin: lastLogin ? lastLogin.loginAt : null
+            };
+        }));
+        res.json(usersWithStats);
+    } catch (err) {
+        console.error('Admin users error:', err);
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
+});
+
+// Get login logs
+app.get('/api/admin/login-logs', authenticateAdmin, async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 100;
+        const logs = await LoginLog.find().sort({ loginAt: -1 }).limit(limit).lean();
+        res.json(logs);
+    } catch (err) {
+        console.error('Admin login-logs error:', err);
+        res.status(500).json({ error: 'Failed to fetch login logs' });
+    }
+});
+
+// Get dashboard stats
+app.get('/api/admin/dashboard-stats', authenticateAdmin, async (req, res) => {
+    try {
+        const totalUsers = await User.countDocuments();
+        const totalPosts = await Post.countDocuments();
+        const totalComments = await Comment.countDocuments();
+        const totalEvents = await Event.countDocuments();
+        const totalBookings = await Booking.countDocuments();
+        const totalLogins = await LoginLog.countDocuments();
+
+        // Last 7 days signups
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const recentSignups = await User.countDocuments({ createdAt: { $gte: sevenDaysAgo } });
+        const recentLogins = await LoginLog.countDocuments({ loginAt: { $gte: sevenDaysAgo } });
+
+        // Last 30 days daily login counts for chart
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const dailyLogins = await LoginLog.aggregate([
+            { $match: { loginAt: { $gte: thirtyDaysAgo } } },
+            { $group: {
+                _id: { $dateToString: { format: '%Y-%m-%d', date: '$loginAt' } },
+                count: { $sum: 1 }
+            }},
+            { $sort: { _id: 1 } }
+        ]);
+
+        // Daily signups for chart
+        const dailySignups = await User.aggregate([
+            { $match: { createdAt: { $gte: thirtyDaysAgo } } },
+            { $group: {
+                _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+                count: { $sum: 1 }
+            }},
+            { $sort: { _id: 1 } }
+        ]);
+
+        res.json({
+            totalUsers,
+            totalPosts,
+            totalComments,
+            totalEvents,
+            totalBookings,
+            totalLogins,
+            recentSignups,
+            recentLogins,
+            dailyLogins,
+            dailySignups
+        });
+    } catch (err) {
+        console.error('Admin dashboard-stats error:', err);
+        res.status(500).json({ error: 'Failed to fetch dashboard stats' });
+    }
+});
+
+// Delete a user (admin)
+app.delete('/api/admin/users/:id', authenticateAdmin, async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        // Clean up user's content
+        await Post.deleteMany({ user_id: req.params.id });
+        await Comment.deleteMany({ user_id: req.params.id });
+        await Booking.deleteMany({ user_id: req.params.id });
+        await LoginLog.deleteMany({ user_id: req.params.id });
+        res.json({ message: `User ${user.username} deleted successfully` });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to delete user' });
+    }
+});
+
 app.get('/api/culture-swap/random', async (req, res) => {
     try {
         const excludeIds = req.query.exclude ? req.query.exclude.split(',').filter(id => id.trim()) : [];
-        const query = excludeIds.length > 0 ? { _id: { $nin: excludeIds } } : {};
+        const userCulture = req.query.userCulture ? req.query.userCulture.trim() : '';
+        const query = {};
+        if (excludeIds.length > 0) {
+            query._id = { $nin: excludeIds };
+        }
+        // Exclude partners from the same culture as the user
+        if (userCulture) {
+            query.culture = { $not: new RegExp(userCulture.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') };
+        }
         const count = await CulturePartner.countDocuments(query);
-        if (count === 0) return res.status(404).json({ error: 'No cultural partners found' });
+        if (count === 0) return res.status(404).json({ error: 'No cultural partners found from a different culture' });
         const random = Math.floor(Math.random() * count);
         const partner = await CulturePartner.findOne(query).skip(random);
         res.json(partner);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch partner' });
+    }
+});
+
+// Get all distinct cultures for the culture selector
+app.get('/api/culture-swap/cultures', async (req, res) => {
+    try {
+        const cultures = await CulturePartner.distinct('culture');
+        res.json(cultures);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch cultures' });
     }
 });
 

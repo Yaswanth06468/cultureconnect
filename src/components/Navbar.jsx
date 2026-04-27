@@ -11,10 +11,12 @@ const Navbar = () => {
 
     const [username, setUsername] = useState(localStorage.getItem('username'));
     const [token, setToken] = useState(localStorage.getItem('token'));
+    const [role, setRole] = useState(localStorage.getItem('role'));
 
     useEffect(() => {
         setUsername(localStorage.getItem('username'));
         setToken(localStorage.getItem('token'));
+        setRole(localStorage.getItem('role'));
     }, [location]);
 
     useEffect(() => {
@@ -28,6 +30,7 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
+        localStorage.removeItem('role');
         setIsMobileMenuOpen(false);
         navigate('/login');
     };
@@ -84,6 +87,19 @@ const Navbar = () => {
 
                 {/* Auth Buttons */}
                 <div className="hidden md:flex items-center gap-6 ml-8 flex-shrink-0">
+                    {role === 'admin' && (
+                        <Link
+                            to="/admin"
+                            className="px-5 py-2 text-sm font-bold transition-all duration-300 rounded-full"
+                            style={{
+                                background: 'linear-gradient(135deg, #ff006e, #be0aff)',
+                                color: '#fff',
+                                boxShadow: '0 0 20px rgba(190,10,255,0.3)',
+                            }}
+                        >
+                            🛡️ Admin
+                        </Link>
+                    )}
                     {token ? (
                         <>
                             <span className="text-sm font-bold text-accent-teal">Hi, {username}</span>
@@ -165,6 +181,18 @@ const Navbar = () => {
                             </span>
                         </Link>
                     ))}
+                    {role === 'admin' && (
+                        <Link
+                            to="/admin"
+                            className="flex items-center gap-6 group"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <span className="opacity-80 scale-150" style={{ color: '#be0aff' }}>🛡️</span>
+                            <span className="text-3xl font-serif font-black tracking-tight" style={{ background: 'linear-gradient(135deg, #ff006e, #be0aff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                                Admin
+                            </span>
+                        </Link>
+                    )}
                     {token ? (
                         <button
                             onClick={handleLogout}
