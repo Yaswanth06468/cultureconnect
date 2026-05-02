@@ -314,8 +314,21 @@ const CulturalDances = () => {
 
     const handleSelectDance = (dance) => {
         setSelectedDance(dance);
-        setIsMuted(true); // Default to muted on open
+        setIsMuted(false); // Enable sound on click
     };
+
+    // Force play and handle audio when dance changes
+    useEffect(() => {
+        if (selectedDance && videoRef.current) {
+            videoRef.current.muted = isMuted;
+            const playPromise = videoRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Autoplay prevented, clicking unmute may be required", error);
+                });
+            }
+        }
+    }, [selectedDance, isMuted]);
 
     return (
         <div className="min-h-screen pt-24 pb-12 px-6 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
@@ -384,6 +397,13 @@ const CulturalDances = () => {
                                             }}
                                         />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40"></div>
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+                                            <svg className="w-8 h-8 text-white fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="absolute bottom-0 left-0 w-full p-4 bg-bg-secondary h-1/5 flex items-center justify-between border-t border-black/10" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                                     <h3 className="text-lg font-serif font-bold text-text-primary truncate" style={{ color: 'var(--theme-text-primary)' }}>{dance.name}</h3>
@@ -439,8 +459,8 @@ const CulturalDances = () => {
                                         disablePictureInPicture
                                     />
                                     
-                                    {/* Custom Controls Overlay - only show on hover/touch */}
-                                    <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover/video:opacity-100 transition-opacity duration-300 flex items-center justify-between pointer-events-none">
+                                    {/* Custom Controls Overlay - make more visible for audio awareness */}
+                                    <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-100 flex items-center justify-between pointer-events-none transition-all">
                                         <div className="flex items-center gap-4 pointer-events-auto">
                                             <button 
                                                 onClick={() => {
@@ -467,6 +487,14 @@ const CulturalDances = () => {
                                                     </svg>
                                                 )}
                                             </button>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-white bg-black/40 px-3 py-1.5 rounded-full border border-white/10 pointer-events-auto">
+                                            <div className="flex gap-0.5 items-end h-3">
+                                                {!isMuted && [1, 2, 3, 4].map(i => (
+                                                    <div key={i} className="w-0.5 bg-accent-terra animate-pulse" style={{ height: `${20 + Math.random() * 80}%`, animationDelay: `${i * 100}ms` }} />
+                                                ))}
+                                            </div>
+                                            <span className="text-[10px] font-bold uppercase tracking-widest">{isMuted ? 'Muted' : 'Audio Live'}</span>
                                         </div>
                                         <div className="text-white font-mono text-sm pointer-events-none opacity-50">
                                             PREMIUM COLLECTION
