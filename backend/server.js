@@ -213,7 +213,7 @@ function authenticateAdmin(req, res, next) {
 // Routes
 app.post('/api/admin/login', async (req, res) => {
     const { username, password } = req.body;
-    if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+    if (username && username.toUpperCase() === (process.env.ADMIN_USERNAME || 'ADMIN').toUpperCase() && password === process.env.ADMIN_PASSWORD) {
         const token = jwt.sign({ id: 'admin', username: 'ADMIN', role: 'admin' }, JWT_SECRET, { expiresIn: '8h' });
         // Log admin login
         try {

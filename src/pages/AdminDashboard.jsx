@@ -17,8 +17,13 @@ const AdminDashboard = () => {
     const role = localStorage.getItem('role');
 
     useEffect(() => {
+        if (!token) {
+            navigate('/login');
+            return;
+        }
         if (role !== 'admin') {
-            navigate('/');
+            setError(`Logged in as "${localStorage.getItem('username')}", which is not an admin account.`);
+            setLoading(false);
             return;
         }
         fetchAll();
@@ -72,7 +77,7 @@ const AdminDashboard = () => {
         l.username?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (role !== 'admin') return null;
+    if (role !== 'admin' && !error) return null;
 
     // Inline styles
     const s = {
@@ -158,7 +163,13 @@ const AdminDashboard = () => {
                 <div style={{ textAlign: 'center', maxWidth: 400 }}>
                     <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
                     <div style={{ color: '#ff006e', fontWeight: 700, fontSize: 18, marginBottom: 8 }}>Access Denied</div>
-                    <div style={{ color: 'var(--theme-text-muted)', fontSize: 14 }}>{error}</div>
+                    <div style={{ color: 'var(--theme-text-muted)', fontSize: 14, marginBottom: 24 }}>{error}</div>
+                    <button 
+                        onClick={() => { localStorage.clear(); navigate('/login'); }}
+                        style={{ padding: '12px 24px', borderRadius: 12, background: 'var(--theme-text-primary)', color: 'var(--theme-bg-primary)', border: 'none', fontWeight: 700, cursor: 'pointer' }}
+                    >
+                        Login as Admin
+                    </button>
                 </div>
             </div>
         );

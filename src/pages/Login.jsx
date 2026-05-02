@@ -14,11 +14,15 @@ const Login = () => {
         setError('');
         setIsLoading(true);
         try {
-            const endpoint = username === 'ADMIN' ? `${API_BASE_URL}/api/admin/login` : `${API_BASE_URL}/api/auth/login`;
+            const isLoggingInAsAdmin = username.toUpperCase() === 'ADMIN';
+            const endpoint = isLoggingInAsAdmin ? `${API_BASE_URL}/api/admin/login` : `${API_BASE_URL}/api/auth/login`;
             const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ 
+                    username: isLoggingInAsAdmin ? 'ADMIN' : username, 
+                    password 
+                })
             });
             const data = await res.json();
             if (res.ok) {
@@ -29,7 +33,11 @@ const Login = () => {
                 } else {
                     localStorage.removeItem('role');
                 }
-                navigate('/');
+                if (data.role === 'admin') {
+                    navigate('/admin');
+                } else {
+                    navigate('/');
+                }
             } else {
                 setError(data.error || 'Invalid username or password');
             }
