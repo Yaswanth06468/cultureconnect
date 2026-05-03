@@ -11,6 +11,7 @@ import CulturalDances from './pages/CulturalDances';
 import CityFoodExplorer from './pages/CityFoodExplorer';
 import CultureSwap from './pages/CultureSwap';
 import AdminDashboard from './pages/AdminDashboard';
+import WelcomeModal from './components/WelcomeModal';
 import Navbar from './components/Navbar';
 import { ThemeProvider } from './context/ThemeContext';
 import { API_BASE_URL } from './config';
@@ -32,6 +33,7 @@ function App() {
 
   return (
     <ThemeProvider>
+      <WelcomeModal />
       <BrowserRouter>
         <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)', transition: 'background-color 0.4s ease, color 0.4s ease' }}>
           <Navbar />
