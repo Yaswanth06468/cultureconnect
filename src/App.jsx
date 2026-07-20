@@ -10,6 +10,7 @@ import Translator from './pages/Translator';
 import CulturalDances from './pages/CulturalDances';
 import CityFoodExplorer from './pages/CityFoodExplorer';
 import CultureSwap from './pages/CultureSwap';
+import CultureMatching from './pages/CultureMatching';
 import AdminDashboard from './pages/AdminDashboard';
 import WelcomeModal from './components/WelcomeModal';
 import Navbar from './components/Navbar';
@@ -45,6 +46,7 @@ function App() {
             <Route path="/dances" element={<CulturalDances />} />
             <Route path="/city-food" element={<CityFoodExplorer />} />
             <Route path="/culture-swap" element={<CultureSwap />} />
+            <Route path="/matching" element={<CultureMatching />} />
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
