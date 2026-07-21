@@ -64,31 +64,31 @@
 }
 
 :root.dark {
-    /* Ocean Teal Dark Theme */
-    --theme-bg-primary: #0a1628;
-    --theme-bg-secondary: #0d1117;
-    --theme-bg-accent: #131c2e;
-    --theme-text-primary: #f0f6fc;
-    --theme-text-secondary: #c9d1d9;
-    --theme-text-muted: #8b949e;
-    --theme-text-inverse: #0a1628;
-    --theme-border: rgba(56, 189, 248, 0.18); /* Soft teal border */
-    --theme-card-bg: rgba(13, 17, 23, 0.85);
-    --theme-input-bg: rgba(19, 28, 46, 0.9);
-    --theme-btn-bg: linear-gradient(135deg, #0891b2, #38bdf8); /* Teal to Sky Blue */
+    /* Soft Mint Light Theme */
+    --theme-bg-primary: #eef6f2;
+    --theme-bg-secondary: #e4f0ea;
+    --theme-bg-accent: #dae9e0;
+    --theme-text-primary: #1a2e23;
+    --theme-text-secondary: #3d5a4a;
+    --theme-text-muted: #6b8f7a;
+    --theme-text-inverse: #eef6f2;
+    --theme-border: rgba(16, 185, 129, 0.25); /* Soft emerald border */
+    --theme-card-bg: rgba(255, 255, 255, 0.7);
+    --theme-input-bg: #f5faf7;
+    --theme-btn-bg: #0d9668;
     --theme-btn-text: #ffffff;
-    --theme-hero-gradient: transparent;
-    --theme-shadow: 0 0 20px rgba(8, 145, 178, 0.2);
-    --theme-overlay: rgba(10, 22, 40, 0.92);
-    --theme-toggle-bg: #1c2a3f;
-    --theme-toggle-knob: #f0f6fc;
-    --theme-toggle-icon: #38bdf8;
+    --theme-hero-gradient: #eef6f2;
+    --theme-shadow: rgba(16, 185, 129, 0.1);
+    --theme-overlay: rgba(238, 246, 242, 0.95);
+    --theme-toggle-bg: #c6ddd0;
+    --theme-toggle-knob: #ffffff;
+    --theme-toggle-icon: #0d9668;
 
-    --theme-accent-gold: #fbbf24;
-    --theme-accent-terra: #f97316;
-    --theme-accent-teal: #2dd4bf;
+    --theme-accent-gold: #d97706;
+    --theme-accent-terra: #dc2626;
+    --theme-accent-teal: #0d9668;
     --theme-accent-purple: #0891b2;
-    --theme-accent-blue: #38bdf8;
+    --theme-accent-blue: #2563eb;
 }
 
 @layer base {
@@ -101,15 +101,14 @@
         transition: background-color 0.4s ease, color 0.4s ease;
     }
 
-    /* Dark Mode Body Background - Ocean Teal Theme */
+    /* Dark Mode Body Background - Soft Mint Light Theme */
     :root.dark body {
-        background-color: #0a1628;
+        background-color: #eef6f2;
         background-image: 
-            radial-gradient(at 0% 0%, rgba(8, 145, 178, 0.2) 0px, transparent 50%),
-            radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
-            radial-gradient(at 50% 100%, rgba(45, 212, 191, 0.12) 0px, transparent 50%),
-            radial-gradient(at 50% 50%, rgba(10, 22, 40, 0.8) 0px, transparent 100%),
-            radial-gradient(circle at 70% 30%, rgba(14, 165, 233, 0.08) 0%, transparent 60%);
+            radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(45, 212, 191, 0.1) 0px, transparent 50%),
+            radial-gradient(at 50% 100%, rgba(52, 211, 153, 0.08) 0px, transparent 50%),
+            radial-gradient(at 50% 50%, rgba(238, 246, 242, 0.6) 0px, transparent 100%);
         background-attachment: fixed;
         background-size: cover;
     }
@@ -197,7 +196,7 @@
 
 .theme-toggle__track--dark .theme-toggle__knob {
     transform: translateX(26px);
-    background: #2a2a2a;
+    background: #0d9668;
 }
 
 .theme-toggle__icon {
