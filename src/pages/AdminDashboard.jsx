@@ -306,7 +306,7 @@ const AdminDashboard = () => {
             {/* Mini Charts */}
             {stats && (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20, marginBottom: 32 }}>
-                    <MiniChart data={stats.dailyLogins} color="var(--theme-accent-purple, #be0aff)" label="Daily Logins (30 days)" />
+                    <MiniChart data={stats.dailyLogins} color="var(--theme-accent-purple, #0891b2)" label="Daily Logins (30 days)" />
                     <MiniChart data={stats.dailySignups} color="var(--theme-accent-terra, #ff006e)" label="Daily Signups (30 days)" />
                 </div>
             )}

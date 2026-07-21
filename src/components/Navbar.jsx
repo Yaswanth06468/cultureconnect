@@ -93,9 +93,9 @@ const Navbar = () => {
                             to="/admin"
                             className="px-5 py-2 text-sm font-bold transition-all duration-300 rounded-full"
                             style={{
-                                background: 'linear-gradient(135deg, #ff006e, #be0aff)',
+                                background: 'linear-gradient(135deg, #0891b2, #38bdf8)',
                                 color: '#fff',
-                                boxShadow: '0 0 20px rgba(190,10,255,0.3)',
+                                boxShadow: '0 0 20px rgba(8,145,178,0.3)',
                             }}
                         >
                             🛡️ Admin
@@ -188,8 +188,8 @@ const Navbar = () => {
                             className="flex items-center gap-6 group"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <span className="opacity-80 scale-150" style={{ color: '#be0aff' }}>🛡️</span>
-                            <span className="text-3xl font-serif font-black tracking-tight" style={{ background: 'linear-gradient(135deg, #ff006e, #be0aff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                            <span className="opacity-80 scale-150" style={{ color: '#0891b2' }}>🛡️</span>
+                            <span className="text-3xl font-serif font-black tracking-tight" style={{ background: 'linear-gradient(135deg, #0891b2, #38bdf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                                 Admin
                             </span>
                         </Link>
