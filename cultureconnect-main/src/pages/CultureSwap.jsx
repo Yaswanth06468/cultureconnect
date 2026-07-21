@@ -571,11 +571,22 @@ const LiveSessionModal = ({ activeSwap, onClose, cleanName }) => {
 
 const PaymentModal = ({ onClose, onSuccess }) => {
     const [step, setStep] = useState(1);
+    const [paymentMethod, setPaymentMethod] = useState('qr');
     const [cardData, setCardData] = useState({ number: '', expiry: '', cvc: '', name: '' });
     const [isProcessing, setIsProcessing] = useState(false);
+    const [copied, setCopied] = useState(false);
+
+    const phoneNumber = "7893131510";
+    const upiId = "7893131510@upi";
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(upiId);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     const handlePayment = (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         setIsProcessing(true);
         setTimeout(() => {
             setIsProcessing(false);
@@ -630,78 +641,194 @@ const PaymentModal = ({ onClose, onSuccess }) => {
                 )}
 
                 {step === 2 && (
-                    <div className="p-10 animate-fade-in">
-                        <div className="flex items-center gap-4 mb-10">
-                            <button onClick={() => setStep(1)} className="text-white/40 hover:text-white">←</button>
-                            <h3 className="text-2xl font-serif text-white">Payment Method</h3>
+                    <div className="p-8 md:p-10 animate-fade-in">
+                        <div className="flex items-center justify-between mb-8">
+                            <div className="flex items-center gap-4">
+                                <button onClick={() => setStep(1)} className="text-white/40 hover:text-white text-xl">←</button>
+                                <h3 className="text-2xl font-serif text-white">Payment Method</h3>
+                            </div>
+                            <span className="text-xs font-bold text-accent-gold bg-accent-gold/10 px-3 py-1 rounded-full border border-accent-gold/20">$4.99</span>
                         </div>
                         
-                        <form onSubmit={handlePayment} className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Card Number</label>
-                                <input 
-                                    type="text" 
-                                    placeholder="4242 4242 4242 4242"
-                                    required
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
-                                    value={cardData.number}
-                                    onChange={(e) => setCardData({...cardData, number: e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19)})}
-                                />
-                            </div>
-                            
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Expiry Date</label>
-                                    <input 
-                                        type="text" 
-                                        placeholder="MM / YY"
-                                        required
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
-                                        value={cardData.expiry}
-                                        onChange={(e) => setCardData({...cardData, expiry: e.target.value.replace(/\D/g, '').replace(/(.{2})/, '$1 / ').trim().slice(0, 7)})}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">CVC</label>
-                                    <input 
-                                        type="text" 
-                                        placeholder="•••"
-                                        required
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
-                                        value={cardData.cvc}
-                                        onChange={(e) => setCardData({...cardData, cvc: e.target.value.replace(/\D/g, '').slice(0, 3)})}
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className="space-y-2 mb-10">
-                                <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Cardholder Name</label>
-                                <input 
-                                    type="text" 
-                                    placeholder="Yaswanth Kumar"
-                                    required
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-sans uppercase text-xs tracking-widest"
-                                    value={cardData.name}
-                                    onChange={(e) => setCardData({...cardData, name: e.target.value})}
-                                />
-                            </div>
-                            
+                        {/* Payment Option Tabs */}
+                        <div className="grid grid-cols-2 gap-2 bg-white/5 p-1.5 rounded-2xl mb-6 border border-white/10">
                             <button 
-                                type="submit"
-                                disabled={isProcessing}
-                                className="w-full py-5 bg-white text-black rounded-2xl font-serif font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl relative overflow-hidden"
+                                type="button"
+                                onClick={() => setPaymentMethod('qr')}
+                                className={`py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${paymentMethod === 'qr' ? 'bg-accent-gold text-black shadow-lg' : 'text-white/40 hover:text-white'}`}
                             >
-                                {isProcessing ? (
-                                    <div className="flex items-center justify-center gap-3">
-                                        <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
-                                        <span>PROCESSING...</span>
-                                    </div>
-                                ) : 'AUTHORIZE PAYMENT'}
+                                <span>📱</span> UPI / QR Scanner
                             </button>
-                        </form>
+                            <button 
+                                type="button"
+                                onClick={() => setPaymentMethod('card')}
+                                className={`py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${paymentMethod === 'card' ? 'bg-accent-gold text-black shadow-lg' : 'text-white/40 hover:text-white'}`}
+                            >
+                                <span>💳</span> Credit/Debit Card
+                            </button>
+                        </div>
+
+                        {paymentMethod === 'qr' ? (
+                            <div className="space-y-6 text-center">
+                                <div className="bg-white/5 border border-white/10 rounded-3xl p-6 relative overflow-hidden flex flex-col items-center justify-center">
+                                    <p className="text-[10px] text-accent-gold font-bold uppercase tracking-[0.2em] mb-4">Scan QR with GPay / PhonePe / Paytm / BHIM</p>
+
+                                    {/* Scanner Box with laser effect */}
+                                    <div className="relative w-48 h-48 bg-white p-3 rounded-2xl shadow-2xl flex items-center justify-center border-4 border-accent-gold/40">
+                                        {/* Animated Laser Bar */}
+                                        <div className="absolute inset-x-2 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_12px_#ef4444] animate-pulse z-20 top-4"></div>
+
+                                        {/* QR SVG representation */}
+                                        <svg className="w-full h-full text-black" viewBox="0 0 100 100" fill="currentColor">
+                                            {/* Top-Left Finder */}
+                                            <rect x="5" y="5" width="28" height="28" fill="black"/>
+                                            <rect x="9" y="9" width="20" height="20" fill="white"/>
+                                            <rect x="13" y="13" width="12" height="12" fill="black"/>
+
+                                            {/* Top-Right Finder */}
+                                            <rect x="67" y="5" width="28" height="28" fill="black"/>
+                                            <rect x="71" y="9" width="20" height="20" fill="white"/>
+                                            <rect x="75" y="13" width="12" height="12" fill="black"/>
+
+                                            {/* Bottom-Left Finder */}
+                                            <rect x="5" y="67" width="28" height="28" fill="black"/>
+                                            <rect x="9" y="71" width="20" height="20" fill="white"/>
+                                            <rect x="13" y="75" width="12" height="12" fill="black"/>
+
+                                            {/* QR Data modules */}
+                                            <rect x="38" y="8" width="6" height="6" />
+                                            <rect x="48" y="8" width="6" height="6" />
+                                            <rect x="56" y="14" width="6" height="6" />
+                                            <rect x="38" y="22" width="6" height="6" />
+                                            <rect x="48" y="22" width="6" height="6" />
+                                            
+                                            <rect x="8" y="38" width="6" height="6" />
+                                            <rect x="18" y="38" width="6" height="6" />
+                                            <rect x="28" y="46" width="6" height="6" />
+
+                                            <rect x="70" y="38" width="6" height="6" />
+                                            <rect x="80" y="38" width="6" height="6" />
+                                            <rect x="86" y="46" width="6" height="6" />
+                                            <rect x="66" y="54" width="6" height="6" />
+                                            
+                                            <rect x="38" y="68" width="6" height="6" />
+                                            <rect x="48" y="76" width="6" height="6" />
+                                            <rect x="56" y="68" width="6" height="6" />
+                                            <rect x="76" y="76" width="6" height="6" />
+                                            <rect x="86" y="68" width="6" height="6" />
+                                            <rect x="68" y="86" width="6" height="6" />
+                                            <rect x="80" y="86" width="6" height="6" />
+
+                                            {/* Center Badge */}
+                                            <rect x="38" y="38" width="24" height="24" rx="4" fill="white" stroke="black" strokeWidth="2"/>
+                                            <text x="50" y="55" fontSize="14" textAnchor="middle">💎</text>
+                                        </svg>
+                                    </div>
+
+                                    {/* Phone & UPI Info */}
+                                    <div className="mt-5 w-full bg-black/50 rounded-2xl p-4 border border-white/10 space-y-3">
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-white/40 uppercase font-bold tracking-wider text-[10px]">Phone Number (GPay / PhonePe):</span>
+                                            <span className="text-white font-mono font-bold text-sm select-all">7893131510</span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-xs pt-2 border-t border-white/5">
+                                            <span className="text-white/40 uppercase font-bold tracking-wider text-[10px]">UPI ID:</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-accent-gold font-mono font-bold text-xs select-all">{upiId}</span>
+                                                <button 
+                                                    type="button"
+                                                    onClick={handleCopy}
+                                                    className="px-2.5 py-1 bg-accent-gold/10 hover:bg-accent-gold/20 text-accent-gold rounded-lg text-[10px] font-bold border border-accent-gold/20 transition-all active:scale-95"
+                                                >
+                                                    {copied ? '✓ COPIED' : 'COPY'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button 
+                                    type="button"
+                                    onClick={handlePayment}
+                                    disabled={isProcessing}
+                                    className="w-full py-5 bg-accent-gold text-black rounded-2xl font-serif font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(251,255,0,0.2)]"
+                                >
+                                    {isProcessing ? (
+                                        <div className="flex items-center justify-center gap-3">
+                                            <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
+                                            <span>VERIFYING PAYMENT...</span>
+                                        </div>
+                                    ) : 'I HAVE PAID / VERIFY NOW'}
+                                </button>
+                            </div>
+                        ) : (
+                            <form onSubmit={handlePayment} className="space-y-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Card Number</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="4242 4242 4242 4242"
+                                        required
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
+                                        value={cardData.number}
+                                        onChange={(e) => setCardData({...cardData, number: e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19)})}
+                                    />
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Expiry Date</label>
+                                        <input 
+                                            type="text" 
+                                            placeholder="MM / YY"
+                                            required
+                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
+                                            value={cardData.expiry}
+                                            onChange={(e) => setCardData({...cardData, expiry: e.target.value.replace(/\D/g, '').replace(/(.{2})/, '$1 / ').trim().slice(0, 7)})}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">CVC</label>
+                                        <input 
+                                            type="text" 
+                                            placeholder="•••"
+                                            required
+                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-mono"
+                                            value={cardData.cvc}
+                                            onChange={(e) => setCardData({...cardData, cvc: e.target.value.replace(/\D/g, '').slice(0, 3)})}
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <div className="space-y-2 mb-10">
+                                    <label className="text-[10px] text-white/40 font-bold uppercase tracking-widest ml-1">Cardholder Name</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Yaswanth Kumar"
+                                        required
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-accent-gold/40 transition-all font-sans uppercase text-xs tracking-widest"
+                                        value={cardData.name}
+                                        onChange={(e) => setCardData({...cardData, name: e.target.value})}
+                                    />
+                                </div>
+                                
+                                <button 
+                                    type="submit"
+                                    disabled={isProcessing}
+                                    className="w-full py-5 bg-white text-black rounded-2xl font-serif font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl relative overflow-hidden"
+                                >
+                                    {isProcessing ? (
+                                        <div className="flex items-center justify-center gap-3">
+                                            <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
+                                            <span>PROCESSING...</span>
+                                        </div>
+                                    ) : 'AUTHORIZE PAYMENT'}
+                                </button>
+                            </form>
+                        )}
                         
                         <div className="flex items-center justify-center gap-6 mt-8 opacity-20">
-                            {['VISA', 'MASTERCARD', 'AMEX'].map(p => (
+                            {['VISA', 'MASTERCARD', 'AMEX', 'UPI', 'GPAY'].map(p => (
                                 <span key={p} className="text-[8px] font-black tracking-[0.3em] text-white italic">{p}</span>
                             ))}
                         </div>
