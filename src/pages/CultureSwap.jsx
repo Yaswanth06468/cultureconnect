@@ -604,7 +604,7 @@ const PaymentModal = ({ onClose, onSuccess }) => {
                         <div className="bg-white/5 rounded-3xl p-8 mb-10 border border-white/5">
                             <div className="flex items-baseline justify-center gap-2 mb-2">
                                 <span className="text-white/40 text-lg font-light">$</span>
-                                <span className="text-5xl font-serif text-white font-medium">5</span>
+                                <span className="text-5xl font-serif text-white font-medium">4.99</span>
                                 <span className="text-white/40 text-sm font-light">/month</span>
                             </div>
                             <p className="text-[10px] text-accent-gold font-bold uppercase tracking-[0.2em]">Unlimited Exchanges • Verified Badge</p>
