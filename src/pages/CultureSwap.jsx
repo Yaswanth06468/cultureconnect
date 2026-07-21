@@ -596,7 +596,7 @@ const PaymentModal = ({ onClose, onSuccess }) => {
                 {step === 1 && (
                     <div className="p-10 text-center animate-fade-in">
                         <div className="w-20 h-20 bg-accent-gold/10 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-8 border border-white/5">💎</div>
-                        <h2 className="text-4xl font-serif text-white font-medium mb-4">Culture+ <span className="italic font-light">Premium</span></h2>
+                        <h2 className="text-4xl font-serif text-white font-medium mb-4">Culture <span className="italic font-light">Pro</span></h2>
                         <p className="text-white/40 text-sm font-light mb-10 max-w-sm mx-auto">
                             Elevate your cultural experience with unlimited matchmaking and exclusive verified features.
                         </p>
@@ -826,7 +826,7 @@ const CultureSwap = () => {
     const handlePremiumSuccess = () => {
         localStorage.setItem('isPremium', 'true');
         setShowPaymentModal(false);
-        setShowNotification('WELCOME TO CULTURE+ PREMIUM! Your unlimited access starts now! 💎');
+        setShowNotification('WELCOME TO CULTURE PRO! Your unlimited access starts now! 💎');
         // Refresh state locally without full page reload if possible, 
         // but reload is safer for theme and global checks
         setTimeout(() => window.location.reload(), 2000);
@@ -1118,7 +1118,7 @@ const CultureSwap = () => {
                                             <div className="mt-10 pt-10 border-t border-white/5">
                                                 <div className="flex items-center gap-3 mb-6">
                                                     <span className="text-2xl">🌍</span>
-                                                    <span className="text-[10px] text-accent-gold font-black uppercase tracking-widest">Culture+ Premium</span>
+                                                    <span className="text-[10px] text-accent-gold font-black uppercase tracking-widest">Culture Pro</span>
                                                 </div>
                                                 <ul className="space-y-3 mt-4">
                                                     {['Unlimited Matchmaking', 'Verified Heritage Badge', 'Fast-Track Sessions'].map((feature, i) => (
