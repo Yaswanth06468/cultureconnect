@@ -1,0 +1,252 @@
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
+
+const Profile = () => {
+    const { username } = useParams();
+    const [profileUser, setProfileUser] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+    const [visibleComments, setVisibleComments] = useState({});
+    const [commentInputs, setCommentInputs] = useState({});
+
+    useEffect(() => {
+        fetchProfile();
+    }, [username]);
+
+    const fetchProfile = async () => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/users/${username}`);
+            const data = await res.json();
+            if (res.ok) {
+                setProfileUser(data.user);
+                setPosts(data.posts);
+            } else {
+                setError(data.error);
+            }
+        } catch (err) {
+            setError('Failed to fetch profile');
+        }
+    };
+
+    // Reuse Like/Comment Logic from Feed (Simplified)
+    const handleLike = async (postId) => {
+        if (!token) return navigate('/login');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/like`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) fetchProfile();
+        } catch (err) {
+            console.error('Failed to like post');
+        }
+    };
+
+    const fetchComments = async (postId) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/comments`);
+            const data = await res.json();
+            if (res.ok) setVisibleComments(prev => ({ ...prev, [postId]: data }));
+        } catch (err) {
+            console.error('Failed to fetch comments');
+        }
+    };
+
+    const handleCommentSubmit = async (e, postId) => {
+        e.preventDefault();
+        if (!token) return navigate('/login');
+        const text = commentInputs[postId];
+        if (!text) return;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/comments`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+
+            if (res.ok) {
+                setCommentInputs(prev => ({ ...prev, [postId]: '' }));
+                fetchComments(postId);
+                fetchProfile();
+            }
+        } catch (err) {
+            console.error('Failed to post comment');
+        }
+    };
+
+    const handleDeletePost = async (postId) => {
+        if (!window.confirm("Are you sure you want to delete this post?")) return;
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/admin/posts/${postId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                fetchProfile();
+            } else {
+                alert("Failed to delete post");
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleDeleteComment = async (commentId, postId) => {
+        if (!window.confirm("Are you sure you want to delete this comment?")) return;
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/admin/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                fetchComments(postId);
+                fetchProfile();
+            } else {
+                alert("Failed to delete comment");
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleDeleteUser = async () => {
+        if (!window.confirm("Are you sure you want to DELETE THIS USER and ALL their data?")) return;
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/admin/users/${profileUser.id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                navigate('/');
+            } else {
+                alert("Failed to delete user");
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    if (error) {
+        return <div className="container mx-auto px-6 py-24 max-w-md animate-scale-in">
+            <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary animate-slide-up-reveal">
+                <span>Error</span>
+            </h2>
+            <p>{error}</p>
+        </div>;
+    }
+
+    if (!profileUser) {
+        return <div className="container mx-auto px-6 py-24 text-center">Loading profile...</div>;
+    }
+
+    return (
+        <div className="container mx-auto px-6 py-24 max-w-3xl animate-scale-in">
+            <div className="mb-12 p-8 border border-black/20 bg-bg-secondary text-center relative animate-slide-up-reveal">
+                {role === 'admin' && (
+                    <button onClick={handleDeleteUser} className="absolute top-4 right-4 bg-accent-terra text-white font-bold text-xs px-3 py-1 hover:bg-red-700">
+                        Delete This User
+                    </button>
+                )}
+                <div className="w-24 h-24 mx-auto bg-text-primary text-bg-primary flex items-center justify-center text-4xl font-bold mb-4">
+                    {profileUser.username[0].toUpperCase()}
+                </div>
+                <h1 className="text-4xl font-serif font-bold text-text-primary">
+                    <span>{profileUser.username}</span>
+                </h1>
+                <p className="text-text-secondary mt-2">Shared {posts.length} cultural moments</p>
+            </div>
+
+            <div className="flex flex-col gap-12">
+                {posts.length === 0 ? (
+                    <p className="text-center text-text-secondary italic">This user hasn't shared anything yet.</p>
+                ) : (
+                    posts.map(post => (
+                        <div key={post.id} className="border border-black/10 bg-bg-primary shadow-sm">
+                            {role === 'admin' && (
+                                <div className="p-2 border-b border-black/10 bg-bg-secondary flex justify-end">
+                                    <button onClick={() => handleDeletePost(post.id)} className="text-xs font-bold text-accent-terra border border-accent-terra px-2 py-1 hover:bg-accent-terra hover:text-white transition-colors">
+                                        Delete Post
+                                    </button>
+                                </div>
+                            )}
+                            <img
+                                src={post.image_url && post.image_url.startsWith('http') ? post.image_url : `${API_BASE_URL}${post.image_url}`}
+                                alt={post.description}
+                                className="w-full h-auto object-cover max-h-[600px] border-b border-black/10"
+                            />
+                            <div className="p-6">
+                                <div className="inline-block px-3 py-1 mb-4 bg-accent-gold text-black text-xs font-bold uppercase border border-black">
+                                    {post.tag}
+                                </div>
+                                <p className="text-text-primary leading-relaxed text-lg mb-6">
+                                    {post.description}
+                                </p>
+
+                                <div className="flex items-center gap-6 border-t border-black/10 pt-4">
+                                    <button
+                                        onClick={() => handleLike(post.id)}
+                                        className="flex items-center gap-2 font-bold hover:text-accent-terra transition-colors"
+                                    >
+                                        <span>👍</span> {post.like_count || 0} Likes
+                                    </button>
+                                    <button
+                                        onClick={() => fetchComments(post.id)}
+                                        className="flex items-center gap-2 font-bold hover:text-accent-blue transition-colors"
+                                    >
+                                        <span>💬</span> {post.comment_count || 0} Comments
+                                    </button>
+                                </div>
+
+                                {visibleComments[post.id] && (
+                                    <div className="mt-6 border-t border-black/10 pt-4 bg-bg-secondary p-4">
+                                        <div className="flex flex-col gap-3 mb-4 max-h-48 overflow-y-auto">
+                                            {visibleComments[post.id].length === 0 ? (
+                                                <p className="text-sm text-text-muted italic">No comments yet.</p>
+                                            ) : (
+                                                visibleComments[post.id].map(c => (
+                                                    <div key={c.id} className="text-sm border-l-2 border-accent-blue pl-3 flex justify-between items-start">
+                                                        <div>
+                                                            <span className="font-bold">{c.username}: </span>
+                                                            <span>{c.text}</span>
+                                                        </div>
+                                                        {role === 'admin' && (
+                                                            <button onClick={() => handleDeleteComment(c.id, post.id)} className="text-accent-terra text-xs font-bold ml-2">
+                                                                [X]
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                ))
+                                            )}
+                                        </div>
+                                        {token && (
+                                            <form onSubmit={(e) => handleCommentSubmit(e, post.id)} className="flex gap-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Write a comment..."
+                                                    value={commentInputs[post.id] || ''}
+                                                    onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                                    className="flex-1 p-2 border border-text-secondary text-sm"
+                                                />
+                                                <button type="submit" className="px-4 bg-text-primary text-bg-primary text-sm font-bold">
+                                                    Post
+                                                </button>
+                                            </form>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default Profile;
