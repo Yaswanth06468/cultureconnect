@@ -1202,7 +1202,7 @@ const CultureSwap = () => {
                                 </div>
                             </div>
                             
-                            {!isPremium && (
+                            {!isPremium ? (
                                 <button 
                                     onClick={upgradeToPremium}
                                     className="flex items-center gap-3 px-6 py-2 rounded-full bg-accent-gold/10 border border-accent-gold/30 hover:bg-accent-gold/20 transition-all group"
@@ -1210,6 +1210,12 @@ const CultureSwap = () => {
                                     <span className="text-sm">💎</span>
                                     <span className="text-[10px] uppercase font-black tracking-[0.25em] text-accent-gold group-hover:tracking-[0.3em] transition-all">Go Premium</span>
                                 </button>
+                            ) : (
+                                <div className="flex items-center gap-3 px-6 py-2 rounded-full bg-accent-gold/10 border border-accent-gold/30 shadow-[0_0_20px_rgba(251,255,0,0.15)]">
+                                    <span className="text-sm">👑</span>
+                                    <span className="text-[10px] uppercase font-black tracking-[0.25em] text-accent-gold">Pro Member</span>
+                                    <span className="w-2 h-2 rounded-full bg-accent-gold animate-pulse-slow"></span>
+                                </div>
                             )}
                         </div>
 

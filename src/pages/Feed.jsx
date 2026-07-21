@@ -8,6 +8,7 @@ const Feed = () => {
     const [tag, setTag] = useState('');
     const [image, setImage] = useState(null);
     const [error, setError] = useState('');
+    const [isPosting, setIsPosting] = useState(false);
     const [visibleComments, setVisibleComments] = useState({}); // { postId: [comments] }
     const [commentInputs, setCommentInputs] = useState({}); // { postId: "draft text" }
     const [events, setEvents] = useState([]);
@@ -143,15 +144,16 @@ const Feed = () => {
             return;
         }
 
-        if (!image || !description) {
-            setError('Please provide an image and description');
+        if (!description) {
+            setError('Please provide a description');
             return;
         }
 
+        setIsPosting(true);
         const formData = new FormData();
-        formData.append('image', image);
+        if (image) formData.append('image', image);
         formData.append('description', description);
-        formData.append('tag', tag);
+        formData.append('tag', tag || 'General');
 
         try {
             const res = await fetch(`${API_BASE_URL}/api/posts`, {
@@ -166,14 +168,17 @@ const Feed = () => {
                 setDescription('');
                 setTag('');
                 setImage(null);
-                document.getElementById('file-upload').value = '';
+                const fileInput = document.getElementById('file-upload');
+                if (fileInput) fileInput.value = '';
                 fetchPosts(); // Refresh feed
             } else {
                 const data = await res.json();
-                setError(data.error || 'Failed to post');
+                setError(data.error || 'Failed to post. Please try again.');
             }
         } catch (err) {
-            setError('Network error');
+            setError('Network error. Please check your connection and try again.');
+        } finally {
+            setIsPosting(false);
         }
     };
 
@@ -215,8 +220,8 @@ const Feed = () => {
                             onChange={(e) => setTag(e.target.value)}
                             className="p-3 border border-text-secondary bg-bg-input text-text-primary theme-transition"
                         />
-                        <button type="submit" className="self-start px-8 py-3 bg-btn text-btn font-bold hover:bg-accent-blue hover:text-white transition-all duration-300 theme-transition rounded-lg shadow-md">
-                            Post
+                        <button type="submit" disabled={isPosting} className="self-start px-8 py-3 bg-btn text-btn font-bold hover:bg-accent-blue hover:text-white transition-all duration-300 theme-transition rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                            {isPosting ? 'Posting...' : 'Post'}
                         </button>
                     </form>
                 </div>
