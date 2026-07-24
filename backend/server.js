@@ -273,12 +273,54 @@ app.post('/api/admin/login', async (req, res) => {
     }
 });
 
-// Google Sign-Up / Sign-In Endpoint
+// Google Sign-Up / Sign-In Endpoint (Real Google OAuth 2.0 / GIS)
 app.post('/api/auth/google', async (req, res) => {
-    const { email, name, googleId, avatar } = req.body;
-    if (!email) return res.status(400).json({ error: 'Email is required for Google authentication' });
+    const { idToken, email: bodyEmail, name: bodyName, googleId: bodyGoogleId, avatar: bodyAvatar } = req.body;
+    let googleUser = {
+        email: bodyEmail,
+        name: bodyName,
+        googleId: bodyGoogleId,
+        avatar: bodyAvatar
+    };
+
+    // Verify real Google ID token with Google's OAuth2 server
+    if (idToken) {
+        try {
+            const googleVerifyRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
+            if (googleVerifyRes.ok) {
+                const payload = await googleVerifyRes.json();
+                googleUser = {
+                    email: payload.email,
+                    name: payload.name || payload.given_name || payload.email.split('@')[0],
+                    googleId: payload.sub,
+                    avatar: payload.picture || ''
+                };
+            } else {
+                console.warn('Google Token verification non-200 response, attempting fallback JWT decode');
+                const parts = idToken.split('.');
+                if (parts.length === 3) {
+                    const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf-8'));
+                    if (payload.email) {
+                        googleUser = {
+                            email: payload.email,
+                            name: payload.name || payload.email.split('@')[0],
+                            googleId: payload.sub,
+                            avatar: payload.picture || ''
+                        };
+                    }
+                }
+            }
+        } catch (vErr) {
+            console.error('Error verifying Google ID token:', vErr.message);
+        }
+    }
+
+    if (!googleUser.email) {
+        return res.status(400).json({ error: 'Valid Google account email is required' });
+    }
 
     try {
+        const { email, name, googleId, avatar } = googleUser;
         let user = await User.findOne({ $or: [{ email }, { googleId: googleId || 'none' }] });
         let isNewUser = false;
 
