@@ -12,11 +12,13 @@ const Navbar = () => {
     const [username, setUsername] = useState(localStorage.getItem('username'));
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [role, setRole] = useState(localStorage.getItem('role'));
+    const [avatar, setAvatar] = useState(localStorage.getItem('avatar'));
 
     useEffect(() => {
         setUsername(localStorage.getItem('username'));
         setToken(localStorage.getItem('token'));
         setRole(localStorage.getItem('role'));
+        setAvatar(localStorage.getItem('avatar'));
     }, [location]);
 
     useEffect(() => {
@@ -31,6 +33,9 @@ const Navbar = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         localStorage.removeItem('role');
+        localStorage.removeItem('email');
+        localStorage.removeItem('avatar');
+        setAvatar(null);
         setIsMobileMenuOpen(false);
         navigate('/login');
     };
@@ -103,7 +108,21 @@ const Navbar = () => {
                     )}
                     {token ? (
                         <>
-                            <span className="text-sm font-bold text-accent-teal">Hi, {username}</span>
+                            <Link to={`/profile/${username}`} className="flex items-center gap-2 group">
+                                {avatar ? (
+                                    <img
+                                        src={avatar}
+                                        alt={username}
+                                        className="w-8 h-8 rounded-full object-cover border-2 border-accent-teal/40 group-hover:border-accent-teal transition-all duration-300 shadow-sm"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                ) : (
+                                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 border-accent-teal/40" style={{ backgroundColor: 'var(--theme-bg-secondary)', color: 'var(--theme-text-primary)' }}>
+                                        {username?.[0]?.toUpperCase() || '?'}
+                                    </div>
+                                )}
+                                <span className="text-sm font-bold text-accent-teal">Hi, {username}</span>
+                            </Link>
                             <button
                                 onClick={handleLogout}
                                 className="px-6 py-2 text-sm font-medium transition-colors duration-300 theme-transition"

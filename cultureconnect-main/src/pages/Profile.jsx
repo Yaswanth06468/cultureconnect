@@ -153,9 +153,18 @@ const Profile = () => {
                         Delete This User
                     </button>
                 )}
-                <div className="w-24 h-24 mx-auto bg-text-primary text-bg-primary flex items-center justify-center text-4xl font-bold mb-4">
-                    {profileUser.username[0].toUpperCase()}
-                </div>
+                {profileUser.avatar ? (
+                    <img
+                        src={profileUser.avatar}
+                        alt={profileUser.username}
+                        className="w-24 h-24 mx-auto rounded-full object-cover border-4 border-accent-teal/30 shadow-lg mb-4"
+                        referrerPolicy="no-referrer"
+                    />
+                ) : (
+                    <div className="w-24 h-24 mx-auto bg-text-primary text-bg-primary flex items-center justify-center text-4xl font-bold mb-4 rounded-full">
+                        {profileUser.username[0].toUpperCase()}
+                    </div>
+                )}
                 <h1 className="text-4xl font-serif font-bold text-text-primary">
                     <span>{profileUser.username}</span>
                 </h1>

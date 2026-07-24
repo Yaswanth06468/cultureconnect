@@ -7,6 +7,8 @@ const CultureMatching = () => {
     const navigate = useNavigate();
     const [activeSuggestion, setActiveSuggestion] = useState(0);
     const [toasts, setToasts] = useState([]);
+    const [showAllStudents, setShowAllStudents] = useState(false);
+    const [studentSearchQuery, setStudentSearchQuery] = useState('');
     const [connectedPeers, setConnectedPeers] = useState(() => {
         try {
             return JSON.parse(localStorage.getItem('connectedPeers') || '[]');
@@ -52,12 +54,34 @@ const CultureMatching = () => {
         }
     ];
 
-    const peers = [
+    const allPeers = [
         { name: "Arjun Rao", state: "Andhra Pradesh", culture: "Telugu", bio: "Kuchipudi practitioner & History buff." },
         { name: "Priya Deshmukh", state: "Maharashtra", culture: "Marathi", bio: "Lavani dancer & Traditional chef." },
         { name: "Rahul Nair", state: "Kerala", culture: "Malayalam", bio: "Kathakali enthusiast & Travel blogger." },
-        { name: "Ananya Das", state: "West Bengal", culture: "Bengali", bio: "Rabindra Sangeet singer & Poet." }
+        { name: "Ananya Das", state: "West Bengal", culture: "Bengali", bio: "Rabindra Sangeet singer & Poet." },
+        { name: "Vigneshwaran K", state: "Tamil Nadu", culture: "Tamil", bio: "Bharatanatyam dancer & Carnatic music lover." },
+        { name: "Simran Kaur", state: "Punjab", culture: "Punjabi", bio: "Bhangra performer & Folk embroidery artist." },
+        { name: "Devendra Sharma", state: "Rajasthan", culture: "Rajasthani", bio: "Ghoomar folk artist & Heritage explorer." },
+        { name: "Sneha Kulkarni", state: "Karnataka", culture: "Kannada", bio: "Yakshagana artist & Kannada literature buff." },
+        { name: "Mihir Patel", state: "Gujarat", culture: "Gujarati", bio: "Garba enthusiast & Bandhani textile designer." },
+        { name: "Sunita Mohanty", state: "Odisha", culture: "Odia", bio: "Odissi classical dancer & Pattachitra painter." },
+        { name: "Bikramjit Hazarika", state: "Assam", culture: "Assamese", bio: "Bihu musician & Assam tea culture guide." },
+        { name: "Aarav Sharma", state: "Uttar Pradesh", culture: "Hindi / Awadhi", bio: "Kathak practitioner & Awadhi cuisine researcher." }
     ];
+
+    // Filter peers based on search query when viewing all
+    const filteredPeers = allPeers.filter(peer => {
+        if (!studentSearchQuery.trim()) return true;
+        const q = studentSearchQuery.toLowerCase();
+        return (
+            peer.name.toLowerCase().includes(q) ||
+            peer.state.toLowerCase().includes(q) ||
+            peer.culture.toLowerCase().includes(q) ||
+            peer.bio.toLowerCase().includes(q)
+        );
+    });
+
+    const displayedPeers = showAllStudents ? filteredPeers : allPeers.slice(0, 4);
 
     // Toast notification system
     const showToast = useCallback((message, type = 'success') => {
@@ -111,8 +135,15 @@ const CultureMatching = () => {
     };
 
     const handleViewAllStudents = () => {
-        navigate('/culture-swap');
-        showToast('👥 Browse all cultural peers on Culture Swap!');
+        setShowAllStudents(prev => {
+            const nextState = !prev;
+            if (nextState) {
+                showToast(`👥 Expanded directory! Showing all ${allPeers.length} cultural peers.`);
+            } else {
+                showToast('👥 Collapsed student directory view.');
+            }
+            return nextState;
+        });
     };
 
     const handleJoinMovement = () => {
@@ -270,7 +301,7 @@ const CultureMatching = () => {
                     </div>
                 </div>
 
-                {/* Peer Connections */}
+                {/* Peer Connections Section */}
                 <div ref={peersRef} className="rounded-[3rem] p-12 md:p-20 theme-transition overflow-hidden relative" style={{ backgroundColor: 'var(--theme-bg-accent)' }}>
                     <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none">
                         <svg className="w-full h-full text-accent-gold" fill="currentColor" viewBox="0 0 100 100">
@@ -281,26 +312,50 @@ const CultureMatching = () => {
                     </div>
 
                     <div className="relative z-10">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl md:text-5xl font-serif font-black mb-6">Connect with Cultural Peers</h2>
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl md:text-5xl font-serif font-black mb-4">Connect with Cultural Peers</h2>
                             <p className="text-xl text-theme-text-secondary max-w-2xl mx-auto">
                                 Meet students from different states who share your passion for cultural exchange.
                             </p>
                         </div>
 
+                        {/* Search Bar when expanded */}
+                        {showAllStudents && (
+                            <div className="max-w-xl mx-auto mb-10 animate-fade-in">
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        placeholder="Search by student name, state (e.g. Kerala), or culture..."
+                                        value={studentSearchQuery}
+                                        onChange={(e) => setStudentSearchQuery(e.target.value)}
+                                        className="w-full py-4 px-6 pr-12 rounded-full border border-theme-border bg-theme-card-bg text-theme-text-primary placeholder:text-theme-text-muted focus:ring-2 focus:ring-accent-teal focus:outline-none shadow-lg text-sm font-semibold"
+                                    />
+                                    <span className="absolute right-5 top-1/2 -translate-y-1/2 text-xl text-theme-text-muted">
+                                        🔍
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Student Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {peers.map((peer, idx) => {
+                            {displayedPeers.map((peer, idx) => {
                                 const isConnected = connectedPeers.includes(peer.name);
                                 return (
-                                    <div key={idx} className="group bg-theme-card-bg p-8 rounded-[2rem] border border-theme-border hover:border-accent-teal transition-all hover:shadow-2xl hover:-translate-y-2">
-                                        <div className="w-16 h-16 rounded-2xl bg-accent-teal/10 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-                                            👤
+                                    <div key={idx} className="group bg-theme-card-bg p-8 rounded-[2rem] border border-theme-border hover:border-accent-teal transition-all hover:shadow-2xl hover:-translate-y-2 flex flex-col justify-between">
+                                        <div>
+                                            <div className="w-16 h-16 rounded-2xl bg-accent-teal/10 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                                                👤
+                                            </div>
+                                            <h4 className="text-xl font-bold mb-1">{peer.name}</h4>
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <span className="text-accent-teal text-xs font-black uppercase tracking-wider px-2.5 py-1 rounded-md bg-accent-teal/10">{peer.state}</span>
+                                                <span className="text-xs font-semibold text-theme-text-muted">({peer.culture})</span>
+                                            </div>
+                                            <p className="text-theme-text-secondary text-sm mb-6 leading-relaxed">
+                                                {peer.bio}
+                                            </p>
                                         </div>
-                                        <h4 className="text-xl font-bold mb-1">{peer.name}</h4>
-                                        <p className="text-accent-teal text-sm font-bold uppercase tracking-tighter mb-4">{peer.state}</p>
-                                        <p className="text-theme-text-secondary text-sm mb-6 leading-relaxed">
-                                            {peer.bio}
-                                        </p>
                                         <button 
                                             onClick={() => handleSendConnect(peer)}
                                             disabled={isConnected}
@@ -335,14 +390,26 @@ const CultureMatching = () => {
                             })}
                         </div>
 
+                        {displayedPeers.length === 0 && (
+                            <div className="text-center py-12 text-theme-text-muted font-semibold">
+                                No students found matching "{studentSearchQuery}". Try another search term!
+                            </div>
+                        )}
+
+                        {/* View All / Collapse Button */}
                         <div className="mt-16 text-center">
                             <button 
                                 onClick={handleViewAllStudents}
-                                className="inline-flex items-center gap-3 text-lg font-black group cursor-pointer"
+                                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-theme-border bg-theme-card-bg hover:border-accent-teal hover:bg-accent-teal/5 text-lg font-black transition-all cursor-pointer shadow-md group active:scale-95"
                             >
-                                <span>View all students</span>
-                                <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                <span>{showAllStudents ? 'Show fewer students' : `View all students (${allPeers.length})`}</span>
+                                <svg 
+                                    className={`w-5 h-5 transition-transform duration-300 ${showAllStudents ? '-rotate-90' : 'group-hover:translate-x-2'}`} 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={showAllStudents ? "M5 15l7-7 7 7" : "M17 8l4 4m0 0l-4 4m4-4H3"} />
                                 </svg>
                             </button>
                         </div>

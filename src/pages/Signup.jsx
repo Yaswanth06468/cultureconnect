@@ -25,23 +25,40 @@ const Signup = () => {
             });
             const data = await res.json();
             if (res.ok) {
-                if (data.emailNotificationSent) {
-                    setSuccessMessage('Account created! A welcome notification email was sent to your email ID.');
+                if (data.emailSent) {
+                    setSuccessMessage(data.emailMessage || 'Welcome email sent successfully. Please check your inbox.');
+                    setError('');
+                } else if (email) {
+                    // Delivery failed
+                    setError(data.emailError || data.emailMessage || 'Failed to send welcome email. Please try again later.');
+                    setSuccessMessage('');
+                } else {
+                    setSuccessMessage('Account created successfully!');
+                    setError('');
                 }
-                setTimeout(() => navigate('/login'), 1500);
+                setTimeout(() => navigate('/login'), 2000);
             } else {
                 setError(data.error || 'Failed to create account');
             }
         } catch (err) {
-            setError('Unable to connect to server. It might be waking up, please try again in a moment.');
+            setError('Unable to connect to server. Please check your internet connection.');
         } finally {
             setIsLoading(false);
         }
     };
 
     const handleGoogleSuccess = (data) => {
-        setSuccessMessage(`Welcome ${data.username}! A welcome email notification was sent to ${data.email || 'your email ID'}.`);
-        setTimeout(() => navigate('/'), 1200);
+        if (data.emailSent) {
+            setSuccessMessage(data.emailMessage || 'Welcome email sent successfully. Please check your inbox.');
+            setError('');
+        } else if (data.email) {
+            setError(data.emailError || data.emailMessage || 'Failed to send welcome email. Please try again later.');
+            setSuccessMessage('');
+        } else {
+            setSuccessMessage('Google Sign-In successful!');
+            setError('');
+        }
+        setTimeout(() => navigate('/'), 2000);
     };
 
     return (
@@ -49,15 +66,24 @@ const Signup = () => {
             <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary animate-slide-up-reveal">
                 <span>Sign Up</span>
             </h2>
-            {error && <p className="text-accent-terra mb-4 font-bold">{error}</p>}
+            
+            {/* Delivery Error Notification Banner */}
+            {error && (
+                <div className="mb-4 p-3 bg-red-100 dark:bg-red-950/60 border border-red-400 text-red-700 dark:text-red-300 rounded-xl font-semibold text-sm flex items-center gap-2">
+                    <span>⚠️</span>
+                    <span>{error}</span>
+                </div>
+            )}
+
+            {/* Delivery Success Notification Banner (Only shown when email service confirms delivery) */}
             {successMessage && (
-                <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-800 rounded font-semibold text-sm flex items-center gap-2">
+                <div className="mb-4 p-3 bg-green-100 dark:bg-green-950/60 border border-green-400 text-green-800 dark:text-green-300 rounded-xl font-semibold text-sm flex items-center gap-2">
                     <span>📧</span>
                     <span>{successMessage}</span>
                 </div>
             )}
             
-            <div className="border border-black/10 p-8 bg-bg-secondary flex flex-col gap-6">
+            <div className="border border-black/10 p-8 bg-bg-secondary flex flex-col gap-6 rounded-2xl shadow-sm">
                 {/* Google Sign-Up Option */}
                 <div>
                     <GoogleAuthButton
@@ -73,32 +99,32 @@ const Signup = () => {
                 </div>
 
                 <form onSubmit={handleSignup} className="flex flex-col gap-4">
-                    <label className="text-text-primary font-bold">Username *
+                    <label className="text-text-primary font-bold text-sm">Username *
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full mt-2 p-3 border border-text-secondary bg-bg-primary text-text-primary"
+                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
                     </label>
 
-                    <label className="text-text-primary font-bold">Email ID (for mail notifications)
+                    <label className="text-text-primary font-bold text-sm">Email ID (for mail notifications)
                         <input
                             type="email"
                             placeholder="customer@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full mt-2 p-3 border border-text-secondary bg-bg-primary text-text-primary"
+                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         />
                     </label>
 
-                    <label className="text-text-primary font-bold">Password *
+                    <label className="text-text-primary font-bold text-sm">Password *
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full mt-2 p-3 border border-text-secondary bg-bg-primary text-text-primary"
+                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
                     </label>
@@ -106,13 +132,10 @@ const Signup = () => {
                     <button 
                         type="submit" 
                         disabled={isLoading}
-                        className={`mt-4 px-6 py-3 font-bold transition-colors ${isLoading ? 'bg-gray-400 cursor-not-allowed text-white' : 'bg-text-primary text-bg-primary hover:bg-accent-blue'}`}
+                        className="btn btn-primary w-full py-3 mt-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 font-bold transition-all"
                     >
-                        {isLoading ? 'Creating Account...' : 'Create Account'}
+                        {isLoading ? 'Creating Account...' : 'Sign Up'}
                     </button>
-                    <p className="mt-4 text-center">
-                        Already have an account? <a href="/login" className="text-accent-blue underline">Log in here</a>
-                    </p>
                 </form>
             </div>
         </div>

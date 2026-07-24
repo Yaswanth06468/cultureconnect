@@ -38,6 +38,11 @@ mongoose.connect(process.env.MONGODB_URI)
         process.exit(1); 
     });
 
+// Email Address Regex Validation
+const isValidEmailFormat = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
+};
+
 // Email Transporter
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -47,15 +52,25 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Verify email configuration
+// Verify email configuration on startup
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     transporter.verify((error, success) => {
         if (error) {
-            console.log('Email server not available (non-critical):', error.message);
+            console.error('❌ [EMAIL CONFIG VERIFICATION FAILED] Transporter connection error details:');
+            console.error({
+                message: error.message,
+                code: error.code,
+                command: error.command,
+                response: error.response,
+                responseCode: error.responseCode,
+                sender: process.env.EMAIL_USER
+            });
         } else {
-            console.log('Email server ready');
+            console.log('✅ [EMAIL PROVIDER READY] SMTP connection verified successfully for', process.env.EMAIL_USER);
         }
     });
+} else {
+    console.warn('⚠️ [EMAIL CONFIG WARNING] EMAIL_USER or EMAIL_PASS is missing in backend/.env!');
 }
 
 // Prevent unhandled promise rejections from crashing
@@ -74,44 +89,164 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', UserSchema);
 
-// Helper function to send email notification to customer
-async function sendAuthEmail(toEmail, username, actionType = 'login') {
-    if (!toEmail) return false;
+/**
+ * Robust Helper function to send email notification to customer.
+ * Verifies that the email is accepted by the email service provider before confirming success.
+ */
+async function sendAuthEmail(toEmail, username, actionType = 'login', metadata = {}) {
     const isSignup = actionType === 'signup';
-    const title = isSignup ? '🎉 Welcome to CultureConnect!' : '🔑 Successful Sign-In Notification';
-    const messageHeader = isSignup 
-        ? `Welcome to CultureConnect, <strong>${username}</strong>!`
-        : `Hello <strong>${username}</strong>, you have successfully signed into your CultureConnect account.`;
     
-    const mailOptions = {
-        from: `"CultureConnect" <${process.env.EMAIL_USER || 'no-reply@cultureconnect.com'}>`,
-        to: toEmail,
-        subject: title,
-        text: `${title}\n\n${isSignup ? 'Thank you for joining CultureConnect!' : 'You signed in to your account.'}\nTime: ${new Date().toLocaleString()}`,
-        html: `
+    // 1. Verify recipient email address validity
+    if (!toEmail || !isValidEmailFormat(toEmail)) {
+        console.error(`❌ [EMAIL VALIDATION ERROR] Recipient email is missing or invalid: "${toEmail}"`);
+        return {
+            success: false,
+            emailSent: false,
+            error: 'Invalid recipient email address format',
+            message: 'Failed to send welcome email. Please try again later.'
+        };
+    }
+
+    // 2. Verify email provider credential configuration
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.error('❌ [EMAIL PROVIDER ERROR] EMAIL_USER or EMAIL_PASS is not configured in backend/.env');
+        return {
+            success: false,
+            emailSent: false,
+            error: 'Email provider credentials not configured on backend server',
+            message: 'Failed to send welcome email. Please try again later.'
+        };
+    }
+
+    const ip = metadata.ip || 'unknown';
+    const userAgent = metadata.userAgent || 'unknown';
+    const loginTime = new Date().toLocaleString('en-US', { timeZone: 'UTC' }) + ' UTC';
+
+    const title = isSignup ? '🎉 Welcome to CultureConnect!' : 'Successful Login';
+    
+    const textContent = isSignup 
+        ? `Welcome to CultureConnect, ${username}!\n\nThank you for joining. Time: ${loginTime}`
+        : `Successful Login\n\nHello ${username},\n\nYou have successfully logged into CultureConnect. If this wasn't you, please contact support immediately.\n\nLogin Details:\nDate & Time: ${loginTime}\nBrowser/Device: ${userAgent}\nIP Address: ${ip}`;
+
+    const htmlContent = isSignup 
+        ? `
             <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #ffffff;">
                 <h1 style="color: #1a1a1a; margin-bottom: 16px; font-size: 24px;">${title}</h1>
-                <p style="color: #4a4a4a; font-size: 16px; line-height: 1.5;">${messageHeader}</p>
+                <p style="color: #4a4a4a; font-size: 16px; line-height: 1.5;">Welcome to CultureConnect, <strong>${username}</strong>!</p>
                 <div style="background-color: #f7f9fc; padding: 16px; border-left: 4px solid #3b82f6; margin: 20px 0; border-radius: 4px;">
                     <p style="margin: 0; color: #334155; font-size: 14px;"><strong>Account:</strong> ${username}</p>
                     <p style="margin: 4px 0 0 0; color: #334155; font-size: 14px;"><strong>Email ID:</strong> ${toEmail}</p>
-                    <p style="margin: 4px 0 0 0; color: #334155; font-size: 14px;"><strong>Timestamp:</strong> ${new Date().toLocaleString()}</p>
+                    <p style="margin: 4px 0 0 0; color: #334155; font-size: 14px;"><strong>Timestamp:</strong> ${loginTime}</p>
                 </div>
-                <p style="color: #6b7280; font-size: 14px;">If you did not perform this action, please secure your account immediately.</p>
                 <hr style="border: none; border-top: 1px solid #eeeeee; margin: 24px 0;" />
                 <p style="color: #9ca3af; font-size: 12px; text-align: center;">CultureConnect &copy; ${new Date().getFullYear()} - Connecting Cultures Worldwide</p>
             </div>
         `
+        : `
+            <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #ffffff;">
+                <h1 style="color: #1a1a1a; margin-bottom: 16px; font-size: 24px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">${title}</h1>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5;">
+                    Hello <strong>${username}</strong>,
+                </p>
+                <p style="color: #1e293b; font-size: 15px; line-height: 1.6; margin: 15px 0;">
+                    You have successfully logged into CultureConnect. If this wasn't you, please contact support immediately.
+                </p>
+                <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; margin: 20px 0;">
+                    <h3 style="margin: 0 0 12px 0; color: #334155; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em;">Security & Login Details</h3>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #475569;">
+                        <tr>
+                            <td style="padding: 6px 0; font-weight: 600; width: 140px;">User Profile:</td>
+                            <td style="padding: 6px 0;">${username} (${toEmail})</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 0; font-weight: 600;">Date & Time:</td>
+                            <td style="padding: 6px 0;">${loginTime}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 0; font-weight: 600;">Browser / Device:</td>
+                            <td style="padding: 6px 0; word-break: break-all;">${userAgent}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 0; font-weight: 600;">IP Address:</td>
+                            <td style="padding: 6px 0;">${ip}</td>
+                        </tr>
+                    </table>
+                </div>
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+                <p style="color: #94a3b8; font-size: 11px; text-align: center; line-height: 1.4;">
+                    This is an automated security notification from CultureConnect.<br/>
+                    CultureConnect &copy; ${new Date().getFullYear()} - Connecting Cultures Worldwide
+                </p>
+            </div>
+        `;
+
+    const mailOptions = {
+        from: `"CultureConnect" <${process.env.EMAIL_USER}>`,
+        to: toEmail,
+        subject: title,
+        text: textContent,
+        html: htmlContent
     };
 
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log(`Email notification sent to ${toEmail}: ${info.messageId}`);
-        return true;
-    } catch (error) {
-        console.error(`Failed to send auth email to ${toEmail}:`, error.message);
-        return false;
+    // 3. Dispatch with retry logic & confirmation check
+    const maxRetries = 2;
+    let attempts = 0;
+    let lastError = null;
+
+    while (attempts < maxRetries) {
+        attempts++;
+        try {
+            console.log(`📧 [EMAIL DELIVERY ATTEMPT ${attempts}/${maxRetries}] Sending auth email to ${toEmail}...`);
+            const info = await transporter.sendMail(mailOptions);
+            
+            // Check delivery confirmation from Nodemailer / SMTP response
+            const isAccepted = info && (
+                (Array.isArray(info.accepted) && info.accepted.length > 0) ||
+                Boolean(info.messageId)
+            );
+
+            if (isAccepted) {
+                const successMsg = isSignup 
+                    ? "Welcome email sent successfully. Please check your inbox." 
+                    : "Sign-in notification email sent successfully. Please check your inbox.";
+
+                console.log(`✅ [EMAIL DELIVERED & CONFIRMED] Message accepted by provider for ${toEmail}. Message ID: ${info.messageId}`);
+                return {
+                    success: true,
+                    emailSent: true,
+                    messageId: info.messageId,
+                    message: successMsg,
+                    acceptedRecipients: info.accepted
+                };
+            } else {
+                throw new Error(`Email provider rejected or did not accept recipient ${toEmail}`);
+            }
+        } catch (err) {
+            lastError = err;
+            console.error(`❌ [EMAIL DELIVERY FAILED - ATTEMPT ${attempts}/${maxRetries}] Target Email: ${toEmail}`);
+            console.error('Complete Backend Error Details:', {
+                message: err.message,
+                code: err.code,
+                command: err.command,
+                response: err.response,
+                responseCode: err.responseCode,
+                stack: err.stack,
+                recipient: toEmail,
+                sender: process.env.EMAIL_USER
+            });
+
+            if (attempts < maxRetries) {
+                await new Promise((res) => setTimeout(res, 1000));
+            }
+        }
     }
+
+    return {
+        success: false,
+        emailSent: false,
+        error: lastError?.message || 'Email delivery failed after retries',
+        message: "Failed to send welcome email. Please try again later."
+    };
 }
 
 const LoginLogSchema = new mongoose.Schema({
@@ -273,18 +408,41 @@ app.post('/api/admin/login', async (req, res) => {
     }
 });
 
-// Google Sign-Up / Sign-In Endpoint (Real Google OAuth 2.0 / GIS)
+// Google Sign-Up / Sign-In Endpoint (Real Google OAuth 2.0 via Access Token)
 app.post('/api/auth/google', async (req, res) => {
-    const { idToken, email: bodyEmail, name: bodyName, googleId: bodyGoogleId, avatar: bodyAvatar } = req.body;
-    let googleUser = {
-        email: bodyEmail,
-        name: bodyName,
-        googleId: bodyGoogleId,
-        avatar: bodyAvatar
-    };
+    const { accessToken, idToken } = req.body;
+    let googleUser = { email: null, name: null, googleId: null, avatar: null };
 
-    // Verify real Google ID token with Google's OAuth2 server
-    if (idToken) {
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+    const clientUserAgent = req.headers['user-agent'] || 'unknown';
+
+    // Strategy 1: Verify using access_token with Google's userinfo endpoint (primary)
+    if (accessToken) {
+        try {
+            const userinfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            });
+            if (userinfoRes.ok) {
+                const profile = await userinfoRes.json();
+                googleUser = {
+                    email: profile.email,
+                    name: profile.name || profile.given_name || profile.email?.split('@')[0],
+                    googleId: profile.sub,
+                    avatar: profile.picture || ''
+                };
+                console.log(`✅ [GOOGLE AUTH] Profile fetched via access_token for ${profile.email}`);
+            } else {
+                const errBody = await userinfoRes.text();
+                console.error(`❌ [GOOGLE AUTH] userinfo API returned ${userinfoRes.status}:`, errBody);
+                return res.status(401).json({ error: 'Invalid or expired Google access token. Please try again.' });
+            }
+        } catch (fetchErr) {
+            console.error('❌ [GOOGLE AUTH] Failed to fetch Google userinfo:', fetchErr.message);
+            return res.status(500).json({ error: 'Failed to verify Google account. Please try again.' });
+        }
+    }
+    // Strategy 2: Fallback to ID token verification (for GIS One Tap flow)
+    else if (idToken) {
         try {
             const googleVerifyRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
             if (googleVerifyRes.ok) {
@@ -296,7 +454,7 @@ app.post('/api/auth/google', async (req, res) => {
                     avatar: payload.picture || ''
                 };
             } else {
-                console.warn('Google Token verification non-200 response, attempting fallback JWT decode');
+                // Attempt JWT decode as last resort
                 const parts = idToken.split('.');
                 if (parts.length === 3) {
                     const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf-8'));
@@ -313,10 +471,12 @@ app.post('/api/auth/google', async (req, res) => {
         } catch (vErr) {
             console.error('Error verifying Google ID token:', vErr.message);
         }
+    } else {
+        return res.status(400).json({ error: 'Google access token or ID token is required for authentication.' });
     }
 
     if (!googleUser.email) {
-        return res.status(400).json({ error: 'Valid Google account email is required' });
+        return res.status(400).json({ error: 'Could not retrieve email from Google account. Please ensure email permission is granted.' });
     }
 
     try {
@@ -341,9 +501,10 @@ app.post('/api/auth/google', async (req, res) => {
             });
             await user.save();
         } else {
+            // Update existing user fields if missing
             if (!user.email) user.email = email;
             if (googleId && !user.googleId) user.googleId = googleId;
-            if (avatar && !user.avatar) user.avatar = avatar;
+            if (avatar) user.avatar = avatar; // Always update avatar to latest Google profile picture
             await user.save();
         }
 
@@ -353,16 +514,22 @@ app.post('/api/auth/google', async (req, res) => {
             { expiresIn: '7d' }
         );
 
-        // Send Email Notification to user's mail ID
-        sendAuthEmail(user.email, user.username, isNewUser ? 'signup' : 'login');
+        // Send Email Notification with security metadata
+        let emailResult = { success: false, emailSent: false, message: "No email address provided" };
+        if (user.email) {
+            emailResult = await sendAuthEmail(user.email, user.username, isNewUser ? 'signup' : 'login', {
+                ip: clientIp,
+                userAgent: clientUserAgent
+            });
+        }
 
         // Log login
         try {
             await new LoginLog({
                 user_id: user._id,
                 username: user.username,
-                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown',
-                userAgent: req.headers['user-agent'] || 'unknown',
+                ip: clientIp,
+                userAgent: clientUserAgent,
                 isAdmin: false
             }).save();
         } catch (e) { /* non-critical */ }
@@ -373,7 +540,9 @@ app.post('/api/auth/google', async (req, res) => {
             username: user.username,
             email: user.email,
             avatar: user.avatar,
-            emailNotificationSent: true
+            emailSent: emailResult.emailSent,
+            emailMessage: emailResult.message,
+            emailError: emailResult.error || null
         });
     } catch (err) {
         console.error('Google Auth Error:', err);
@@ -389,10 +558,20 @@ app.post('/api/auth/signup', async (req, res) => {
         const newUser = new User({ username, password: hashedPassword, email: email || '' });
         await newUser.save();
         
+        let emailResult = { success: false, emailSent: false, message: "No email address provided" };
         if (email) {
-            sendAuthEmail(email, username, 'signup');
+            emailResult = await sendAuthEmail(email, username, 'signup', {
+                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown',
+                userAgent: req.headers['user-agent'] || 'unknown'
+            });
         }
-        res.status(201).json({ message: 'User created successfully', emailNotificationSent: !!email });
+
+        res.status(201).json({ 
+            message: 'User created successfully', 
+            emailSent: emailResult.emailSent,
+            emailMessage: emailResult.message,
+            emailError: emailResult.error || null
+        });
     } catch (err) {
         if (err.code === 11000) return res.status(409).json({ error: 'Username already exists' });
         res.status(500).json({ error: 'Internal server error' });
@@ -414,8 +593,12 @@ app.post('/api/auth/login', async (req, res) => {
 
         const token = jwt.sign({ id: user._id, username: user.username, email: targetEmail }, JWT_SECRET, { expiresIn: '1h' });
         
+        let emailResult = { success: false, emailSent: false, message: "No email address provided" };
         if (targetEmail) {
-            sendAuthEmail(targetEmail, user.username, 'login');
+            emailResult = await sendAuthEmail(targetEmail, user.username, 'login', {
+                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown',
+                userAgent: req.headers['user-agent'] || 'unknown'
+            });
         }
 
         // Log user login
@@ -428,7 +611,16 @@ app.post('/api/auth/login', async (req, res) => {
                 isAdmin: false
             }).save();
         } catch (e) { /* non-critical */ }
-        res.json({ message: 'Login successful', token, username: user.username, email: targetEmail, emailNotificationSent: !!targetEmail });
+
+        res.json({ 
+            message: 'Login successful', 
+            token, 
+            username: user.username, 
+            email: targetEmail, 
+            emailSent: emailResult.emailSent,
+            emailMessage: emailResult.message,
+            emailError: emailResult.error || null
+        });
     } catch (err) {
         res.status(500).json({ error: 'Internal server error' });
     }
