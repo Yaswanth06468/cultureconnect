@@ -66,10 +66,53 @@ process.on('unhandledRejection', (reason, promise) => {
 // Schemas
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: false },
+    email: { type: String, default: '' },
+    googleId: { type: String, default: '' },
+    avatar: { type: String, default: '' },
     createdAt: { type: Date, default: Date.now }
 });
 const User = mongoose.model('User', UserSchema);
+
+// Helper function to send email notification to customer
+async function sendAuthEmail(toEmail, username, actionType = 'login') {
+    if (!toEmail) return false;
+    const isSignup = actionType === 'signup';
+    const title = isSignup ? '🎉 Welcome to CultureConnect!' : '🔑 Successful Sign-In Notification';
+    const messageHeader = isSignup 
+        ? `Welcome to CultureConnect, <strong>${username}</strong>!`
+        : `Hello <strong>${username}</strong>, you have successfully signed into your CultureConnect account.`;
+    
+    const mailOptions = {
+        from: `"CultureConnect" <${process.env.EMAIL_USER || 'no-reply@cultureconnect.com'}>`,
+        to: toEmail,
+        subject: title,
+        text: `${title}\n\n${isSignup ? 'Thank you for joining CultureConnect!' : 'You signed in to your account.'}\nTime: ${new Date().toLocaleString()}`,
+        html: `
+            <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #ffffff;">
+                <h1 style="color: #1a1a1a; margin-bottom: 16px; font-size: 24px;">${title}</h1>
+                <p style="color: #4a4a4a; font-size: 16px; line-height: 1.5;">${messageHeader}</p>
+                <div style="background-color: #f7f9fc; padding: 16px; border-left: 4px solid #3b82f6; margin: 20px 0; border-radius: 4px;">
+                    <p style="margin: 0; color: #334155; font-size: 14px;"><strong>Account:</strong> ${username}</p>
+                    <p style="margin: 4px 0 0 0; color: #334155; font-size: 14px;"><strong>Email ID:</strong> ${toEmail}</p>
+                    <p style="margin: 4px 0 0 0; color: #334155; font-size: 14px;"><strong>Timestamp:</strong> ${new Date().toLocaleString()}</p>
+                </div>
+                <p style="color: #6b7280; font-size: 14px;">If you did not perform this action, please secure your account immediately.</p>
+                <hr style="border: none; border-top: 1px solid #eeeeee; margin: 24px 0;" />
+                <p style="color: #9ca3af; font-size: 12px; text-align: center;">CultureConnect &copy; ${new Date().getFullYear()} - Connecting Cultures Worldwide</p>
+            </div>
+        `
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log(`Email notification sent to ${toEmail}: ${info.messageId}`);
+        return true;
+    } catch (error) {
+        console.error(`Failed to send auth email to ${toEmail}:`, error.message);
+        return false;
+    }
+}
 
 const LoginLogSchema = new mongoose.Schema({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -230,14 +273,84 @@ app.post('/api/admin/login', async (req, res) => {
     }
 });
 
+// Google Sign-Up / Sign-In Endpoint
+app.post('/api/auth/google', async (req, res) => {
+    const { email, name, googleId, avatar } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email is required for Google authentication' });
+
+    try {
+        let user = await User.findOne({ $or: [{ email }, { googleId: googleId || 'none' }] });
+        let isNewUser = false;
+
+        if (!user) {
+            isNewUser = true;
+            const baseUsername = name ? name.replace(/\s+/g, '_').toLowerCase() : email.split('@')[0];
+            let uniqueUsername = baseUsername;
+            let counter = 1;
+            while (await User.findOne({ username: uniqueUsername })) {
+                uniqueUsername = `${baseUsername}${counter++}`;
+            }
+
+            user = new User({
+                username: uniqueUsername,
+                email: email,
+                googleId: googleId || `google_${Date.now()}`,
+                avatar: avatar || '',
+            });
+            await user.save();
+        } else {
+            if (!user.email) user.email = email;
+            if (googleId && !user.googleId) user.googleId = googleId;
+            if (avatar && !user.avatar) user.avatar = avatar;
+            await user.save();
+        }
+
+        const token = jwt.sign(
+            { id: user._id, username: user.username, email: user.email },
+            JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
+        // Send Email Notification to user's mail ID
+        sendAuthEmail(user.email, user.username, isNewUser ? 'signup' : 'login');
+
+        // Log login
+        try {
+            await new LoginLog({
+                user_id: user._id,
+                username: user.username,
+                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown',
+                userAgent: req.headers['user-agent'] || 'unknown',
+                isAdmin: false
+            }).save();
+        } catch (e) { /* non-critical */ }
+
+        res.json({
+            message: isNewUser ? 'Google Sign-Up successful!' : 'Google Sign-In successful!',
+            token,
+            username: user.username,
+            email: user.email,
+            avatar: user.avatar,
+            emailNotificationSent: true
+        });
+    } catch (err) {
+        console.error('Google Auth Error:', err);
+        res.status(500).json({ error: 'Failed to authenticate with Google' });
+    }
+});
+
 app.post('/api/auth/signup', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, password: hashedPassword });
+        const newUser = new User({ username, password: hashedPassword, email: email || '' });
         await newUser.save();
-        res.status(201).json({ message: 'User created successfully' });
+        
+        if (email) {
+            sendAuthEmail(email, username, 'signup');
+        }
+        res.status(201).json({ message: 'User created successfully', emailNotificationSent: !!email });
     } catch (err) {
         if (err.code === 11000) return res.status(409).json({ error: 'Username already exists' });
         res.status(500).json({ error: 'Internal server error' });
@@ -245,12 +358,24 @@ app.post('/api/auth/signup', async (req, res) => {
 });
 
 app.post('/api/auth/login', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
     try {
         const user = await User.findOne({ username });
         if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ error: 'Invalid credentials' });
-        const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+        
+        const targetEmail = user.email || email;
+        if (email && !user.email) {
+            user.email = email;
+            await user.save();
+        }
+
+        const token = jwt.sign({ id: user._id, username: user.username, email: targetEmail }, JWT_SECRET, { expiresIn: '1h' });
+        
+        if (targetEmail) {
+            sendAuthEmail(targetEmail, user.username, 'login');
+        }
+
         // Log user login
         try {
             await new LoginLog({
@@ -261,7 +386,7 @@ app.post('/api/auth/login', async (req, res) => {
                 isAdmin: false
             }).save();
         } catch (e) { /* non-critical */ }
-        res.json({ message: 'Login successful', token, username: user.username });
+        res.json({ message: 'Login successful', token, username: user.username, email: targetEmail, emailNotificationSent: !!targetEmail });
     } catch (err) {
         res.status(500).json({ error: 'Internal server error' });
     }
