@@ -1,42 +1,43 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import GoogleAuthButton from '../components/GoogleAuthButton';
+import { AuthContext } from '../context/AuthContext';
 
 const Signup = () => {
+    const [fullName, setFullName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const handleSignup = async (e) => {
         e.preventDefault();
         setError('');
         setSuccessMessage('');
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
         setIsLoading(true);
         try {
             const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password, email })
+                body: JSON.stringify({ username, password, email, fullName })
             });
             const data = await res.json();
             if (res.ok) {
-                if (data.emailSent) {
-                    setSuccessMessage(data.emailMessage || 'Welcome email sent successfully. Please check your inbox.');
-                    setError('');
-                } else if (email) {
-                    // Delivery failed
-                    setError(data.emailError || data.emailMessage || 'Failed to send welcome email. Please try again later.');
-                    setSuccessMessage('');
-                } else {
-                    setSuccessMessage('Account created successfully!');
-                    setError('');
-                }
-                setTimeout(() => navigate('/login'), 2000);
+                setSuccessMessage(data.message || 'Account created successfully! Please check your email to verify your account.');
+                setTimeout(() => navigate('/login'), 4000);
             } else {
                 setError(data.error || 'Failed to create account');
             }
@@ -48,16 +49,8 @@ const Signup = () => {
     };
 
     const handleGoogleSuccess = (data) => {
-        if (data.emailSent) {
-            setSuccessMessage(data.emailMessage || 'Welcome email sent successfully. Please check your inbox.');
-            setError('');
-        } else if (data.email) {
-            setError(data.emailError || data.emailMessage || 'Failed to send welcome email. Please try again later.');
-            setSuccessMessage('');
-        } else {
-            setSuccessMessage('Google Sign-In successful!');
-            setError('');
-        }
+        login(data.token, data.user);
+        setSuccessMessage('Google Sign-In successful!');
         setTimeout(() => navigate('/'), 2000);
     };
 
@@ -67,7 +60,6 @@ const Signup = () => {
                 <span>Sign Up</span>
             </h2>
             
-            {/* Delivery Error Notification Banner */}
             {error && (
                 <div className="mb-4 p-3 bg-red-100 dark:bg-red-950/60 border border-red-400 text-red-700 dark:text-red-300 rounded-xl font-semibold text-sm flex items-center gap-2">
                     <span>⚠️</span>
@@ -75,16 +67,14 @@ const Signup = () => {
                 </div>
             )}
 
-            {/* Delivery Success Notification Banner (Only shown when email service confirms delivery) */}
             {successMessage && (
                 <div className="mb-4 p-3 bg-green-100 dark:bg-green-950/60 border border-green-400 text-green-800 dark:text-green-300 rounded-xl font-semibold text-sm flex items-center gap-2">
-                    <span>📧</span>
+                    <span>✅</span>
                     <span>{successMessage}</span>
                 </div>
             )}
             
             <div className="border border-black/10 p-8 bg-bg-secondary flex flex-col gap-6 rounded-2xl shadow-sm">
-                {/* Google Sign-Up Option */}
                 <div>
                     <GoogleAuthButton
                         buttonText="Sign up with Google"
@@ -99,6 +89,16 @@ const Signup = () => {
                 </div>
 
                 <form onSubmit={handleSignup} className="flex flex-col gap-4">
+                    <label className="text-text-primary font-bold text-sm">Full Name *
+                        <input
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            required
+                        />
+                    </label>
+
                     <label className="text-text-primary font-bold text-sm">Username *
                         <input
                             type="text"
@@ -109,13 +109,14 @@ const Signup = () => {
                         />
                     </label>
 
-                    <label className="text-text-primary font-bold text-sm">Email ID (for mail notifications)
+                    <label className="text-text-primary font-bold text-sm">Email Address *
                         <input
                             type="email"
                             placeholder="customer@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            required
                         />
                     </label>
 
@@ -124,6 +125,16 @@ const Signup = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            required
+                        />
+                    </label>
+                    
+                    <label className="text-text-primary font-bold text-sm">Confirm Password *
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
@@ -137,6 +148,10 @@ const Signup = () => {
                         {isLoading ? 'Creating Account...' : 'Sign Up'}
                     </button>
                 </form>
+
+                <div className="text-center text-sm mt-2 text-text-secondary">
+                    Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Log In</Link>
+                </div>
             </div>
         </div>
     );

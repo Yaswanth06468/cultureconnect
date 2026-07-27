@@ -10,8 +10,10 @@ import * as dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import nodemailer from 'nodemailer';
 
-dotenv.config();
+import * as dotenv from 'dotenv';
+import authRoutes from './routes/auth.js';
 
+dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -78,16 +80,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection (non-critical):', reason?.message || reason);
 });
 
-// Schemas
-const UserSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: false },
-    email: { type: String, default: '' },
-    googleId: { type: String, default: '' },
-    avatar: { type: String, default: '' },
-    createdAt: { type: Date, default: Date.now }
-});
-const User = mongoose.model('User', UserSchema);
+// User model has been migrated to PostgreSQL.
 
 /**
  * Robust Helper function to send email notification to customer.
@@ -250,7 +243,7 @@ async function sendAuthEmail(toEmail, username, actionType = 'login', metadata =
 }
 
 const LoginLogSchema = new mongoose.Schema({
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: String, ref: 'User' },
     username: { type: String, required: true },
     ip: String,
     userAgent: String,
@@ -260,7 +253,7 @@ const LoginLogSchema = new mongoose.Schema({
 const LoginLog = mongoose.model('LoginLog', LoginLogSchema);
 
 const PostSchema = new mongoose.Schema({
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: String, ref: 'User' },
     username: String,
     image_url: String,
     description: String,
@@ -274,7 +267,7 @@ const Post = mongoose.model('Post', PostSchema);
 
 const CommentSchema = new mongoose.Schema({
     post_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: String, ref: 'User' },
     username: String,
     text: String,
     created_at: { type: Date, default: Date.now }
@@ -284,7 +277,7 @@ CommentSchema.virtual('id').get(function() { return this._id.toHexString(); });
 const Comment = mongoose.model('Comment', CommentSchema);
 
 const EventSchema = new mongoose.Schema({
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: String, ref: 'User' },
     username: String,
     title: String,
     date: String,
@@ -301,7 +294,7 @@ EventSchema.virtual('id').get(function() { return this._id.toHexString(); });
 const Event = mongoose.model('Event', EventSchema);
 
 const BookingSchema = new mongoose.Schema({
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: String, ref: 'User' },
     username: String,
     event_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Event' },
     event_title: String,
@@ -389,6 +382,8 @@ function authenticateAdmin(req, res, next) {
 }
 
 // Routes
+app.use('/api/auth', authRoutes);
+
 app.post('/api/admin/login', async (req, res) => {
     const { username, password } = req.body;
     if (username && username.toUpperCase() === (process.env.ADMIN_USERNAME || 'ADMIN').toUpperCase() && password === process.env.ADMIN_PASSWORD) {
@@ -409,7 +404,7 @@ app.post('/api/admin/login', async (req, res) => {
 });
 
 // Google Sign-Up / Sign-In Endpoint (Real Google OAuth 2.0 via Access Token)
-app.post('/api/auth/google', async (req, res) => {
+// app.post('/api/auth/google', async (req, res) => {
     const { accessToken, idToken } = req.body;
     let googleUser = { email: null, name: null, googleId: null, avatar: null };
 
@@ -550,7 +545,7 @@ app.post('/api/auth/google', async (req, res) => {
     }
 });
 
-app.post('/api/auth/signup', async (req, res) => {
+// app.post('/api/auth/signup', async (req, res) => {
     const { username, password, email } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
     try {
@@ -578,7 +573,7 @@ app.post('/api/auth/signup', async (req, res) => {
     }
 });
 
-app.post('/api/auth/login', async (req, res) => {
+// app.post('/api/auth/login', async (req, res) => {
     const { username, password, email } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
     try {

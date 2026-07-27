@@ -1,16 +1,18 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import GoogleAuthButton from '../components/GoogleAuthButton';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -18,48 +20,18 @@ const Login = () => {
         setSuccessMessage('');
         setIsLoading(true);
         try {
-            const isLoggingInAsAdmin = username.toUpperCase() === 'ADMIN';
-            const endpoint = isLoggingInAsAdmin ? `${API_BASE_URL}/api/admin/login` : `${API_BASE_URL}/api/auth/login`;
-            const res = await fetch(endpoint, {
+            const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    username: isLoggingInAsAdmin ? 'ADMIN' : username, 
-                    password,
-                    email 
-                })
+                body: JSON.stringify({ email, password })
             });
             const data = await res.json();
             if (res.ok) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('username', data.username);
-                if (data.email) localStorage.setItem('email', data.email);
-                if (data.role) {
-                    localStorage.setItem('role', data.role);
-                } else {
-                    localStorage.removeItem('role');
-                }
-
-                if (data.emailSent) {
-                    setSuccessMessage(data.emailMessage || 'Sign-in notification email sent successfully. Please check your inbox.');
-                    setError('');
-                } else if (data.email || email) {
-                    setError(data.emailError || data.emailMessage || 'Failed to send sign-in notification email. Please try again later.');
-                    setSuccessMessage('');
-                } else {
-                    setSuccessMessage('Login successful!');
-                    setError('');
-                }
-
-                setTimeout(() => {
-                    if (data.role === 'admin') {
-                        navigate('/admin');
-                    } else {
-                        navigate('/');
-                    }
-                }, 2000);
+                login(data.token, data.user);
+                setSuccessMessage('Login successful!');
+                setTimeout(() => navigate('/'), 1500);
             } else {
-                setError(data.error || 'Invalid username or password');
+                setError(data.error || 'Invalid email or password');
             }
         } catch (err) {
             setError('Unable to connect to server. Please try again in a moment.');
@@ -69,17 +41,9 @@ const Login = () => {
     };
 
     const handleGoogleSuccess = (data) => {
-        if (data.emailSent) {
-            setSuccessMessage(data.emailMessage || 'Sign-in notification email sent successfully. Please check your inbox.');
-            setError('');
-        } else if (data.email) {
-            setError(data.emailError || data.emailMessage || 'Failed to send sign-in notification email. Please try again later.');
-            setSuccessMessage('');
-        } else {
-            setSuccessMessage('Google Sign-In successful!');
-            setError('');
-        }
-        setTimeout(() => navigate('/'), 2000);
+        login(data.token, data.user);
+        setSuccessMessage('Google Sign-In successful!');
+        setTimeout(() => navigate('/'), 1500);
     };
 
     return (
@@ -88,7 +52,6 @@ const Login = () => {
                 <span>Log In</span>
             </h2>
 
-            {/* Delivery Error Notification Banner */}
             {error && (
                 <div className="mb-4 p-3 bg-red-100 dark:bg-red-950/60 border border-red-400 text-red-700 dark:text-red-300 rounded-xl font-semibold text-sm flex items-center gap-2">
                     <span>⚠️</span>
@@ -96,16 +59,14 @@ const Login = () => {
                 </div>
             )}
 
-            {/* Delivery Success Notification Banner (Only shown when email service confirms delivery) */}
             {successMessage && (
                 <div className="mb-4 p-3 bg-green-100 dark:bg-green-950/60 border border-green-400 text-green-800 dark:text-green-300 rounded-xl font-semibold text-sm flex items-center gap-2">
-                    <span>📧</span>
+                    <span>✅</span>
                     <span>{successMessage}</span>
                 </div>
             )}
             
             <div className="border border-black/10 p-8 bg-bg-secondary flex flex-col gap-6 rounded-2xl shadow-sm">
-                {/* Google Sign-In Option */}
                 <div>
                     <GoogleAuthButton
                         buttonText="Sign in with Google"
@@ -120,23 +81,14 @@ const Login = () => {
                 </div>
 
                 <form onSubmit={handleLogin} className="flex flex-col gap-4">
-                    <label className="text-text-primary font-bold text-sm">Username
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                            required
-                        />
-                    </label>
-
-                    <label className="text-text-primary font-bold text-sm">Email ID (for login notification)
+                    <label className="text-text-primary font-bold text-sm">Email Address
                         <input
                             type="email"
                             placeholder="customer@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            required
                         />
                     </label>
 
@@ -150,6 +102,10 @@ const Login = () => {
                         />
                     </label>
 
+                    <div className="flex justify-end">
+                        <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">Forgot Password?</Link>
+                    </div>
+
                     <button 
                         type="submit" 
                         disabled={isLoading}
@@ -158,6 +114,10 @@ const Login = () => {
                         {isLoading ? 'Logging in...' : 'Log In'}
                     </button>
                 </form>
+
+                <div className="text-center text-sm mt-2 text-text-secondary">
+                    Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
+                </div>
             </div>
         </div>
     );

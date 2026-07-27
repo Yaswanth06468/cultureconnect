@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { AuthContext, useContext } from '../context/AuthContext';
+import React from 'react';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -9,17 +11,18 @@ const Navbar = () => {
     const location = useLocation();
     const { isDark } = useTheme();
 
-    const [username, setUsername] = useState(localStorage.getItem('username'));
-    const [token, setToken] = useState(localStorage.getItem('token'));
+    const { user, logout } = React.useContext(AuthContext);
+    
+    // Fallback for role if still in localStorage
     const [role, setRole] = useState(localStorage.getItem('role'));
-    const [avatar, setAvatar] = useState(localStorage.getItem('avatar'));
 
     useEffect(() => {
-        setUsername(localStorage.getItem('username'));
-        setToken(localStorage.getItem('token'));
         setRole(localStorage.getItem('role'));
-        setAvatar(localStorage.getItem('avatar'));
     }, [location]);
+
+    const username = user?.username;
+    const token = !!user || !!localStorage.getItem('token');
+    const avatar = user?.avatar;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -30,12 +33,7 @@ const Navbar = () => {
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('role');
-        localStorage.removeItem('email');
-        localStorage.removeItem('avatar');
-        setAvatar(null);
+        logout();
         setIsMobileMenuOpen(false);
         navigate('/login');
     };
