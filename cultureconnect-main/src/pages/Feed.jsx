@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
@@ -12,11 +12,55 @@ const Feed = () => {
     const [visibleComments, setVisibleComments] = useState({}); // { postId: [comments] }
     const [commentInputs, setCommentInputs] = useState({}); // { postId: "draft text" }
     const [events, setEvents] = useState([]);
+    const [shareMenuOpen, setShareMenuOpen] = useState(null); // postId or null
+    const [copiedPostId, setCopiedPostId] = useState(null);
+    const shareMenuRef = useRef(null);
     const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
+
+    // Close share menu on outside click
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (shareMenuRef.current && !shareMenuRef.current.contains(e.target)) {
+                setShareMenuOpen(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const getPostShareUrl = (post) => {
+        return `${window.location.origin}/feed#post-${post.id}`;
+    };
+
+    const getPostShareText = (post) => {
+        return `🌍 Check out this cultural moment by ${post.username}: "${post.description.slice(0, 100)}${post.description.length > 100 ? '...' : ''}" on CultureConnect!`;
+    };
+
+    const handleShare = (platform, post) => {
+        const url = encodeURIComponent(getPostShareUrl(post));
+        const text = encodeURIComponent(getPostShareText(post));
+
+        const shareLinks = {
+            whatsapp: `https://api.whatsapp.com/send?text=${text}%20${url}`,
+            facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`,
+            twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+            linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+            telegram: `https://t.me/share/url?url=${url}&text=${text}`,
+        };
+
+        if (platform === 'copy') {
+            navigator.clipboard.writeText(`${getPostShareText(post)} ${getPostShareUrl(post)}`);
+            setCopiedPostId(post.id);
+            setTimeout(() => setCopiedPostId(null), 2000);
+        } else {
+            window.open(shareLinks[platform], '_blank', 'noopener,noreferrer,width=600,height=500');
+        }
+        setShareMenuOpen(null);
+    };
 
     useEffect(() => {
         fetchPosts();
@@ -193,7 +237,6 @@ const Feed = () => {
                 {/* Main Feed Column */}
                 <div className="w-full">
                     {/* Create Post Section */}
-            {token ? (
                 <div className="mb-12 p-6 border rounded-xl theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
                     <h2 className="text-2xl font-serif font-bold mb-4">Share Your Culture</h2>
                     {error && <p className="text-accent-terra font-bold mb-4">{error}</p>}
@@ -225,11 +268,6 @@ const Feed = () => {
                         </button>
                     </form>
                 </div>
-            ) : (
-                <div className="mb-12 p-6 border rounded-xl text-center theme-transition" style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}>
-                    <p className="font-bold text-lg">Log in to share your own cultural moment.</p>
-                </div>
-            )}
 
             {/* Feed Section */}
             <div className="flex flex-col gap-12">
@@ -278,6 +316,52 @@ const Feed = () => {
                                     >
                                         <span>💬</span> {post.comment_count || 0} Comments
                                     </button>
+
+                                    {/* Share Button */}
+                                    <div className="relative ml-auto" ref={shareMenuOpen === post.id ? shareMenuRef : null}>
+                                        <button
+                                            onClick={() => setShareMenuOpen(shareMenuOpen === post.id ? null : post.id)}
+                                            className="flex items-center gap-2 font-bold hover:text-green-600 transition-colors"
+                                        >
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                            </svg>
+                                            Share
+                                        </button>
+
+                                        {/* Share Dropdown */}
+                                        {shareMenuOpen === post.id && (
+                                            <div className="absolute right-0 bottom-full mb-2 w-56 rounded-xl shadow-2xl border overflow-hidden z-50 animate-fade-in"
+                                                style={{ backgroundColor: 'var(--theme-card-bg)', borderColor: 'var(--theme-border)' }}
+                                            >
+                                                <div className="px-4 py-2 border-b font-bold text-xs uppercase tracking-wider" style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text-secondary)' }}>Share via</div>
+                                                <button onClick={() => handleShare('whatsapp', post)} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors text-left">
+                                                    <span className="text-xl">💬</span>
+                                                    <span className="font-semibold text-green-600">WhatsApp</span>
+                                                </button>
+                                                <button onClick={() => handleShare('facebook', post)} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-left">
+                                                    <span className="text-xl">📘</span>
+                                                    <span className="font-semibold text-blue-600">Facebook</span>
+                                                </button>
+                                                <button onClick={() => handleShare('twitter', post)} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition-colors text-left">
+                                                    <span className="text-xl">🐦</span>
+                                                    <span className="font-semibold text-sky-500">Twitter / X</span>
+                                                </button>
+                                                <button onClick={() => handleShare('linkedin', post)} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-left">
+                                                    <span className="text-xl">💼</span>
+                                                    <span className="font-semibold text-blue-700">LinkedIn</span>
+                                                </button>
+                                                <button onClick={() => handleShare('telegram', post)} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 transition-colors text-left">
+                                                    <span className="text-xl">✈️</span>
+                                                    <span className="font-semibold text-cyan-500">Telegram</span>
+                                                </button>
+                                                <button onClick={() => handleShare('copy', post)} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors text-left border-t" style={{ borderColor: 'var(--theme-border)' }}>
+                                                    <span className="text-xl">{copiedPostId === post.id ? '✅' : '🔗'}</span>
+                                                    <span className="font-semibold">{copiedPostId === post.id ? 'Copied!' : 'Copy Link'}</span>
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Comments Section */}
