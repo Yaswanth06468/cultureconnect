@@ -321,38 +321,216 @@ const findNearestCity = (lat, lon) => {
   return bestDist <= THRESHOLD_KM ? best : null;
 };
 
-// ── Notification Toast ────────────────────────────────────────────────────────
-const FoodNotification = ({ notif, onClose }) => {
+// ── Notification Sound & Haptics ──────────────────────────────────────────────
+const playNotificationSound = () => {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc1.type = 'sine';
+    osc2.type = 'sine';
+
+    // WhatsApp dual chime (E6: 1318Hz -> B6: 1975Hz)
+    osc1.frequency.setValueAtTime(1318.51, ctx.currentTime);
+    osc2.frequency.setValueAtTime(1975.53, ctx.currentTime + 0.08);
+
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc1.start(ctx.currentTime);
+    osc2.start(ctx.currentTime + 0.08);
+    osc1.stop(ctx.currentTime + 0.35);
+    osc2.stop(ctx.currentTime + 0.35);
+  } catch (e) {
+    // Ignore audio restrictions
+  }
+};
+
+const triggerVibration = () => {
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    try {
+      navigator.vibrate([100, 50, 100]);
+    } catch (e) {}
+  }
+};
+
+// ── WhatsApp-Style Top Mobile Push Notification Banner ────────────────────────
+const FoodNotification = ({ notif, onClose, onSelectCity }) => {
   useEffect(() => {
     if (!notif) return;
-    const t = setTimeout(onClose, 5000);
+    playNotificationSound();
+    triggerVibration();
+    const t = setTimeout(onClose, 7000);
     return () => clearTimeout(t);
   }, [notif, onClose]);
 
   if (!notif) return null;
+
+  const isActivation = notif.type === 'activation';
+  const headerText = isActivation ? 'CULTURECONNECT • AUTO-DETECT' : 'WHATSAPP • CULTURECONNECT';
+  const iconEmoji = isActivation ? '📡' : (notif.emoji || '🍽️');
+  const title = isActivation ? '📡 Location Auto-Detection Activated!' : `📍 Arrived in ${notif.city}!`;
+  const bodyText = isActivation
+    ? 'CultureConnect is now actively monitoring your GPS. You will get top mobile notifications automatically when you enter any listed city!'
+    : `You arrived in ${notif.city}, ${notif.state}! Top must-try food: ${notif.foods?.[0] || 'Local specialties'}.`;
+
+  const themeColor = isActivation ? '#6366f1' : (notif.color || '#25D366');
+
   return (
     <div style={{
-      position: 'fixed', bottom: 24, right: 24, zIndex: 999,
-      background: 'var(--theme-card-bg)', borderRadius: 16, padding: '18px 22px', maxWidth: 340,
-      boxShadow: '0 8px 40px var(--theme-shadow)', border: `2px solid ${notif.color}`,
-      animation: 'slideIn 0.4s cubic-bezier(.34,1.56,.64,1)'
+      position: 'fixed',
+      top: 16,
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: 'calc(100% - 24px)',
+      maxWidth: 460,
+      zIndex: 999999,
+      animation: 'whatsappSlideDown 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
     }}>
-      <style>{`@keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}} @keyframes shrink{from{width:100%}to{width:0%}}`}</style>
-      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-        <span style={{ fontSize: 28 }}>{notif.emoji}</span>
-        <div style={{ flex: 1 }}>
-          <p style={{ margin: '0 0 2px', fontSize: 11, fontWeight: 700, color: '#666', letterSpacing: 1, textTransform: 'uppercase' }}>📍 Welcome to {notif.city}!</p>
-          <p style={{ margin: '0 0 10px', fontSize: 15, fontWeight: 800, color: '#111' }}>Since you're here, you <span style={{color: notif.color}}>MUST</span> taste <b>{notif.foods[0]}</b>! It's a local favorite.</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-            {notif.foods.slice(0, 3).map((f, i) => (
-              <span key={i} style={{ fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 20, background: `${notif.color}18`, color: notif.color, border: `1px solid ${notif.color}40` }}>{f}</span>
-            ))}
+      <style>{`
+        @keyframes whatsappSlideDown {
+          0% { transform: translate(-50%, -120%) scale(0.92); opacity: 0; }
+          100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+        }
+        @keyframes whatsappShrink {
+          from { width: 100%; }
+          to { width: 0%; }
+        }
+      `}</style>
+      <div
+        onClick={() => {
+          if (!isActivation && notif.city && onSelectCity) {
+            onSelectCity(notif);
+            onClose();
+          }
+        }}
+        style={{
+          background: 'rgba(18, 24, 38, 0.95)',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
+          borderRadius: 20,
+          padding: '14px 16px',
+          color: '#ffffff',
+          boxShadow: '0 20px 48px -8px rgba(0, 0, 0, 0.5), 0 0 0 1.5px rgba(255, 255, 255, 0.12)',
+          border: `1.5px solid ${themeColor}`,
+          cursor: !isActivation ? 'pointer' : 'default',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Header Bar */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <div style={{
+              width: 22, height: 22, borderRadius: 6,
+              background: '#25D366', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(37, 211, 102, 0.5)'
+            }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#ffffff">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.105 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.228-1.161z"/>
+              </svg>
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 0.8, color: '#a0aec0', textTransform: 'uppercase' }}>
+              {headerText}
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600 }}>now</span>
+            <button
+              onClick={(e) => { e.stopPropagation(); onClose(); }}
+              style={{
+                background: 'rgba(255,255,255,0.12)', border: 'none', color: '#e2e8f0',
+                width: 22, height: 22, borderRadius: '50%', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, lineHeight: 1
+              }}
+            >
+              ×
+            </button>
           </div>
         </div>
-        <button onClick={onClose} style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: '#999', lineHeight: 1 }}>×</button>
-      </div>
-      <div style={{ marginTop: 12, height: 3, borderRadius: 2, background: '#f0f0f0', overflow: 'hidden' }}>
-        <div style={{ height: '100%', background: notif.color, borderRadius: 2, animation: 'shrink 5s linear forwards' }} />
+
+        {/* Content Area */}
+        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+          <div style={{
+            fontSize: 26, width: 46, height: 46, borderRadius: 14,
+            background: `${themeColor}22`, border: `1.5px solid ${themeColor}80`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+          }}>
+            {iconEmoji}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h4 style={{ margin: '0 0 3px', fontSize: 14, fontWeight: 800, color: '#ffffff', lineHeight: 1.25 }}>
+              {title}
+            </h4>
+            <p style={{ margin: 0, fontSize: 12.5, color: '#cbd5e1', lineHeight: 1.45, fontWeight: 500 }}>
+              {bodyText}
+            </p>
+
+            {!isActivation && notif.foods && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8 }}>
+                {notif.foods.slice(0, 3).map((f, i) => (
+                  <span key={i} style={{
+                    fontSize: 10.5, fontWeight: 700, padding: '3px 9px', borderRadius: 12,
+                    background: `${themeColor}30`, color: '#67e8f9',
+                    border: `1px solid ${themeColor}60`
+                  }}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div style={{ display: 'flex', gap: 8, marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          {!isActivation ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onSelectCity) onSelectCity(notif);
+                onClose();
+              }}
+              style={{
+                flex: 1, background: '#25D366', color: '#052e16', border: 'none',
+                borderRadius: 10, padding: '7px 14px', fontSize: 12, fontWeight: 800,
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                boxShadow: '0 4px 12px rgba(37, 211, 102, 0.3)'
+              }}
+            >
+              🍽️ Explore {notif.city} Food Guide
+            </button>
+          ) : (
+            <span style={{ fontSize: 11, color: '#94a3b8', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', display: 'inline-block', boxShadow: '0 0 8px #22c55e' }}></span>
+              Live GPS tracking enabled • Auto alerts active
+            </span>
+          )}
+          <button
+            onClick={(e) => { e.stopPropagation(); onClose(); }}
+            style={{
+              background: 'rgba(255,255,255,0.1)', color: '#94a3b8', border: 'none',
+              borderRadius: 10, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer'
+            }}
+          >
+            Dismiss
+          </button>
+        </div>
+
+        {/* Progress Bar */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.1)' }}>
+          <div style={{ height: '100%', background: themeColor, animation: 'whatsappShrink 7s linear forwards' }} />
+        </div>
       </div>
     </div>
   );
@@ -509,9 +687,9 @@ const DetailPanel = ({ city, onNotify, foodReviews, onAddReview }) => {
 // ── Auto-Detection Status Banner ──────────────────────────────────────────────
 const GeoStatusBanner = ({ status, nearestCity, onEnable, onDisable }) => {
   const configs = {
-    idle:     { bg: '#f8fafc', border: '#e2e8f0', icon: '📡', text: 'Enable auto-detection to get notified when you arrive in any listed city.', textColor: '#64748b', btnText: '🛰️ Enable Auto-Detect', btnColor: '#6366f1', showBtn: true,  showDisable: false },
+    idle:     { bg: '#f8fafc', border: '#e2e8f0', icon: '📡', text: 'Enable auto-detection to get WhatsApp-style mobile top notifications when you arrive in any listed city.', textColor: '#64748b', btnText: '🛰️ Enable Auto-Detect', btnColor: '#6366f1', showBtn: true,  showDisable: false },
     asking:   { bg: '#eff6ff', border: '#bfdbfe', icon: '⏳', text: 'Requesting location permission…', textColor: '#3b82f6', btnText: null, showBtn: false, showDisable: false },
-    watching: { bg: '#f0fdf4', border: '#86efac', icon: '🟢', text: nearestCity ? `You are near ${nearestCity}! Notification sent.` : 'Watching your location — you will be notified on city arrival.', textColor: '#16a34a', btnText: null, showBtn: false, showDisable: true },
+    watching: { bg: '#f0fdf4', border: '#86efac', icon: '🟢', text: nearestCity ? `You are near ${nearestCity}! WhatsApp-style top notification sent.` : 'Watching location — WhatsApp-style mobile top notification will pop on city arrival.', textColor: '#16a34a', btnText: null, showBtn: false, showDisable: true },
     denied:   { bg: '#fff7ed', border: '#fed7aa', icon: '🔒', text: 'Location access denied. Please allow location in browser settings, then try again.', textColor: '#ea580c', btnText: '🔄 Try Again', btnColor: '#ea580c', showBtn: true,  showDisable: false },
     unsupported: { bg: '#fdf4ff', border: '#e9d5ff', icon: '❌', text: 'Geolocation is not supported by your browser.', textColor: '#9333ea', btnText: null, showBtn: false, showDisable: false },
   };
@@ -583,12 +761,12 @@ const CityFoodExplorer = () => {
   const watchIdRef                      = useRef(null);
   const lastNotifiedRef                 = useRef(null);
 
-  const fireNotif = useCallback((city) => {
-    setNotif(city);
+  const fireNotif = useCallback((notifObj) => {
+    setNotif(notifObj);
     setNotifKey(k => k + 1);
   }, []);
 
-  const handleNotify = (city) => fireNotif(city);
+  const handleNotify = (city) => fireNotif({ ...city, type: 'city' });
 
   // Called on each GPS position update
   const onPosition = useCallback((pos) => {
@@ -599,13 +777,15 @@ const CityFoodExplorer = () => {
       // Only fire if it's a new city (avoid repeat spam)
       if (lastNotifiedRef.current !== city.id) {
         lastNotifiedRef.current = city.id;
-        fireNotif(city);
+        fireNotif({ ...city, type: 'city' });
         // Also show browser push notification if permission granted
-        if (Notification && Notification.permission === 'granted') {
-          new Notification(`🍽️ You arrived in ${city.city}!`, {
-            body: `Try: ${city.foods.slice(0, 3).join(', ')}`,
-            icon: '/favicon.ico',
-          });
+        if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+          try {
+            new Notification(`💬 CultureConnect • Arrived in ${city.city}!`, {
+              body: `🍽️ Must-try food: ${city.foods[0]}. Also try: ${city.foods.slice(1, 3).join(', ')}`,
+              icon: '/favicon.ico',
+            });
+          } catch (e) {}
         }
       }
     } else {
@@ -624,17 +804,35 @@ const CityFoodExplorer = () => {
     setGeoStatus('asking');
     setNearest(null);
     lastNotifiedRef.current = null;
+
     // Request push notification permission too (best-effort)
-    if (Notification && Notification.permission === 'default') {
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission().catch(() => {});
     }
+
+    // Immediately drop WhatsApp-style top notification on screen
+    fireNotif({
+      type: 'activation',
+      city: 'Auto-Detect',
+    });
+
+    // Also fire native push notification if permission granted
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+      try {
+        new Notification('💬 CultureConnect • Auto-Detect Activated', {
+          body: '📡 Auto-detection is active! You will receive mobile top notifications when arriving in any listed city.',
+          icon: '/favicon.ico',
+        });
+      } catch (e) {}
+    }
+
     // Start continuous GPS watch (updates every 30 s via maximumAge)
     watchIdRef.current = navigator.geolocation.watchPosition(
       onPosition,
       onGeoError,
       { enableHighAccuracy: true, maximumAge: 30000, timeout: 20000 }
     );
-  }, [onPosition, onGeoError]);
+  }, [onPosition, onGeoError, fireNotif]);
 
   const disableAutoDetect = useCallback(() => {
     if (watchIdRef.current !== null) {
@@ -749,7 +947,7 @@ const CityFoodExplorer = () => {
         </div>
       </div>
 
-      <FoodNotification key={notifKey} notif={notif} onClose={() => setNotif(null)} />
+      <FoodNotification key={notifKey} notif={notif} onClose={() => setNotif(null)} onSelectCity={setSelectedCity} />
     </div>
   );
 };
