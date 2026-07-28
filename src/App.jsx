@@ -46,14 +46,14 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
-            <Route path="/events" element={<ProtectedRoute><EventsBoard /></ProtectedRoute>} />
-            <Route path="/translate" element={<ProtectedRoute><Translator /></ProtectedRoute>} />
-            <Route path="/dances" element={<ProtectedRoute><CulturalDances /></ProtectedRoute>} />
-            <Route path="/city-food" element={<ProtectedRoute><CityFoodExplorer /></ProtectedRoute>} />
-            <Route path="/culture-swap" element={<ProtectedRoute><CultureSwap /></ProtectedRoute>} />
-            <Route path="/matching" element={<ProtectedRoute><CultureMatching /></ProtectedRoute>} />
-            <Route path="/profile/:username" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/events" element={<EventsBoard />} />
+            <Route path="/translate" element={<Translator />} />
+            <Route path="/dances" element={<CulturalDances />} />
+            <Route path="/city-food" element={<CityFoodExplorer />} />
+            <Route path="/culture-swap" element={<CultureSwap />} />
+            <Route path="/matching" element={<CultureMatching />} />
+            <Route path="/profile/:username" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
