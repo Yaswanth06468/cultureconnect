@@ -300,6 +300,7 @@ const CulturalDances = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedState, setSelectedState] = useState("All");
     const [isMuted, setIsMuted] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(true);
     const videoRef = useRef(null);
 
     // Sync state and dance selection from URL query params or router location state
@@ -347,6 +348,7 @@ const CulturalDances = () => {
     const handleSelectDance = (dance) => {
         setSelectedDance(dance);
         setIsMuted(false); // Enable sound on click
+        setIsPlaying(true);
     };
 
     // Force play and handle audio when dance changes
@@ -355,9 +357,12 @@ const CulturalDances = () => {
             videoRef.current.muted = isMuted;
             const playPromise = videoRef.current.play();
             if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay prevented, clicking unmute may be required", error);
-                });
+                playPromise
+                    .then(() => setIsPlaying(true))
+                    .catch(error => {
+                        console.log("Autoplay prevented, clicking unmute may be required", error);
+                        setIsPlaying(false);
+                    });
             }
         }
     }, [selectedDance, isMuted]);
@@ -481,29 +486,61 @@ const CulturalDances = () => {
                                         ref={videoRef}
                                         src={selectedDance.videoPath}
                                         poster={selectedDance.imageUrl}
-                                        className="absolute inset-0 w-full h-full object-contain pointer-events-auto"
+                                        className="absolute inset-0 w-full h-full object-contain pointer-events-auto cursor-pointer"
                                         autoPlay
                                         loop
                                         muted={isMuted}
                                         playsInline
+                                        onPlay={() => setIsPlaying(true)}
+                                        onPause={() => setIsPlaying(false)}
+                                        onEnded={() => setIsPlaying(false)}
+                                        onClick={() => {
+                                            if (videoRef.current) {
+                                                if (videoRef.current.paused) videoRef.current.play();
+                                                else videoRef.current.pause();
+                                            }
+                                        }}
                                         onContextMenu={(e) => e.preventDefault()}
                                         controlsList="nodownload noplaybackrate"
                                         disablePictureInPicture
                                     />
+
+                                    {/* Big Center Play Button Overlay when Paused */}
+                                    {!isPlaying && (
+                                        <div 
+                                            onClick={() => videoRef.current?.play()}
+                                            className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] cursor-pointer transition-all duration-300 z-10 pointer-events-auto"
+                                        >
+                                            <div className="w-16 h-16 rounded-full bg-white/30 backdrop-blur-md border-2 border-white/80 flex items-center justify-center transform hover:scale-110 transition-transform shadow-xl">
+                                                <svg className="w-8 h-8 text-white fill-current ml-1" viewBox="0 0 20 20">
+                                                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    )}
                                     
-                                    {/* Custom Controls Overlay - make more visible for audio awareness */}
-                                    <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-100 flex items-center justify-between pointer-events-none transition-all">
+                                    {/* Custom Controls Overlay */}
+                                    <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-100 flex items-center justify-between pointer-events-none transition-all z-20">
                                         <div className="flex items-center gap-4 pointer-events-auto">
                                             <button 
                                                 onClick={() => {
-                                                    if (videoRef.current.paused) videoRef.current.play();
-                                                    else videoRef.current.pause();
+                                                    if (videoRef.current) {
+                                                        if (videoRef.current.paused) videoRef.current.play();
+                                                        else videoRef.current.pause();
+                                                    }
                                                 }}
-                                                className="text-white hover:scale-110 transition-transform"
+                                                className="text-white hover:scale-110 transition-transform focus:outline-none"
+                                                title={isPlaying ? "Pause" : "Play"}
                                             >
-                                                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                                                </svg>
+                                                {isPlaying ? (
+                                                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                    </svg>
+                                                ) : (
+                                                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                                                    </svg>
+                                                )}
                                             </button>
                                             <button 
                                                 onClick={() => setIsMuted(!isMuted)}

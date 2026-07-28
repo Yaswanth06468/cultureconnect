@@ -857,6 +857,21 @@ const CityFoodExplorer = () => {
 
   return (
     <div className="min-h-screen pt-20 pb-16 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.18);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(0, 0, 0, 0.35);
+        }
+      `}</style>
       {/* Header */}
       <div className="container mx-auto max-w-7xl px-6">
         <div className="text-center py-12 mb-8 animate-slide-up-reveal">
@@ -899,10 +914,13 @@ const CityFoodExplorer = () => {
           <div className="flex items-center text-sm text-text-muted font-semibold px-2 whitespace-nowrap">{filtered.length} cities</div>
         </div>
 
-        {/* Layout */}
+        {/* Independent Dual-Panel Scroll Layout */}
         <div className="flex flex-col lg:flex-row gap-6 items-start">
-          {/* City Grid */}
-          <div className="flex-[1.3] min-w-0">
+          {/* Left Column: City Cards Grid */}
+          <div 
+            className="flex-[1.3] min-w-0 w-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1.5 custom-scrollbar" 
+            style={{ overscrollBehavior: 'contain' }}
+          >
             {filtered.length === 0 ? (
               <div className="text-center py-16 bg-bg-secondary rounded-2xl border border-dashed border-black/20">
                 <p className="text-4xl mb-3">🤔</p>
@@ -910,14 +928,17 @@ const CityFoodExplorer = () => {
                 <p className="text-text-muted text-sm">Try a different search term or filter</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 pb-6">
                 {filtered.map(city => <CityCard key={city.id} city={city} isSelected={selectedCity?.id === city.id} onSelect={setSelectedCity} />)}
               </div>
             )}
           </div>
 
-          {/* Detail Panel */}
-          <div className="flex-1 min-w-72 lg:sticky lg:top-24">
+          {/* Right Column: Detail Panel */}
+          <div 
+            className="flex-1 min-w-72 w-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1.5 custom-scrollbar" 
+            style={{ overscrollBehavior: 'contain' }}
+          >
             <div className="bg-bg-primary rounded-2xl border border-black/10 p-6 shadow-sm min-h-64">
               <DetailPanel 
                  city={selectedCity} 
