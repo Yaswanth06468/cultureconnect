@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const dancesData = [
     {
@@ -292,11 +293,42 @@ const dancesData = [
 ];
 
 const CulturalDances = () => {
+    const location = useLocation();
+    const [searchParams] = useSearchParams();
+
     const [selectedDance, setSelectedDance] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedState, setSelectedState] = useState("All");
     const [isMuted, setIsMuted] = useState(true);
     const videoRef = useRef(null);
+
+    // Sync state and dance selection from URL query params or router location state
+    useEffect(() => {
+        const paramState = searchParams.get('state') || location.state?.selectedState;
+        const paramDance = searchParams.get('dance') || location.state?.targetDance;
+        const paramSearch = searchParams.get('search') || location.state?.searchQuery;
+
+        if (paramState) {
+            setSelectedState(paramState);
+        }
+        if (paramSearch) {
+            setSearchQuery(paramSearch);
+        }
+        if (paramDance) {
+            const danceObj = dancesData.find(d => 
+                d.name.toLowerCase() === paramDance.toLowerCase() ||
+                (paramState && d.state.toLowerCase() === paramState.toLowerCase() && d.name.toLowerCase().includes(paramDance.toLowerCase()))
+            );
+            if (danceObj) {
+                setSelectedDance(danceObj);
+            }
+        } else if (paramState) {
+            const danceObj = dancesData.find(d => d.state.toLowerCase() === paramState.toLowerCase());
+            if (danceObj) {
+                setSelectedDance(danceObj);
+            }
+        }
+    }, [location.state, searchParams]);
 
     const states = useMemo(() => {
         const uniqueStates = ["All", ...new Set(dancesData.map(d => d.state))];

@@ -19,12 +19,17 @@ const CultureMatching = () => {
 
     // Culture → relevant navigation targets
     const cultureRoutes = {
-        Marathi: { path: '/culture-swap', state: 'Maharashtra' },
-        Malayalam: { path: '/culture-swap', state: 'Kerala' },
-        Tamil: { path: '/culture-swap', state: 'Tamil Nadu' },
-        Telugu: { path: '/culture-swap', state: 'Andhra Pradesh' },
-        Bengali: { path: '/culture-swap', state: 'West Bengal' },
-        Punjabi: { path: '/culture-swap', state: 'Punjab' },
+        Marathi: { path: '/dances', state: 'Maharashtra', dance: 'Lavani' },
+        Malayalam: { path: '/dances', state: 'Kerala', dance: 'Kathakali' },
+        Tamil: { path: '/dances', state: 'Tamil Nadu', dance: 'Bharatanatyam' },
+        Telugu: { path: '/dances', state: 'Andhra Pradesh', dance: 'Kuchipudi' },
+        Bengali: { path: '/dances', state: 'West Bengal', dance: 'Chhau' },
+        Punjabi: { path: '/dances', state: 'Punjab', dance: 'Bhangra' },
+        Gujarati: { path: '/dances', state: 'Gujarat', dance: 'Garba' },
+        Rajasthani: { path: '/dances', state: 'Rajasthan', dance: 'Ghoomar' },
+        Odia: { path: '/dances', state: 'Odisha', dance: 'Odissi' },
+        Assamese: { path: '/dances', state: 'Assam', dance: 'Bihu' },
+        Kannada: { path: '/dances', state: 'Karnataka', dance: 'Yakshagana' },
     };
 
     const suggestions = [
@@ -108,11 +113,16 @@ const CultureMatching = () => {
     const handleExploreCulture = (cultureName) => {
         const route = cultureRoutes[cultureName];
         if (route) {
-            navigate(route.path);
+            const queryParams = new URLSearchParams();
+            if (route.state) queryParams.set('state', route.state);
+            if (route.dance) queryParams.set('dance', route.dance);
+            navigate(`${route.path}?${queryParams.toString()}`, {
+                state: { selectedState: route.state, targetDance: route.dance }
+            });
             showToast(`🌍 Exploring ${cultureName} culture from ${route.state}!`);
         } else {
-            navigate('/culture-swap');
-            showToast(`🌍 Explore ${cultureName} on Culture Swap!`);
+            navigate('/dances');
+            showToast(`🌍 Exploring ${cultureName} culture!`);
         }
     };
 
