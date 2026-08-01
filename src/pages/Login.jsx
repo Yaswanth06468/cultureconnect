@@ -1,11 +1,10 @@
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
-import GoogleAuthButton from '../components/GoogleAuthButton';
 import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -20,18 +19,32 @@ const Login = () => {
         setSuccessMessage('');
         setIsLoading(true);
         try {
-            const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+            const isLoggingInAsAdmin = username.trim().toUpperCase() === 'ADMIN';
+            const endpoint = isLoggingInAsAdmin ? `${API_BASE_URL}/api/admin/login` : `${API_BASE_URL}/api/auth/login`;
+
+            const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ username, password })
             });
             const data = await res.json();
             if (res.ok) {
-                login(data.token, data.user);
+                if (login) {
+                    login(data.token, data.user || { username: data.username || username, role: data.role });
+                } else {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('username', data.username || username);
+                }
                 setSuccessMessage('Login successful!');
-                setTimeout(() => navigate('/'), 1500);
+                setTimeout(() => {
+                    if (data.role === 'admin') {
+                        navigate('/admin');
+                    } else {
+                        navigate('/');
+                    }
+                }, 1000);
             } else {
-                setError(data.error || 'Invalid email or password');
+                setError(data.error || 'Invalid username or password');
             }
         } catch (err) {
             setError('Unable to connect to server. Please try again in a moment.');
@@ -40,16 +53,10 @@ const Login = () => {
         }
     };
 
-    const handleGoogleSuccess = (data) => {
-        login(data.token, data.user);
-        setSuccessMessage('Google Sign-In successful!');
-        setTimeout(() => navigate('/'), 1500);
-    };
-
     return (
         <div className="container mx-auto px-6 py-24 max-w-md animate-scale-in">
-            <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary animate-slide-up-reveal">
-                <span>Log In</span>
+            <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary animate-slide-up-reveal text-center">
+                Log In
             </h2>
 
             {error && (
@@ -67,26 +74,13 @@ const Login = () => {
             )}
             
             <div className="border border-black/10 p-8 bg-bg-secondary flex flex-col gap-6 rounded-2xl shadow-sm">
-                <div>
-                    <GoogleAuthButton
-                        buttonText="Sign in with Google"
-                        onSuccess={handleGoogleSuccess}
-                        onError={(err) => setError(err)}
-                    />
-                </div>
-
-                <div className="relative flex items-center justify-center my-2">
-                    <div className="border-t border-gray-300 w-full"></div>
-                    <span className="bg-bg-secondary px-3 text-xs text-gray-500 font-semibold uppercase absolute">OR</span>
-                </div>
-
                 <form onSubmit={handleLogin} className="flex flex-col gap-4">
-                    <label className="text-text-primary font-bold text-sm">Email Address
+                    <label className="text-text-primary font-bold text-sm">Username
                         <input
-                            type="email"
-                            placeholder="customer@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="text"
+                            placeholder="Enter your username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
@@ -95,16 +89,13 @@ const Login = () => {
                     <label className="text-text-primary font-bold text-sm">Password
                         <input
                             type="password"
+                            placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
                     </label>
-
-                    <div className="flex justify-end">
-                        <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">Forgot Password?</Link>
-                    </div>
 
                     <button 
                         type="submit" 
@@ -116,7 +107,7 @@ const Login = () => {
                 </form>
 
                 <div className="text-center text-sm mt-2 text-text-secondary">
-                    Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
+                    Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline font-semibold">Sign Up</Link>
                 </div>
             </div>
         </div>
@@ -124,3 +115,4 @@ const Login = () => {
 };
 
 export default Login;
+

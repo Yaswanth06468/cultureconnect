@@ -28,57 +28,38 @@ const generateToken = (user) => {
 
 export const signup = async (req, res) => {
     try {
-        const { username, email, password, fullName } = req.body;
+        const { username, password, email, fullName } = req.body;
 
-        if (!username || !email || !password || !fullName) {
-            return res.status(400).json({ error: 'All fields are required' });
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
         }
 
         // Check if user exists
-        const userCheck = await query('SELECT * FROM users WHERE email = $1 OR username = $2', [email, username]);
+        const userCheck = await query('SELECT * FROM users WHERE username = $1', [username]);
         if (userCheck.rows.length > 0) {
-            return res.status(409).json({ error: 'Email or Username already in use' });
+            return res.status(409).json({ error: 'Username already in use' });
         }
 
         // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Insert user
+        const userEmail = email || `${username}@cultureconnect.com`;
+        const userFullName = fullName || username;
+
+        // Insert user (set is_verified = true)
         const result = await query(
-            'INSERT INTO users (username, email, password, full_name) VALUES ($1, $2, $3, $4) RETURNING *',
-            [username, email, hashedPassword, fullName]
+            'INSERT INTO users (username, email, password, full_name, is_verified) VALUES ($1, $2, $3, $4, true) RETURNING *',
+            [username, userEmail, hashedPassword, userFullName]
         );
         const user = result.rows[0];
+        const token = generateToken(user);
 
-        // Create email verification token
-        const token = uuidv4();
-        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-        await query(
-            'INSERT INTO email_verifications (user_id, token, expires_at) VALUES ($1, $2, $3)',
-            [user.id, token, expiresAt]
-        );
-
-        // Send verification email
-        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-            const verifyUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email?token=${token}`;
-            const mailOptions = {
-                from: `"CultureConnect" <${process.env.EMAIL_USER}>`,
-                to: email,
-                subject: 'Verify your email address - CultureConnect',
-                html: `
-                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                        <h2>Welcome to CultureConnect, ${fullName}!</h2>
-                        <p>Please click the button below to verify your email address:</p>
-                        <a href="${verifyUrl}" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 5px;">Verify Email</a>
-                        <p>If you didn't create this account, you can safely ignore this email.</p>
-                    </div>
-                `
-            };
-            transporter.sendMail(mailOptions).catch(err => console.error('Failed to send verification email', err));
-        }
-
-        res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
+        res.status(201).json({
+            message: 'User registered successfully',
+            token,
+            user: { id: user.id, username: user.username, email: user.email, fullName: user.full_name, avatar: user.avatar }
+        });
     } catch (err) {
         console.error('Signup error:', err);
         res.status(500).json({ error: 'Server error during signup' });
@@ -87,26 +68,23 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, email, password } = req.body;
+        const loginIdentifier = username || email;
 
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required' });
+        if (!loginIdentifier || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
         }
 
-        const result = await query('SELECT * FROM users WHERE email = $1', [email]);
+        const result = await query('SELECT * FROM users WHERE username = $1 OR email = $1', [loginIdentifier]);
         const user = result.rows[0];
 
         if (!user || !user.password) {
-            return res.status(401).json({ error: 'Invalid email or password' });
+            return res.status(401).json({ error: 'Invalid username or password' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
-
-        if (!user.is_verified) {
-            return res.status(403).json({ error: 'Please verify your email before logging in.' });
+            return res.status(401).json({ error: 'Invalid username or password' });
         }
 
         const token = generateToken(user);

@@ -551,26 +551,19 @@ app.post('/api/auth/google', async (req, res) => {
 });
 
 app.post('/api/auth/signup', async (req, res) => {
-    const { username, password, email } = req.body;
+    const { username, password } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, password: hashedPassword, email: email || '' });
+        const newUser = new User({ username, password: hashedPassword, email: `${username}@cultureconnect.com` });
         await newUser.save();
         
-        let emailResult = { success: false, emailSent: false, message: "No email address provided" };
-        if (email) {
-            emailResult = await sendAuthEmail(email, username, 'signup', {
-                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown',
-                userAgent: req.headers['user-agent'] || 'unknown'
-            });
-        }
+        const token = jwt.sign({ id: newUser._id, username: newUser.username }, JWT_SECRET, { expiresIn: '7d' });
 
         res.status(201).json({ 
             message: 'User created successfully', 
-            emailSent: emailResult.emailSent,
-            emailMessage: emailResult.message,
-            emailError: emailResult.error || null
+            token,
+            username: newUser.username
         });
     } catch (err) {
         if (err.code === 11000) return res.status(409).json({ error: 'Username already exists' });
@@ -579,27 +572,14 @@ app.post('/api/auth/signup', async (req, res) => {
 });
 
 app.post('/api/auth/login', async (req, res) => {
-    const { username, password, email } = req.body;
-    if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
+    const { username, email, password } = req.body;
+    const loginId = username || email;
+    if (!loginId || !password) return res.status(400).json({ error: 'Username and password required' });
     try {
-        const user = await User.findOne({ username });
-        if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ error: 'Invalid credentials' });
-        
-        const targetEmail = user.email || email;
-        if (email && !user.email) {
-            user.email = email;
-            await user.save();
-        }
+        const user = await User.findOne({ $or: [{ username: loginId }, { email: loginId }] });
+        if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ error: 'Invalid username or password' });
 
-        const token = jwt.sign({ id: user._id, username: user.username, email: targetEmail }, JWT_SECRET, { expiresIn: '1h' });
-        
-        let emailResult = { success: false, emailSent: false, message: "No email address provided" };
-        if (targetEmail) {
-            emailResult = await sendAuthEmail(targetEmail, user.username, 'login', {
-                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown',
-                userAgent: req.headers['user-agent'] || 'unknown'
-            });
-        }
+        const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '7d' });
 
         // Log user login
         try {
@@ -615,11 +595,7 @@ app.post('/api/auth/login', async (req, res) => {
         res.json({ 
             message: 'Login successful', 
             token, 
-            username: user.username, 
-            email: targetEmail, 
-            emailSent: emailResult.emailSent,
-            emailMessage: emailResult.message,
-            emailError: emailResult.error || null
+            username: user.username
         });
     } catch (err) {
         res.status(500).json({ error: 'Internal server error' });
