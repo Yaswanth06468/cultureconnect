@@ -262,128 +262,61 @@ const cityFoodData = [
 const allStates = ['All States', ...new Set(cityFoodData.map(c => c.state))].sort((a, b) => a === 'All States' ? -1 : a.localeCompare(b));
 
 // ── City Coordinates (lat, lng) ───────────────────────────────────────────────
-const cityCoords = {
-  'Visakhapatnam': [17.6868, 83.2185], 'Vijayawada': [16.5062, 80.6480],
-  'Guntur': [16.3008, 80.4428], 'Tirupati': [13.6288, 79.4192],
-  'Kakinada': [16.9891, 82.2475], 'Rajahmundry': [17.0005, 81.8040],
-  'Nellore': [14.4426, 79.9865], 'Kurnool': [15.8281, 78.0373],
-  'Kadapa': [14.4673, 78.8242], 'Anantapur': [14.6819, 77.6006],
-  'Eluru': [16.7107, 81.0952], 'Ongole': [15.5057, 80.0499],
-  'Chittoor': [13.2172, 79.1003], 'Srikakulam': [18.2949, 83.8938],
-  'Vizianagaram': [18.1066, 83.3956], 'Machilipatnam': [16.1875, 81.1389],
-  'Proddatur': [14.7502, 78.5483], 'Nandyal': [15.4786, 78.4836],
-  'Hyderabad': [17.3850, 78.4867], 'Warangal': [17.9784, 79.5941],
-  'Chennai': [13.0827, 80.2707], 'Madurai': [9.9252, 78.1198],
-  'Coimbatore': [11.0168, 76.9558], 'Bengaluru': [12.9716, 77.5946],
-  'Mysuru': [12.2958, 76.6394], 'Mangaluru': [12.9141, 74.8560],
-  'Kochi': [9.9312, 76.2673], 'Kozhikode': [11.2588, 75.7804],
-  'Mumbai': [19.0760, 72.8777], 'Pune': [18.5204, 73.8567],
-  'Kolhapur': [16.7050, 74.2433], 'Nagpur': [21.1458, 79.0882],
-  'Ahmedabad': [23.0225, 72.5714], 'Surat': [21.1702, 72.8311],
-  'Jaipur': [26.9124, 75.7873], 'Jodhpur': [26.2389, 73.0243],
-  'Udaipur': [24.5854, 73.7125], 'Jaisalmer': [26.9157, 70.9083],
-  'Lucknow': [26.8467, 80.9462], 'Varanasi': [25.3176, 82.9739],
-  'Agra': [27.1767, 78.0081], 'Amritsar': [31.6340, 74.8723],
-  'Kolkata': [22.5726, 88.3639], 'Darjeeling': [27.0360, 88.2627],
-  'New Delhi': [28.6139, 77.2090], 'Patna': [25.5941, 85.1376],
-  'Indore': [22.7196, 75.8577], 'Bhopal': [23.2599, 77.4126],
-  'Bhubaneswar': [20.2961, 85.8245], 'Panaji': [15.4909, 73.8278],
-  'Srinagar': [34.0837, 74.7973], 'Guwahati': [26.1445, 91.7362],
-  'Shimla': [31.1048, 77.1734], 'Dehradun': [30.3165, 78.0322],
-  'Gangtok': [27.3389, 88.6065], 'Shillong': [25.5788, 91.8933],
-  'Kohima': [25.6751, 94.1086], 'Imphal': [24.8170, 93.9368],
-  'Leh': [34.1526, 77.5771], 'Puducherry': [11.9416, 79.8083],
-  'Itanagar': [27.0844, 93.6053], 'Ranchi': [23.3441, 85.3096],
-  'Raipur': [21.2514, 81.6296], 'Port Blair': [11.6234, 92.7265],
-  'Agartala': [23.8315, 91.2868],
-};
-
-// ── Haversine distance (km) ───────────────────────────────────────────────────
-const haversineKm = (lat1, lon1, lat2, lon2) => {
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a = Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-};
-
-// ── Find nearest city within threshold km ────────────────────────────────────
-const THRESHOLD_KM = 50;
-const findNearestCity = (lat, lon) => {
-  let best = null, bestDist = Infinity;
-  cityFoodData.forEach(city => {
-    const coords = cityCoords[city.city];
-    if (!coords) return;
-    const d = haversineKm(lat, lon, coords[0], coords[1]);
-    if (d < bestDist) { bestDist = d; best = city; }
-  });
-  return bestDist <= THRESHOLD_KM ? best : null;
-};
-
-// ── Notification Sound & Haptics ──────────────────────────────────────────────
-const playNotificationSound = () => {
-  try {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
-    if (ctx.state === 'suspended') ctx.resume();
-    const osc1 = ctx.createOscillator();
-    const osc2 = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc1.type = 'sine';
-    osc2.type = 'sine';
-
-    // WhatsApp dual chime (E6: 1318Hz -> B6: 1975Hz)
-    osc1.frequency.setValueAtTime(1318.51, ctx.currentTime);
-    osc2.frequency.setValueAtTime(1975.53, ctx.currentTime + 0.08);
-
-    gain.gain.setValueAtTime(0.18, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-
-    osc1.connect(gain);
-    osc2.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc1.start(ctx.currentTime);
-    osc2.start(ctx.currentTime + 0.08);
-    osc1.stop(ctx.currentTime + 0.35);
-    osc2.stop(ctx.currentTime + 0.35);
-  } catch (e) {
-    // Ignore audio restrictions
+const ci// ── Real-Time Mobile Device Push Notification Trigger ───────────────────────
+const sendBrowserNotification = (title, bodyText, city) => {
+  if (typeof window !== 'undefined' && 'Notification' in window) {
+    if (Notification.permission === 'granted') {
+      try {
+        new Notification(title, {
+          body: bodyText,
+          icon: '/culture_premium_logo_v2.png',
+          badge: '/culture_premium_logo_v2.png',
+          tag: 'cultureconnect-' + (city || 'notif'),
+          renotify: true,
+        });
+      } catch (e) {
+        console.log('Browser notification dispatch skipped', e);
+      }
+    } else if (Notification.permission !== 'denied') {
+      try {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            new Notification(title, {
+              body: bodyText,
+              icon: '/culture_premium_logo_v2.png',
+              badge: '/culture_premium_logo_v2.png',
+              tag: 'cultureconnect-' + (city || 'notif'),
+              renotify: true,
+            });
+          }
+        });
+      } catch (e) {}
+    }
   }
 };
 
-const triggerVibration = () => {
-  if (typeof navigator !== 'undefined' && navigator.vibrate) {
-    try {
-      navigator.vibrate([100, 50, 100]);
-    } catch (e) {}
-  }
-};
-
-// ── WhatsApp-Style Top Mobile Push Notification Banner ────────────────────────
+// ── CultureConnect Top Mobile Push Notification Banner ────────────────────────
 const FoodNotification = ({ notif, onClose, onSelectCity }) => {
+  const isActivation = notif?.type === 'activation';
+  const headerText = isActivation ? 'CULTURECONNECT • AUTO-DETECT' : 'CULTURECONNECT';
+  const iconEmoji = isActivation ? '📡' : (notif?.emoji || '🍽️');
+  const title = isActivation ? '📡 Location Auto-Detection Activated!' : `📍 Arrived in ${notif?.city}!`;
+  const bodyText = isActivation
+    ? 'CultureConnect is now actively monitoring your GPS. You will get real-time mobile notifications automatically when you enter any listed city!'
+    : `You arrived in ${notif?.city}, ${notif?.state}! Top must-try food: ${notif?.foods?.[0] || 'Local specialties'}.`;
+
+  const themeColor = isActivation ? '#6366f1' : (notif?.color || '#0d9668');
+
   useEffect(() => {
     if (!notif) return;
     playNotificationSound();
     triggerVibration();
+    sendBrowserNotification(title, bodyText, notif.city);
     const t = setTimeout(onClose, 7000);
     return () => clearTimeout(t);
-  }, [notif, onClose]);
+  }, [notif, onClose, title, bodyText]);
 
   if (!notif) return null;
-
-  const isActivation = notif.type === 'activation';
-  const headerText = isActivation ? 'CULTURECONNECT • AUTO-DETECT' : 'WHATSAPP • CULTURECONNECT';
-  const iconEmoji = isActivation ? '📡' : (notif.emoji || '🍽️');
-  const title = isActivation ? '📡 Location Auto-Detection Activated!' : `📍 Arrived in ${notif.city}!`;
-  const bodyText = isActivation
-    ? 'CultureConnect is now actively monitoring your GPS. You will get top mobile notifications automatically when you enter any listed city!'
-    : `You arrived in ${notif.city}, ${notif.state}! Top must-try food: ${notif.foods?.[0] || 'Local specialties'}.`;
-
-  const themeColor = isActivation ? '#6366f1' : (notif.color || '#25D366');
 
   return (
     <div style={{
@@ -394,14 +327,14 @@ const FoodNotification = ({ notif, onClose, onSelectCity }) => {
       width: 'calc(100% - 24px)',
       maxWidth: 460,
       zIndex: 999999,
-      animation: 'whatsappSlideDown 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      animation: 'notifSlideDown 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
     }}>
       <style>{`
-        @keyframes whatsappSlideDown {
+        @keyframes notifSlideDown {
           0% { transform: translate(-50%, -120%) scale(0.92); opacity: 0; }
           100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
         }
-        @keyframes whatsappShrink {
+        @keyframes notifShrink {
           from { width: 100%; }
           to { width: 0%; }
         }
@@ -433,11 +366,106 @@ const FoodNotification = ({ notif, onClose, onSelectCity }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <div style={{
               width: 22, height: 22, borderRadius: 6,
-              background: '#25D366', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(37, 211, 102, 0.5)'
+              background: '#0d9668', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(13, 150, 104, 0.5)'
             }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="#ffffff">
-                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.105 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.228-1.161z"/>
+              <span style={{ fontSize: 11, fontWeight: 900, color: '#ffffff' }}>C</span>
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 0.8, color: '#a0aec0', textTransform: 'uppercase' }}>
+              {headerText}
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600 }}>now</span>
+            <button
+              onClick={(e) => { e.stopPropagation(); onClose(); }}
+              style={{
+                background: 'rgba(255,255,255,0.12)', border: 'none', color: '#e2e8f0',
+                width: 22, height: 22, borderRadius: '50%', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, lineHeight: 1
+              }}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+          <div style={{
+            fontSize: 26, width: 46, height: 46, borderRadius: 14,
+            background: `${themeColor}22`, border: `1.5px solid ${themeColor}80`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+          }}>
+            {iconEmoji}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h4 style={{ margin: '0 0 3px', fontSize: 14, fontWeight: 800, color: '#ffffff', lineHeight: 1.25 }}>
+              {title}
+            </h4>
+            <p style={{ margin: 0, fontSize: 12.5, color: '#cbd5e1', lineHeight: 1.45, fontWeight: 500 }}>
+              {bodyText}
+            </p>
+
+            {!isActivation && notif.foods && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8 }}>
+                {notif.foods.slice(0, 3).map((f, i) => (
+                  <span key={i} style={{
+                    fontSize: 10.5, fontWeight: 700, padding: '3px 9px', borderRadius: 12,
+                    background: `${themeColor}30`, color: '#67e8f9',
+                    border: `1px solid ${themeColor}60`
+                  }}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div style={{ display: 'flex', gap: 8, marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          {!isActivation ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onSelectCity) onSelectCity(notif);
+                onClose();
+              }}
+              style={{
+                flex: 1, background: '#0d9668', color: '#ffffff', border: 'none',
+                borderRadius: 10, padding: '7px 14px', fontSize: 12, fontWeight: 800,
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                boxShadow: '0 4px 12px rgba(13, 150, 104, 0.35)'
+              }}
+            >
+              🍽️ Explore {notif.city} Food Guide
+            </button>
+          ) : (
+            <span style={{ fontSize: 11, color: '#94a3b8', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', display: 'inline-block', boxShadow: '0 0 8px #22c55e' }}></span>
+              Live GPS tracking enabled • Auto alerts active
+            </span>
+          )}
+          <button
+            onClick={(e) => { e.stopPropagation(); onClose(); }}
+            style={{
+              background: 'rgba(255,255,255,0.1)', color: '#94a3b8', border: 'none',
+              borderRadius: 10, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer'
+            }}
+          >
+            Dismiss
+          </button>
+        </div>
+
+        {/* Progress Bar */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.1)' }}>
+          <div style={{ height: '100%', background: themeColor, animation: 'notifShrink 7s linear forwards' }} />
+        </div>
+      </div>
+    </div>
+  );
+};41-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.105 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.228-1.161z"/>
               </svg>
             </div>
             <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 0.8, color: '#a0aec0', textTransform: 'uppercase' }}>

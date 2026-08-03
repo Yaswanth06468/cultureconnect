@@ -363,27 +363,61 @@ const triggerVibration = () => {
   }
 };
 
-// ── WhatsApp-Style Top Mobile Push Notification Banner ────────────────────────
+// ── Real-Time Mobile Device Push Notification Trigger ───────────────────────
+const sendBrowserNotification = (title, bodyText, city) => {
+  if (typeof window !== 'undefined' && 'Notification' in window) {
+    if (Notification.permission === 'granted') {
+      try {
+        new Notification(title, {
+          body: bodyText,
+          icon: '/culture_premium_logo_v2.png',
+          badge: '/culture_premium_logo_v2.png',
+          tag: 'cultureconnect-' + (city || 'notif'),
+          renotify: true,
+        });
+      } catch (e) {
+        console.log('Browser notification dispatch skipped', e);
+      }
+    } else if (Notification.permission !== 'denied') {
+      try {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            new Notification(title, {
+              body: bodyText,
+              icon: '/culture_premium_logo_v2.png',
+              badge: '/culture_premium_logo_v2.png',
+              tag: 'cultureconnect-' + (city || 'notif'),
+              renotify: true,
+            });
+          }
+        });
+      } catch (e) {}
+    }
+  }
+};
+
+// ── CultureConnect Top Mobile Push Notification Banner ────────────────────────
 const FoodNotification = ({ notif, onClose, onSelectCity }) => {
+  const isActivation = notif?.type === 'activation';
+  const headerText = isActivation ? 'CULTURECONNECT • AUTO-DETECT' : 'CULTURECONNECT';
+  const iconEmoji = isActivation ? '📡' : (notif?.emoji || '🍽️');
+  const title = isActivation ? '📡 Location Auto-Detection Activated!' : `📍 Arrived in ${notif?.city}!`;
+  const bodyText = isActivation
+    ? 'CultureConnect is now actively monitoring your GPS. You will get real-time mobile notifications automatically when you enter any listed city!'
+    : `You arrived in ${notif?.city}, ${notif?.state}! Top must-try food: ${notif?.foods?.[0] || 'Local specialties'}.`;
+
+  const themeColor = isActivation ? '#6366f1' : (notif?.color || '#0d9668');
+
   useEffect(() => {
     if (!notif) return;
     playNotificationSound();
     triggerVibration();
+    sendBrowserNotification(title, bodyText, notif.city);
     const t = setTimeout(onClose, 7000);
     return () => clearTimeout(t);
-  }, [notif, onClose]);
+  }, [notif, onClose, title, bodyText]);
 
   if (!notif) return null;
-
-  const isActivation = notif.type === 'activation';
-  const headerText = isActivation ? 'CULTURECONNECT • AUTO-DETECT' : 'WHATSAPP • CULTURECONNECT';
-  const iconEmoji = isActivation ? '📡' : (notif.emoji || '🍽️');
-  const title = isActivation ? '📡 Location Auto-Detection Activated!' : `📍 Arrived in ${notif.city}!`;
-  const bodyText = isActivation
-    ? 'CultureConnect is now actively monitoring your GPS. You will get top mobile notifications automatically when you enter any listed city!'
-    : `You arrived in ${notif.city}, ${notif.state}! Top must-try food: ${notif.foods?.[0] || 'Local specialties'}.`;
-
-  const themeColor = isActivation ? '#6366f1' : (notif.color || '#25D366');
 
   return (
     <div style={{
@@ -394,14 +428,14 @@ const FoodNotification = ({ notif, onClose, onSelectCity }) => {
       width: 'calc(100% - 24px)',
       maxWidth: 460,
       zIndex: 999999,
-      animation: 'whatsappSlideDown 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      animation: 'notifSlideDown 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
     }}>
       <style>{`
-        @keyframes whatsappSlideDown {
+        @keyframes notifSlideDown {
           0% { transform: translate(-50%, -120%) scale(0.92); opacity: 0; }
           100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
         }
-        @keyframes whatsappShrink {
+        @keyframes notifShrink {
           from { width: 100%; }
           to { width: 0%; }
         }
@@ -433,12 +467,10 @@ const FoodNotification = ({ notif, onClose, onSelectCity }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <div style={{
               width: 22, height: 22, borderRadius: 6,
-              background: '#25D366', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(37, 211, 102, 0.5)'
+              background: '#0d9668', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(13, 150, 104, 0.5)'
             }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="#ffffff">
-                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.105 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.228-1.161z"/>
-              </svg>
+              <span style={{ fontSize: 11, fontWeight: 900, color: '#ffffff' }}>C</span>
             </div>
             <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 0.8, color: '#a0aec0', textTransform: 'uppercase' }}>
               {headerText}
@@ -502,10 +534,10 @@ const FoodNotification = ({ notif, onClose, onSelectCity }) => {
                 onClose();
               }}
               style={{
-                flex: 1, background: '#25D366', color: '#052e16', border: 'none',
+                flex: 1, background: '#0d9668', color: '#ffffff', border: 'none',
                 borderRadius: 10, padding: '7px 14px', fontSize: 12, fontWeight: 800,
                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                boxShadow: '0 4px 12px rgba(37, 211, 102, 0.3)'
+                boxShadow: '0 4px 12px rgba(13, 150, 104, 0.35)'
               }}
             >
               🍽️ Explore {notif.city} Food Guide
@@ -529,7 +561,7 @@ const FoodNotification = ({ notif, onClose, onSelectCity }) => {
 
         {/* Progress Bar */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.1)' }}>
-          <div style={{ height: '100%', background: themeColor, animation: 'whatsappShrink 7s linear forwards' }} />
+          <div style={{ height: '100%', background: themeColor, animation: 'notifShrink 7s linear forwards' }} />
         </div>
       </div>
     </div>
@@ -687,9 +719,9 @@ const DetailPanel = ({ city, onNotify, foodReviews, onAddReview }) => {
 // ── Auto-Detection Status Banner ──────────────────────────────────────────────
 const GeoStatusBanner = ({ status, nearestCity, onEnable, onDisable }) => {
   const configs = {
-    idle:     { bg: '#f8fafc', border: '#e2e8f0', icon: '📡', text: 'Enable auto-detection to get WhatsApp-style mobile top notifications when you arrive in any listed city.', textColor: '#64748b', btnText: '🛰️ Enable Auto-Detect', btnColor: '#6366f1', showBtn: true,  showDisable: false },
+    idle:     { bg: '#f8fafc', border: '#e2e8f0', icon: '📡', text: 'Enable auto-detection to get CultureConnect real-time notifications when you arrive in any listed city.', textColor: '#64748b', btnText: '🛰️ Enable Auto-Detect', btnColor: '#6366f1', showBtn: true,  showDisable: false },
     asking:   { bg: '#eff6ff', border: '#bfdbfe', icon: '⏳', text: 'Requesting location permission…', textColor: '#3b82f6', btnText: null, showBtn: false, showDisable: false },
-    watching: { bg: '#f0fdf4', border: '#86efac', icon: '🟢', text: nearestCity ? `You are near ${nearestCity}! WhatsApp-style top notification sent.` : 'Watching location — WhatsApp-style mobile top notification will pop on city arrival.', textColor: '#16a34a', btnText: null, showBtn: false, showDisable: true },
+    watching: { bg: '#f0fdf4', border: '#86efac', icon: '🟢', text: nearestCity ? `You are near ${nearestCity}! CultureConnect notification sent.` : 'Watching location — CultureConnect notification will pop on city arrival.', textColor: '#16a34a', btnText: null, showBtn: false, showDisable: true },
     denied:   { bg: '#fff7ed', border: '#fed7aa', icon: '🔒', text: 'Location access denied. Please allow location in browser settings, then try again.', textColor: '#ea580c', btnText: '🔄 Try Again', btnColor: '#ea580c', showBtn: true,  showDisable: false },
     unsupported: { bg: '#fdf4ff', border: '#e9d5ff', icon: '❌', text: 'Geolocation is not supported by your browser.', textColor: '#9333ea', btnText: null, showBtn: false, showDisable: false },
   };
