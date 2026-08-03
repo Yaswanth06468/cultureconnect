@@ -106,8 +106,19 @@ const Login = () => {
                     </button>
                 </form>
 
-                <div className="text-center text-sm mt-2 text-text-secondary">
-                    Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline font-semibold">Sign Up</Link>
+                <div className="text-center text-sm mt-2 text-text-secondary flex flex-col gap-3">
+                    <div>
+                        Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline font-semibold">Sign Up</Link>
+                    </div>
+                    <div className="pt-3 border-t border-gray-200 dark:border-zinc-800">
+                        <Link 
+                            to="/admin/login" 
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 transition-colors px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20"
+                        >
+                            <span>🛡️</span>
+                            <span>Admin Portal Login</span>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
