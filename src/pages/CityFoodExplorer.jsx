@@ -974,13 +974,12 @@ const CityFoodExplorer = () => {
           <div className="flex items-center text-sm text-text-muted font-semibold px-2 whitespace-nowrap">{filtered.length} cities</div>
         </div>
 
-        {/* Independent Dual-Panel Scroll Layout */}
+        {/* Single Page Scroll Layout */}
         <div className="flex flex-col lg:flex-row gap-6 items-start relative">
           {/* Left Column: City Cards Grid */}
           <div 
             id="city-cards-grid"
-            className="flex-[1.3] min-w-0 w-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1.5 custom-scrollbar" 
-            style={{ overscrollBehavior: 'contain' }}
+            className="flex-[1.3] min-w-0 w-full"
           >
             {filtered.length === 0 ? (
               <div className="text-center py-16 bg-bg-secondary rounded-2xl border border-dashed border-black/20">
@@ -998,8 +997,7 @@ const CityFoodExplorer = () => {
           {/* Right Column: Detail Panel */}
           <div 
             id="food-detail-panel"
-            className="flex-1 min-w-72 w-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1.5 custom-scrollbar" 
-            style={{ overscrollBehavior: 'contain' }}
+            className="flex-1 min-w-72 w-full lg:sticky lg:top-24"
           >
             <div className="bg-bg-primary rounded-2xl border border-black/10 p-6 shadow-sm min-h-64">
               <DetailPanel 
