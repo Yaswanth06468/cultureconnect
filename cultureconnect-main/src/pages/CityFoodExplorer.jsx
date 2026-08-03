@@ -257,12 +257,173 @@ const cityFoodData = [
   { id: 65, city: 'Agartala', state: 'Tripura', emoji: '🎋', color: '#7c3aed',
     foods: ['Wahan Mosdeng', 'Chakhwi', 'Bangui Rice', 'Muya Awandru (Bamboo Shoot)', 'Gudok', 'Berma Fish Paste'],
     description: 'Agartala\'s unique cuisine fuses Bengali and tribal Tripuri influences — the smoky Gudok (dried fish and bamboo shoot stew) and pungent Berma fish paste define authentic Tripuri cooking.' },
+
+  // ── Mizoram ───────────────────────────────────────────────────────────────
+  { id: 66, city: 'Aizawl', state: 'Mizoram', emoji: '🎋', color: '#10b981',
+    foods: ['Bai (Bamboo Shoot Stew)', 'Vawksa Rep (Smoked Pork)', 'Sawhchiar (Meat Rice Porridge)', 'Sanpiau', 'Misa Mach Poora'],
+    description: 'Aizawl\'s Mizo cuisine is healthy, fragrant, and light. Bai — a boiled stew of seasonal green vegetables, bamboo shoots, and pork fat — is the daily staple of Mizoram.' },
+
+  // ── Haryana ───────────────────────────────────────────────────────────────
+  { id: 67, city: 'Gurugram', state: 'Haryana', emoji: '🌾', color: '#eab308',
+    foods: ['Kachri Ki Sabzi', 'Bajra Roti with White Butter', 'Bathua Raita', 'Hara Dhania Choliya', 'Malpua', 'Kadhi Pakora'],
+    description: 'Haryana\'s rustic cuisine centers around rich dairy, fresh green chickpeas, and coarse grain millet rotis served with fresh farm-made white butter.' },
+
+  // ── Jammu & Kashmir (Jammu Region) ────────────────────────────────────────
+  { id: 68, city: 'Jammu', state: 'Jammu & Kashmir', emoji: '🏔️', color: '#0ea5e9',
+    foods: ['Kaladi Kulcha', 'Rajma Chawal with Anardana Chutney', 'Ambal', 'Khatta Meat', 'Sund Panjeeri'],
+    description: 'Jammu\'s Dogra cuisine is famous for Kaladi Kulcha — a dense, squeaky local artisan cheese pan-fried till golden and tucked inside toasted bread.' },
+
+  // ── Tamil Nadu (Heritage Delta) ────────────────────────────────────────────
+  { id: 69, city: 'Thanjavur', state: 'Tamil Nadu', emoji: '🌾', color: '#d97706',
+    foods: ['Kumbakonam Degree Coffee', 'Thanjavur Sambar', 'Karuvattu Kuzhambu', 'Seeraga Samba Biryani', 'Ashoka Halwa'],
+    description: 'Thanjavur, the rice bowl of Tamil Nadu, produces legendary Kumbakonam Degree Coffee made with chicory-free pure cow milk and dark roasted beans.' },
+
+  // ── Karnataka (Temple & Coast) ──────────────────────────────────────────────
+  { id: 70, city: 'Udupi', state: 'Karnataka', emoji: '🛕', color: '#0284c7',
+    foods: ['Udupi Masala Dosa', 'Udupi Saaru (Rasam)', 'Goli Baje', 'Bisi Bele Bath', 'Hayagreeva Sweet', 'Pathrode'],
+    description: 'Udupi\'s pure vegetarian Krishna Temple cuisine birthed the world-famous South Indian breakfast culture — crisp dosas, golden Goli Baje fritters, and fragrant rasam.' },
+
+  // ── Chandigarh UT ─────────────────────────────────────────────────────────
+  { id: 71, city: 'Chandigarh', state: 'Chandigarh', emoji: '🌹', color: '#ec4899',
+    foods: ['Amritsari Kulcha', 'Chole Bhature', 'Paneer Tikka', 'Tandoori Chicken', 'Pinni', 'Sweet Lassi'],
+    description: 'Chandigarh blends modern urban food culture with heart-warming Punjabi tandoori classics and creamy lassi.' },
+
+  // ── Lakshadweep UT ────────────────────────────────────────────────────────
+  { id: 72, city: 'Kavaratti', state: 'Lakshadweep', emoji: '🏝️', color: '#06b6d4',
+    foods: ['Mus Kavaab (Spiced Tuna)', 'Coconut Bondas', 'Kadai Prawns', 'Kilanji (Rice Crepes)', 'Fish Tikka', 'Kadalakka Payasam'],
+    description: 'Lakshadweep\'s island cuisine centers on oceanic skipjack tuna (Mus) marinated in fresh coconut, Malabar spices, and curry leaves.' },
+
+  // ── Uttar Pradesh (Braj Region) ───────────────────────────────────────────
+  { id: 73, city: 'Mathura', state: 'Uttar Pradesh', emoji: '🛕', color: '#f59e0b',
+    foods: ['Mathura Peda', 'Makhan Mishri', 'Kachori Jalebi', 'Rabri', 'Malpua', 'Ghevar'],
+    description: 'Mathura, Lord Krishna\'s birthplace, is the milk and sweet capital of India — famous for caramelized golden Mathura Pedas made from condensed milk.' },
+
+  // ── Gujarat (Central) ──────────────────────────────────────────────────────
+  { id: 74, city: 'Vadodara', state: 'Gujarat', emoji: '🏛️', color: '#84cc16',
+    foods: ['Sev Usal', 'Bhakarwadi', 'Duliram Peda', 'Khaman', 'Khandvi', 'Kathiyawadi Thali'],
+    description: 'Vadodara is famous for Sev Usal — spicy green pea curry topped with crunchy farsan, garlic chutney, and buttery buns.' },
+
+  // ── West Bengal (North) ───────────────────────────────────────────────────
+  { id: 75, city: 'Siliguri', state: 'West Bengal', emoji: '🏞️', color: '#14b8a6',
+    foods: ['Luchi Alur Dom', 'Steamed Momos', 'Chholar Dal', 'Thukpa', 'Chhena Jalebi', 'Macher Jhol'],
+    description: 'Siliguri connects the plains of Bengal to the North-East hills, featuring a delightful mix of Bengali Luchi-Alur Dom and Himalayan Momos.' },
+
+  // ── Daman & Diu UT ────────────────────────────────────────────────────────
+  { id: 76, city: 'Daman', state: 'Daman & Diu', emoji: '⚓', color: '#6366f1',
+    foods: ['Damanese Prawn Rice', 'Coq au Vin', 'Fish Koliwada', 'Crab Curry', 'Lobster Butter Garlic', 'Sol Kadhi'],
+    description: 'Daman\'s coastal food blends Gujarati seafood with Portuguese colonial marinades — fresh prawns, butter garlic crabs, and spiced fish koliwada.' },
 ];
 
 const allStates = ['All States', ...new Set(cityFoodData.map(c => c.state))].sort((a, b) => a === 'All States' ? -1 : a.localeCompare(b));
 
 // ── City Coordinates (lat, lng) ───────────────────────────────────────────────
-const ci// ── Real-Time Mobile Device Push Notification Trigger ───────────────────────
+const cityCoords = {
+  'Visakhapatnam': [17.6868, 83.2185], 'Vijayawada': [16.5062, 80.6480],
+  'Guntur': [16.3008, 80.4428], 'Tirupati': [13.6288, 79.4192],
+  'Kakinada': [16.9891, 82.2475], 'Rajahmundry': [17.0005, 81.8040],
+  'Nellore': [14.4426, 79.9865], 'Kurnool': [15.8281, 78.0373],
+  'Kadapa': [14.4673, 78.8242], 'Anantapur': [14.6819, 77.6006],
+  'Eluru': [16.7107, 81.0952], 'Ongole': [15.5057, 80.0499],
+  'Chittoor': [13.2172, 79.1003], 'Srikakulam': [18.2949, 83.8938],
+  'Vizianagaram': [18.1066, 83.3956], 'Machilipatnam': [16.1875, 81.1389],
+  'Proddatur': [14.7502, 78.5483], 'Nandyal': [15.4786, 78.4836],
+  'Hyderabad': [17.3850, 78.4867], 'Warangal': [17.9784, 79.5941],
+  'Chennai': [13.0827, 80.2707], 'Madurai': [9.9252, 78.1198],
+  'Coimbatore': [11.0168, 76.9558], 'Bengaluru': [12.9716, 77.5946],
+  'Mysuru': [12.2958, 76.6394], 'Mangaluru': [12.9141, 74.8560],
+  'Kochi': [9.9312, 76.2673], 'Kozhikode': [11.2588, 75.7804],
+  'Mumbai': [19.0760, 72.8777], 'Pune': [18.5204, 73.8567],
+  'Kolhapur': [16.7050, 74.2433], 'Nagpur': [21.1458, 79.0882],
+  'Ahmedabad': [23.0225, 72.5714], 'Surat': [21.1702, 72.8311],
+  'Jaipur': [26.9124, 75.7873], 'Jodhpur': [26.2389, 73.0243],
+  'Udaipur': [24.5854, 73.7125], 'Jaisalmer': [26.9157, 70.9083],
+  'Lucknow': [26.8467, 80.9462], 'Varanasi': [25.3176, 82.9739],
+  'Agra': [27.1767, 78.0081], 'Amritsar': [31.6340, 74.8723],
+  'Kolkata': [22.5726, 88.3639], 'Darjeeling': [27.0360, 88.2627],
+  'New Delhi': [28.6139, 77.2090], 'Patna': [25.5941, 85.1376],
+  'Indore': [22.7196, 75.8577], 'Bhopal': [23.2599, 77.4126],
+  'Bhubaneswar': [20.2961, 85.8245], 'Panaji': [15.4909, 73.8278],
+  'Srinagar': [34.0837, 74.7973], 'Guwahati': [26.1445, 91.7362],
+  'Shimla': [31.1048, 77.1734], 'Dehradun': [30.3165, 78.0322],
+  'Gangtok': [27.3389, 88.6065], 'Shillong': [25.5788, 91.8933],
+  'Kohima': [25.6751, 94.1086], 'Imphal': [24.8170, 93.9368],
+  'Leh': [34.1526, 77.5771], 'Puducherry': [11.9416, 79.8083],
+  'Itanagar': [27.0844, 93.6053], 'Ranchi': [23.3441, 85.3096],
+  'Raipur': [21.2514, 81.6296], 'Port Blair': [11.6234, 92.7265],
+  'Agartala': [23.8315, 91.2868], 'Aizawl': [23.7271, 92.7176],
+  'Gurugram': [28.4595, 77.0266], 'Jammu': [32.7266, 74.8570],
+  'Thanjavur': [10.7870, 79.1378], 'Udupi': [13.3409, 74.7421],
+  'Chandigarh': [30.7333, 76.7794], 'Kavaratti': [10.5669, 72.6420],
+  'Mathura': [27.4924, 77.6737], 'Vadodara': [22.3072, 73.1812],
+  'Siliguri': [26.7271, 88.3953], 'Daman': [20.3974, 72.8328],
+};
+
+// ── Haversine distance (km) ───────────────────────────────────────────────────
+const haversineKm = (lat1, lon1, lat2, lon2) => {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
+// ── Find nearest city within threshold km ────────────────────────────────────
+const THRESHOLD_KM = 50;
+const findNearestCity = (lat, lon) => {
+  let best = null, bestDist = Infinity;
+  cityFoodData.forEach(city => {
+    const coords = cityCoords[city.city];
+    if (!coords) return;
+    const d = haversineKm(lat, lon, coords[0], coords[1]);
+    if (d < bestDist) { bestDist = d; best = city; }
+  });
+  return bestDist <= THRESHOLD_KM ? best : null;
+};
+
+// ── Notification Sound & Haptics ──────────────────────────────────────────────
+const playNotificationSound = () => {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc1.type = 'sine';
+    osc2.type = 'sine';
+
+    // Dual chime (E6: 1318Hz -> B6: 1975Hz)
+    osc1.frequency.setValueAtTime(1318.51, ctx.currentTime);
+    osc2.frequency.setValueAtTime(1975.53, ctx.currentTime + 0.08);
+
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc1.start(ctx.currentTime);
+    osc2.start(ctx.currentTime + 0.08);
+    osc1.stop(ctx.currentTime + 0.35);
+    osc2.stop(ctx.currentTime + 0.35);
+  } catch (e) {
+    // Ignore audio restrictions
+  }
+};
+
+const triggerVibration = () => {
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    try {
+      navigator.vibrate([100, 50, 100]);
+    } catch (e) {}
+  }
+};
+
+// ── Real-Time Mobile Device Push Notification Trigger ───────────────────────
 const sendBrowserNotification = (title, bodyText, city) => {
   if (typeof window !== 'undefined' && 'Notification' in window) {
     if (Notification.permission === 'granted') {

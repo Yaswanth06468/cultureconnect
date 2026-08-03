@@ -257,6 +257,61 @@ const cityFoodData = [
   { id: 65, city: 'Agartala', state: 'Tripura', emoji: '🎋', color: '#7c3aed',
     foods: ['Wahan Mosdeng', 'Chakhwi', 'Bangui Rice', 'Muya Awandru (Bamboo Shoot)', 'Gudok', 'Berma Fish Paste'],
     description: 'Agartala\'s unique cuisine fuses Bengali and tribal Tripuri influences — the smoky Gudok (dried fish and bamboo shoot stew) and pungent Berma fish paste define authentic Tripuri cooking.' },
+
+  // ── Mizoram ───────────────────────────────────────────────────────────────
+  { id: 66, city: 'Aizawl', state: 'Mizoram', emoji: '🎋', color: '#10b981',
+    foods: ['Bai (Bamboo Shoot Stew)', 'Vawksa Rep (Smoked Pork)', 'Sawhchiar (Meat Rice Porridge)', 'Sanpiau', 'Misa Mach Poora'],
+    description: 'Aizawl\'s Mizo cuisine is healthy, fragrant, and light. Bai — a boiled stew of seasonal green vegetables, bamboo shoots, and pork fat — is the daily staple of Mizoram.' },
+
+  // ── Haryana ───────────────────────────────────────────────────────────────
+  { id: 67, city: 'Gurugram', state: 'Haryana', emoji: '🌾', color: '#eab308',
+    foods: ['Kachri Ki Sabzi', 'Bajra Roti with White Butter', 'Bathua Raita', 'Hara Dhania Choliya', 'Malpua', 'Kadhi Pakora'],
+    description: 'Haryana\'s rustic cuisine centers around rich dairy, fresh green chickpeas, and coarse grain millet rotis served with fresh farm-made white butter.' },
+
+  // ── Jammu & Kashmir (Jammu Region) ────────────────────────────────────────
+  { id: 68, city: 'Jammu', state: 'Jammu & Kashmir', emoji: '🏔️', color: '#0ea5e9',
+    foods: ['Kaladi Kulcha', 'Rajma Chawal with Anardana Chutney', 'Ambal', 'Khatta Meat', 'Sund Panjeeri'],
+    description: 'Jammu\'s Dogra cuisine is famous for Kaladi Kulcha — a dense, squeaky local artisan cheese pan-fried till golden and tucked inside toasted bread.' },
+
+  // ── Tamil Nadu (Heritage Delta) ────────────────────────────────────────────
+  { id: 69, city: 'Thanjavur', state: 'Tamil Nadu', emoji: '🌾', color: '#d97706',
+    foods: ['Kumbakonam Degree Coffee', 'Thanjavur Sambar', 'Karuvattu Kuzhambu', 'Seeraga Samba Biryani', 'Ashoka Halwa'],
+    description: 'Thanjavur, the rice bowl of Tamil Nadu, produces legendary Kumbakonam Degree Coffee made with chicory-free pure cow milk and dark roasted beans.' },
+
+  // ── Karnataka (Temple & Coast) ──────────────────────────────────────────────
+  { id: 70, city: 'Udupi', state: 'Karnataka', emoji: '🛕', color: '#0284c7',
+    foods: ['Udupi Masala Dosa', 'Udupi Saaru (Rasam)', 'Goli Baje', 'Bisi Bele Bath', 'Hayagreeva Sweet', 'Pathrode'],
+    description: 'Udupi\'s pure vegetarian Krishna Temple cuisine birthed the world-famous South Indian breakfast culture — crisp dosas, golden Goli Baje fritters, and fragrant rasam.' },
+
+  // ── Chandigarh UT ─────────────────────────────────────────────────────────
+  { id: 71, city: 'Chandigarh', state: 'Chandigarh', emoji: '🌹', color: '#ec4899',
+    foods: ['Amritsari Kulcha', 'Chole Bhature', 'Paneer Tikka', 'Tandoori Chicken', 'Pinni', 'Sweet Lassi'],
+    description: 'Chandigarh blends modern urban food culture with heart-warming Punjabi tandoori classics and creamy lassi.' },
+
+  // ── Lakshadweep UT ────────────────────────────────────────────────────────
+  { id: 72, city: 'Kavaratti', state: 'Lakshadweep', emoji: '🏝️', color: '#06b6d4',
+    foods: ['Mus Kavaab (Spiced Tuna)', 'Coconut Bondas', 'Kadai Prawns', 'Kilanji (Rice Crepes)', 'Fish Tikka', 'Kadalakka Payasam'],
+    description: 'Lakshadweep\'s island cuisine centers on oceanic skipjack tuna (Mus) marinated in fresh coconut, Malabar spices, and curry leaves.' },
+
+  // ── Uttar Pradesh (Braj Region) ───────────────────────────────────────────
+  { id: 73, city: 'Mathura', state: 'Uttar Pradesh', emoji: '🛕', color: '#f59e0b',
+    foods: ['Mathura Peda', 'Makhan Mishri', 'Kachori Jalebi', 'Rabri', 'Malpua', 'Ghevar'],
+    description: 'Mathura, Lord Krishna\'s birthplace, is the milk and sweet capital of India — famous for caramelized golden Mathura Pedas made from condensed milk.' },
+
+  // ── Gujarat (Central) ──────────────────────────────────────────────────────
+  { id: 74, city: 'Vadodara', state: 'Gujarat', emoji: '🏛️', color: '#84cc16',
+    foods: ['Sev Usal', 'Bhakarwadi', 'Duliram Peda', 'Khaman', 'Khandvi', 'Kathiyawadi Thali'],
+    description: 'Vadodara is famous for Sev Usal — spicy green pea curry topped with crunchy farsan, garlic chutney, and buttery buns.' },
+
+  // ── West Bengal (North) ───────────────────────────────────────────────────
+  { id: 75, city: 'Siliguri', state: 'West Bengal', emoji: '🏞️', color: '#14b8a6',
+    foods: ['Luchi Alur Dom', 'Steamed Momos', 'Chholar Dal', 'Thukpa', 'Chhena Jalebi', 'Macher Jhol'],
+    description: 'Siliguri connects the plains of Bengal to the North-East hills, featuring a delightful mix of Bengali Luchi-Alur Dom and Himalayan Momos.' },
+
+  // ── Daman & Diu UT ────────────────────────────────────────────────────────
+  { id: 76, city: 'Daman', state: 'Daman & Diu', emoji: '⚓', color: '#6366f1',
+    foods: ['Damanese Prawn Rice', 'Coq au Vin', 'Fish Koliwada', 'Crab Curry', 'Lobster Butter Garlic', 'Sol Kadhi'],
+    description: 'Daman\'s coastal food blends Gujarati seafood with Portuguese colonial marinades — fresh prawns, butter garlic crabs, and spiced fish koliwada.' },
 ];
 
 const allStates = ['All States', ...new Set(cityFoodData.map(c => c.state))].sort((a, b) => a === 'All States' ? -1 : a.localeCompare(b));
@@ -295,7 +350,12 @@ const cityCoords = {
   'Leh': [34.1526, 77.5771], 'Puducherry': [11.9416, 79.8083],
   'Itanagar': [27.0844, 93.6053], 'Ranchi': [23.3441, 85.3096],
   'Raipur': [21.2514, 81.6296], 'Port Blair': [11.6234, 92.7265],
-  'Agartala': [23.8315, 91.2868],
+  'Agartala': [23.8315, 91.2868], 'Aizawl': [23.7271, 92.7176],
+  'Gurugram': [28.4595, 77.0266], 'Jammu': [32.7266, 74.8570],
+  'Thanjavur': [10.7870, 79.1378], 'Udupi': [13.3409, 74.7421],
+  'Chandigarh': [30.7333, 76.7794], 'Kavaratti': [10.5669, 72.6420],
+  'Mathura': [27.4924, 77.6737], 'Vadodara': [22.3072, 73.1812],
+  'Siliguri': [26.7271, 88.3953], 'Daman': [20.3974, 72.8328],
 };
 
 // ── Haversine distance (km) ───────────────────────────────────────────────────
