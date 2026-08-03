@@ -54,45 +54,47 @@ const Login = () => {
     };
 
     return (
-        <div className="container mx-auto px-6 py-24 max-w-md animate-scale-in">
-            <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary animate-slide-up-reveal text-center">
+        <div className="container mx-auto px-6 py-28 max-w-md animate-scale-in">
+            <h2 className="text-4xl font-serif font-black mb-6 text-white text-center">
                 Log In
             </h2>
 
             {error && (
-                <div className="mb-4 p-3 bg-red-100 dark:bg-red-950/60 border border-red-400 text-red-700 dark:text-red-300 rounded-xl font-semibold text-sm flex items-center gap-2">
+                <div className="mb-4 p-3.5 bg-red-500/10 border border-red-500/30 text-red-400 rounded-2xl font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md">
                     <span>⚠️</span>
                     <span>{error}</span>
                 </div>
             )}
 
             {successMessage && (
-                <div className="mb-4 p-3 bg-green-100 dark:bg-green-950/60 border border-green-400 text-green-800 dark:text-green-300 rounded-xl font-semibold text-sm flex items-center gap-2">
+                <div className="mb-4 p-3.5 bg-emerald-500/10 border border-emerald-500/30 text-[#0ff0a0] rounded-2xl font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md">
                     <span>✅</span>
                     <span>{successMessage}</span>
                 </div>
             )}
             
-            <div className="border border-black/10 p-8 bg-bg-secondary flex flex-col gap-6 rounded-2xl shadow-sm">
-                <form onSubmit={handleLogin} className="flex flex-col gap-4">
-                    <label className="text-text-primary font-bold text-sm">Username
+            <div className="obsidian-glass p-8 rounded-3xl flex flex-col gap-6 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] relative">
+                <form onSubmit={handleLogin} className="flex flex-col gap-5">
+                    <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
+                        Username
                         <input
                             type="text"
                             placeholder="Enter your username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[#161622] text-white placeholder-zinc-500 focus:border-[#0ff0a0] focus:ring-2 focus:ring-[#0ff0a0]/20 focus:outline-none transition-all"
                             required
                         />
                     </label>
 
-                    <label className="text-text-primary font-bold text-sm">Password
+                    <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
+                        Password
                         <input
                             type="password"
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[#161622] text-white placeholder-zinc-500 focus:border-[#0ff0a0] focus:ring-2 focus:ring-[#0ff0a0]/20 focus:outline-none transition-all"
                             required
                         />
                     </label>
@@ -100,20 +102,20 @@ const Login = () => {
                     <button 
                         type="submit" 
                         disabled={isLoading}
-                        className="btn btn-primary w-full py-3 mt-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 font-bold transition-all"
+                        className="w-full py-4 mt-2 rounded-2xl text-black bg-[#0ff0a0] hover:bg-[#34d399] font-bold transition-all shadow-[0_0_25px_rgba(15,240,160,0.3)] hover:shadow-[0_0_35px_rgba(15,240,160,0.5)]"
                     >
                         {isLoading ? 'Logging in...' : 'Log In'}
                     </button>
                 </form>
 
-                <div className="text-center text-sm mt-2 text-text-secondary flex flex-col gap-3">
+                <div className="text-center text-sm text-zinc-400 flex flex-col gap-4 pt-2">
                     <div>
-                        Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline font-semibold">Sign Up</Link>
+                        Don't have an account? <Link to="/signup" className="text-[#0ff0a0] hover:underline font-bold">Sign Up</Link>
                     </div>
-                    <div className="pt-3 border-t border-gray-200 dark:border-zinc-800">
+                    <div className="pt-4 border-t border-white/10">
                         <Link 
                             to="/admin/login" 
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 transition-colors px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20"
+                            className="inline-flex items-center gap-2 text-xs font-bold text-[#0ff0a0] hover:text-white transition-colors px-4 py-2 rounded-xl bg-[#0ff0a0]/10 hover:bg-[#0ff0a0]/20 border border-[#0ff0a0]/30"
                         >
                             <span>🛡️</span>
                             <span>Admin Portal Login</span>

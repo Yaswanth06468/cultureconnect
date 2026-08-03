@@ -18,44 +18,26 @@ const problems = [
 
 const ProblemStatement = () => {
     return (
-        <section
-            className="py-24 theme-transition"
-            style={{ backgroundColor: 'var(--theme-bg-secondary)' }}
-        >
+        <section className="py-24 relative bg-[#0d0d14] border-t border-white/5">
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
                     <div>
-                        <span className="text-accent-terra uppercase tracking-widest text-xs font-bold mb-4 block">The Challenge</span>
-                        <h2
-                            className="text-3xl md:text-5xl font-serif font-medium mb-8 leading-tight"
-                            style={{ color: 'var(--theme-text-primary)' }}
-                        >
-                            Why <br /><span className="italic font-light">Culture Connect?</span>
+                        <span className="text-[#ff5e62] uppercase tracking-[0.2em] text-xs font-bold mb-4 block">The Challenge</span>
+                        <h2 className="text-3xl md:text-5xl font-serif font-black mb-8 leading-tight text-white">
+                            Why <br /><span className="italic font-light text-[#0ff0a0]">Culture Connect?</span>
                         </h2>
-                        <p
-                            className="text-lg font-light mb-8 max-w-md"
-                            style={{ color: 'var(--theme-text-secondary)' }}
-                        >
+                        <p className="text-lg font-light mb-8 max-w-md text-zinc-400">
                             In a hyper-connected world, we are paradoxically losing the authentic threads that bind us to our past and to each other.
                         </p>
 
                         <div
                             id="about"
-                            className="p-8 border shadow-sm relative overflow-hidden theme-transition"
-                            style={{
-                                backgroundColor: 'var(--theme-card-bg)',
-                                borderColor: 'var(--theme-border)',
-                            }}
+                            className="p-8 rounded-3xl obsidian-glass relative overflow-hidden border border-emerald-500/30 shadow-[0_0_30px_rgba(15,240,160,0.08)]"
                         >
-                            <h3
-                                className="text-xl font-serif font-medium mb-4"
-                                style={{ color: 'var(--theme-text-primary)' }}
-                            >Our Mission</h3>
-                            <p
-                                className="font-light leading-relaxed"
-                                style={{ color: 'var(--theme-text-secondary)' }}
-                            >
+                            <div className="w-12 h-1 bg-[#0ff0a0] rounded-full mb-4"></div>
+                            <h3 className="text-2xl font-serif font-bold mb-4 text-white">Our Mission</h3>
+                            <p className="font-light leading-relaxed text-zinc-300">
                                 To build a unified platform that connects people based on cultural interests, fostering authentic, respectful, and educational interactions while preserving global heritage.
                             </p>
                         </div>
@@ -63,25 +45,15 @@ const ProblemStatement = () => {
 
                     <div className="space-y-6">
                         {problems.map((item, index) => (
-                            <div key={index} className="flex gap-6 items-start group">
-                                <span
-                                    className="text-4xl font-serif group-hover:text-accent-terra/30 transition-colors font-bold"
-                                    style={{ color: 'color-mix(in srgb, var(--theme-text-primary) 10%, transparent)' }}
-                                >
+                            <div key={index} className="flex gap-6 items-start group p-6 rounded-2xl obsidian-card hover:border-[#0ff0a0]/30 transition-all duration-300">
+                                <span className="text-4xl font-serif font-black text-[#0ff0a0]/40 group-hover:text-[#0ff0a0] transition-colors">
                                     {item.number}
                                 </span>
                                 <div>
-                                    <h3
-                                        className="text-xl font-serif font-medium mb-2"
-                                        style={{ color: 'var(--theme-text-primary)' }}
-                                    >{item.title}</h3>
-                                    <p
-                                        className="font-light leading-relaxed pb-6 group-last:border-0 group-last:pb-0"
-                                        style={{
-                                            color: 'var(--theme-text-secondary)',
-                                            borderBottom: `1px solid var(--theme-border)`,
-                                        }}
-                                    >
+                                    <h3 className="text-xl font-serif font-bold mb-2 text-white group-hover:text-[#0ff0a0] transition-colors">
+                                        {item.title}
+                                    </h3>
+                                    <p className="font-light leading-relaxed text-zinc-400">
                                         {item.description}
                                     </p>
                                 </div>

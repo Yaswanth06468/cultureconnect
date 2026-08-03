@@ -49,86 +49,78 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b theme-transition navbar-glass-mobile ${isScrolled || isMobileMenuOpen ? 'navbar-glass navbar-persistent py-3' : 'bg-transparent py-4'}`}
+            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b navbar-glass-mobile ${isScrolled || isMobileMenuOpen ? 'navbar-glass py-3' : 'bg-[#0a0a0f]/60 backdrop-blur-md py-4 border-white/5'}`}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-3 mr-8 flex-shrink-0 group">
-                    <div className="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                    <div className="relative w-10 h-10 overflow-hidden rounded-xl border border-emerald-500/30 shadow-[0_0_15px_rgba(15,240,160,0.2)] group-hover:scale-110 group-hover:border-emerald-400 transition-all duration-500">
                         <img 
                             src="/culture_premium_logo_v2.png" 
                             alt="Culture Logo" 
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-tr from-accent-terra/20 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[#0ff0a0]/20 to-transparent"></div>
                     </div>
-                    <span className="text-2xl font-serif font-black tracking-tighter" style={{ color: 'var(--theme-text-primary)' }}>
-                        CULTURE
+                    <span className="text-2xl font-serif font-black tracking-tighter text-white group-hover:text-[#0ff0a0] transition-colors duration-300">
+                        CULTURE<span className="text-[#0ff0a0]">CONNECT</span>
                     </span>
                 </Link>
 
                 {/* Desktop Links */}
-                <div className="hidden md:flex items-center gap-2 lg:gap-5 flex-1 justify-center">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            to={link.href}
-                            className="transition-all flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/5 group"
-                        >
-                            <span className="opacity-40 group-hover:opacity-100 group-hover:text-accent-teal transition-all" style={{ color: 'var(--theme-text-primary)' }}>{link.icon}</span>
-                            <span 
-                                className="text-[12px] font-serif font-black uppercase tracking-widest transition-colors"
-                                style={{ color: 'var(--theme-text-secondary)' }}
-                                onMouseEnter={e => e.target.style.color = 'var(--theme-text-primary)'}
-                                onMouseLeave={e => e.target.style.color = 'var(--theme-text-secondary)'}
+                <div className="hidden md:flex items-center gap-2 lg:gap-4 flex-1 justify-center">
+                    {navLinks.map((link) => {
+                        const isActive = location.pathname === link.href;
+                        return (
+                            <Link
+                                key={link.name}
+                                to={link.href}
+                                className={`transition-all duration-300 flex items-center gap-2 px-3.5 py-1.5 rounded-full group ${isActive ? 'bg-emerald-500/10 border border-emerald-500/30 text-[#0ff0a0]' : 'hover:bg-white/5 border border-transparent'}`}
                             >
-                                {link.name}
-                            </span>
-                        </Link>
-                    ))}
+                                <span className={`transition-all duration-300 ${isActive ? 'text-[#0ff0a0]' : 'text-zinc-400 group-hover:text-[#0ff0a0]'}`}>{link.icon}</span>
+                                <span className={`text-[12px] font-sans font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? 'text-[#0ff0a0]' : 'text-zinc-300 group-hover:text-white'}`}>
+                                    {link.name}
+                                </span>
+                            </Link>
+                        );
+                    })}
                 </div>
 
                 {/* Auth Buttons */}
-                <div className="hidden md:flex items-center gap-6 ml-8 flex-shrink-0">
+                <div className="hidden md:flex items-center gap-4 ml-8 flex-shrink-0">
                     {role === 'admin' && (
                         <Link
                             to="/admin"
-                            className="px-5 py-2 text-sm font-bold transition-all duration-300 rounded-full"
+                            className="px-5 py-2 text-sm font-bold transition-all duration-300 rounded-full flex items-center gap-1.5"
                             style={{
-                                background: 'linear-gradient(135deg, #0d9668, #34d399)',
-                                color: '#fff',
-                                boxShadow: '0 0 20px rgba(13,150,104,0.3)',
+                                background: 'linear-gradient(135deg, #0ff0a0, #00b4d8)',
+                                color: '#050508',
+                                boxShadow: '0 0 20px rgba(15,240,160,0.3)',
                             }}
                         >
-                            🛡️ Admin
+                            <span>🛡️</span> Admin
                         </Link>
                     )}
                     {token ? (
                         <>
-                            <Link to={`/profile/${username}`} className="flex items-center gap-2 group">
+                            <Link to={`/profile/${username}`} className="flex items-center gap-2.5 group px-3 py-1.5 rounded-full border border-white/10 hover:border-emerald-500/40 bg-white/5 transition-all duration-300">
                                 {avatar ? (
                                     <img
                                         src={avatar}
                                         alt={username}
-                                        className="w-8 h-8 rounded-full object-cover border-2 border-accent-teal/40 group-hover:border-accent-teal transition-all duration-300 shadow-sm"
+                                        className="w-7 h-7 rounded-full object-cover border border-[#0ff0a0]/60 group-hover:border-[#0ff0a0] transition-all duration-300 shadow-sm"
                                         referrerPolicy="no-referrer"
                                     />
                                 ) : (
-                                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 border-accent-teal/40" style={{ backgroundColor: 'var(--theme-bg-secondary)', color: 'var(--theme-text-primary)' }}>
+                                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-emerald-500/20 text-[#0ff0a0] border border-[#0ff0a0]/40">
                                         {username?.[0]?.toUpperCase() || '?'}
                                     </div>
                                 )}
-                                <span className="text-sm font-bold text-accent-teal">Hi, {username}</span>
+                                <span className="text-xs font-bold text-zinc-200 group-hover:text-[#0ff0a0] transition-colors">{username}</span>
                             </Link>
                             <button
                                 onClick={handleLogout}
-                                className="px-6 py-2 text-sm font-medium transition-colors duration-300 theme-transition"
-                                style={{
-                                    border: `1px solid var(--theme-text-primary)`,
-                                    color: 'var(--theme-text-primary)',
-                                }}
-                                onMouseEnter={e => e.target.style.backgroundColor = 'var(--theme-bg-secondary)'}
-                                onMouseLeave={e => e.target.style.backgroundColor = 'transparent'}
+                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-white/15 text-zinc-300 hover:text-white hover:border-red-500/50 hover:bg-red-500/10 transition-all duration-300"
                             >
                                 Logout
                             </button>
@@ -137,21 +129,13 @@ const Navbar = () => {
                         <>
                             <Link
                                 to="/login"
-                                className="px-6 py-2 text-sm font-medium transition-colors duration-300 theme-transition"
-                                style={{
-                                    border: `1px solid var(--theme-text-primary)`,
-                                    color: 'var(--theme-text-primary)',
-                                }}
+                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-white/20 text-zinc-200 hover:text-white hover:border-[#0ff0a0]/50 hover:bg-[#0ff0a0]/10 transition-all duration-300"
                             >
                                 Login
                             </Link>
                             <Link
                                 to="/signup"
-                                className="px-6 py-2 text-sm font-medium transition-colors duration-300 theme-transition"
-                                style={{
-                                    backgroundColor: 'var(--theme-text-primary)',
-                                    color: 'var(--theme-bg-primary)',
-                                }}
+                                className="px-6 py-2 text-xs font-bold tracking-wider uppercase rounded-full transition-all duration-300 text-black bg-[#0ff0a0] hover:bg-[#34d399] shadow-[0_0_20px_rgba(15,240,160,0.3)] hover:shadow-[0_0_25px_rgba(15,240,160,0.5)]"
                             >
                                 Sign Up
                             </Link>
@@ -179,21 +163,17 @@ const Navbar = () => {
             {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
                 <div
-                    className="md:hidden absolute top-full left-0 w-full p-6 flex flex-col gap-6 animate-fade-in shadow-xl theme-transition"
-                    style={{
-                        backgroundColor: 'var(--theme-bg-primary)',
-                        borderBottom: `1px solid var(--theme-border)`,
-                    }}
+                    className="md:hidden absolute top-full left-0 w-full p-6 flex flex-col gap-6 animate-fade-in shadow-2xl obsidian-glass border-b border-white/10"
                 >
                     {navLinks.map((link) => (
                         <Link
                             key={link.name}
                             to={link.href}
-                            className="flex items-center gap-6 group"
+                            className="flex items-center gap-5 group"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <span className="opacity-40 group-hover:opacity-100 group-hover:text-accent-teal transition-all scale-150" style={{ color: 'var(--theme-text-primary)' }}>{link.icon}</span>
-                            <span className="text-3xl font-serif font-black tracking-tight" style={{ color: 'var(--theme-text-primary)' }}>
+                            <span className="text-zinc-400 group-hover:text-[#0ff0a0] transition-colors scale-125">{link.icon}</span>
+                            <span className="text-2xl font-serif font-black tracking-tight text-zinc-200 group-hover:text-[#0ff0a0] transition-colors">
                                 {link.name}
                             </span>
                         </Link>
@@ -201,47 +181,35 @@ const Navbar = () => {
                     {role === 'admin' && (
                         <Link
                             to="/admin"
-                            className="flex items-center gap-6 group"
+                            className="flex items-center gap-5 group"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <span className="opacity-80 scale-150" style={{ color: '#0d9668' }}>🛡️</span>
-                            <span className="text-3xl font-serif font-black tracking-tight" style={{ background: 'linear-gradient(135deg, #0d9668, #34d399)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                                Admin
+                            <span className="scale-125">🛡️</span>
+                            <span className="text-2xl font-serif font-black tracking-tight text-[#0ff0a0]">
+                                Admin Portal
                             </span>
                         </Link>
                     )}
                     {token ? (
                         <button
                             onClick={handleLogout}
-                            className="w-full py-3 font-medium"
-                            style={{
-                                border: `1px solid var(--theme-text-primary)`,
-                                color: 'var(--theme-text-primary)',
-                            }}
+                            className="w-full py-3 text-sm font-bold tracking-wider uppercase rounded-xl border border-red-500/40 text-red-400 bg-red-500/10"
                         >
                             Logout
                         </button>
                     ) : (
-                        <div className="flex flex-col gap-3">
+                        <div className="flex flex-col gap-3 pt-2">
                             <Link
                                 to="/login"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full text-center py-3 font-medium"
-                                style={{
-                                    border: `1px solid var(--theme-text-primary)`,
-                                    color: 'var(--theme-text-primary)',
-                                }}
+                                className="w-full text-center py-3 font-bold rounded-xl border border-white/20 text-white bg-white/5"
                             >
                                 Login
                             </Link>
                             <Link
                                 to="/signup"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full text-center py-3 font-medium"
-                                style={{
-                                    backgroundColor: 'var(--theme-text-primary)',
-                                    color: 'var(--theme-bg-primary)',
-                                }}
+                                className="w-full text-center py-3 font-bold rounded-xl text-black bg-[#0ff0a0] shadow-[0_0_20px_rgba(15,240,160,0.3)]"
                             >
                                 Sign Up
                             </Link>

@@ -57,56 +57,59 @@ const Signup = () => {
     };
 
     return (
-        <div className="container mx-auto px-6 py-24 max-w-md animate-scale-in">
-            <h2 className="text-3xl font-serif font-bold mb-6 text-text-primary animate-slide-up-reveal text-center">
+        <div className="container mx-auto px-6 py-28 max-w-md animate-scale-in">
+            <h2 className="text-4xl font-serif font-black mb-6 text-white text-center">
                 Sign Up
             </h2>
             
             {error && (
-                <div className="mb-4 p-3 bg-red-100 dark:bg-red-950/60 border border-red-400 text-red-700 dark:text-red-300 rounded-xl font-semibold text-sm flex items-center gap-2">
+                <div className="mb-4 p-3.5 bg-red-500/10 border border-red-500/30 text-red-400 rounded-2xl font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md">
                     <span>⚠️</span>
                     <span>{error}</span>
                 </div>
             )}
 
             {successMessage && (
-                <div className="mb-4 p-3 bg-green-100 dark:bg-green-950/60 border border-green-400 text-green-800 dark:text-green-300 rounded-xl font-semibold text-sm flex items-center gap-2">
+                <div className="mb-4 p-3.5 bg-emerald-500/10 border border-emerald-500/30 text-[#0ff0a0] rounded-2xl font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md">
                     <span>✅</span>
                     <span>{successMessage}</span>
                 </div>
             )}
             
-            <div className="border border-black/10 p-8 bg-bg-secondary flex flex-col gap-6 rounded-2xl shadow-sm">
-                <form onSubmit={handleSignup} className="flex flex-col gap-4">
-                    <label className="text-text-primary font-bold text-sm">Username
+            <div className="obsidian-glass p-8 rounded-3xl flex flex-col gap-6 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] relative">
+                <form onSubmit={handleSignup} className="flex flex-col gap-5">
+                    <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
+                        Username
                         <input
                             type="text"
                             placeholder="Choose a username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[#161622] text-white placeholder-zinc-500 focus:border-[#0ff0a0] focus:ring-2 focus:ring-[#0ff0a0]/20 focus:outline-none transition-all"
                             required
                         />
                     </label>
 
-                    <label className="text-text-primary font-bold text-sm">Password
+                    <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
+                        Password
                         <input
                             type="password"
                             placeholder="Choose a password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[#161622] text-white placeholder-zinc-500 focus:border-[#0ff0a0] focus:ring-2 focus:ring-[#0ff0a0]/20 focus:outline-none transition-all"
                             required
                         />
                     </label>
 
-                    <label className="text-text-primary font-bold text-sm">Confirm Password
+                    <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
+                        Confirm Password
                         <input
                             type="password"
                             placeholder="Confirm your password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full mt-1.5 p-3 border border-gray-300 dark:border-zinc-700 rounded-xl bg-bg-primary text-text-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[#161622] text-white placeholder-zinc-500 focus:border-[#0ff0a0] focus:ring-2 focus:ring-[#0ff0a0]/20 focus:outline-none transition-all"
                             required
                         />
                     </label>
@@ -114,14 +117,14 @@ const Signup = () => {
                     <button 
                         type="submit" 
                         disabled={isLoading}
-                        className="btn btn-primary w-full py-3 mt-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 font-bold transition-all"
+                        className="w-full py-4 mt-2 rounded-2xl text-black bg-[#0ff0a0] hover:bg-[#34d399] font-bold transition-all shadow-[0_0_25px_rgba(15,240,160,0.3)] hover:shadow-[0_0_35px_rgba(15,240,160,0.5)]"
                     >
                         {isLoading ? 'Creating Account...' : 'Sign Up'}
                     </button>
                 </form>
 
-                <div className="text-center text-sm mt-2 text-text-secondary">
-                    Already have an account? <Link to="/login" className="text-blue-500 hover:underline font-semibold">Log In</Link>
+                <div className="text-center text-sm text-zinc-400">
+                    Already have an account? <Link to="/login" className="text-[#0ff0a0] hover:underline font-bold">Log In</Link>
                 </div>
             </div>
         </div>
