@@ -883,6 +883,33 @@ const CityFoodExplorer = () => {
     return matchQ && matchS;
   });
 
+  const handleSelectCityFromNotif = (notifObj) => {
+    if (!notifObj) return;
+    const fullCity = cityFoodData.find(c => c.id === notifObj.id || c.city?.toLowerCase() === notifObj.city?.toLowerCase()) || notifObj;
+    setSelectedCity(fullCity);
+    setSelState('All States');
+    setSearch('');
+
+    setTimeout(() => {
+      const el = document.getElementById('food-detail-panel');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
+  const handleSelectCity = (city) => {
+    setSelectedCity(city);
+    if (window.innerWidth < 1024) {
+      setTimeout(() => {
+        const el = document.getElementById('food-detail-panel');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  };
+
   return (
     <div className="min-h-screen pt-20 pb-16 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
       <style>{`
@@ -957,13 +984,14 @@ const CityFoodExplorer = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 pb-6">
-                {filtered.map(city => <CityCard key={city.id} city={city} isSelected={selectedCity?.id === city.id} onSelect={setSelectedCity} />)}
+                {filtered.map(city => <CityCard key={city.id} city={city} isSelected={selectedCity?.id === city.id} onSelect={handleSelectCity} />)}
               </div>
             )}
           </div>
 
           {/* Right Column: Detail Panel */}
           <div 
+            id="food-detail-panel"
             className="flex-1 min-w-72 w-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1.5 custom-scrollbar" 
             style={{ overscrollBehavior: 'contain' }}
           >
@@ -996,7 +1024,7 @@ const CityFoodExplorer = () => {
         </div>
       </div>
 
-      <FoodNotification key={notifKey} notif={notif} onClose={() => setNotif(null)} onSelectCity={setSelectedCity} />
+      <FoodNotification key={notifKey} notif={notif} onClose={() => setNotif(null)} onSelectCity={handleSelectCityFromNotif} />
     </div>
   );
 };
