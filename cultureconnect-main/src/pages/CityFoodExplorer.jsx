@@ -883,6 +883,19 @@ const CityFoodExplorer = () => {
     return matchQ && matchS;
   });
 
+  const scrollToTop = () => {
+    const sectionEl = document.getElementById('city-food-section');
+    if (sectionEl) {
+      sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const cardsEl = document.getElementById('city-cards-grid');
+    if (cardsEl) cardsEl.scrollTop = 0;
+    const detailEl = document.getElementById('food-detail-panel');
+    if (detailEl) detailEl.scrollTop = 0;
+  };
+
   const handleSelectCityFromNotif = (notifObj) => {
     if (!notifObj) return;
     const fullCity = cityFoodData.find(c => c.id === notifObj.id || c.city?.toLowerCase() === notifObj.city?.toLowerCase()) || notifObj;
@@ -890,28 +903,16 @@ const CityFoodExplorer = () => {
     setSelState('All States');
     setSearch('');
 
-    setTimeout(() => {
-      const el = document.getElementById('food-detail-panel');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
+    setTimeout(scrollToTop, 50);
   };
 
   const handleSelectCity = (city) => {
     setSelectedCity(city);
-    if (window.innerWidth < 1024) {
-      setTimeout(() => {
-        const el = document.getElementById('food-detail-panel');
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
-    }
+    setTimeout(scrollToTop, 50);
   };
 
   return (
-    <div className="min-h-screen pt-20 pb-16 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
+    <div id="city-food-section" className="min-h-screen pt-20 pb-16 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)', scrollMarginTop: '80px' }}>
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 5px;
@@ -970,9 +971,10 @@ const CityFoodExplorer = () => {
         </div>
 
         {/* Independent Dual-Panel Scroll Layout */}
-        <div className="flex flex-col lg:flex-row gap-6 items-start">
+        <div className="flex flex-col lg:flex-row gap-6 items-start relative">
           {/* Left Column: City Cards Grid */}
           <div 
+            id="city-cards-grid"
             className="flex-[1.3] min-w-0 w-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1.5 custom-scrollbar" 
             style={{ overscrollBehavior: 'contain' }}
           >
@@ -1021,6 +1023,17 @@ const CityFoodExplorer = () => {
               </div>
             )}
           </div>
+
+          {/* Floating Scroll-to-Top Button */}
+          <button
+            onClick={scrollToTop}
+            title="Scroll to Top"
+            className="fixed bottom-6 right-6 z-40 bg-accent-terra text-white font-bold p-3.5 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center border border-white/20"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            </svg>
+          </button>
         </div>
       </div>
 
