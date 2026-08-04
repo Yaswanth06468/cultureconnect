@@ -30,11 +30,11 @@ const cultures = [
 
 const CulturalShowcase = () => {
     return (
-        <section className="py-24 overflow-hidden bg-[#0a0a0f] border-t border-white/5 relative">
+        <section className="py-24 overflow-hidden bg-[var(--theme-bg-primary)] border-t border-[var(--theme-border)] relative transition-colors duration-400">
             <div className="container mx-auto px-6 mb-12 flex justify-between items-end">
                 <div>
                     <span className="text-[#0ff0a0] uppercase tracking-[0.2em] text-xs font-bold mb-2 block">Curated Journeys</span>
-                    <h2 className="text-3xl md:text-5xl font-serif font-black text-white">
+                    <h2 className="text-3xl md:text-5xl font-serif font-black text-[var(--theme-text-primary)]">
                         Cultural <span className="italic text-[#ffc857]">Highlights</span>
                     </h2>
                 </div>
@@ -61,13 +61,13 @@ const CulturalShowcase = () => {
                             alt={item.name}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/40 to-transparent opacity-90"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg-primary)] via-[var(--theme-bg-primary)]/40 to-transparent opacity-90"></div>
 
                         <div className="absolute bottom-0 left-0 p-6 w-full">
                             <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-[#0ff0a0]/20 text-[#0ff0a0] border border-[#0ff0a0]/40 backdrop-blur-md mb-3">
                                 {item.tag}
                             </span>
-                            <h3 className="text-2xl font-serif font-bold text-white group-hover:text-[#0ff0a0] transition-colors">
+                            <h3 className="text-2xl font-serif font-bold text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors">
                                 {item.name}
                             </h3>
                         </div>

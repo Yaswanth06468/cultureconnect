@@ -11,21 +11,41 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-    const isDark = true;
+    const [theme, setTheme] = useState(() => {
+        const savedTheme = localStorage.getItem('theme');
+        return savedTheme || 'dark';
+    });
+
+    const isDark = theme === 'dark';
 
     useEffect(() => {
         const root = document.documentElement;
-        root.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-    }, []);
+        if (theme === 'dark') {
+            root.classList.add('dark');
+            root.classList.remove('light');
+        } else {
+            root.classList.add('light');
+            root.classList.remove('dark');
+        }
+        localStorage.setItem('theme', theme);
+    }, [theme]);
 
-    const toggleTheme = () => {};
+    const toggleTheme = () => {
+        setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    };
+
+    const setMode = (mode) => {
+        if (mode === 'light' || mode === 'dark') {
+            setTheme(mode);
+        }
+    };
 
     return (
-        <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, isDark, toggleTheme, setMode }}>
             {children}
         </ThemeContext.Provider>
     );
 };
 
 export default ThemeContext;
+

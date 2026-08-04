@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { AuthContext, useContext } from '../context/AuthContext';
 import React from 'react';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -40,7 +41,7 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Feed', href: '/feed', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg> },
-        { name: 'Events', href: '/events', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z"/></svg> },
+        { name: 'Events', href: '/events', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> },
         { name: 'Translate', href: '/translate', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5a18.022 18.022 0 01-3.827-5.802M13.43 5.34c-1.332 3.976-3.59 7.291-6.21 9.422M8 19l2-4m0 0l-5 5m5-5h10l-4-4l-4 4z"/></svg> },
         { name: 'Dances', href: '/dances', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/></svg> },
         { name: 'City Food', href: '/city-food', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg> },
@@ -49,7 +50,13 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b navbar-glass-mobile ${isScrolled || isMobileMenuOpen ? 'navbar-glass py-3' : 'bg-[#0a0a0f]/60 backdrop-blur-md py-4 border-white/5'}`}
+            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b navbar-glass-mobile ${
+                isScrolled || isMobileMenuOpen 
+                    ? 'navbar-glass py-3' 
+                    : isDark 
+                        ? 'bg-[#0a0a0f]/60 backdrop-blur-md py-4 border-white/5' 
+                        : 'bg-white/70 backdrop-blur-md py-4 border-black/5'
+            }`}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
@@ -62,7 +69,7 @@ const Navbar = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-tr from-[#0ff0a0]/20 to-transparent"></div>
                     </div>
-                    <span className="text-2xl font-serif font-black tracking-tighter text-white group-hover:text-[#0ff0a0] transition-colors duration-300">
+                    <span className="text-2xl font-serif font-black tracking-tighter text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors duration-300">
                         CULTURE<span className="text-[#0ff0a0]">CONNECT</span>
                     </span>
                 </Link>
@@ -75,10 +82,10 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 to={link.href}
-                                className={`transition-all duration-300 flex items-center gap-2 px-3.5 py-1.5 rounded-full group ${isActive ? 'bg-emerald-500/10 border border-emerald-500/30 text-[#0ff0a0]' : 'hover:bg-white/5 border border-transparent'}`}
+                                className={`transition-all duration-300 flex items-center gap-2 px-3.5 py-1.5 rounded-full group ${isActive ? 'bg-emerald-500/10 border border-emerald-500/30 text-[#0ff0a0]' : 'hover:bg-black/5 dark:hover:bg-white/5 border border-transparent'}`}
                             >
                                 <span className={`transition-all duration-300 ${isActive ? 'text-[#0ff0a0]' : 'text-zinc-400 group-hover:text-[#0ff0a0]'}`}>{link.icon}</span>
-                                <span className={`text-[12px] font-sans font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? 'text-[#0ff0a0]' : 'text-zinc-300 group-hover:text-white'}`}>
+                                <span className={`text-[12px] font-sans font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? 'text-[#0ff0a0]' : 'text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-text-primary)]'}`}>
                                     {link.name}
                                 </span>
                             </Link>
@@ -86,8 +93,10 @@ const Navbar = () => {
                     })}
                 </div>
 
-                {/* Auth Buttons */}
+                {/* Auth Buttons + Theme Toggle */}
                 <div className="hidden md:flex items-center gap-4 ml-8 flex-shrink-0">
+                    <ThemeToggle variant="compact" />
+                    
                     {role === 'admin' && (
                         <Link
                             to="/admin"
@@ -103,7 +112,7 @@ const Navbar = () => {
                     )}
                     {token ? (
                         <>
-                            <Link to={`/profile/${username}`} className="flex items-center gap-2.5 group px-3 py-1.5 rounded-full border border-white/10 hover:border-emerald-500/40 bg-white/5 transition-all duration-300">
+                            <Link to={`/profile/${username}`} className="flex items-center gap-2.5 group px-3 py-1.5 rounded-full border border-black/10 dark:border-white/10 hover:border-emerald-500/40 bg-black/5 dark:bg-white/5 transition-all duration-300">
                                 {avatar ? (
                                     <img
                                         src={avatar}
@@ -116,11 +125,11 @@ const Navbar = () => {
                                         {username?.[0]?.toUpperCase() || '?'}
                                     </div>
                                 )}
-                                <span className="text-xs font-bold text-zinc-200 group-hover:text-[#0ff0a0] transition-colors">{username}</span>
+                                <span className="text-xs font-bold text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors">{username}</span>
                             </Link>
                             <button
                                 onClick={handleLogout}
-                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-white/15 text-zinc-300 hover:text-white hover:border-red-500/50 hover:bg-red-500/10 transition-all duration-300"
+                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-black/15 dark:border-white/15 text-[var(--theme-text-secondary)] hover:text-red-500 hover:border-red-500/50 hover:bg-red-500/10 transition-all duration-300"
                             >
                                 Logout
                             </button>
@@ -129,7 +138,7 @@ const Navbar = () => {
                         <>
                             <Link
                                 to="/login"
-                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-white/20 text-zinc-200 hover:text-white hover:border-[#0ff0a0]/50 hover:bg-[#0ff0a0]/10 transition-all duration-300"
+                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-black/15 dark:border-white/20 text-[var(--theme-text-primary)] hover:border-[#0ff0a0]/50 hover:bg-[#0ff0a0]/10 transition-all duration-300"
                             >
                                 Login
                             </Link>
@@ -144,26 +153,29 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Menu Button */}
-                <button
-                    className="md:hidden focus:outline-none"
-                    style={{ color: 'var(--theme-text-primary)' }}
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    aria-label="Toggle menu"
-                >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        {isMobileMenuOpen ? (
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                        ) : (
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
-                        )}
-                    </svg>
-                </button>
+                <div className="flex items-center gap-3 md:hidden">
+                    <ThemeToggle variant="compact" />
+                    <button
+                        className="focus:outline-none p-1"
+                        style={{ color: 'var(--theme-text-primary)' }}
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {isMobileMenuOpen ? (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                            ) : (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
+                            )}
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
                 <div
-                    className="md:hidden absolute top-full left-0 w-full p-6 flex flex-col gap-6 animate-fade-in shadow-2xl obsidian-glass border-b border-white/10"
+                    className="md:hidden absolute top-full left-0 w-full p-6 flex flex-col gap-6 animate-fade-in shadow-2xl obsidian-glass border-b border-[var(--theme-border)]"
                 >
                     {navLinks.map((link) => (
                         <Link
@@ -172,8 +184,8 @@ const Navbar = () => {
                             className="flex items-center gap-5 group"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <span className="text-zinc-400 group-hover:text-[#0ff0a0] transition-colors scale-125">{link.icon}</span>
-                            <span className="text-2xl font-serif font-black tracking-tight text-zinc-200 group-hover:text-[#0ff0a0] transition-colors">
+                            <span className="text-[var(--theme-text-muted)] group-hover:text-[#0ff0a0] transition-colors scale-125">{link.icon}</span>
+                            <span className="text-2xl font-serif font-black tracking-tight text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors">
                                 {link.name}
                             </span>
                         </Link>
@@ -202,7 +214,7 @@ const Navbar = () => {
                             <Link
                                 to="/login"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full text-center py-3 font-bold rounded-xl border border-white/20 text-white bg-white/5"
+                                className="w-full text-center py-3 font-bold rounded-xl border border-[var(--theme-border)] text-[var(--theme-text-primary)] bg-black/5 dark:bg-white/5"
                             >
                                 Login
                             </Link>
@@ -222,3 +234,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

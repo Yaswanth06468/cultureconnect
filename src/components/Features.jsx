@@ -35,14 +35,14 @@ const features = [
 
 const Features = () => {
     return (
-        <section id="discover" className="py-24 relative bg-[#0a0a0f] border-t border-white/5">
+        <section id="discover" className="py-24 relative bg-[var(--theme-bg-primary)] border-t border-[var(--theme-border)] transition-colors duration-400">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
                     <div className="max-w-xl">
-                        <h2 className="text-3xl md:text-5xl font-serif font-black mb-6 text-white">
+                        <h2 className="text-3xl md:text-5xl font-serif font-black mb-6 text-[var(--theme-text-primary)]">
                             Experience the <span className="italic text-[#0ff0a0]">Unseen</span>
                         </h2>
-                        <p className="text-lg font-light leading-relaxed text-zinc-400">
+                        <p className="text-lg font-light leading-relaxed text-[var(--theme-text-secondary)]">
                             Our platform provides structured, inclusive spaces for meaningful cultural exchange, moving beyond surface-level tourism to deep understanding.
                         </p>
                     </div>
@@ -59,10 +59,10 @@ const Features = () => {
                                 <div className="mb-6 p-4 inline-block rounded-2xl bg-white/5 border border-white/10 group-hover:border-[#0ff0a0]/40 group-hover:bg-[#0ff0a0]/10 transition-all duration-300">
                                     {feature.icon}
                                 </div>
-                                <h3 className="text-2xl font-serif font-bold mb-3 text-white group-hover:text-[#0ff0a0] transition-colors">
+                                <h3 className="text-2xl font-serif font-bold mb-3 text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors">
                                     {feature.title}
                                 </h3>
-                                <p className="leading-relaxed font-light mb-8 text-zinc-400">
+                                <p className="leading-relaxed font-light mb-8 text-[var(--theme-text-secondary)]">
                                     {feature.description}
                                 </p>
                             </div>
