@@ -50,13 +50,7 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b navbar-glass-mobile ${
-                isScrolled || isMobileMenuOpen 
-                    ? 'navbar-glass py-3' 
-                    : isDark 
-                        ? 'bg-[#0a0a0f]/60 backdrop-blur-md py-4 border-white/5' 
-                        : 'bg-white/70 backdrop-blur-md py-4 border-black/5'
-            }`}
+            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b navbar-glass-mobile ${isScrolled || isMobileMenuOpen ? 'navbar-glass py-3' : 'bg-[#0a0a0f]/60 backdrop-blur-md py-4 border-white/5'}`}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
@@ -82,10 +76,10 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 to={link.href}
-                                className={`transition-all duration-300 flex items-center gap-2 px-3.5 py-1.5 rounded-full group ${isActive ? 'bg-emerald-500/10 border border-emerald-500/30 text-[#0ff0a0]' : 'hover:bg-black/5 dark:hover:bg-white/5 border border-transparent'}`}
+                                className={`transition-all duration-300 flex items-center gap-2 px-3.5 py-1.5 rounded-full group ${isActive ? 'bg-emerald-500/10 border border-emerald-500/30 text-[#0ff0a0]' : 'hover:bg-white/5 border border-transparent'}`}
                             >
                                 <span className={`transition-all duration-300 ${isActive ? 'text-[#0ff0a0]' : 'text-zinc-400 group-hover:text-[#0ff0a0]'}`}>{link.icon}</span>
-                                <span className={`text-[12px] font-sans font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? 'text-[#0ff0a0]' : 'text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-text-primary)]'}`}>
+                                <span className={`text-[12px] font-sans font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? 'text-[#0ff0a0]' : 'text-zinc-300 group-hover:text-white'}`}>
                                     {link.name}
                                 </span>
                             </Link>
@@ -110,7 +104,7 @@ const Navbar = () => {
                     )}
                     {token ? (
                         <>
-                            <Link to={`/profile/${username}`} className="flex items-center gap-2.5 group px-3 py-1.5 rounded-full border border-black/10 dark:border-white/10 hover:border-emerald-500/40 bg-black/5 dark:bg-white/5 transition-all duration-300">
+                            <Link to={`/profile/${username}`} className="flex items-center gap-2.5 group px-3 py-1.5 rounded-full border border-white/10 hover:border-emerald-500/40 bg-white/5 transition-all duration-300">
                                 {avatar ? (
                                     <img
                                         src={avatar}
@@ -123,11 +117,11 @@ const Navbar = () => {
                                         {username?.[0]?.toUpperCase() || '?'}
                                     </div>
                                 )}
-                                <span className="text-xs font-bold text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors">{username}</span>
+                                <span className="text-xs font-bold text-zinc-200 group-hover:text-[#0ff0a0] transition-colors">{username}</span>
                             </Link>
                             <button
                                 onClick={handleLogout}
-                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-black/15 dark:border-white/15 text-[var(--theme-text-secondary)] hover:text-red-500 hover:border-red-500/50 hover:bg-red-500/10 transition-all duration-300"
+                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-white/15 text-zinc-300 hover:text-white hover:border-red-500/50 hover:bg-red-500/10 transition-all duration-300"
                             >
                                 Logout
                             </button>
@@ -136,7 +130,7 @@ const Navbar = () => {
                         <>
                             <Link
                                 to="/login"
-                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-black/15 dark:border-white/20 text-[var(--theme-text-primary)] hover:border-[#0ff0a0]/50 hover:bg-[#0ff0a0]/10 transition-all duration-300"
+                                className="px-5 py-2 text-xs font-bold tracking-wider uppercase rounded-full border border-white/20 text-zinc-200 hover:text-white hover:border-[#0ff0a0]/50 hover:bg-[#0ff0a0]/10 transition-all duration-300"
                             >
                                 Login
                             </Link>
@@ -152,8 +146,7 @@ const Navbar = () => {
 
                 {/* Mobile Menu Button */}
                 <button
-                    className="md:hidden focus:outline-none"
-                    style={{ color: 'var(--theme-text-primary)' }}
+                    className="md:hidden focus:outline-none text-white"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     aria-label="Toggle menu"
                 >
@@ -170,7 +163,7 @@ const Navbar = () => {
             {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
                 <div
-                    className="md:hidden absolute top-full left-0 w-full p-6 flex flex-col gap-6 animate-fade-in shadow-2xl obsidian-glass border-b border-[var(--theme-border)]"
+                    className="md:hidden absolute top-full left-0 w-full p-6 flex flex-col gap-6 animate-fade-in shadow-2xl obsidian-glass border-b border-white/10"
                 >
                     {navLinks.map((link) => (
                         <Link
@@ -179,8 +172,8 @@ const Navbar = () => {
                             className="flex items-center gap-5 group"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <span className="text-[var(--theme-text-muted)] group-hover:text-[#0ff0a0] transition-colors scale-125">{link.icon}</span>
-                            <span className="text-2xl font-serif font-black tracking-tight text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors">
+                            <span className="text-zinc-400 group-hover:text-[#0ff0a0] transition-colors scale-125">{link.icon}</span>
+                            <span className="text-2xl font-serif font-black tracking-tight text-zinc-200 group-hover:text-[#0ff0a0] transition-colors">
                                 {link.name}
                             </span>
                         </Link>
@@ -209,7 +202,7 @@ const Navbar = () => {
                             <Link
                                 to="/login"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full text-center py-3 font-bold rounded-xl border border-[var(--theme-border)] text-[var(--theme-text-primary)] bg-black/5 dark:bg-white/5"
+                                className="w-full text-center py-3 font-bold rounded-xl border border-white/20 text-white bg-white/5"
                             >
                                 Login
                             </Link>

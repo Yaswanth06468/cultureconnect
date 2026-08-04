@@ -77,11 +77,7 @@
 
 :root.light body {
     background-color: var(--theme-bg-primary);
-    background-image: 
-        radial-gradient(at 10% 10%, rgba(5, 150, 105, 0.08) 0px, transparent 40%),
-        radial-gradient(at 90% 20%, rgba(124, 58, 237, 0.07) 0px, transparent 40%),
-        radial-gradient(at 50% 80%, rgba(37, 99, 235, 0.06) 0px, transparent 50%),
-        radial-gradient(at 80% 90%, rgba(220, 38, 38, 0.05) 0px, transparent 40%);
+    background-image: none;
     color: var(--theme-text-primary);
 }
 
@@ -102,12 +98,6 @@
 :root.light .obsidian-card:hover {
     border-color: rgba(5, 150, 105, 0.4);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 0 20px rgba(5, 150, 105, 0.15);
-}
-
-:root.light .navbar-glass {
-    background-color: rgba(255, 255, 255, 0.88) !important;
-    border-color: rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06) !important;
 }
 
 @layer base {
@@ -229,14 +219,6 @@
         border-color: rgba(255, 255, 255, 0.08) !important;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
         backdrop-filter: blur(25px) saturate(200%) !important;
-    }
-}
-
-@media (max-width: 768px) {
-    :root.light .navbar-glass-mobile {
-        background-color: rgba(255, 255, 255, 0.95) !important;
-        border-color: rgba(0, 0, 0, 0.08) !important;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06) !important;
     }
 }
 
