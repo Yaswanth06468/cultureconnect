@@ -21,6 +21,7 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import ThemeToggle from './components/ThemeToggle';
 import { API_BASE_URL } from './config';
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
       <BrowserRouter>
         <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)', transition: 'background-color 0.4s ease, color 0.4s ease' }}>
           <Navbar />
+          <ThemeToggle />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/feed" element={<Feed />} />

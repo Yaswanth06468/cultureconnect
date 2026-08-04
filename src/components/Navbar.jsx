@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { AuthContext, useContext } from '../context/AuthContext';
 import React from 'react';
-import ThemeToggle from './ThemeToggle';
+
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -69,7 +69,7 @@ const Navbar = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-tr from-[#0ff0a0]/20 to-transparent"></div>
                     </div>
-                    <span className="text-2xl font-serif font-black tracking-tighter text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors duration-300">
+                    <span className="text-2xl font-serif font-black tracking-tighter text-white group-hover:text-[#0ff0a0] transition-colors duration-300">
                         CULTURE<span className="text-[#0ff0a0]">CONNECT</span>
                     </span>
                 </Link>
@@ -93,10 +93,8 @@ const Navbar = () => {
                     })}
                 </div>
 
-                {/* Auth Buttons + Theme Toggle */}
+                {/* Auth Buttons */}
                 <div className="hidden md:flex items-center gap-4 ml-8 flex-shrink-0">
-                    <ThemeToggle variant="compact" />
-                    
                     {role === 'admin' && (
                         <Link
                             to="/admin"
@@ -153,23 +151,20 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Menu Button */}
-                <div className="flex items-center gap-3 md:hidden">
-                    <ThemeToggle variant="compact" />
-                    <button
-                        className="focus:outline-none p-1"
-                        style={{ color: 'var(--theme-text-primary)' }}
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        aria-label="Toggle menu"
-                    >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            {isMobileMenuOpen ? (
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                            ) : (
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
-                            )}
-                        </svg>
-                    </button>
-                </div>
+                <button
+                    className="md:hidden focus:outline-none"
+                    style={{ color: 'var(--theme-text-primary)' }}
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    aria-label="Toggle menu"
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {isMobileMenuOpen ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
+                        )}
+                    </svg>
+                </button>
             </div>
 
             {/* Mobile Menu Dropdown */}
