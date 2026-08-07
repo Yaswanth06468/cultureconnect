@@ -10,7 +10,7 @@ const Footer = () => {
                             to="/"
                             className="text-2xl font-serif font-black tracking-tight mb-4 inline-block text-[var(--theme-text-primary)] group"
                         >
-                            CULTURE<span className="text-[#0ff0a0]">CONNECT</span>
+                            CULTURE<span className="text-[var(--theme-accent-primary)]">CONNECT</span>
                         </Link>
                         <p className="max-w-sm mb-8 font-light leading-relaxed text-[var(--theme-text-secondary)]">
                             Connect deeply with cultures, languages, regional foods, and people. A digital sanctuary for authentic global understanding.
@@ -18,22 +18,22 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-[#0ff0a0]">Platform</h4>
+                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-[var(--theme-accent-primary)]">Platform</h4>
                         <ul className="space-y-3 font-light text-sm text-[var(--theme-text-secondary)]">
-                            <li><Link to="/dances" className="hover:text-[#0ff0a0] transition-colors">Dances & Traditions</Link></li>
-                            <li><Link to="/city-food" className="hover:text-[#0ff0a0] transition-colors">City Food Explorer</Link></li>
-                            <li><Link to="/feed" className="hover:text-[#0ff0a0] transition-colors">Cultural Feed</Link></li>
-                            <li><Link to="/events" className="hover:text-[#0ff0a0] transition-colors">Global Events</Link></li>
-                            <li><Link to="/translate" className="hover:text-[#0ff0a0] transition-colors">AI Translator</Link></li>
+                            <li><Link to="/dances" className="hover:text-[var(--theme-accent-primary)] transition-colors">Dances & Traditions</Link></li>
+                            <li><Link to="/city-food" className="hover:text-[var(--theme-accent-primary)] transition-colors">City Food Explorer</Link></li>
+                            <li><Link to="/feed" className="hover:text-[var(--theme-accent-primary)] transition-colors">Cultural Feed</Link></li>
+                            <li><Link to="/events" className="hover:text-[var(--theme-accent-primary)] transition-colors">Global Events</Link></li>
+                            <li><Link to="/translate" className="hover:text-[var(--theme-accent-primary)] transition-colors">AI Translator</Link></li>
                         </ul>
                     </div>
 
                     <div>
-                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-[#0ff0a0]">Company</h4>
+                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-[var(--theme-accent-primary)]">Company</h4>
                         <ul className="space-y-3 font-light text-sm text-[var(--theme-text-secondary)]">
-                            <li><a href="#about" className="hover:text-[#0ff0a0] transition-colors">About Us</a></li>
-                            <li><a href="#about" className="hover:text-[#0ff0a0] transition-colors">Mission</a></li>
-                            <li><Link to="/culture-swap" className="hover:text-[#0ff0a0] transition-colors">Culture Swap</Link></li>
+                            <li><a href="#about" className="hover:text-[var(--theme-accent-primary)] transition-colors">About Us</a></li>
+                            <li><a href="#about" className="hover:text-[var(--theme-accent-primary)] transition-colors">Mission</a></li>
+                            <li><Link to="/culture-swap" className="hover:text-[var(--theme-accent-primary)] transition-colors">Culture Swap</Link></li>
                         </ul>
                     </div>
                 </div>
@@ -48,8 +48,8 @@ const Footer = () => {
                     </div>
 
                     <div className="flex gap-6">
-                        <a href="#" className="hover:text-[#0ff0a0] transition-colors">Privacy Policy</a>
-                        <a href="#" className="hover:text-[#0ff0a0] transition-colors">Terms of Service</a>
+                        <a href="#" className="hover:text-[var(--theme-accent-primary)] transition-colors">Privacy Policy</a>
+                        <a href="#" className="hover:text-[var(--theme-accent-primary)] transition-colors">Terms of Service</a>
                     </div>
                 </div>
             </div>

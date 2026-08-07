@@ -24,9 +24,9 @@ const Community = () => {
         <section id="community" className="py-24 relative bg-[var(--theme-bg-secondary)] border-t border-[var(--theme-border)] transition-colors duration-400">
             <div className="container mx-auto px-6">
                 <div className="text-center mb-16">
-                    <span className="text-[#0ff0a0] uppercase tracking-[0.2em] text-xs font-bold mb-4 block">Our Community</span>
+                    <span className="text-[var(--theme-accent-primary)] uppercase tracking-[0.2em] text-xs font-bold mb-4 block">Our Community</span>
                     <h2 className="text-3xl md:text-5xl font-serif font-black text-[var(--theme-text-primary)] mb-4">
-                        Voices of <span className="italic font-light text-[#ffc857]">Connection</span>
+                        Voices of <span className="italic font-light text-[var(--theme-accent-primary)]">Connection</span>
                     </h2>
                 </div>
 
@@ -34,7 +34,7 @@ const Community = () => {
                     {testimonials.map((item, index) => (
                         <div
                             key={index}
-                            className="p-8 rounded-3xl obsidian-card group hover:border-[#0ff0a0]/40 transition-all duration-300 relative flex flex-col justify-between"
+                            className="p-8 rounded-3xl flat-card group hover:border-[var(--theme-accent-primary)] transition-all duration-300 relative flex flex-col justify-between"
                         >
                             <p className="leading-relaxed mb-8 font-light text-[var(--theme-text-secondary)] relative z-10 italic">
                                 "{item.text}"
@@ -42,10 +42,10 @@ const Community = () => {
 
                             <div className="flex items-center gap-4 pt-6 border-t border-[var(--theme-border)]">
                                 <div>
-                                    <h4 className="font-bold text-base font-serif text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors">
+                                    <h4 className="font-bold text-base font-serif text-[var(--theme-text-primary)] group-hover:text-[var(--theme-accent-primary)] transition-colors">
                                         {item.name}
                                     </h4>
-                                    <p className="text-[#0ff0a0] text-xs uppercase tracking-wider font-bold mb-0.5">{item.role}</p>
+                                    <p className="text-[var(--theme-accent-primary)] text-xs uppercase tracking-wider font-bold mb-0.5">{item.role}</p>
                                     <p className="text-xs text-[var(--theme-text-muted)]">{item.location}</p>
                                 </div>
                             </div>

@@ -70,13 +70,13 @@ const Signup = () => {
             )}
 
             {successMessage && (
-                <div className="mb-4 p-3.5 bg-emerald-500/10 border border-emerald-500/30 text-[#0ff0a0] rounded-2xl font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md">
+                <div className="mb-4 p-3.5 bg-emerald-500/10 border border-emerald-500/30 text-[var(--theme-accent-primary)] rounded-2xl font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md">
                     <span>✅</span>
                     <span>{successMessage}</span>
                 </div>
             )}
             
-            <div className="obsidian-glass p-8 rounded-3xl flex flex-col gap-6 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] relative">
+            <div className="flat-card p-8 rounded-3xl flex flex-col gap-6 relative">
                 <form onSubmit={handleSignup} className="flex flex-col gap-5">
                     <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
                         Username
@@ -85,7 +85,7 @@ const Signup = () => {
                             placeholder="Choose a username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[#161622] text-white placeholder-zinc-500 focus:border-[#0ff0a0] focus:ring-2 focus:ring-[#0ff0a0]/20 focus:outline-none transition-all"
+                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[var(--theme-input-bg)] text-white placeholder-zinc-500 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all"
                             required
                         />
                     </label>
@@ -97,7 +97,7 @@ const Signup = () => {
                             placeholder="Choose a password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[#161622] text-white placeholder-zinc-500 focus:border-[#0ff0a0] focus:ring-2 focus:ring-[#0ff0a0]/20 focus:outline-none transition-all"
+                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[var(--theme-input-bg)] text-white placeholder-zinc-500 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all"
                             required
                         />
                     </label>
@@ -109,7 +109,7 @@ const Signup = () => {
                             placeholder="Confirm your password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[#161622] text-white placeholder-zinc-500 focus:border-[#0ff0a0] focus:ring-2 focus:ring-[#0ff0a0]/20 focus:outline-none transition-all"
+                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[var(--theme-input-bg)] text-white placeholder-zinc-500 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all"
                             required
                         />
                     </label>
@@ -117,14 +117,14 @@ const Signup = () => {
                     <button 
                         type="submit" 
                         disabled={isLoading}
-                        className="w-full py-4 mt-2 rounded-2xl text-black bg-[#0ff0a0] hover:bg-[#34d399] font-bold transition-all shadow-[0_0_25px_rgba(15,240,160,0.3)] hover:shadow-[0_0_35px_rgba(15,240,160,0.5)]"
+                        className="w-full py-4 mt-2 rounded-2xl text-black bg-[var(--theme-accent-primary)] hover:bg-[#34d399] font-bold transition-all shadow-[0_0_25px_rgba(15,240,160,0.3)] hover:shadow-[0_0_35px_rgba(15,240,160,0.5)]"
                     >
                         {isLoading ? 'Creating Account...' : 'Sign Up'}
                     </button>
                 </form>
 
                 <div className="text-center text-sm text-zinc-400">
-                    Already have an account? <Link to="/login" className="text-[#0ff0a0] hover:underline font-bold">Log In</Link>
+                    Already have an account? <Link to="/login" className="text-[var(--theme-accent-primary)] hover:underline font-bold">Log In</Link>
                 </div>
             </div>
         </div>

@@ -33,14 +33,14 @@ const CulturalShowcase = () => {
         <section className="py-24 overflow-hidden bg-[var(--theme-bg-primary)] border-t border-[var(--theme-border)] relative transition-colors duration-400">
             <div className="container mx-auto px-6 mb-12 flex justify-between items-end">
                 <div>
-                    <span className="text-[#0ff0a0] uppercase tracking-[0.2em] text-xs font-bold mb-2 block">Curated Journeys</span>
+                    <span className="text-[var(--theme-accent-primary)] uppercase tracking-[0.2em] text-xs font-bold mb-2 block">Curated Journeys</span>
                     <h2 className="text-3xl md:text-5xl font-serif font-black text-[var(--theme-text-primary)]">
-                        Cultural <span className="italic text-[#ffc857]">Highlights</span>
+                        Cultural <span className="italic text-[var(--theme-accent-primary)]">Highlights</span>
                     </h2>
                 </div>
                 <Link
                     to="/dances"
-                    className="hidden md:flex items-center gap-2 text-[#0ff0a0] hover:text-white font-bold text-sm transition-colors group"
+                    className="hidden md:flex items-center gap-2 text-[var(--theme-accent-primary)] hover:opacity-80 font-bold text-sm transition-colors group"
                 >
                     <span>View All Destinations</span>
                     <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,25 +54,28 @@ const CulturalShowcase = () => {
                 {cultures.map((item, index) => (
                     <div
                         key={index}
-                        className="flex-shrink-0 w-72 md:w-80 h-[460px] relative group snap-center cursor-pointer overflow-hidden rounded-3xl border border-white/10 hover:border-[#0ff0a0]/50 transition-all duration-500 shadow-2xl"
+                        className="flat-card flex-shrink-0 w-72 md:w-80 h-[460px] relative group snap-center cursor-pointer overflow-hidden rounded-3xl"
                     >
                         <img
                             src={item.image}
                             alt={item.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg-primary)] via-[var(--theme-bg-primary)]/40 to-transparent opacity-90"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--theme-bg-primary)] via-[var(--theme-bg-primary)]/60 to-transparent opacity-90"></div>
 
-                        <div className="absolute bottom-0 left-0 p-6 w-full">
-                            <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-[#0ff0a0]/20 text-[#0ff0a0] border border-[#0ff0a0]/40 backdrop-blur-md mb-3">
+                        <div className="absolute bottom-0 left-0 p-6 w-full z-10">
+                            <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-[var(--theme-bg-secondary)] text-[var(--theme-accent-primary)] border border-[var(--theme-border)] mb-3">
                                 {item.tag}
                             </span>
-                            <h3 className="text-2xl font-serif font-bold text-[var(--theme-text-primary)] group-hover:text-[#0ff0a0] transition-colors">
+                            <h3 className="text-2xl font-serif font-bold text-[var(--theme-text-primary)] group-hover:text-[var(--theme-accent-primary)] transition-colors">
                                 {item.name}
                             </h3>
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className="absolute bottom-0 left-0 w-full">
+                <div className="stitched-divider mb-0"></div>
             </div>
         </section>
     );
