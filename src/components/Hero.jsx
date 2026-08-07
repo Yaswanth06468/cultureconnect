@@ -45,8 +45,8 @@ const Hero = () => {
                 <div className="relative order-1 md:order-2 h-[45vh] md:h-[75vh] w-full flex items-center justify-center">
                     <div className="w-full h-full overflow-hidden rounded-2xl border border-[var(--theme-border)] shadow-sm relative group">
                         <img
-                            src="/cello.png"
-                            alt="Cello player"
+                            src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?q=80&w=2670&auto=format&fit=crop"
+                            alt="Documentary style photo of a cultural market in Marrakech"
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                         />
                     </div>
