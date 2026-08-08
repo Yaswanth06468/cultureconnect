@@ -21,8 +21,8 @@
     --font-serif: "Fraunces", serif;
 }
 
-/* ========== WARM PAPER LIGHT SYSTEM (DEFAULT) ========== */
-:root, :root.light {
+/* ========== WARM PAPER LIGHT SYSTEM (DEFAULT & ONLY THEME) ========== */
+:root, :root.light, :root.dark {
     --theme-bg-primary: #FBF7F0; /* Warm paper-white */
     --theme-bg-secondary: #FFFFFF;
     --theme-bg-accent: #F2EBE1;
@@ -42,29 +42,6 @@
     --theme-accent-primary: #C1502E; /* Terracotta */
     --theme-accent-jade: #2F6F5E; /* Jade green */
     --theme-accent-saffron: #E8B84B; /* Saffron gold */
-}
-
-/* ========== WARM INK DARK SYSTEM ========== */
-:root.dark {
-    --theme-bg-primary: #241F1C; /* Deep ink */
-    --theme-bg-secondary: #1C1815;
-    --theme-bg-accent: #2E2723;
-    
-    --theme-text-primary: #E5DFD3; /* Sand */
-    --theme-text-secondary: #BAAE9F;
-    --theme-text-muted: #8E8376;
-    --theme-text-inverse: #241F1C;
-    
-    --theme-border: #3D352F;
-    --theme-card-bg: #2C2621;
-    --theme-input-bg: #1C1815;
-    
-    --theme-btn-bg: #C1502E;
-    --theme-btn-text: #FBF7F0;
-    
-    --theme-accent-primary: #C1502E;
-    --theme-accent-jade: #2F6F5E;
-    --theme-accent-saffron: #E8B84B;
 }
 
 @layer base {
