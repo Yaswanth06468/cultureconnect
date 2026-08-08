@@ -10,7 +10,6 @@ import * as dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import nodemailer from 'nodemailer';
 
-import * as dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 
 dotenv.config();

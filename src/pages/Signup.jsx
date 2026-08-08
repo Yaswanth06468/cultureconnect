@@ -58,12 +58,12 @@ const Signup = () => {
 
     return (
         <div className="container mx-auto px-6 py-28 max-w-md animate-scale-in">
-            <h2 className="text-4xl font-serif font-black mb-6 text-white text-center">
+            <h2 className="text-4xl font-serif font-black mb-6 text-[var(--theme-text-primary)] text-center">
                 Sign Up
             </h2>
             
             {error && (
-                <div className="mb-4 p-3.5 bg-red-500/10 border border-red-500/30 text-red-400 rounded-2xl font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md">
+                <div className="mb-4 p-3.5 bg-red-500/10 border border-red-500/30 text-red-500 rounded-2xl font-semibold text-sm flex items-center gap-2.5 backdrop-blur-md">
                     <span>⚠️</span>
                     <span>{error}</span>
                 </div>
@@ -78,52 +78,58 @@ const Signup = () => {
             
             <div className="flat-card p-8 rounded-3xl flex flex-col gap-6 relative">
                 <form onSubmit={handleSignup} className="flex flex-col gap-5">
-                    <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
+                    <label className="text-[var(--theme-text-secondary)] font-bold text-xs uppercase tracking-wider">
                         Username
                         <input
                             type="text"
                             placeholder="Choose a username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[var(--theme-input-bg)] text-white placeholder-zinc-500 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all"
+                            className="w-full mt-2 p-3.5 border border-[var(--theme-border)] rounded-2xl bg-[var(--theme-input-bg)] text-[var(--theme-text-primary)] placeholder-zinc-400 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium"
                             required
+                            spellCheck={false}
+                            autoComplete="username"
                         />
                     </label>
 
-                    <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
+                    <label className="text-[var(--theme-text-secondary)] font-bold text-xs uppercase tracking-wider">
                         Password
                         <input
                             type="password"
                             placeholder="Choose a password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[var(--theme-input-bg)] text-white placeholder-zinc-500 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all"
+                            className="w-full mt-2 p-3.5 border border-[var(--theme-border)] rounded-2xl bg-[var(--theme-input-bg)] text-[var(--theme-text-primary)] placeholder-zinc-400 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium"
                             required
+                            spellCheck={false}
+                            autoComplete="new-password"
                         />
                     </label>
 
-                    <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider">
+                    <label className="text-[var(--theme-text-secondary)] font-bold text-xs uppercase tracking-wider">
                         Confirm Password
                         <input
                             type="password"
                             placeholder="Confirm your password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-white/10 rounded-2xl bg-[var(--theme-input-bg)] text-white placeholder-zinc-500 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all"
+                            className="w-full mt-2 p-3.5 border border-[var(--theme-border)] rounded-2xl bg-[var(--theme-input-bg)] text-[var(--theme-text-primary)] placeholder-zinc-400 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium"
                             required
+                            spellCheck={false}
+                            autoComplete="new-password"
                         />
                     </label>
 
                     <button 
                         type="submit" 
                         disabled={isLoading}
-                        className="w-full py-4 mt-2 rounded-2xl text-black bg-[var(--theme-accent-primary)] hover:bg-[#34d399] font-bold transition-all shadow-[0_0_25px_rgba(15,240,160,0.3)] hover:shadow-[0_0_35px_rgba(15,240,160,0.5)]"
+                        className="w-full py-4 mt-2 rounded-2xl text-[var(--theme-btn-text)] bg-[var(--theme-accent-primary)] hover:opacity-90 font-bold transition-all shadow-md"
                     >
                         {isLoading ? 'Creating Account...' : 'Sign Up'}
                     </button>
                 </form>
 
-                <div className="text-center text-sm text-zinc-400">
+                <div className="text-center text-sm text-[var(--theme-text-muted)]">
                     Already have an account? <Link to="/login" className="text-[var(--theme-accent-primary)] hover:underline font-bold">Log In</Link>
                 </div>
             </div>
