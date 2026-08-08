@@ -55,7 +55,7 @@ const Login = () => {
 
     return (
         <div className="container mx-auto px-6 py-28 max-w-md animate-scale-in">
-            <h2 className="text-4xl font-serif font-black mb-6 text-[var(--theme-text-primary)] text-center">
+            <h2 className="text-4xl font-serif font-black mb-6 text-center" style={{ color: 'var(--theme-text-primary)' }}>
                 Log In
             </h2>
 
@@ -75,30 +75,42 @@ const Login = () => {
             
             <div className="flat-card p-8 rounded-3xl flex flex-col gap-6 relative">
                 <form onSubmit={handleLogin} className="flex flex-col gap-5">
-                    <label className="text-[var(--theme-text-secondary)] font-bold text-xs uppercase tracking-wider">
+                    <label className="font-bold text-xs uppercase tracking-wider flex flex-col" style={{ color: 'var(--theme-text-secondary)' }}>
                         Username
                         <input
                             type="text"
                             placeholder="Enter your username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-[var(--theme-border)] rounded-2xl bg-[var(--theme-input-bg)] text-[var(--theme-text-primary)] placeholder-zinc-400 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium"
+                            className="w-full mt-2 p-3.5 border rounded-2xl focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium text-sm"
+                            style={{
+                                color: 'var(--theme-text-primary)',
+                                backgroundColor: 'var(--theme-input-bg)',
+                                borderColor: 'var(--theme-border)'
+                            }}
                             required
-                            spellCheck={false}
+                            spellCheck="false"
+                            autoCorrect="off"
+                            autoCapitalize="off"
                             autoComplete="username"
                         />
                     </label>
 
-                    <label className="text-[var(--theme-text-secondary)] font-bold text-xs uppercase tracking-wider">
+                    <label className="font-bold text-xs uppercase tracking-wider flex flex-col" style={{ color: 'var(--theme-text-secondary)' }}>
                         Password
                         <input
                             type="password"
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-[var(--theme-border)] rounded-2xl bg-[var(--theme-input-bg)] text-[var(--theme-text-primary)] placeholder-zinc-400 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium"
+                            className="w-full mt-2 p-3.5 border rounded-2xl focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium text-sm"
+                            style={{
+                                color: 'var(--theme-text-primary)',
+                                backgroundColor: 'var(--theme-input-bg)',
+                                borderColor: 'var(--theme-border)'
+                            }}
                             required
-                            spellCheck={false}
+                            spellCheck="false"
                             autoComplete="current-password"
                         />
                     </label>
@@ -112,14 +124,14 @@ const Login = () => {
                     </button>
                 </form>
 
-                <div className="text-center text-sm text-[var(--theme-text-muted)] flex flex-col gap-4 pt-2">
+                <div className="text-center text-sm flex flex-col gap-4 pt-2" style={{ color: 'var(--theme-text-muted)' }}>
                     <div>
                         Don't have an account? <Link to="/signup" className="text-[var(--theme-accent-primary)] hover:underline font-bold">Sign Up</Link>
                     </div>
-                    <div className="pt-4 border-t border-[var(--theme-border)]">
+                    <div className="pt-4 border-t" style={{ borderColor: 'var(--theme-border)' }}>
                         <Link 
                             to="/admin/login" 
-                            className="inline-flex items-center gap-2 text-xs font-bold text-[var(--theme-accent-primary)] hover:text-[var(--theme-text-primary)] transition-colors px-4 py-2 rounded-xl bg-[var(--theme-accent-primary)]/10 hover:bg-[var(--theme-accent-primary)]/20 border border-[var(--theme-accent-primary)]/30"
+                            className="inline-flex items-center gap-2 text-xs font-bold text-[var(--theme-accent-primary)] transition-colors px-4 py-2 rounded-xl bg-[var(--theme-accent-primary)]/10 hover:bg-[var(--theme-accent-primary)]/20 border border-[var(--theme-accent-primary)]/30"
                         >
                             <span>🛡️</span>
                             <span>Admin Portal Login</span>

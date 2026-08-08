@@ -58,7 +58,7 @@ const Signup = () => {
 
     return (
         <div className="container mx-auto px-6 py-28 max-w-md animate-scale-in">
-            <h2 className="text-4xl font-serif font-black mb-6 text-[var(--theme-text-primary)] text-center">
+            <h2 className="text-4xl font-serif font-black mb-6 text-center" style={{ color: 'var(--theme-text-primary)' }}>
                 Sign Up
             </h2>
             
@@ -78,44 +78,61 @@ const Signup = () => {
             
             <div className="flat-card p-8 rounded-3xl flex flex-col gap-6 relative">
                 <form onSubmit={handleSignup} className="flex flex-col gap-5">
-                    <label className="text-[var(--theme-text-secondary)] font-bold text-xs uppercase tracking-wider">
+                    <label className="font-bold text-xs uppercase tracking-wider flex flex-col" style={{ color: 'var(--theme-text-secondary)' }}>
                         Username
                         <input
                             type="text"
                             placeholder="Choose a username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-[var(--theme-border)] rounded-2xl bg-[var(--theme-input-bg)] text-[var(--theme-text-primary)] placeholder-zinc-400 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium"
+                            className="w-full mt-2 p-3.5 border rounded-2xl focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium text-sm"
+                            style={{
+                                color: 'var(--theme-text-primary)',
+                                backgroundColor: 'var(--theme-input-bg)',
+                                borderColor: 'var(--theme-border)'
+                            }}
                             required
-                            spellCheck={false}
+                            spellCheck="false"
+                            autoCorrect="off"
+                            autoCapitalize="off"
                             autoComplete="username"
                         />
                     </label>
 
-                    <label className="text-[var(--theme-text-secondary)] font-bold text-xs uppercase tracking-wider">
+                    <label className="font-bold text-xs uppercase tracking-wider flex flex-col" style={{ color: 'var(--theme-text-secondary)' }}>
                         Password
                         <input
                             type="password"
                             placeholder="Choose a password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-[var(--theme-border)] rounded-2xl bg-[var(--theme-input-bg)] text-[var(--theme-text-primary)] placeholder-zinc-400 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium"
+                            className="w-full mt-2 p-3.5 border rounded-2xl focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium text-sm"
+                            style={{
+                                color: 'var(--theme-text-primary)',
+                                backgroundColor: 'var(--theme-input-bg)',
+                                borderColor: 'var(--theme-border)'
+                            }}
                             required
-                            spellCheck={false}
+                            spellCheck="false"
                             autoComplete="new-password"
                         />
                     </label>
 
-                    <label className="text-[var(--theme-text-secondary)] font-bold text-xs uppercase tracking-wider">
+                    <label className="font-bold text-xs uppercase tracking-wider flex flex-col" style={{ color: 'var(--theme-text-secondary)' }}>
                         Confirm Password
                         <input
                             type="password"
                             placeholder="Confirm your password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full mt-2 p-3.5 border border-[var(--theme-border)] rounded-2xl bg-[var(--theme-input-bg)] text-[var(--theme-text-primary)] placeholder-zinc-400 focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium"
+                            className="w-full mt-2 p-3.5 border rounded-2xl focus:border-[var(--theme-accent-primary)] focus:ring-2 focus:ring-[var(--theme-accent-primary)]/20 focus:outline-none transition-all font-medium text-sm"
+                            style={{
+                                color: 'var(--theme-text-primary)',
+                                backgroundColor: 'var(--theme-input-bg)',
+                                borderColor: 'var(--theme-border)'
+                            }}
                             required
-                            spellCheck={false}
+                            spellCheck="false"
                             autoComplete="new-password"
                         />
                     </label>
@@ -129,7 +146,7 @@ const Signup = () => {
                     </button>
                 </form>
 
-                <div className="text-center text-sm text-[var(--theme-text-muted)]">
+                <div className="text-center text-sm" style={{ color: 'var(--theme-text-muted)' }}>
                     Already have an account? <Link to="/login" className="text-[var(--theme-accent-primary)] hover:underline font-bold">Log In</Link>
                 </div>
             </div>
