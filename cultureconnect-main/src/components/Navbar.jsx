@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext';
 import React from 'react';
+import Logo from './Logo';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -26,8 +27,13 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            if (window.scrollY > 20) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
         };
+
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -54,14 +60,7 @@ const Navbar = () => {
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-3 mr-8 flex-shrink-0 group">
-                    <div className="relative w-10 h-10 overflow-hidden rounded-xl border border-emerald-500/30 shadow-[0_0_15px_rgba(15,240,160,0.2)] group-hover:scale-110 group-hover:border-emerald-400 transition-all duration-500">
-                        <img 
-                            src="/culture_premium_logo_v2.png" 
-                            alt="Culture Logo" 
-                            className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-tr from-[#0ff0a0]/20 to-transparent"></div>
-                    </div>
+                    <Logo className="w-10 h-10 transition-transform duration-300 group-hover:scale-105" />
                     <span className="text-2xl font-serif font-black tracking-tighter text-white group-hover:text-[#0ff0a0] transition-colors duration-300">
                         CULTURE<span className="text-[#0ff0a0]">CONNECT</span>
                     </span>

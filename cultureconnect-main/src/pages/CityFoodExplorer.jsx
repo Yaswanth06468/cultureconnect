@@ -430,8 +430,8 @@ const sendBrowserNotification = (title, bodyText, city) => {
       try {
         new Notification(title, {
           body: bodyText,
-          icon: '/culture_premium_logo_v2.png',
-          badge: '/culture_premium_logo_v2.png',
+          icon: '/logo.svg',
+          badge: '/logo.svg',
           tag: 'cultureconnect-' + (city || 'notif'),
           renotify: true,
         });
@@ -444,8 +444,8 @@ const sendBrowserNotification = (title, bodyText, city) => {
           if (permission === 'granted') {
             new Notification(title, {
               body: bodyText,
-              icon: '/culture_premium_logo_v2.png',
-              badge: '/culture_premium_logo_v2.png',
+              icon: '/logo.svg',
+              badge: '/logo.svg',
               tag: 'cultureconnect-' + (city || 'notif'),
               renotify: true,
             });

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Logo from './Logo';
 
 const Footer = () => {
     return (
@@ -8,9 +9,12 @@ const Footer = () => {
                     <div className="col-span-1 md:col-span-2">
                         <Link
                             to="/"
-                            className="text-2xl font-serif font-black tracking-tight mb-4 inline-block text-[var(--theme-text-primary)] group"
+                            className="flex items-center gap-3 mb-4 inline-flex text-[var(--theme-text-primary)] group"
                         >
-                            CULTURE<span className="text-[var(--theme-accent-primary)]">CONNECT</span>
+                            <Logo className="w-9 h-9" />
+                            <span className="text-2xl font-serif font-black tracking-tight group-hover:text-[var(--theme-accent-primary)] transition-colors duration-300">
+                                CULTURE<span className="text-[var(--theme-accent-primary)]">CONNECT</span>
+                            </span>
                         </Link>
                         <p className="max-w-sm mb-8 font-light leading-relaxed text-[var(--theme-text-secondary)]">
                             Connect deeply with cultures, languages, regional foods, and people. A digital sanctuary for authentic global understanding.

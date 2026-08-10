@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { AuthContext, useContext } from '../context/AuthContext';
 import React from 'react';
+import Logo from './Logo';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -26,8 +27,13 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            if (window.scrollY > 20) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
         };
+
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -54,13 +60,7 @@ const Navbar = () => {
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-3 mr-8 flex-shrink-0 group">
-                    <div className="relative w-10 h-10 overflow-hidden rounded-xl border border-[var(--theme-border)] group-hover:border-[var(--theme-accent-primary)] transition-all duration-300">
-                        <img 
-                            src="/culture_premium_logo_v2.png" 
-                            alt="Culture Logo" 
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
+                    <Logo className="w-10 h-10 transition-transform duration-300 group-hover:scale-105" />
                     <span className="text-2xl font-serif font-black tracking-tighter text-[var(--theme-text-primary)] group-hover:text-[var(--theme-accent-primary)] transition-colors duration-300">
                         CULTURE<span className="text-[var(--theme-accent-primary)]">CONNECT</span>
                     </span>

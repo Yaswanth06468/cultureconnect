@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Logo from './Logo';
 
 const WelcomeModal = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -44,13 +45,7 @@ const WelcomeModal = () => {
                         </p>
                         
                         <div className="flex flex-col items-center gap-6 animate-fade-in delay-300">
-                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
-                                <img 
-                                    src="/culture_premium_logo_v2.png" 
-                                    alt="Culture Logo" 
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
+                            <Logo className="w-16 h-16 md:w-24 md:h-24 shadow-2xl" />
                             <div className="flex flex-col items-center">
                                 <h1 className="text-white text-4xl md:text-6xl font-serif font-black tracking-tighter leading-[0.9] uppercase">
                                     Culture<br/>Connect

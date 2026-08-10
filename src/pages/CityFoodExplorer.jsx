@@ -257,61 +257,6 @@ const cityFoodData = [
   { id: 65, city: 'Agartala', state: 'Tripura', emoji: '🎋', color: '#7c3aed',
     foods: ['Wahan Mosdeng', 'Chakhwi', 'Bangui Rice', 'Muya Awandru (Bamboo Shoot)', 'Gudok', 'Berma Fish Paste'],
     description: 'Agartala\'s unique cuisine fuses Bengali and tribal Tripuri influences — the smoky Gudok (dried fish and bamboo shoot stew) and pungent Berma fish paste define authentic Tripuri cooking.' },
-
-  // ── Mizoram ───────────────────────────────────────────────────────────────
-  { id: 66, city: 'Aizawl', state: 'Mizoram', emoji: '🎋', color: '#10b981',
-    foods: ['Bai (Bamboo Shoot Stew)', 'Vawksa Rep (Smoked Pork)', 'Sawhchiar (Meat Rice Porridge)', 'Sanpiau', 'Misa Mach Poora'],
-    description: 'Aizawl\'s Mizo cuisine is healthy, fragrant, and light. Bai — a boiled stew of seasonal green vegetables, bamboo shoots, and pork fat — is the daily staple of Mizoram.' },
-
-  // ── Haryana ───────────────────────────────────────────────────────────────
-  { id: 67, city: 'Gurugram', state: 'Haryana', emoji: '🌾', color: '#eab308',
-    foods: ['Kachri Ki Sabzi', 'Bajra Roti with White Butter', 'Bathua Raita', 'Hara Dhania Choliya', 'Malpua', 'Kadhi Pakora'],
-    description: 'Haryana\'s rustic cuisine centers around rich dairy, fresh green chickpeas, and coarse grain millet rotis served with fresh farm-made white butter.' },
-
-  // ── Jammu & Kashmir (Jammu Region) ────────────────────────────────────────
-  { id: 68, city: 'Jammu', state: 'Jammu & Kashmir', emoji: '🏔️', color: '#0ea5e9',
-    foods: ['Kaladi Kulcha', 'Rajma Chawal with Anardana Chutney', 'Ambal', 'Khatta Meat', 'Sund Panjeeri'],
-    description: 'Jammu\'s Dogra cuisine is famous for Kaladi Kulcha — a dense, squeaky local artisan cheese pan-fried till golden and tucked inside toasted bread.' },
-
-  // ── Tamil Nadu (Heritage Delta) ────────────────────────────────────────────
-  { id: 69, city: 'Thanjavur', state: 'Tamil Nadu', emoji: '🌾', color: '#d97706',
-    foods: ['Kumbakonam Degree Coffee', 'Thanjavur Sambar', 'Karuvattu Kuzhambu', 'Seeraga Samba Biryani', 'Ashoka Halwa'],
-    description: 'Thanjavur, the rice bowl of Tamil Nadu, produces legendary Kumbakonam Degree Coffee made with chicory-free pure cow milk and dark roasted beans.' },
-
-  // ── Karnataka (Temple & Coast) ──────────────────────────────────────────────
-  { id: 70, city: 'Udupi', state: 'Karnataka', emoji: '🛕', color: '#0284c7',
-    foods: ['Udupi Masala Dosa', 'Udupi Saaru (Rasam)', 'Goli Baje', 'Bisi Bele Bath', 'Hayagreeva Sweet', 'Pathrode'],
-    description: 'Udupi\'s pure vegetarian Krishna Temple cuisine birthed the world-famous South Indian breakfast culture — crisp dosas, golden Goli Baje fritters, and fragrant rasam.' },
-
-  // ── Chandigarh UT ─────────────────────────────────────────────────────────
-  { id: 71, city: 'Chandigarh', state: 'Chandigarh', emoji: '🌹', color: '#ec4899',
-    foods: ['Amritsari Kulcha', 'Chole Bhature', 'Paneer Tikka', 'Tandoori Chicken', 'Pinni', 'Sweet Lassi'],
-    description: 'Chandigarh blends modern urban food culture with heart-warming Punjabi tandoori classics and creamy lassi.' },
-
-  // ── Lakshadweep UT ────────────────────────────────────────────────────────
-  { id: 72, city: 'Kavaratti', state: 'Lakshadweep', emoji: '🏝️', color: '#06b6d4',
-    foods: ['Mus Kavaab (Spiced Tuna)', 'Coconut Bondas', 'Kadai Prawns', 'Kilanji (Rice Crepes)', 'Fish Tikka', 'Kadalakka Payasam'],
-    description: 'Lakshadweep\'s island cuisine centers on oceanic skipjack tuna (Mus) marinated in fresh coconut, Malabar spices, and curry leaves.' },
-
-  // ── Uttar Pradesh (Braj Region) ───────────────────────────────────────────
-  { id: 73, city: 'Mathura', state: 'Uttar Pradesh', emoji: '🛕', color: '#f59e0b',
-    foods: ['Mathura Peda', 'Makhan Mishri', 'Kachori Jalebi', 'Rabri', 'Malpua', 'Ghevar'],
-    description: 'Mathura, Lord Krishna\'s birthplace, is the milk and sweet capital of India — famous for caramelized golden Mathura Pedas made from condensed milk.' },
-
-  // ── Gujarat (Central) ──────────────────────────────────────────────────────
-  { id: 74, city: 'Vadodara', state: 'Gujarat', emoji: '🏛️', color: '#84cc16',
-    foods: ['Sev Usal', 'Bhakarwadi', 'Duliram Peda', 'Khaman', 'Khandvi', 'Kathiyawadi Thali'],
-    description: 'Vadodara is famous for Sev Usal — spicy green pea curry topped with crunchy farsan, garlic chutney, and buttery buns.' },
-
-  // ── West Bengal (North) ───────────────────────────────────────────────────
-  { id: 75, city: 'Siliguri', state: 'West Bengal', emoji: '🏞️', color: '#14b8a6',
-    foods: ['Luchi Alur Dom', 'Steamed Momos', 'Chholar Dal', 'Thukpa', 'Chhena Jalebi', 'Macher Jhol'],
-    description: 'Siliguri connects the plains of Bengal to the North-East hills, featuring a delightful mix of Bengali Luchi-Alur Dom and Himalayan Momos.' },
-
-  // ── Daman & Diu UT ────────────────────────────────────────────────────────
-  { id: 76, city: 'Daman', state: 'Daman & Diu', emoji: '⚓', color: '#6366f1',
-    foods: ['Damanese Prawn Rice', 'Coq au Vin', 'Fish Koliwada', 'Crab Curry', 'Lobster Butter Garlic', 'Sol Kadhi'],
-    description: 'Daman\'s coastal food blends Gujarati seafood with Portuguese colonial marinades — fresh prawns, butter garlic crabs, and spiced fish koliwada.' },
 ];
 
 const allStates = ['All States', ...new Set(cityFoodData.map(c => c.state))].sort((a, b) => a === 'All States' ? -1 : a.localeCompare(b));
@@ -350,12 +295,7 @@ const cityCoords = {
   'Leh': [34.1526, 77.5771], 'Puducherry': [11.9416, 79.8083],
   'Itanagar': [27.0844, 93.6053], 'Ranchi': [23.3441, 85.3096],
   'Raipur': [21.2514, 81.6296], 'Port Blair': [11.6234, 92.7265],
-  'Agartala': [23.8315, 91.2868], 'Aizawl': [23.7271, 92.7176],
-  'Gurugram': [28.4595, 77.0266], 'Jammu': [32.7266, 74.8570],
-  'Thanjavur': [10.7870, 79.1378], 'Udupi': [13.3409, 74.7421],
-  'Chandigarh': [30.7333, 76.7794], 'Kavaratti': [10.5669, 72.6420],
-  'Mathura': [27.4924, 77.6737], 'Vadodara': [22.3072, 73.1812],
-  'Siliguri': [26.7271, 88.3953], 'Daman': [20.3974, 72.8328],
+  'Agartala': [23.8315, 91.2868],
 };
 
 // ── Haversine distance (km) ───────────────────────────────────────────────────
@@ -430,8 +370,8 @@ const sendBrowserNotification = (title, bodyText, city) => {
       try {
         new Notification(title, {
           body: bodyText,
-          icon: '/culture_premium_logo_v2.png',
-          badge: '/culture_premium_logo_v2.png',
+          icon: '/logo.svg',
+          badge: '/logo.svg',
           tag: 'cultureconnect-' + (city || 'notif'),
           renotify: true,
         });
@@ -444,8 +384,8 @@ const sendBrowserNotification = (title, bodyText, city) => {
           if (permission === 'granted') {
             new Notification(title, {
               body: bodyText,
-              icon: '/culture_premium_logo_v2.png',
-              badge: '/culture_premium_logo_v2.png',
+              icon: '/logo.svg',
+              badge: '/logo.svg',
               tag: 'cultureconnect-' + (city || 'notif'),
               renotify: true,
             });
@@ -947,36 +887,8 @@ const CityFoodExplorer = () => {
     return matchQ && matchS;
   });
 
-  const scrollToTop = () => {
-    const sectionEl = document.getElementById('city-food-section');
-    if (sectionEl) {
-      sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    const cardsEl = document.getElementById('city-cards-grid');
-    if (cardsEl) cardsEl.scrollTop = 0;
-    const detailEl = document.getElementById('food-detail-panel');
-    if (detailEl) detailEl.scrollTop = 0;
-  };
-
-  const handleSelectCityFromNotif = (notifObj) => {
-    if (!notifObj) return;
-    const fullCity = cityFoodData.find(c => c.id === notifObj.id || c.city?.toLowerCase() === notifObj.city?.toLowerCase()) || notifObj;
-    setSelectedCity(fullCity);
-    setSelState('All States');
-    setSearch('');
-
-    setTimeout(scrollToTop, 50);
-  };
-
-  const handleSelectCity = (city) => {
-    setSelectedCity(city);
-    setTimeout(scrollToTop, 50);
-  };
-
   return (
-    <div id="city-food-section" className="min-h-screen pt-20 pb-16 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)', scrollMarginTop: '80px' }}>
+    <div className="min-h-screen pt-20 pb-16 theme-transition" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 5px;
@@ -1034,12 +946,12 @@ const CityFoodExplorer = () => {
           <div className="flex items-center text-sm text-text-muted font-semibold px-2 whitespace-nowrap">{filtered.length} cities</div>
         </div>
 
-        {/* Single Page Scroll Layout */}
-        <div className="flex flex-col lg:flex-row gap-6 items-start relative">
+        {/* Independent Dual-Panel Scroll Layout */}
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
           {/* Left Column: City Cards Grid */}
           <div 
-            id="city-cards-grid"
-            className="flex-[1.3] min-w-0 w-full"
+            className="flex-[1.3] min-w-0 w-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1.5 custom-scrollbar" 
+            style={{ overscrollBehavior: 'contain' }}
           >
             {filtered.length === 0 ? (
               <div className="text-center py-16 bg-bg-secondary rounded-2xl border border-dashed border-black/20">
@@ -1049,15 +961,15 @@ const CityFoodExplorer = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 pb-6">
-                {filtered.map(city => <CityCard key={city.id} city={city} isSelected={selectedCity?.id === city.id} onSelect={handleSelectCity} />)}
+                {filtered.map(city => <CityCard key={city.id} city={city} isSelected={selectedCity?.id === city.id} onSelect={setSelectedCity} />)}
               </div>
             )}
           </div>
 
           {/* Right Column: Detail Panel */}
           <div 
-            id="food-detail-panel"
-            className="flex-1 min-w-72 w-full lg:sticky lg:top-24"
+            className="flex-1 min-w-72 w-full lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1.5 custom-scrollbar" 
+            style={{ overscrollBehavior: 'contain' }}
           >
             <div className="bg-bg-primary rounded-2xl border border-black/10 p-6 shadow-sm min-h-64">
               <DetailPanel 
@@ -1085,21 +997,10 @@ const CityFoodExplorer = () => {
               </div>
             )}
           </div>
-
-          {/* Floating Scroll-to-Top Button */}
-          <button
-            onClick={scrollToTop}
-            title="Scroll to Top"
-            className="fixed bottom-6 right-6 z-40 bg-accent-terra text-white font-bold p-3.5 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center border border-white/20"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-            </svg>
-          </button>
         </div>
       </div>
 
-      <FoodNotification key={notifKey} notif={notif} onClose={() => setNotif(null)} onSelectCity={handleSelectCityFromNotif} />
+      <FoodNotification key={notifKey} notif={notif} onClose={() => setNotif(null)} onSelectCity={setSelectedCity} />
     </div>
   );
 };
