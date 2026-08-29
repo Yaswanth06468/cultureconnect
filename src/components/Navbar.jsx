@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { AuthContext, useContext } from '../context/AuthContext';
-import React from 'react';
+import { AuthContext } from '../context/AuthContext';
 import Logo from './Logo';
 
 const Navbar = () => {
@@ -12,7 +11,7 @@ const Navbar = () => {
     const location = useLocation();
     const { isDark } = useTheme();
 
-    const { user, logout } = React.useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
     
     // Fallback for role if still in localStorage
     const [role, setRole] = useState(localStorage.getItem('role'));

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
     return (
-        <section className="relative min-h-[92vh] flex items-center pt-8 pb-16 overflow-hidden bg-[var(--theme-bg-primary)] transition-colors duration-400">
+        <section className="relative min-h-[85vh] flex items-center pt-2 md:pt-4 pb-12 overflow-hidden bg-[var(--theme-bg-primary)] transition-colors duration-400">
             <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
                 {/* Text Content */}
                 <div className="order-2 md:order-1 animate-slide-left">

@@ -75,19 +75,19 @@
     .flat-card {
         background-color: var(--theme-card-bg);
         border: 1px solid var(--theme-border);
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        box-shadow: none;
-        border-radius: 1rem;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        border-radius: 1.25rem;
     }
     
     .flat-card:hover {
-        transform: translateY(-2px);
+        transform: translateY(-4px);
         border-color: var(--theme-accent-primary);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 12px 28px rgba(36, 31, 28, 0.08);
     }
 
-    .dark .flat-card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    button:active, [role="button"]:active {
+        transform: scale(0.98);
     }
 
     /* Woven stitched divider motif */
