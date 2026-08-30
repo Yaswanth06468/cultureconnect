@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import nodemailer from 'nodemailer';
 
 import authRoutes from './routes/auth.js';
+import placesRoutes from './routes/places.js';
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -382,6 +383,7 @@ function authenticateAdmin(req, res, next) {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/places', placesRoutes);
 
 app.post('/api/admin/login', async (req, res) => {
     const { username, password } = req.body;
@@ -568,6 +570,11 @@ app.get('/api/admin/dashboard-stats', authenticateAdmin, async (req, res) => {
         const totalEvents = await Event.countDocuments();
         const totalBookings = await Booking.countDocuments();
         const totalLogins = await LoginLog.countDocuments();
+        let totalPlaces = 0;
+        try {
+            const Place = mongoose.model('Place');
+            totalPlaces = await Place.countDocuments();
+        } catch (e) { /* ignore */ }
 
         // Last 7 days signups
         const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -602,6 +609,7 @@ app.get('/api/admin/dashboard-stats', authenticateAdmin, async (req, res) => {
             totalEvents,
             totalBookings,
             totalLogins,
+            totalPlaces,
             recentSignups,
             recentLogins,
             dailyLogins,

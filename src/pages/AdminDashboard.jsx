@@ -7,13 +7,35 @@ const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
     const [users, setUsers] = useState([]);
     const [loginLogs, setLoginLogs] = useState([]);
+    const [adminPlaces, setAdminPlaces] = useState([]);
     const [activeTab, setActiveTab] = useState('overview');
     const [loading, setLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [deleteConfirm, setDeleteConfirm] = useState(null);
+    const [deletePlaceConfirm, setDeletePlaceConfirm] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
+    const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
+    const [editingPlace, setEditingPlace] = useState(null);
+    const [placeForm, setPlaceForm] = useState({
+        name: '',
+        city: 'Hyderabad',
+        state: 'Telangana',
+        category: 'Historical Monument',
+        shortDescription: '',
+        fullDescription: '',
+        history: '',
+        culturalSignificance: '',
+        architecture: '',
+        address: '',
+        openingHours: '9:00 AM – 5:30 PM',
+        entryFee: '₹25 for Indians; ₹300 for Foreigners',
+        visitDuration: '1 – 2 hours',
+        bestTimeToVisit: 'October to March',
+        bannerImage: '',
+        famousFor: ''
+    });
 
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -37,21 +59,30 @@ const AdminDashboard = () => {
 
         try {
             const headers = { 'Authorization': `Bearer ${token}` };
-            const [statsRes, usersRes, logsRes] = await Promise.all([
+            const [statsRes, usersRes, logsRes, placesRes] = await Promise.allSettled([
                 fetch(`${API_BASE_URL}/api/admin/dashboard-stats`, { headers }),
                 fetch(`${API_BASE_URL}/api/admin/users`, { headers }),
                 fetch(`${API_BASE_URL}/api/admin/login-logs?limit=200`, { headers }),
+                fetch(`${API_BASE_URL}/api/places`),
             ]);
 
-            if (!statsRes.ok || !usersRes.ok || !logsRes.ok) throw new Error('Unauthorized');
-            
-            const statsData = await statsRes.json();
-            const usersData = await usersRes.json();
-            const logsData = await logsRes.json();
+            if (statsRes.status === 'fulfilled' && statsRes.value.ok) {
+                const statsData = await statsRes.value.json();
+                setStats(statsData);
+            }
+            if (usersRes.status === 'fulfilled' && usersRes.value.ok) {
+                const usersData = await usersRes.value.json();
+                setUsers(usersData);
+            }
+            if (logsRes.status === 'fulfilled' && logsRes.value.ok) {
+                const logsData = await logsRes.value.json();
+                setLoginLogs(logsData);
+            }
+            if (placesRes.status === 'fulfilled' && placesRes.value.ok) {
+                const placesData = await placesRes.value.json();
+                if (Array.isArray(placesData)) setAdminPlaces(placesData);
+            }
 
-            setStats(statsData);
-            setUsers(usersData);
-            setLoginLogs(logsData);
             setLastUpdated(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
         } catch (err) {
             setError('Failed to load admin telemetry data. Please ensure you are logged in as admin.');
@@ -73,6 +104,103 @@ const AdminDashboard = () => {
             }
         } catch (err) {
             console.error('Delete failed', err);
+        }
+    };
+
+    const handleDeletePlace = async (placeId) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/places/${placeId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                setAdminPlaces(prev => prev.filter(p => (p.id || p._id) !== placeId));
+                setDeletePlaceConfirm(null);
+            }
+        } catch (err) {
+            console.error('Delete place failed', err);
+        }
+    };
+
+    const handleOpenCreatePlace = () => {
+        setEditingPlace(null);
+        setPlaceForm({
+            name: '',
+            city: 'Hyderabad',
+            state: 'Telangana',
+            category: 'Historical Monument',
+            shortDescription: '',
+            fullDescription: '',
+            history: '',
+            culturalSignificance: '',
+            architecture: '',
+            address: '',
+            openingHours: '9:00 AM – 5:30 PM',
+            entryFee: '₹25 for Indians; ₹300 for Foreigners',
+            visitDuration: '1 – 2 hours',
+            bestTimeToVisit: 'October to March',
+            bannerImage: '',
+            famousFor: ''
+        });
+        setIsPlaceModalOpen(true);
+    };
+
+    const handleOpenEditPlace = (place) => {
+        setEditingPlace(place);
+        setPlaceForm({
+            name: place.name || '',
+            city: place.city || 'Hyderabad',
+            state: place.state || 'Telangana',
+            category: place.category || 'Historical Monument',
+            shortDescription: place.shortDescription || '',
+            fullDescription: place.fullDescription || '',
+            history: place.history || '',
+            culturalSignificance: place.culturalSignificance || '',
+            architecture: place.architecture || '',
+            address: place.address || '',
+            openingHours: place.openingHours || '9:00 AM – 5:30 PM',
+            entryFee: place.entryFee || '₹25 for Indians; ₹300 for Foreigners',
+            visitDuration: place.visitDuration || '1 – 2 hours',
+            bestTimeToVisit: place.bestTimeToVisit || 'October to March',
+            bannerImage: place.bannerImage || (place.images && place.images[0]) || '',
+            famousFor: place.famousFor || ''
+        });
+        setIsPlaceModalOpen(true);
+    };
+
+    const handleSavePlace = async (e) => {
+        e.preventDefault();
+        try {
+            const url = editingPlace
+                ? `${API_BASE_URL}/api/places/${editingPlace.id || editingPlace._id}`
+                : `${API_BASE_URL}/api/places`;
+            const method = editingPlace ? 'PUT' : 'POST';
+
+            const payload = {
+                ...placeForm,
+                images: placeForm.bannerImage ? [placeForm.bannerImage] : []
+            };
+
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (editingPlace) {
+                    setAdminPlaces(prev => prev.map(p => (p.id || p._id) === (editingPlace.id || editingPlace._id) ? { ...p, ...payload } : p));
+                } else if (data.place) {
+                    setAdminPlaces(prev => [data.place, ...prev]);
+                }
+                setIsPlaceModalOpen(false);
+            }
+        } catch (err) {
+            console.error('Save place failed', err);
         }
     };
 
@@ -425,6 +553,7 @@ const AdminDashboard = () => {
                 <div className="inline-flex p-1 rounded-2xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)]">
                     {[
                         { id: 'overview', label: 'Overview' },
+                        { id: 'places', label: 'Places & Monuments', count: adminPlaces.length },
                         { id: 'users', label: 'Users', count: users.length },
                         { id: 'logins', label: 'Login Audit Logs', count: loginLogs.length },
                     ].map(tab => (
@@ -624,6 +753,330 @@ const AdminDashboard = () => {
                             No logs matching "{searchTerm}"
                         </div>
                     )}
+                </div>
+            )}
+
+            {/* TAB 4: PLACES & MONUMENTS TABLE */}
+            {activeTab === 'places' && (
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                        <span className="text-xs font-bold text-[var(--theme-text-muted)]">
+                            Manage all cultural landmarks, monuments, and palaces.
+                        </span>
+                        <button
+                            onClick={handleOpenCreatePlace}
+                            className="px-4 py-2 rounded-xl text-xs font-bold bg-[var(--theme-accent-primary)] text-white hover:opacity-90 transition-all flex items-center gap-1.5 shadow-sm"
+                        >
+                            <span>➕</span> Add New Place
+                        </button>
+                    </div>
+
+                    <div className="bg-[var(--theme-card-bg)] border border-[var(--theme-border)] rounded-2xl overflow-hidden shadow-sm">
+                        <div className="overflow-x-auto">
+                            <table className="w-full border-collapse text-left">
+                                <thead>
+                                    <tr className="bg-[var(--theme-bg-accent)] border-b border-[var(--theme-border)]">
+                                        <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[var(--theme-text-muted)]">Place / Monument</th>
+                                        <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[var(--theme-text-muted)]">City & State</th>
+                                        <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[var(--theme-text-muted)]">Category</th>
+                                        <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[var(--theme-text-muted)]">Timings & Fees</th>
+                                        <th className="px-5 py-3.5 text-[11px] font-bold uppercase tracking-wider text-[var(--theme-text-muted)] text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-[var(--theme-border)]/50">
+                                    {adminPlaces
+                                        .filter(p => 
+                                            !searchTerm || 
+                                            p.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                            p.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                            p.category?.toLowerCase().includes(searchTerm.toLowerCase())
+                                        )
+                                        .map((p) => (
+                                            <tr key={p.id || p._id} className="hover:bg-[var(--theme-bg-accent)]/50 transition-colors">
+                                                <td className="px-5 py-3.5 text-xs">
+                                                    <div className="flex items-center gap-3">
+                                                        {p.bannerImage || (p.images && p.images[0]) ? (
+                                                            <img 
+                                                                src={p.bannerImage || p.images[0]} 
+                                                                alt={p.name} 
+                                                                className="w-10 h-10 rounded-lg object-cover border border-[var(--theme-border)] flex-shrink-0"
+                                                            />
+                                                        ) : (
+                                                            <div className="w-10 h-10 rounded-lg bg-[var(--theme-bg-accent)] flex items-center justify-center text-sm font-bold text-[var(--theme-accent-primary)]">
+                                                                🏛️
+                                                            </div>
+                                                        )}
+                                                        <div>
+                                                            <span className="font-bold text-[var(--theme-text-primary)] block">{p.name}</span>
+                                                            <span className="text-[11px] text-[var(--theme-text-muted)] line-clamp-1">{p.shortDescription}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-5 py-3.5 text-xs">
+                                                    <span className="font-semibold text-[var(--theme-text-primary)]">{p.city}</span>
+                                                    <span className="text-[11px] text-[var(--theme-text-muted)] block">{p.state}</span>
+                                                </td>
+                                                <td className="px-5 py-3.5 text-xs">
+                                                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[var(--theme-bg-accent)] text-[var(--theme-accent-primary)] border border-[var(--theme-border)]">
+                                                        {p.category}
+                                                    </span>
+                                                </td>
+                                                <td className="px-5 py-3.5 text-xs text-[var(--theme-text-muted)]">
+                                                    <div>{p.openingHours || '9:00 AM – 5:30 PM'}</div>
+                                                    <div className="text-[10px] text-[var(--theme-text-secondary)]">{p.entryFee || 'Free / Nominal'}</div>
+                                                </td>
+                                                <td className="px-5 py-3.5 text-xs text-right whitespace-nowrap">
+                                                    <button
+                                                        onClick={() => handleOpenEditPlace(p)}
+                                                        className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 px-2.5 py-1 rounded-lg border border-indigo-200/50 dark:border-indigo-900/30 transition-all cursor-pointer mr-2"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setDeletePlaceConfirm({ id: p.id || p._id, name: p.name })}
+                                                        className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 px-2.5 py-1 rounded-lg border border-rose-200/50 dark:border-rose-900/30 transition-all cursor-pointer"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        {adminPlaces.length === 0 && (
+                            <div className="text-center py-12 text-[var(--theme-text-muted)] text-xs">
+                                No places loaded. Click "Add New Place" to create one.
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Place Create/Edit Modal */}
+            {isPlaceModalOpen && (
+                <div 
+                    className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-[9999] p-4 overflow-y-auto"
+                    onClick={() => setIsPlaceModalOpen(false)}
+                >
+                    <div 
+                        className="bg-[var(--theme-card-bg)] border border-[var(--theme-border)] rounded-2xl p-6 max-w-2xl w-full shadow-2xl my-8 max-h-[90vh] overflow-y-auto text-left"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between mb-4 pb-3 border-b border-[var(--theme-border)]">
+                            <h3 className="text-lg font-serif font-black text-[var(--theme-text-primary)]">
+                                {editingPlace ? `Edit Place: ${editingPlace.name}` : 'Add New Place / Monument'}
+                            </h3>
+                            <button 
+                                onClick={() => setIsPlaceModalOpen(false)}
+                                className="w-8 h-8 rounded-full bg-[var(--theme-bg-accent)] flex items-center justify-center font-bold text-sm hover:bg-[var(--theme-accent-primary)] hover:text-white transition-all"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSavePlace} className="space-y-4 text-xs">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Place Name *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={placeForm.name}
+                                        onChange={e => setPlaceForm({ ...placeForm, name: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                        placeholder="e.g. Charminar"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">City *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={placeForm.city}
+                                        onChange={e => setPlaceForm({ ...placeForm, city: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                        placeholder="e.g. Hyderabad"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">State *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={placeForm.state}
+                                        onChange={e => setPlaceForm({ ...placeForm, state: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                        placeholder="e.g. Telangana"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Category *</label>
+                                    <select
+                                        value={placeForm.category}
+                                        onChange={e => setPlaceForm({ ...placeForm, category: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                    >
+                                        <option value="Historical Monument">Historical Monument</option>
+                                        <option value="Fort & Palace">Fort & Palace</option>
+                                        <option value="Temple & Spiritual">Temple & Spiritual</option>
+                                        <option value="Museum & Heritage">Museum & Heritage</option>
+                                        <option value="Nature & Scenic">Nature & Scenic</option>
+                                        <option value="Cultural Center">Cultural Center</option>
+                                        <option value="Modern Landmark">Modern Landmark</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Banner Image URL</label>
+                                <input
+                                    type="url"
+                                    value={placeForm.bannerImage}
+                                    onChange={e => setPlaceForm({ ...placeForm, bannerImage: e.target.value })}
+                                    className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                    placeholder="https://..."
+                                />
+                            </div>
+
+                            <div>
+                                <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Short Description *</label>
+                                <textarea
+                                    required
+                                    rows="2"
+                                    value={placeForm.shortDescription}
+                                    onChange={e => setPlaceForm({ ...placeForm, shortDescription: e.target.value })}
+                                    className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                    placeholder="1-2 sentences for place card..."
+                                />
+                            </div>
+
+                            <div>
+                                <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Full Detailed Description *</label>
+                                <textarea
+                                    required
+                                    rows="3"
+                                    value={placeForm.fullDescription}
+                                    onChange={e => setPlaceForm({ ...placeForm, fullDescription: e.target.value })}
+                                    className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                    placeholder="Detailed overview..."
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Historical Background</label>
+                                    <textarea
+                                        rows="2"
+                                        value={placeForm.history}
+                                        onChange={e => setPlaceForm({ ...placeForm, history: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                        placeholder="When built, by whom, context..."
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Cultural Significance</label>
+                                    <textarea
+                                        rows="2"
+                                        value={placeForm.culturalSignificance}
+                                        onChange={e => setPlaceForm({ ...placeForm, culturalSignificance: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                        placeholder="Traditions, festivals, significance..."
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Opening Hours</label>
+                                    <input
+                                        type="text"
+                                        value={placeForm.openingHours}
+                                        onChange={e => setPlaceForm({ ...placeForm, openingHours: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Entry Fee</label>
+                                    <input
+                                        type="text"
+                                        value={placeForm.entryFee}
+                                        onChange={e => setPlaceForm({ ...placeForm, entryFee: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Best Time to Visit</label>
+                                    <input
+                                        type="text"
+                                        value={placeForm.bestTimeToVisit}
+                                        onChange={e => setPlaceForm({ ...placeForm, bestTimeToVisit: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="font-bold text-[var(--theme-text-primary)] block mb-1">Address *</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={placeForm.address}
+                                    onChange={e => setPlaceForm({ ...placeForm, address: e.target.value })}
+                                    className="w-full p-2.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] text-[var(--theme-text-primary)] focus:outline-none focus:border-[var(--theme-accent-primary)]"
+                                    placeholder="Street, Landmark, City, State PIN"
+                                />
+                            </div>
+
+                            <div className="flex gap-3 pt-4 border-t border-[var(--theme-border)]">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsPlaceModalOpen(false)}
+                                    className="flex-1 py-2.5 rounded-xl border border-[var(--theme-border)] font-bold text-[var(--theme-text-primary)] hover:bg-[var(--theme-bg-accent)] transition-all cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="flex-1 py-2.5 rounded-xl bg-[var(--theme-accent-primary)] text-white font-bold hover:opacity-90 transition-all cursor-pointer shadow-md"
+                                >
+                                    {editingPlace ? 'Save Changes' : 'Create Place'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Place Delete Modal */}
+            {deletePlaceConfirm && (
+                <div 
+                    className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[9999] p-4" 
+                    onClick={() => setDeletePlaceConfirm(null)}
+                >
+                    <div 
+                        className="bg-[var(--theme-card-bg)] border border-[var(--theme-border)] rounded-2xl p-6 max-w-sm w-full shadow-lg text-center" 
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <h3 className="text-base font-bold text-[var(--theme-text-primary)] mb-2">Delete Place</h3>
+                        <p className="text-xs text-[var(--theme-text-muted)] mb-5">
+                            Are you sure you want to delete <strong className="text-[var(--theme-text-primary)]">{deletePlaceConfirm.name}</strong>? This action cannot be undone.
+                        </p>
+                        <div className="flex gap-2.5 justify-center">
+                            <button 
+                                onClick={() => setDeletePlaceConfirm(null)}
+                                className="flex-1 py-2 px-3 rounded-xl border border-[var(--theme-border)] text-xs font-semibold text-[var(--theme-text-primary)] hover:bg-[var(--theme-bg-accent)] transition-colors cursor-pointer"
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                onClick={() => handleDeletePlace(deletePlaceConfirm.id)}
+                                className="flex-1 py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold transition-colors cursor-pointer"
+                            >
+                                Delete Place
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 

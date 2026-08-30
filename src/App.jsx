@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import EventsBoard from './pages/EventsBoard';
 import Translator from './pages/Translator';
 import CulturalDances from './pages/CulturalDances';
+import PlacesExplorer from './pages/PlacesExplorer';
 import CityFoodExplorer from './pages/CityFoodExplorer';
 import CultureSwap from './pages/CultureSwap';
 import CultureMatching from './pages/CultureMatching';
@@ -51,6 +52,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/feed" element={<Feed />} />
             <Route path="/events" element={<EventsBoard />} />
+            <Route path="/places" element={<PlacesExplorer />} />
+            <Route path="/places/:city" element={<PlacesExplorer />} />
             <Route path="/translate" element={<Translator />} />
             <Route path="/dances" element={<CulturalDances />} />
             <Route path="/city-food" element={<CityFoodExplorer />} />
