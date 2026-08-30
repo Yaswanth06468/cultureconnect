@@ -6,7 +6,7 @@ export const CITIES_METADATA = [
     city: 'Hyderabad',
     state: 'Telangana',
     tagline: 'The City of Pearls & Nizami Splendor',
-    heroImage: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1200&auto=format&fit=crop&q=80',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/7/71/Charminar_Hyderabad_1.jpg',
     description: 'Hyderabad is a historic metropolis known for its rich blend of Telugu, Deccani, Mughal, and Nizami cultural influences. Founded in 1591 by Muhammad Quli Qutb Shah, it is famed for majestic stone forts, grand palaces, bustling historic bazaars, and world-renowned culinary traditions.',
     historicalSignificance: 'Capital of the medieval Golconda Sultanate and later the princely state ruled by the Asaf Jahi Nizams, once the wealthiest kingdom in the world.',
     culturalSignificance: 'A vibrant crossroads where Deccan Urdu, classical Telugu poetry, Nizami courts, Ramzan Haleem rituals, and Bonalu festivities thrive side by side.',
@@ -78,7 +78,7 @@ export const CITIES_METADATA = [
     city: 'Jaipur',
     state: 'Rajasthan',
     tagline: 'The Pink City of Royal Fortresses & Astronomy',
-    heroImage: 'https://images.unsplash.com/photo-1603288940320-9844add94772?w=1200&auto=format&fit=crop&q=80',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Hawa_Mahal_2011.jpg',
     description: 'Jaipur is India\'s first planned city, founded in 1727 by Maharaja Sawai Jai Singh II. A UNESCO World Heritage City, it is famed for its pink terracotta facades, hillforts commanding sweeping desert views, and scientific astronomical observatories.',
     historicalSignificance: 'Royal seat of the Kachwaha Rajput dynasty who allied with Mughal rulers and created some of the most formidable defensive bastions in India.',
     culturalSignificance: 'World-renowned for block printing (Sanganeri & Bagru), blue pottery, Meenakari jewelry, royal folk music, and vibrant Teej festivals.',
@@ -186,7 +186,7 @@ export const CITIES_METADATA = [
     city: 'Vijayawada',
     state: 'Andhra Pradesh',
     tagline: 'The Sacred City on the Krishna River & Indrakeeladri Hills',
-    heroImage: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1200&auto=format&fit=crop&q=80',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Bezawada_Kanaka_Durga_temple.jpg',
     description: 'Vijayawada ("The Place of Victory") is a sacred commercial and cultural hub on the banks of the mighty Krishna River. Sheltered by the Indrakeeladri Hill, it features rock-cut Buddhist and Hindu cave architecture, ancient monolithic carvings, and vibrant riverfront ghats.',
     historicalSignificance: 'Associated with the legend of Arjuna acquiring the Pasupatastra on Indrakeeladri; home to 4th-7th century rock-cut Buddhist and Vishnukundina caves.',
     culturalSignificance: 'The pilgrimage fervor of the Kanaka Durga Temple, Navratri Teppotsavam boat festival on the Krishna, and Kondapalli wooden toy craft traditions.',
@@ -239,11 +239,11 @@ export const PLACES_DATA = [
     latitude: 17.3616,
     longitude: 78.4747,
     images: [
-      'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1576487248805-cf45f6bcc67f?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1626014303757-6564477577f1?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/7/71/Charminar_Hyderabad_1.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/4/4f/Charminar%2C_Hyderabad%2C_Telengana.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/1/12/Charminar_of_Hyderabad_Telangana.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/7/71/Charminar_Hyderabad_1.jpg',
     nearbyPlaces: ['Mecca Masjid', 'Chowmahalla Palace', 'Laad Bazaar', 'Salar Jung Museum'],
     tags: ['Monument', 'Qutb Shahi', 'Heritage', 'Iconic', 'Bazaar'],
     famousFor: 'Iconic four-minaret Indo-Islamic architecture and Old City cultural pulse',
@@ -281,10 +281,10 @@ export const PLACES_DATA = [
     latitude: 17.3833,
     longitude: 78.4011,
     images: [
-      'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/6/6b/Golconda_fort%2C_Hyderabad%2C_Telengana.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/9/96/Golkonda_Fort_Large_View.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Golconda_fort%2C_Hyderabad%2C_Telengana.jpg',
     nearbyPlaces: ['Qutb Shahi Tombs', 'Taramati Baradari', 'Charminar'],
     tags: ['Fort', 'Diamonds', 'Acoustics', 'Kakatiya', 'Qutb Shahi'],
     famousFor: 'Legendary diamond trade history, acoustic engineering, and massive stone ramparts',
@@ -322,10 +322,10 @@ export const PLACES_DATA = [
     latitude: 17.3578,
     longitude: 78.4717,
     images: [
-      'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/c/ce/Chowmahalla_Palace_01.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/f/fd/Chowmahalla_Palace.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Chowmahalla_Palace_01.jpg',
     nearbyPlaces: ['Charminar', 'Mecca Masjid', 'Laad Bazaar'],
     tags: ['Palace', 'Nizam', 'Royal', 'Belgian Chandeliers', 'Vintage Cars'],
     famousFor: 'Opulent Khilwat Durbar Hall, Belgian chandeliers, and the 1912 royal Rolls-Royce',
@@ -363,10 +363,10 @@ export const PLACES_DATA = [
     latitude: 17.3714,
     longitude: 78.4804,
     images: [
-      'https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/f/f5/Salar_jung_museum_hyderabad.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/8/87/Salar_Jung_Museum_108.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/f/f5/Salar_jung_museum_hyderabad.jpg',
     nearbyPlaces: ['Charminar', 'Purani Haveli', 'State Central Library'],
     tags: ['Museum', 'Art', 'Veiled Rebecca', 'Musical Clock', 'Jade'],
     famousFor: 'The Veiled Rebecca marble statue and the historic hourly Musical Clock',
@@ -404,10 +404,10 @@ export const PLACES_DATA = [
     latitude: 17.3934,
     longitude: 78.3962,
     images: [
-      'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/0/06/Qutb_Shahi_Tombs%2C_Hyderabad.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/4/4d/Tomb_of_Abdullah_Quli_Qutb_Shah.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/0/06/Qutb_Shahi_Tombs%2C_Hyderabad.jpg',
     nearbyPlaces: ['Golconda Fort', 'Taramati Baradari', 'Durgam Cheruvu'],
     tags: ['Tombs', 'Qutb Shahi', 'Aga Khan Restoration', 'Gardens', 'Architecture'],
     famousFor: 'Grand domed royal mausoleums set in landscaped heritage Charbagh gardens',
@@ -445,10 +445,10 @@ export const PLACES_DATA = [
     latitude: 17.3606,
     longitude: 78.4735,
     images: [
-      'https://images.unsplash.com/photo-1576487248805-cf45f6bcc67f?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/b/bb/Mecca_Masjid_Hyderabad.JPG',
+      'https://upload.wikimedia.org/wikipedia/commons/a/ac/Mecca_Masjid%2C_Hyderabad%2C_India.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1576487248805-cf45f6bcc67f?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/b/bb/Mecca_Masjid_Hyderabad.JPG',
     nearbyPlaces: ['Charminar', 'Chowmahalla Palace', 'Laad Bazaar'],
     tags: ['Mosque', 'Spiritual', 'Granite', 'Historic', 'Nizam Tombs'],
     famousFor: 'Colossal black granite arches and soil brought from Mecca embedded in its central arch',
@@ -486,10 +486,10 @@ export const PLACES_DATA = [
     latitude: 17.4239,
     longitude: 78.4738,
     images: [
-      'https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/e/e4/Buddha_statue_at_Hussain_Sagar_in_Hyderabad.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7b/Hussain_sagar_%2C_hyderabad.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Buddha_statue_at_Hussain_Sagar_in_Hyderabad.jpg',
     nearbyPlaces: ['Birla Mandir', 'Lumbini Park', 'NTR Gardens', 'Telangana Secretariat'],
     tags: ['Lake', 'Buddha', 'Monolith', 'Boating', 'Tank Bund'],
     famousFor: 'World\'s tallest monolithic granite Buddha statue and sunset lake cruises',
@@ -527,10 +527,10 @@ export const PLACES_DATA = [
     latitude: 17.4062,
     longitude: 78.4691,
     images: [
-      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/4/41/Birla_Mandir_in_Hyderabad.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/e/ec/Birla_Mandir_Hyderabad.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Birla_Mandir_in_Hyderabad.jpg',
     nearbyPlaces: ['Hussain Sagar', 'BM Birla Science Centre', 'Lumbini Park'],
     tags: ['Temple', 'White Marble', 'Lord Venkateswara', 'Hilltop View', 'Peaceful'],
     famousFor: 'Pure white Makrana marble architecture and panoramic hilltop city views',
@@ -568,10 +568,10 @@ export const PLACES_DATA = [
     latitude: 17.4526,
     longitude: 78.3791,
     images: [
-      'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1569851935333-6ca1448cc299?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/a/ab/Shilparamam%2C_arts_and_crafts_village_in_hyderabad.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/1/15/Shilparamam_New.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/Shilparamam%2C_arts_and_crafts_village_in_hyderabad.jpg',
     nearbyPlaces: ['Durgam Cheruvu Cable Bridge', 'HITEC City', 'Inorbit Mall'],
     tags: ['Crafts', 'Folk Arts', 'Village', 'Kalamkari', 'Performances'],
     famousFor: 'Authentic Indian handicrafts, folk artisan stalls, and live cultural dance shows',
@@ -1162,10 +1162,10 @@ export const PLACES_DATA = [
     latitude: 26.9239,
     longitude: 75.8267,
     images: [
-      'https://images.unsplash.com/photo-1603288940320-9844add94772?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/5/5f/Hawa_Mahal_2011.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/c/c3/Hawa_Mahal_Jaipur.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1603288940320-9844add94772?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Hawa_Mahal_2011.jpg',
     nearbyPlaces: ['City Palace', 'Jantar Mantar', 'Johari Bazaar', 'Bapu Bazaar'],
     tags: ['Palace of Winds', 'Pink City', 'Jharokhas', 'Rajput', 'Iconic'],
     famousFor: 'Pyramidal honeycomb facade with 953 carved stone jharokha breeze windows',
@@ -1203,10 +1203,10 @@ export const PLACES_DATA = [
     latitude: 26.9855,
     longitude: 75.8513,
     images: [
-      'https://images.unsplash.com/photo-1603288940320-9844add94772?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/e/e5/Jaipur_03-2016_04_Amber_Fort.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/5/57/Amer_Fort_-_Jaipur_-_Rajasthan.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1603288940320-9844add94772?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Jaipur_03-2016_04_Amber_Fort.jpg',
     nearbyPlaces: ['Jaigarh Fort', 'Nahargarh Fort', 'Jal Mahal', 'Panna Meena ka Kund'],
     tags: ['UNESCO', 'Fort', 'Sheesh Mahal', 'Hilltop', 'Rajput'],
     famousFor: 'Glittering Sheesh Mahal (Mirror Palace) and monumental hilltop fortifications',
@@ -2641,10 +2641,10 @@ export const PLACES_DATA = [
     latitude: 16.5161,
     longitude: 80.6053,
     images: [
-      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/4/42/Vijayawada_Kanaka_Durga_Temple_-_Gali_Gopuram.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/c/c6/Kanaka_Durga_Gopuram%2C_Vijayawada.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/4/42/Vijayawada_Kanaka_Durga_Temple_-_Gali_Gopuram.jpg',
     nearbyPlaces: ['Prakasam Barrage', 'Undavalli Caves', 'Bhavani Island', 'Bapu Museum'],
     tags: ['Temple', 'Kanaka Durga', 'Indrakeeladri', 'Krishna River', 'Dasara'],
     famousFor: 'Swayambhu golden idol of Goddess Kanaka Durga and Navratri Teppotsavam river festival',
@@ -2682,10 +2682,10 @@ export const PLACES_DATA = [
     latitude: 16.4969,
     longitude: 80.5816,
     images: [
-      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/7/77/Undavalli_Caves.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/2/2f/Undavalli_Caves.JPG'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/7/77/Undavalli_Caves.jpg',
     nearbyPlaces: ['Prakasam Barrage', 'Kanaka Durga Temple', 'Bhavani Island', 'Amaravati'],
     tags: ['Rock Cut Caves', 'Vishnukundina', 'Reclining Vishnu', 'Sandstone', 'Monolithic'],
     famousFor: 'Four-storey 7th-century rock-cut caves with a colossal 5-meter reclining Vishnu statue',
@@ -2723,10 +2723,10 @@ export const PLACES_DATA = [
     latitude: 16.5072,
     longitude: 80.6094,
     images: [
-      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/0/0b/Prakasam_Barrage%2CVijayawada_01.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/4/4f/Night_view_of_Prakasam_Barrage.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Prakasam_Barrage%2CVijayawada_01.jpg',
     nearbyPlaces: ['Kanaka Durga Temple', 'Undavalli Caves', 'Bhavani Island', 'Victoria Jubilee Museum'],
     tags: ['Barrage', 'Krishna River', 'Illumination', 'Sir Arthur Cotton', 'Bridge'],
     famousFor: '1.2km bridge across the Krishna River with spectacular evening dynamic LED lighting',
@@ -2764,10 +2764,10 @@ export const PLACES_DATA = [
     latitude: 16.6186,
     longitude: 80.5369,
     images: [
-      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/5/50/Kondapalli_Fort.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/5/5c/Kondapalli_Killa_%2817%29.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Kondapalli_Fort.jpg',
     nearbyPlaces: ['Kondapalli Toy Village', 'Kanaka Durga Temple', 'Prakasam Barrage'],
     tags: ['Hill Fort', 'Reddi Dynasty', 'Kondapalli Toys', 'Rani Mahal', 'History'],
     famousFor: '14th-century Reddi dynasty hill fortress and world-famous wooden Kondapalli toy craft',
@@ -2805,10 +2805,10 @@ export const PLACES_DATA = [
     latitude: 16.5200,
     longitude: 80.5878,
     images: [
-      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1000&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1000&auto=format&fit=crop&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/a/ac/Bhavani_Island_%2841%29.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/5/5b/Bhavani_island_sunset.jpg'
     ],
-    bannerImage: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=1200&auto=format&fit=crop&q=80',
+    bannerImage: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Bhavani_Island_%2841%29.jpg',
     nearbyPlaces: ['Prakasam Barrage', 'Kanaka Durga Temple', 'Undavalli Caves', 'Bapu Museum'],
     tags: ['River Island', 'Krishna River', 'Boating', 'Water Sports', 'Eco Tourism'],
     famousFor: '133-acre river island on the Krishna River with boating, water sports, and mangrove walks',

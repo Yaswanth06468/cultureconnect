@@ -342,6 +342,7 @@ const PlacesExplorer = () => {
               <img
                 src={currentCityMeta.heroImage}
                 alt={currentCityMeta.city}
+                referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6 text-white">
@@ -491,6 +492,7 @@ const PlacesExplorer = () => {
                   <img
                     src={coverImage}
                     alt={place.name}
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
@@ -649,6 +651,7 @@ const PlacesExplorer = () => {
                 <img
                   src={(selectedPlace.images && selectedPlace.images[0]) || selectedPlace.bannerImage}
                   alt={selectedPlace.name}
+                  referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6 text-white">
@@ -894,7 +897,7 @@ const PlacesExplorer = () => {
                     {communityPosts.map((p) => (
                       <div key={p.id || p._id} className="p-3.5 rounded-xl bg-[var(--theme-bg-accent)] border border-[var(--theme-border)] flex items-start gap-3">
                         {p.image_url && (
-                          <img src={p.image_url} alt="Community" className="w-16 h-16 rounded-lg object-cover flex-shrink-0" />
+                          <img src={p.image_url} alt="Community" referrerPolicy="no-referrer" className="w-16 h-16 rounded-lg object-cover flex-shrink-0" />
                         )}
                         <div className="flex-1">
                           <span className="text-[10px] font-bold text-[var(--theme-text-muted)]">@{p.username || 'traveler'}</span>

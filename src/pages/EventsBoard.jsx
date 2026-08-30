@@ -68,7 +68,7 @@ const getDemoEvents = () => {
       language: 'Telugu',
       price: 250,
       description: 'A vibrant celebration of Telangana and Andhra folk traditions featuring Oggu Katha, Burrakatha, Dappu dance, traditional artisanal stalls, and authentic regional cuisine.',
-      image_url: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop&q=80',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Oggu_Katha_-_Folk_Dance_Of_Telangana_-_Wikiconference_India_2023_-_Hyderabad_2023-04-28_8112.jpg',
       username: 'ShilparamamArts',
       isDemo: true
     },
@@ -82,7 +82,7 @@ const getDemoEvents = () => {
       language: 'Telugu',
       price: 0,
       description: 'An enchanting evening honoring Telugu literature, Avadhanam, classical Carnatic vocal recitals, and traditional drama celebrating the cultural ethos of the Telugu region.',
-      image_url: 'https://images.unsplash.com/photo-1469488865564-c2de10f69f96?w=800&auto=format&fit=crop&q=80',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/1/12/Kuchipudi_Dance_Performance_by_V_Anjana_Devi_at_Ravindra_Bharathi_Hyderabad.jpg',
       username: 'TeluguKalaSamithi',
       isDemo: true
     },
@@ -96,7 +96,7 @@ const getDemoEvents = () => {
       language: 'Telugu',
       price: 500,
       description: 'An intensive masterclass on Kuchipudi and Bharatanatyam mudras, abhinaya expressions, and rhythmic tala structures led by distinguished veteran gurus and choreographers.',
-      image_url: 'https://images.unsplash.com/photo-1569851935333-6ca1448cc299?w=800&auto=format&fit=crop&q=80',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/f/f0/A_Vibrant_Bharatanatyam_Group_Interpretation.jpg',
       username: 'NrityaKalaTrust',
       isDemo: true
     },
@@ -264,7 +264,7 @@ const getDemoEvents = () => {
       language: 'Tamil',
       price: 0,
       description: 'Witness the awe-inspiring chariot procession of the Meenakshi Temple festival with towering Ther temple cars, sacred Nadaswaram music, Bharatanatyam offerings, elaborate deity decorations, and thousands of devotees in ancient ceremonial traditions.',
-      image_url: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800&auto=format&fit=crop&q=80',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Meenakshi_Temple.jpg',
       username: 'MaduraiTemple',
       isDemo: true
     },
@@ -334,7 +334,7 @@ const getDemoEvents = () => {
       language: 'Hindi',
       price: 180,
       description: 'Witness the UNESCO-listed Chhau masked dance tradition from Seraikela depicting Mahabharata epics and nature spirits through gravity-defying martial acrobatics, elaborate papier-mâché masks, traditional Shehnai music, and tribal Dhol drumming.',
-      image_url: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&auto=format&fit=crop&q=80',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Radha_Khrisna_in_Seraikella_Chhau_Dance.jpg',
       username: 'ChhauDanceIndia',
       isDemo: true
     }
