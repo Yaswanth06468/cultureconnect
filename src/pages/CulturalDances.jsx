@@ -257,10 +257,10 @@ const dancesData = [
   {
     id: 15,
     name: "Chhau",
-    state: "West Bengal / Jharkhand / Odisha",
+    state: "West Bengal",
     category: "Semi-Classical Martial Dance",
     description: "Chhau is a dynamic semi-classical martial dance from eastern India, renowned for its acrobatic leaps, shield-and-sword combat sequences, and spectacular papier-mâché masks.",
-    history: "Originating in the indigenous warrior camps (Chhauni) of eastern India, it synthesized tribal martial arts with classical Sanskrit epics and local folklore.",
+    history: "Originating in the indigenous warrior camps (Chhauni) of eastern India, it synthesized tribal martial arts with classical Sanskrit epics and local folklore across West Bengal (Purulia), Jharkhand (Seraikela), and Odisha (Mayurbhanj).",
     significance: "Enacting heroic episodes of cosmic battle where gods defeat demons, Chhau represents the triumph of Dharma and communal courage.",
     costume: "Heavy papier-mâché masks with peacock feather crowns, colorful warrior dhotis, decorated waistbands, and armor-inspired tunics.",
     instruments: "Dhol (large war drum), Dhamsa (giant kettle drum), and Shehnai.",
@@ -325,6 +325,564 @@ const dancesData = [
     ],
     imageUrl: "/images/dances/perini.jpg",
     videoPath: "/videos/dances/perini.mp4"
+  },
+  {
+    id: 19,
+    name: "Bardo Chham",
+    state: "Arunachal Pradesh",
+    category: "Ritual Masked Dance",
+    description: "Bardo Chham is an ancient ritual masked dance performed by the Sherdukpen and Monpa communities of Arunachal Pradesh, depicting the cosmic struggle between forces of good and evil.",
+    history: "Originating in the Himalayan valleys of West Kameng, Bardo Chham is rooted in Sherdukpen folklore and Buddhist monastic traditions. The community believes in both benevolent and malevolent animal spirits, dramatized annually during the Chhekor festival.",
+    significance: "The dance acts as a communal purification ceremony, reenacting mythical fables to cleanse the village of ill fortune, restore cosmic harmony, and seek blessings for peace and abundant harvests.",
+    costume: "Performers wear striking painted wooden animal masks representing lions, bulls, stags, monkeys, and mythical beasts, paired with colorful silk and brocade robes and headbands.",
+    instruments: "Drums (Dungchen and Damaru), brass cymbals (Jhanj), and monastic long horns.",
+    facts: [
+      "Each mask represents an earthly animal or spiritual entity symbolizing positive virtues or negative impulses.",
+      "Performed during the Chhekor festival, where villagers carry sacred Buddhist scriptures around the perimeter of their fields.",
+      "Dancers mimic the movements and temperaments of wild Himalayan animals through stylized leaps and turns."
+    ],
+    imageUrl: "/images/dances/bardo_chham.jpg",
+    videoPath: "/videos/dances/bardo_chham.mp4"
+  },
+  {
+    id: 20,
+    name: "Bidesiya",
+    state: "Bihar",
+    category: "Folk Dance-Drama",
+    description: "Bidesiya is a deeply emotive folk theatre and dance tradition from Bihar, exploring the heartache of economic migration, the separation of lovers, and rural resilience.",
+    history: "Created in the 20th century by the legendary playwright and folk artist Bhikhari Thakur (celebrated as the 'Shakespeare of Bhojpuri'), Bidesiya captured the socioeconomic reality of Bihari youth forced to leave villages for distant cities.",
+    significance: "A poignant cultural mirror of rural Bihar, Bidesiya brings humor, social satire, and tearful melodies together to critique poverty, caste prejudice, and emotional displacement.",
+    costume: "Men perform both male and female roles using vibrant dhotis, kurtas, dupattas, artificial braids, kajal, and silver trinkets.",
+    instruments: "Dholak, Harmonium, Jhal (cymbals), and Sarangi.",
+    facts: [
+      "Founded by Bhikhari Thakur, an illiterate barber who rose to become one of India's most celebrated folk playwrights.",
+      "Traditionally staged in village squares under the stars, drawing thousands of spectators from surrounding hamlets.",
+      "Songs like 'Bidesiya' gave voice to the emotional suffering of wives left behind in ancestral villages."
+    ],
+    imageUrl: "/images/dances/bidesiya.jpg",
+    videoPath: "/videos/dances/bidesiya.mp4"
+  },
+  {
+    id: 21,
+    name: "Karma Naach",
+    state: "Chhattisgarh",
+    category: "Tribal Folk Dance",
+    description: "Karma Naach is a celebratory tribal folk dance performed by the Gond, Baiga, and Oraon communities of Central India to worship the holy Karma (Karam) tree.",
+    history: "Dating back millennia across the tribal heartland of Chhattisgarh and neighboring regions, Karma dance coincides with the autumn festival celebrating nature's bounty and fertility.",
+    significance: "Dedicated to Karma Devta, the god of fortune and fate, the dance invokes prosperity, rainfall, and healthy crops while fostering unity among tribal clans.",
+    costume: "Men wear colorful dhotis, peacock feather turbans, and bead necklaces; women wear vivid lugda sarees, silver armlets, and hairpins adorned with wild forest blossoms.",
+    instruments: "Mandar drum, Timki, Manjira, and Bansuri.",
+    facts: [
+      "Dancers link their arms around each other's waists, swaying back and forth in rhythmic ocean-wave motions.",
+      "A freshly cut branch of the sacred Karma tree is planted in the center of the dancing arena as the focal point.",
+      "The tempo begins slowly with lyrical poetic couplets and rises into high-speed footwork through the night."
+    ],
+    imageUrl: "/images/dances/karma_naach.jpg",
+    videoPath: "/videos/dances/karma_naach.mp4"
+  },
+  {
+    id: 22,
+    name: "Fugdi",
+    state: "Goa",
+    category: "Folk Dance",
+    description: "Fugdi is a fast-paced, joyful Konkani folk dance performed by women in Goa during festivals like Ganesh Chaturthi and Vrata celebrations.",
+    history: "Rooted in ancient indigenous Konkan tribal culture (the Dhangar and Gavda communities), Fugdi transitioned into an omnipresent household celebration during religious festivities across Goa.",
+    significance: "A tribute to female camaraderie, resilience, and domestic joy, Fugdi provides Goan women a spirited creative release from daily chores through song and rapid rhythmic movement.",
+    costume: "Bright nine-yard or traditional Goan cotton sarees tucked neatly, jasmine floral venis in hair, and glass bangles.",
+    instruments: "Clapping hands, vocal rhythmic chants, and the distinctive rhythmic exhaling sound ('FOO') that gives Fugdi its name.",
+    facts: [
+      "Dancers blow air through their mouths making a 'FOO' sound that matches their whirlwind spins.",
+      "Includes variations like Kalti Fugdi (dancing while balancing brass water pots) and spinning in interlocking cross-handed grips.",
+      "Requires extraordinary cardiovascular stamina as dancers twirl faster and faster until climax."
+    ],
+    imageUrl: "/images/dances/fugdi.jpg",
+    videoPath: "/videos/dances/fugdi.mp4"
+  },
+  {
+    id: 23,
+    name: "Phag Dance",
+    state: "Haryana",
+    category: "Seasonal Harvest Folk Dance",
+    description: "Phag Dance is an exuberant agricultural folk dance from Haryana performed during the month of Phalgun to celebrate the vibrant arrival of spring and harvest.",
+    history: "Celebrated for generations by farming communities across Haryana, Phag aligns with the festive fervor of Holi and the ripening of winter crops.",
+    significance: "Expressing joy over a bountiful crop, Phag brings men and women together in spirited playful banter, songs of pastoral life, and community celebration.",
+    costume: "Men wear traditional white kurtas, dhotis, and bright red or yellow turbans; women wear heavily embroidered Daaman skirts, Kurti blouses, and Chunder dupattas.",
+    instruments: "Dhol, Nagada, Tasha, and Manjira.",
+    facts: [
+      "Often features playful mock-battles and witty dialogue songs between male and female dance groups.",
+      "Celebrates the harvest of the Rabi crop alongside the colorful festival of Holi.",
+      "Characterized by brisk hops, synchronized claps, and lively circular formations."
+    ],
+    imageUrl: "/images/dances/phag_dance.jpg",
+    videoPath: "/videos/dances/phag_dance.mp4"
+  },
+  {
+    id: 24,
+    name: "Nati",
+    state: "Himachal Pradesh",
+    category: "Traditional Community Folk Dance",
+    description: "Nati is the beloved community folk dance of the valleys of Himachal Pradesh, renowned for its graceful serpentine lines, gentle swaying steps, and mountain melodies.",
+    history: "Cultivated across the scenic hills of Kullu, Shimla, Kinnaur, and Sirmaur for centuries, Nati is traditionally performed during Dussehra, fairs, and village marriages.",
+    significance: "Nati embodies mountain hospitality, kinship, and communion with village deities (Devtas), whose palanquins are often danced around by the entire village.",
+    costume: "Woolen Cholas, embroidered Himachali caps (Kulluvi topi) tucked with flowers or feathers, silver coin necklaces, and woolen shawls.",
+    instruments: "Dhol, Nagara, Shehnai, Karnal (long brass trumpet), and Ranasingha (curved horn).",
+    facts: [
+      "Holds a Guinness World Record for the largest folk dance in the world, with over 20,000 women dancing together at Kullu Dussehra.",
+      "Dancers hold hands and form concentric curving lines resembling the meandering rivers of the Himalayas.",
+      "There are thirteen distinct regional styles of Nati across Himachal Pradesh."
+    ],
+    imageUrl: "/images/dances/nati.jpg",
+    videoPath: "/videos/dances/nati.mp4"
+  },
+  {
+    id: 25,
+    name: "Matki Dance",
+    state: "Madhya Pradesh",
+    category: "Folk Dance",
+    description: "Matki Dance is a celebrated balancing folk dance from the Malwa region of Madhya Pradesh, performed by women balancing stacks of earthen pitchers on their heads.",
+    history: "Evolving from the daily routine of village women fetching water from distant wells, Matki developed into a showcase of supreme poise, balance, and celebratory elegance.",
+    significance: "Performed at weddings, child-birth celebrations, and village fairs, the dance symbolizes domestic prosperity, endurance, and joyful feminine celebration.",
+    costume: "Vibrant Malwi lehengas, colorful odhnis, heavy silver hasli neckpieces, bangles, and painted earthen pots (matkis) balanced overhead.",
+    instruments: "Dhol, Dholak, and local percussive clappers.",
+    facts: [
+      "Begins with a solo dancer called the 'Jhela' before other dancers join in synchronized harmony.",
+      "Expert performers balance up to five or more earthen or brass pots without dropping them while executing fast footwork.",
+      "The rhythm builds from a steady tempo into rapid rotational spins that test the dancer's balance."
+    ],
+    imageUrl: "/images/dances/matki_dance.jpg",
+    videoPath: "/videos/dances/matki_dance.mp4"
+  },
+  {
+    id: 26,
+    name: "Laho",
+    state: "Meghalaya",
+    category: "Tribal Community Dance",
+    description: "Laho is an elegant and peaceful community folk dance performed by the Pnar (Jaintia) people of Meghalaya during the annual Behdienkhlam festival.",
+    history: "Originating in the verdant Jaintia Hills, Laho has been performed for generations as an invocation for divine blessings, good health, and abundant harvests.",
+    significance: "Laho serves to strengthen community kinship and express gratitude to the supreme creator while warding off pestilence and negative spirits.",
+    costume: "Women wear opulent Jaintia silk sarees (Kyrshah) woven with muga threads, accompanied by pure gold pendants (Kynjri Ksiar) and coral beads; men wear turbans and traditional dhotis.",
+    instruments: "A lone male oral bard reciting rhythmic verses alongside the woodwind flute and Ka Bom drum.",
+    facts: [
+      "Features two young men flanking a young woman in the center, linking arms in unified rhythmic balance.",
+      "Rather than heavy instrumentation, the dance relies on witty impromptu couplets recited by a male humorist.",
+      "A hallmark of the famous Behdienkhlam festival, one of Meghalaya's most celebrated cultural extravaganzas."
+    ],
+    imageUrl: "/images/dances/laho.jpg",
+    videoPath: "/videos/dances/laho.mp4"
+  },
+  {
+    id: 27,
+    name: "Chang Lo",
+    state: "Nagaland",
+    category: "Warrior Harvest Dance",
+    description: "Chang Lo (also known as Sua Lua) is an awe-inspiring traditional warrior dance of the Chang tribe of Nagaland, celebrating tribal courage and post-harvest jubilation.",
+    history: "Historically performed by Chang warriors upon returning victorious from battle, it transitioned over centuries into the centerpiece of the annual Poanglem festival.",
+    significance: "Commemorating ancestral valor and the protection of clan territory, Chang Lo unites the community in collective thanksgiving for bountiful crops and peace.",
+    costume: "Magnificent warrior armor, headgear woven with hornbill feathers and boar tusks, colorful Naga shawls, cowrie shell ornaments, and ceremonial spears and daos.",
+    instruments: "Traditional Naga log drums, gongs, and booming warrior chants.",
+    facts: [
+      "Dancers simulate defensive and offensive battle maneuvers with athletic footwork and spear-thrusting stances.",
+      "Performed during the three-day Poanglem festival following the culmination of the jhum harvesting cycle.",
+      "The hornbill feather crown worn by dancers is a sacred tribal symbol of honor and leadership."
+    ],
+    imageUrl: "/images/dances/chang_lo.jpg",
+    videoPath: "/videos/dances/chang_lo.mp4"
+  },
+  {
+    id: 28,
+    name: "Singhi Chham",
+    state: "Sikkim",
+    category: "Sacred Snow Lion Mask Dance",
+    description: "Singhi Chham is a sacred monastic and cultural masked dance from Sikkim paying homage to the mythical Snow Lion and Mount Kanchenjunga.",
+    history: "Introduced by the patron saint of Sikkim, Guru Padmasambhava (Guru Rinpoche), and popularized by Chogyal rulers, this dance honors the sacred mountain deity Kanchenjunga.",
+    significance: "The Snow Lion symbolizes fearlessness, pure enlightenment, and the protective spirit of the Himalayas, safeguarding the people of Sikkim from misfortune.",
+    costume: "Elaborate white furry lion costumes with turquoise manes, ferocious hand-carved lion masks, and ceremonial Buddhist monastic scarves.",
+    instruments: "Monastic brass horns (Dungchen), Gyaling oboes, cymbals (Rolmo), and Nga drums.",
+    facts: [
+      "Two dancers inhabit a single Snow Lion costume, demonstrating synchronized acrobatics and comedic lion antics.",
+      "Mount Kanchenjunga is revered not just as a mountain, but as the guardian deity of Sikkim represented by the lion.",
+      "Performed during the sacred Pang Lhabsol festival, unique to Sikkimese Himalayan culture."
+    ],
+    imageUrl: "/images/dances/singhi_chham.jpg",
+    videoPath: "/videos/dances/singhi_chham.mp4"
+  },
+  {
+    id: 29,
+    name: "Hojagiri",
+    state: "Tripura",
+    category: "Acrobatic Balance Folk Dance",
+    description: "Hojagiri is a breathtaking folk dance of the Reang (Bru) community of Tripura, featuring women performing incredible lower-body balancing feats with earthen pitchers and lamps.",
+    history: "Practiced for generations among the Reang indigenous clan, Hojagiri is performed during the Laxmi Puja festival to honor Goddess Mailuma (deity of paddy and wealth).",
+    significance: "The dance celebrates agrarian fertility, prosperity, and the protection of grain stores through extraordinary discipline and equilibrium.",
+    costume: "Handwoven Rignai and Risa fabric in deep crimson and black, adorned with silver coin necklaces (Rangbatang), bangles, and feather head ornaments.",
+    instruments: "Khamb (drum), Sumui (bamboo flute), and rhythmic bronze cymbals.",
+    facts: [
+      "Only the lower body from the waist down moves rhythmically; the upper torso remains completely motionless to preserve balance.",
+      "Dancers balance an earthen pitcher on their heads with an oil lamp balanced atop a bottle, while standing on the rim of a brass plate.",
+      "Requires years of specialized training from childhood to master the required abdominal and postural stability."
+    ],
+    imageUrl: "/images/dances/hojagiri.jpg",
+    videoPath: "/videos/dances/hojagiri.mp4"
+  },
+  {
+    id: 30,
+    name: "Choliya",
+    state: "Uttarakhand",
+    category: "Martial Sword Folk Dance",
+    description: "Choliya is an ancient martial sword dance from the Kumaon hills of Uttarakhand, celebrated for its swordplay choreography, war cries, and colorful Rajput regalia.",
+    history: "Dating back over a thousand years to the warrior Rajput clans of the Kumaon Kingdom, Choliya was originally staged to protect wedding caravans from bandit raids.",
+    significance: "Believed to ward off evil spirits, bad omens, and demonic influences, Choliya remains an indispensable part of traditional Kumaoni wedding processions.",
+    costume: "White Chola tunics, red turbans, brocade waistbands, brass armguards, shields, and polished curved swords.",
+    instruments: "Turi and Ransingha (war horns), Dhol-Damau drums, and Masakbeen (Himalayan bagpipe).",
+    facts: [
+      "The presence of the 'Masakbeen'—a Scottish highland bagpipe adopted during colonial times—gives Choliya music an iconic sound.",
+      "Dancers stage mock combat battles, lunging and parrying with real swords in high-speed coordination.",
+      "Rooted in ancient warrior codes of honor (Kshatriya dharma) of the Himalayan frontier."
+    ],
+    imageUrl: "/images/dances/choliya.jpg",
+    videoPath: "/videos/dances/choliya.mp4"
+  },
+  {
+    id: 31,
+    name: "Shondol",
+    state: "Ladakh",
+    category: "Royal Court Dance",
+    description: "Shondol is the celebrated royal dance of Ladakh, historically performed by aristocratic artists to honor the king (Gyalpo) of the Ladakh kingdom.",
+    history: "Originated in the royal courts of the Namgyal dynasty of Ladakh as an offering of supreme artistic elegance and monastic dignity on coronation and royal celebrations.",
+    significance: "Known as the 'Royal Dance of Ladakh', Shondol reflects the tranquil serenity, Buddhist spirituality, and refined courtly culture of the high-altitude kingdom.",
+    costume: "Traditional Sulma dresses of brocade silk, Kos (velvet robes), and the magnificent Perak headpiece studded with hundreds of pure turquoise and lapis lazuli stones.",
+    instruments: "Daman (twin kettle drums), Surna (double-reed oboe), and vocal choral chanting.",
+    facts: [
+      "Made history in 2019 by entering the Guinness Book of World Records when 408 Ladakhi women in traditional attire performed Shondol at Hemis.",
+      "The 'Perak' headdress worn by dancers is a family heirloom passed from mother to daughter across generations.",
+      "Characterized by dignified, measured paces and flowing sleeve gestures mirroring high-altitude winds."
+    ],
+    imageUrl: "/images/dances/shondol.jpg",
+    videoPath: "/videos/dances/shondol.mp4"
+  },
+  {
+    id: 32,
+    name: "Paika Dance",
+    state: "Jharkhand",
+    category: "Martial Warrior Folk Dance",
+    description: "Paika is an energetic martial folk dance from Jharkhand, performed by the Munda and tribal warrior clans brandishing swords and shields in combat formations.",
+    history: "The term 'Paika' refers to the ancient infantry foot-soldiers of tribal kingdoms who defended their communities against invaders. The dance preserves their combat drills.",
+    significance: "Commemorating tribal sovereignty, courage, and weapon veneration (Shastra Puja), Paika infuses pride, agility, and protection rituals into festivals.",
+    costume: "Bright red and yellow dhotis, towering peacock-feather headdresses, armlets, brass ankle bells, and gleaming swords and shields.",
+    instruments: "Nagara (large kettle drum), Dhak, Shehnai, and Bansi.",
+    facts: [
+      "Dancers perform high acrobatic jumps, somersaults, and mock duel clashes in synchronized rhythm.",
+      "Celebrated during the Dussehra and Sarhul tribal festivals as an invocation of courage.",
+      "Historically performed to welcome victorious kings and royal dignitaries to tribal territories."
+    ],
+    imageUrl: "/images/dances/paika.png",
+    videoPath: "/videos/dances/paika.mp4"
+  },
+  {
+    id: 33,
+    name: "Nicobari Dance",
+    state: "Andaman and Nicobar Islands",
+    category: "Island Tribal Dance",
+    description: "Nicobari Dance is the traditional tribal dance of the indigenous Nicobarese people, performed under coconut canopies during the sacred Ossuary Feast.",
+    history: "Practiced for centuries across the remote islands of Car Nicobar and Nancowry, this communal dance honors ancestral departed souls and island nature spirits.",
+    significance: "Serving as a spiritual bridge between living islanders and ancestors, the dance reaffirms communal unity, peaceful coexistence, and gratitude for sea and forest bounty.",
+    costume: "Traditional skirts woven from fresh green coconut fronds and plantain leaves, floral garlands, and natural fiber ornaments.",
+    instruments: "Vocal responsorial chants and rhythmic stamping of feet on bamboo slats; no external drums are traditionally used.",
+    facts: [
+      "Dancers place their arms over each other's shoulders and step rhythmically around a central totem or fire.",
+      "Performed all night long by the entire village community beneath the glow of the full moon.",
+      "Vocal chants narrate island folklore, celestial constellations, and oceanic navigation journeys."
+    ],
+    imageUrl: "/images/dances/nicobari.png",
+    videoPath: "/videos/dances/nicobari.mp4"
+  },
+  {
+    id: 34,
+    name: "Tarpa Dance",
+    state: "Dadra and Nagar Haveli and Daman and Diu",
+    category: "Tribal Harvest Dance",
+    description: "Tarpa Dance is a vibrant tribal folk dance performed by the Warli, Kokna, and Koli communities, spiraling in continuous circles around a player of the giant Tarpa horn.",
+    history: "Dating back centuries among the indigenous tribes of the Sahyadri foothills and Daman coast, the dance is celebrated after the annual rice harvest.",
+    significance: "The serpentine and spiral formations of dancers represent the eternal circle of life, seasons, and fertility, immortalized in famous Warli tribal paintings.",
+    costume: "Men wear simple loincloths or dhotis with colorful waist wraps; women wear vibrant Lugda sarees draped tightly for swift circular movement.",
+    instruments: "The Tarpa—a magnificent indigenous wind instrument made from dried gourd, bamboo, and palm leaves—accompanied by hand claps.",
+    facts: [
+      "The dancer never turns their back to the central Tarpa musician, moving inwards and outwards like an expanding galaxy.",
+      "The Warli art paintings seen across the globe famously depict this exact circular Tarpa dance formation.",
+      "Performances can last from twilight until dawn during harvest celebrations."
+    ],
+    imageUrl: "/images/dances/tarpa.png",
+    videoPath: "/videos/dances/tarpa.mp4"
+  },
+  {
+    id: 35,
+    name: "Kolkali",
+    state: "Lakshadweep",
+    category: "Stick Rhythm Folk Dance",
+    description: "Kolkali is a dynamic, rhythmic stick dance popular across the coral atolls of Lakshadweep, performed by men striking wooden batons in rapid synchronized circles.",
+    history: "Tracing back over a thousand years along the Arabian Sea trade routes, Kolkali synthesizes traditional South Indian stick arts with coastal Malabar and island maritime heritage.",
+    significance: "Commemorating community solidarity, maritime bravery, and religious celebrations (such as Eid and Milad-un-Nabi), Kolkali demands lightning reflexes and harmony.",
+    costume: "White mundus (sarongs) with colored sashes, green waistbands, head turbans, and polished short hardwood sticks.",
+    instruments: "Striking rhythmic sticks, vocal choral anthems, and Chenda drums.",
+    facts: [
+      "The tempo begins at a slow, measured cadence and accelerates into an explosive whirlwind of clacking sticks and dodging leaps.",
+      "Dancers continuously swap pairs and change directions within concentric rings without missing a single stick beat.",
+      "A hallmark tradition across the Lakshadweep archipelago during festivals and boat-launching rituals."
+    ],
+    imageUrl: "/images/dances/kolkali.png",
+    videoPath: "/videos/dances/kolkali.mp4"
+  },
+  {
+    id: 36,
+    name: "Garadi",
+    state: "Puducherry",
+    category: "Mythological Heritage Dance",
+    description: "Garadi is a famous mythological folk dance of Puducherry, recreating the victory celebration of Lord Rama's Vanara army from the epic Ramayana.",
+    history: "Practiced for centuries in the historic French-colonial and Tamil enclave of Puducherry, Garadi was traditionally staged at the Villianur temple festival.",
+    significance: "Depicting the jubilant monkeys (Vanaras) rejoicing upon the triumph of good over evil, the dance brings athletic leaps, devotion, and vibrant storytelling together.",
+    costume: "Dancers wear warrior costumes, face paint, and ten heavy iron rings called 'Anjali' on each leg, producing loud rhythmic chimes.",
+    instruments: "Ramadolu (giant ceremonial drum), Thalam (cymbals), and conch shells.",
+    facts: [
+      "Dancers wear 10 iron rings on each leg, creating an ear-shattering rhythmic cadence as they leap in monkey-like postures.",
+      "The performance can last up to 5 to 8 continuous hours during temple festivals.",
+      "Requires intense martial conditioning, acrobatic agility, and rhythmic endurance."
+    ],
+    imageUrl: "/images/dances/garadi.png",
+    videoPath: "/videos/dances/garadi.mp4"
+  },
+  {
+    id: 37,
+    name: "Dandiya Raas",
+    state: "Gujarat",
+    category: "Folk Dance",
+    description: "Dandiya Raas is a joyous and energetic folk dance of Gujarat performed with pairs of polished wooden sticks (dandiyas) in swirling circles during the nine nights of Navratri.",
+    history: "Tracing back to the ancient Raas Lila of Lord Krishna and the Gopis in Vrindavan and Saurashtra, Dandiya Raas evolved alongside Garba into one of India's most celebrated festival traditions.",
+    significance: "The rhythmic clashing of dandiyas symbolizes the mock battle between Goddess Durga and the demon Mahishasura, celebrating the ultimate victory of truth and devotion.",
+    costume: "Women wear vibrant Ghagharas and Chaniya Cholis adorned with Kutchi mirrorwork, shells, and silver jewelry; men wear Kediyus, dhotis, and embroidered turbans.",
+    instruments: "Dhol, Dholak, Shehnai, Harmonium, and the sharp resonant clatter of wooden Dandiya sticks.",
+    facts: [
+      "Dancers form two concentric circles revolving in opposite directions, striking sticks with changing partners in continuous synchronization.",
+      "Navratri celebrations featuring Garba and Dandiya Raas draw millions of dancers across Gujarat and the global Indian diaspora.",
+      "Modern Dandiyas range from carved rosewood and brass to illuminated LED sticks for festive midnight celebrations."
+    ],
+    imageUrl: "/images/dances/dandiya_raas.jpg",
+    videoPath: "/videos/dances/garba.mp4"
+  },
+  {
+    id: 38,
+    name: "Kalbelia",
+    state: "Rajasthan",
+    category: "Folk Dance",
+    description: "Kalbelia is a world-renowned Rajasthani folk dance performed by the nomadic Kalbelia community, famous for its serpentine choreography, swirling black skirts, and hypnotic Pungi melodies.",
+    history: "Inscribed on UNESCO's Representative List of the Intangible Cultural Heritage of Humanity in 2010, the dance was created by traditional nomadic snake charmers who translated cobra movements into expressive dance.",
+    significance: "An expression of desert resilience, freedom, and nomadic pride, Kalbelia celebrates the intimate bond between desert communities and wildlife.",
+    costume: "Flowing black flared skirts (Angrakhi and Ghaghara) embroidered with silver ribbons (Gota), mirrors, and colorful glass beads, complemented by traditional silver jewelry.",
+    instruments: "Pungi (traditional woodwind instrument), Khanjari (percussion tambourine), Chang, Dholak, and Morchang.",
+    facts: [
+      "The dancers' undulating spins, backbends, and acrobatic balance mirror the swift, hypnotic movements of a desert cobra.",
+      "Kalbelia songs and steps are passed down orally across generations without any written musical notation.",
+      "Expert dancers perform incredible balancing feats like picking up rings or small coins with their eyelids while executing deep backbends."
+    ],
+    imageUrl: "/images/dances/kalbelia.jpg",
+    videoPath: "/videos/dances/ghoomar.mp4"
+  },
+  {
+    id: 39,
+    name: "Theyyam",
+    state: "Kerala",
+    category: "Ritual Masked Dance",
+    description: "Theyyam is a divine and ancient ritual dance-theatre tradition of North Malabar, where performers transform into living deities through sacred makeup, towering headdresses, and fire rituals.",
+    history: "With roots predating Hinduism in ancient Dravidian folk worship over 1,500 years ago, Theyyam encompasses over 400 unique manifestations honoring ancestral spirits, serpent gods, and mother goddesses (Bhagavathis).",
+    significance: "During the ritual, the dancer is believed to transcend ordinary human consciousness to embody the deity itself, granting prophecies, blessings, and social healing to the community.",
+    costume: "Towering bamboo and arecanut headdresses (Mudi) rising up to 30 feet, intricate red and orange face paint, palm-frond skirts, brass chestplates, and waist hoops glowing with fire embers.",
+    instruments: "Chenda (cylindrical drum), Veekku Chenda, Ilathalam (cymbals), and Kuzhal (traditional double-reed horn).",
+    facts: [
+      "In manifestations like Theechamundi Theyyam, the performer leaps fearlessly into blazing embers of sacred fire multiple times.",
+      "There are around 456 known forms of Theyyam, each with unique facial pigmentation, mythology, and sacred songs (Thottam).",
+      "Devotees approach the dancer during the ceremony to consult the deity directly on life dilemmas and receive divine reassurance."
+    ],
+    imageUrl: "/images/dances/theyyam.jpg",
+    videoPath: "/videos/dances/kathakali.mp4"
+  },
+  {
+    id: 40,
+    name: "Karakattam",
+    state: "Tamil Nadu",
+    category: "Folk Dance",
+    description: "Karakattam is an ancient Tamil folk balancing dance dedicated to Goddess Mariamman, featuring dancers balancing ornate brass pots decorated with flowers and rotating parrots on their heads.",
+    history: "Mentioned in Sangam literature thousands of years ago in Tamil Nadu, Karakattam has two forms: Aatta Karagam (artistic public entertainment) and Sakthi Karagam (sacred temple ritual).",
+    significance: "Performed during Tamil village temple festivals (Thiruvizha) to propitiate Mariamman for bountiful rainfall, agricultural fertility, and protection against pestilence.",
+    costume: "Brilliant silk sarees or dhotis, ankle bells (Salangai), fragrant jasmine garlands, and a tall decorated brass Karagam pot crowned with a rotating carved wooden parrot.",
+    instruments: "Nadaswaram, Thavil (percussion drum), Pambai, Urumi, and Thamukku.",
+    facts: [
+      "Dancers execute breath-taking feats—bending backwards, picking up handkerchiefs from the ground, and stepping on nails—without dropping the Karagam pot.",
+      "The wooden parrot crowning the pot is weighted to spin rhythmically along with the dancer's movements.",
+      "A hallmark tradition across the temples of Thanjavur, Madurai, and Tiruchirappalli during summer festivities."
+    ],
+    imageUrl: "/images/dances/karakattam.jpg",
+    videoPath: "/videos/dances/bharatanatyam.mp4"
+  },
+  {
+    id: 41,
+    name: "Dollu Kunitha",
+    state: "Karnataka",
+    category: "Martial & Theatre",
+    description: "Dollu Kunitha is an acrobatic, thunderous drum folk dance of Karnataka performed by Kuruba Gowda men beating massive slung drums in dynamic, synchronized harmony.",
+    history: "Rooted in the worship of Lord Beereshwara (an incarnation of Shiva) across North Karnataka and the Malenadu hills, celebrating divine triumphs over demonic forces.",
+    significance: "Dollu Kunitha channels martial vigor, discipline, and communal devotion, with the pulsating drumbeats believed to dispel negativity and invigorate the spirit.",
+    costume: "High-tied dhotis, bare upper bodies draped with black woolen blankets (Kambli), vibrant turbans, and massive decorated Dollu drums slung from the neck.",
+    instruments: "The Dollu (heavy hollow-wood barrel drum with sheepskin head), Tala (cymbals), and Kahale (long brass trumpet).",
+    facts: [
+      "Each heavy Dollu drum weighs between 8 to 12 kilograms, requiring exceptional cardiovascular stamina to play while executing mid-air leaps.",
+      "Dancers perform high kicks, flying somersaults, and complex circular switches without breaking the rhythm of the drumbeats.",
+      "A crowning highlight of Karnataka's Mysuru Dasara and Janapada Jathre cultural extravaganzas."
+    ],
+    imageUrl: "/images/dances/dollu_kunitha.jpg",
+    videoPath: "/videos/dances/yakshagana.mp4"
+  },
+  {
+    id: 42,
+    name: "Giddha",
+    state: "Punjab",
+    category: "Folk Dance",
+    description: "Giddha is the spirited and graceful female folk dance of Punjab, famous for synchronized clapping (Taali), humorous Boliyan couplets, and expressive rural theatrical mime.",
+    history: "Rooted in ancient agricultural and seasonal festivals as the feminine counterpart to Bhangra, Giddha provided Punjabi women a festive forum to celebrate sisterhood and express life stories.",
+    significance: "Celebrating female joy, sisterhood, and festive milestones like Teeyan (Teej) and weddings, Giddha uses sharp wit and heartfelt poetry to playfully reflect on family relations.",
+    costume: "Vividly colored Salwar Kameez or Shararas, heavy Phulkari embroidered dupattas, Maang Tikka forehead ornaments, and braided tassels (Parandis).",
+    instruments: "Synchronized rhythmic hand claps (Taali), Dholak drum, and vocal singing of Boliyan couplets.",
+    facts: [
+      "The primary rhythm of Giddha is generated not by drums, but by the crisp, synchronized double-clapping of the dancers' hands.",
+      "Features playful dramatic enactments called 'Swang', satirizing humorous conflicts between in-laws and village personalities.",
+      "Performed in circles that swell and contract as solo pairs take turns in the center to exchange rhyming couplets."
+    ],
+    imageUrl: "/images/dances/giddha.jpg",
+    videoPath: "/videos/dances/bhangra.mp4"
+  },
+  {
+    id: 43,
+    name: "Koodiyattam",
+    state: "Kerala",
+    category: "Classical Dance",
+    description: "Koodiyattam is the world's oldest surviving Sanskrit temple theatre tradition, officially recognized by UNESCO as a Masterpiece of the Oral and Intangible Heritage of Humanity.",
+    history: "Preserved for over 1,800 years in the Koothambalam temple theatres of Kerala, performed by the Chakyar and Nambiar communities following the ancient Natya Shastra.",
+    significance: "Considered the living ancestor of Kerala's classical performing arts, Koodiyattam blends sacred Sanskrit recitation with peerless micro-facial mime and ocular storytelling (Netrabhinaya).",
+    costume: "Sculptural wooden headdresses, layered red and white pleated dhotis, bell-metal ornaments, and facial makeup painted using natural minerals like vermilion and yellow arsenic.",
+    instruments: "Mizhavu (giant sacred copper pot drum played with bare hands), Kuzhithalam (cymbals), and Edakka.",
+    facts: [
+      "In 2001, UNESCO proclaimed Koodiyattam as India's very first Masterpiece of the Oral and Intangible Heritage of Humanity.",
+      "A single act can take several consecutive nights to complete, as an actor may spend 45 minutes unpacking a single line of poetry through eye movements.",
+      "Traditionally performed exclusively within sacred temple theatre complexes known as Koothambalams."
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Koodiyattam%2C_Kerala%2C_India.jpg/1280px-Koodiyattam%2C_Kerala%2C_India.jpg",
+    videoPath: "/videos/dances/kathakali.mp4"
+  },
+  {
+    id: 44,
+    name: "Gotipua",
+    state: "Odisha",
+    category: "Classical Dance",
+    description: "Gotipua is the historic precursor to Odissi dance, performed by agile young boys dressed in feminine attire who execute awe-inspiring acrobatic temple poses (Bandhas).",
+    history: "Emerging in Puri and the heritage village of Raghurajpur during the 16th century under the Bhoi dynasty, Gotipua kept Vaishnavite temple dance alive when the Devadasi tradition declined.",
+    significance: "Dedicated to Lord Jagannath, Gotipua translates to 'single boy'. It celebrates the divine love of Radha and Krishna through devotional grace and acrobatic temple architecture poses.",
+    costume: "Specially tailored Kanchula blouses, Geuncha pleated dhotis, ornate silver filigree headpieces (Tarakasi), and intricate sandalwood paste patterns above the brows.",
+    instruments: "Mardala drum, Gini cymbals, Harmonium, and Bansuri.",
+    facts: [
+      "Renowned for 'Bandha Nrutya'—acrobatic postures where dancers bend flexibly to mimic temple chariots, flowering lotuses, and stone carvings.",
+      "Legendary founding masters of modern Odissi, including Guru Kelucharan Mohapatra, received their early training as Gotipua dancers.",
+      "Raghurajpur heritage crafts village in Odisha remains the vibrant cradle and living school for Gotipua troupes."
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Gotipua_Dance_Raghurajpur.jpg/1280px-Gotipua_Dance_Raghurajpur.jpg",
+    videoPath: "/videos/dances/odissi.mp4"
+  },
+  {
+    id: 45,
+    name: "Koli Dance",
+    state: "Maharashtra",
+    category: "Folk Dance",
+    description: "Koli Dance is the joyful maritime folk dance of the original fishermen community of coastal Maharashtra and Mumbai, capturing the rhythm of ocean swells and fishing journeys.",
+    history: "Cultivated for centuries by the indigenous Koli fisherfolk along the Arabian Sea coast, celebrated during Narali Purnima (Coconut Day) when fishermen venture back to sea.",
+    significance: "Expressing reverence for the sea god Varuna, the dance symbolizes maritime bravery, communal kinship, and prayers for abundant catches and safe returns.",
+    costume: "Fisherwomen wear knee-length bright Nauvari sarees (Lugade) with flower venis in their hair; fishermen wear Surwar breeches, embroidered waistcoats, and traditional hats.",
+    instruments: "Dholki, Dhol, Tasha, Harmonium, and rhythmic sea ballads (Koli Geet).",
+    facts: [
+      "Dancers form rows that rise and dip in synchronized waves, recreating the movement of fishing boats braving turbulent Arabian Sea crests.",
+      "Choreography enacts real fishing routines—casting large nets, hauling in hauls of fish, and balancing baskets on the way to dockside markets.",
+      "The spirited beats of Koli music remain one of Maharashtra's most recognizable cultural rhythms."
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Fisherfolk_dance%2C_Mumbai.jpg/1280px-Fisherfolk_dance%2C_Mumbai.jpg",
+    videoPath: "/videos/dances/lavani.mp4"
+  },
+  {
+    id: 46,
+    name: "Dhimsa",
+    state: "Andhra Pradesh",
+    category: "Tribal Folk Dance",
+    description: "Dhimsa is an enchanting tribal chain dance performed by the Valmiki and Porja communities in the misty valleys of Araku in the Eastern Ghats.",
+    history: "Practiced for generations across the hill tracts of Visakhapatnam, Dhimsa is traditionally performed during the Chaitra spring festival, village weddings, and harvest gatherings.",
+    significance: "Fostering communal unity and harmony with nature spirits, Dhimsa welcomes people of all ages to join hand-in-hand in a continuous human chain.",
+    costume: "Women wear vibrant tribal cotton sarees draped with precision, heavy brass anklets, cowrie bead necklaces, and fresh wild forest blossoms.",
+    instruments: "Mori (brass horn pipe), Tudumu (kettle drum), Dappu (frame drum), and Kiridi.",
+    facts: [
+      "Encompasses twelve distinct choreographic steps, including 'Boda Dhimsa' (honoring elders) and 'Gundel Dhimsa' (coiling serpent lines).",
+      "The entire village links hands or waistbands, moving across the square in a single continuous flowing wave.",
+      "The music opens with the deep wail of the Mori brass horn before accelerating into a galloping dance rhythm."
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Dhimsa_dance.jpg/1280px-Dhimsa_dance.jpg",
+    videoPath: "/videos/dances/kuchipudi.mp4"
+  },
+  {
+    id: 47,
+    name: "Panthi",
+    state: "Chhattisgarh",
+    category: "Tribal Folk Dance",
+    description: "Panthi is a spiritual and acrobatic dance of the Satnami community of Chhattisgarh, dedicated to Guru Ghasidas and renowned for gravity-defying human pyramids.",
+    history: "Originated in the 18th century as a vehicle for the teachings of Saint Guru Ghasidas, celebrating equality, non-violence, and spiritual enlightenment (Satnam).",
+    significance: "Panthi combines devotional worship with affirmations of social equality; the ascending human pyramids symbolize spiritual elevation from earthly bondage toward divine truth.",
+    costume: "Simple white or red-bordered dhotis, garlands of Tulsi beads, and brass ankle bells that sound in rapid unison.",
+    instruments: "Mandar (terracotta drum), Jhanj (large brass cymbals), and choral Bhajans.",
+    facts: [
+      "Dancers perform spectacular athletic feats, stacking into multi-tiered human towers while singing devotional hymns.",
+      "Celebrated with great fervor on Maghi Purnima and the birth anniversary of Guru Ghasidas across Chhattisgarh.",
+      "Demands supreme physical conditioning, acrobatic agility, and collective coordination among community members."
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Panthi_Dance_Chhattisgarh.jpg/1280px-Panthi_Dance_Chhattisgarh.jpg",
+    videoPath: "/videos/dances/karma_naach.mp4"
+  },
+  {
+    id: 48,
+    name: "Jat-Jatin",
+    state: "Bihar",
+    category: "Folk Dance",
+    description: "Jat-Jatin is a popular moonlit folk dance-drama of North Bihar and Mithila, depicting the tender romance, humorous quarrels, and joyful reconciliation of a rural couple.",
+    history: "Performed by village women during monsoon nights from Shravana to Ashwina, preserved through centuries of agrarian folklore in the Mithila plains.",
+    significance: "Historically staged as an invocation for abundant monsoon showers to nourish paddy fields and ward off drought, blending marital devotion with agricultural hope.",
+    costume: "Traditional Bihari cotton sarees with bright borders, lac bangles, silver payal anklets, and ornate nose pins.",
+    instruments: "Dholak, Manjira, and call-and-response choral folk singing.",
+    facts: [
+      "Performed outdoors strictly at night under the light of the full moon during the monsoon season.",
+      "The dance playfully dramatizes husband (Jat) and wife (Jatin) negotiating poverty, seasonal separation, and romantic reconciliation.",
+      "Local folklore holds that heartfelt Jat-Jatin performances persuade the rain gods to send down nourishing showers."
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1599818816942-835c6fcbfaae?auto=format&fit=crop&q=80&w=1000",
+    videoPath: "/videos/dances/bidesiya.mp4"
+  },
+  {
+    id: 49,
+    name: "Bhavai",
+    state: "Rajasthan",
+    category: "Folk Dance",
+    description: "Bhavai is a thrilling and spectacular balancing folk dance of Rajasthan, where female performers dance gracefully while balancing up to 9 brass or earthen pots atop their heads on swords or glass.",
+    history: "Originated among the Kalbelia, Jat, and Bhil communities of western Rajasthan, evolving from the daily routine of village women carrying water across desert dunes.",
+    significance: "A dramatic demonstration of feminine endurance, grace, and poise, Bhavai celebrates victory over the harsh challenges of desert existence.",
+    costume: "Vivid Rajasthani Ghaghara-Cholis in crimson and saffron with shimmering Gota-patti borders, sheer odhnis, and silver hasli necklaces.",
+    instruments: "Dholak, Pakhawaj, Sarangi, Jhanj, and Harmonium.",
+    facts: [
+      "Expert dancers balance up to 8 or 9 brass pitchers on their heads while walking on the sharp edge of open swords or balancing on brass thalis.",
+      "Training begins in early childhood, starting with a single pot before progressing to broken glass, nails, and swords.",
+      "A centerpiece attraction of Rajasthan desert festivals and international cultural expos."
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&q=80&w=1000",
+    videoPath: "/videos/dances/ghoomar.mp4"
   }
 ];
 
@@ -335,8 +893,10 @@ const CulturalDances = () => {
   const [selectedDance, setSelectedDance] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef(null);
 
   // Sync state and dance selection from URL query params or router location state
@@ -351,11 +911,14 @@ const CulturalDances = () => {
     if (paramDance) {
       const danceObj = dancesData.find(d =>
         d.name.toLowerCase() === paramDance.toLowerCase() ||
-        (paramState && d.state.toLowerCase() === paramState.toLowerCase() && d.name.toLowerCase().includes(paramDance.toLowerCase()))
+        (paramState && (d.state.toLowerCase() === paramState.toLowerCase() || d.state.toLowerCase().includes(paramState.toLowerCase())) && d.name.toLowerCase().includes(paramDance.toLowerCase()))
       );
       if (danceObj) setSelectedDance(danceObj);
     } else if (paramState && paramState !== 'All') {
-      const danceObj = dancesData.find(d => d.state.toLowerCase() === paramState.toLowerCase());
+      const danceObj = dancesData.find(d => 
+        d.state.toLowerCase() === paramState.toLowerCase() || 
+        d.state.toLowerCase().includes(paramState.toLowerCase())
+      );
       if (danceObj) setSelectedDance(danceObj);
     }
   }, [location.state, searchParams]);
@@ -363,10 +926,20 @@ const CulturalDances = () => {
   // Extract unique states for dropdown
   const states = useMemo(() => {
     const uniqueStates = ["All", ...new Set(dancesData.map(d => d.state))];
-    return uniqueStates.sort();
+    return uniqueStates.sort((a, b) => a === 'All' ? -1 : b === 'All' ? 1 : a.localeCompare(b));
   }, []);
 
-  // Dual filtering: Search (dance name, state, keywords) & State dropdown
+  // Filter categories
+  const categories = [
+    "All",
+    "Classical Dance",
+    "Folk Dance",
+    "Tribal Folk Dance",
+    "Martial & Theatre",
+    "Ritual Masked Dance"
+  ];
+
+  // Dual filtering: Search (dance name, state, category, keywords) & State dropdown & Category
   const filteredDances = useMemo(() => {
     return dancesData.filter(dance => {
       const q = searchQuery.trim().toLowerCase();
@@ -376,13 +949,27 @@ const CulturalDances = () => {
         dance.category?.toLowerCase().includes(q) ||
         dance.description?.toLowerCase().includes(q);
 
-      const matchesState = selectedState === "All" || dance.state === selectedState;
-      return matchesSearch && matchesState;
+      const matchesState = selectedState === "All" ||
+        dance.state === selectedState ||
+        dance.state.toLowerCase().includes(selectedState.toLowerCase()) ||
+        selectedState.toLowerCase().includes(dance.state.toLowerCase());
+
+      const matchesCategory = selectedCategory === "All" || (() => {
+        if (selectedCategory === "Classical Dance") return dance.category.toLowerCase().includes("classical");
+        if (selectedCategory === "Folk Dance") return dance.category.toLowerCase().includes("folk") && !dance.category.toLowerCase().includes("tribal");
+        if (selectedCategory === "Tribal Folk Dance") return dance.category.toLowerCase().includes("tribal");
+        if (selectedCategory === "Martial & Theatre") return dance.category.toLowerCase().includes("martial") || dance.category.toLowerCase().includes("theatre") || dance.category.toLowerCase().includes("warrior");
+        if (selectedCategory === "Ritual Masked Dance") return dance.category.toLowerCase().includes("masked") || dance.category.toLowerCase().includes("ritual");
+        return dance.category.toLowerCase().includes(selectedCategory.toLowerCase());
+      })();
+
+      return matchesSearch && matchesState && matchesCategory;
     });
-  }, [searchQuery, selectedState]);
+  }, [searchQuery, selectedState, selectedCategory]);
 
   const handleSelectDance = (dance) => {
     setSelectedDance(dance);
+    setVideoError(false);
     setIsMuted(false);
     setIsPlaying(true);
   };
@@ -390,6 +977,7 @@ const CulturalDances = () => {
   // Video playback effect
   useEffect(() => {
     if (selectedDance && videoRef.current) {
+      setVideoError(false);
       videoRef.current.muted = isMuted;
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
@@ -425,7 +1013,6 @@ const CulturalDances = () => {
             Cultural Dances of India
           </h1>
 
-          {/* Requested Subtitle */}
           <p style={{
             fontSize: 16,
             color: 'var(--theme-text-secondary)',
@@ -433,29 +1020,29 @@ const CulturalDances = () => {
             margin: '0 auto 28px',
             lineHeight: 1.6
           }}>
-            Explore India's rich cultural heritage through classical and folk dances from across the country.
+            Explore India's rich cultural heritage through {dancesData.length} classical, folk, tribal, and martial dance traditions across every State and Union Territory.
           </p>
 
-          {/* Search & State Filter Container */}
+          {/* Search & Filter Container */}
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 12,
-            maxWidth: 720,
+            gap: 14,
+            maxWidth: 820,
             margin: '0 auto',
             backgroundColor: 'var(--theme-bg-secondary)',
-            padding: '16px',
+            padding: '18px',
             borderRadius: 20,
             border: '1px solid var(--theme-border)',
             boxShadow: '0 4px 16px rgba(0,0,0,0.03)'
           }}>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               {/* Search Field */}
-              <div style={{ position: 'relative', flex: 1, minWidth: 240 }}>
+              <div style={{ position: 'relative', flex: 1, minWidth: 260 }}>
                 <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 16, opacity: 0.6 }}>🔍</span>
                 <input
                   type="text"
-                  placeholder="Search by dance or state (e.g. Kuchipudi, Kathak, Andhra, Kerala)…"
+                  placeholder="Search by dance, state, or style (e.g. Kuchipudi, Nati, Bidesiya, Goa)…"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   style={{
@@ -482,7 +1069,7 @@ const CulturalDances = () => {
               </div>
 
               {/* State Filter Dropdown */}
-              <div style={{ minWidth: 200, position: 'relative' }}>
+              <div style={{ minWidth: 220, position: 'relative' }}>
                 <select
                   value={selectedState}
                   onChange={(e) => setSelectedState(e.target.value)}
@@ -501,7 +1088,7 @@ const CulturalDances = () => {
                     boxSizing: 'border-box'
                   }}
                 >
-                  <option value="All">All States & Regions</option>
+                  <option value="All">All States & Territories ({dancesData.length})</option>
                   {states.filter(s => s !== 'All').map(state => (
                     <option key={state} value={state}>{state}</option>
                   ))}
@@ -510,15 +1097,40 @@ const CulturalDances = () => {
               </div>
             </div>
 
+            {/* Category Filter Chips */}
+            <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: 20,
+                    border: '1px solid',
+                    borderColor: selectedCategory === cat ? 'var(--theme-accent-primary)' : 'var(--theme-border)',
+                    backgroundColor: selectedCategory === cat ? 'var(--theme-accent-primary)' : 'var(--theme-bg-primary)',
+                    color: selectedCategory === cat ? '#fff' : 'var(--theme-text-secondary)',
+                    fontSize: 12,
+                    fontWeight: selectedCategory === cat ? 800 : 600,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
             {/* Quick Helper Filter Stats */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 4px', fontSize: 12, color: 'var(--theme-text-muted)' }}>
-              <span>Showing <strong>{filteredDances.length}</strong> dance form{filteredDances.length !== 1 ? 's' : ''}</span>
-              {(searchQuery || selectedState !== 'All') && (
+              <span>Showing <strong>{filteredDances.length}</strong> of <strong>{dancesData.length}</strong> dance traditions across India</span>
+              {(searchQuery || selectedState !== 'All' || selectedCategory !== 'All') && (
                 <button
-                  onClick={() => { setSearchQuery(''); setSelectedState('All'); }}
+                  onClick={() => { setSearchQuery(''); setSelectedState('All'); setSelectedCategory('All'); }}
                   style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontWeight: 700, cursor: 'pointer', fontSize: 12 }}
                 >
-                  Clear Filters
+                  Clear All Filters
                 </button>
               )}
             </div>
@@ -545,7 +1157,7 @@ const CulturalDances = () => {
                   border: '1px solid var(--theme-border)',
                   display: 'flex',
                   flexDirection: 'column',
-                  height: 340,
+                  height: 350,
                   transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: '0 4px 14px rgba(0,0,0,0.03)',
                   position: 'relative'
@@ -559,7 +1171,7 @@ const CulturalDances = () => {
                     loading="lazy"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "https://images.unsplash.com/photo-1569851935333-6ca1448cc299?auto=format&fit=crop&q=80&w=1000";
+                      e.target.src = "/images/dances/kuchipudi.jpg";
                     }}
                     style={{
                       width: '100%',
@@ -576,7 +1188,7 @@ const CulturalDances = () => {
                   {/* Category Pill */}
                   <div style={{
                     position: 'absolute', top: 12, left: 12,
-                    background: 'rgba(36, 31, 28, 0.8)',
+                    background: 'rgba(36, 31, 28, 0.85)',
                     backdropFilter: 'blur(6px)',
                     color: '#fff',
                     borderRadius: 20,
@@ -621,13 +1233,14 @@ const CulturalDances = () => {
                   flex: 1,
                   backgroundColor: 'var(--theme-card-bg)'
                 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
                     <h3 style={{
-                      fontSize: 19,
+                      fontSize: 18,
                       fontWeight: 800,
                       color: 'var(--theme-text-primary)',
                       fontFamily: 'Fraunces, serif',
-                      margin: 0
+                      margin: 0,
+                      lineHeight: 1.2
                     }}>
                       {dance.name}
                     </h3>
@@ -637,7 +1250,9 @@ const CulturalDances = () => {
                       color: 'var(--theme-accent-primary)',
                       backgroundColor: 'var(--theme-bg-accent)',
                       padding: '3px 8px',
-                      borderRadius: 12
+                      borderRadius: 12,
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0
                     }}>
                       {dance.state}
                     </span>
@@ -651,7 +1266,7 @@ const CulturalDances = () => {
                     color: 'var(--theme-text-muted)',
                     marginTop: 8
                   }}>
-                    <span>Explore details</span>
+                    <span>Explore details & traditions</span>
                     <span style={{ color: 'var(--theme-accent-primary)', fontWeight: 800 }}>→</span>
                   </div>
                 </div>
@@ -674,10 +1289,10 @@ const CulturalDances = () => {
               No dances found
             </h3>
             <p style={{ fontSize: 14, color: 'var(--theme-text-muted)', margin: '0 0 18px' }}>
-              We couldn't find any Indian dance form matching "{searchQuery}" in {selectedState}.
+              We couldn't find any Indian dance form matching your current filter criteria.
             </p>
             <button
-              onClick={() => { setSearchQuery(''); setSelectedState('All'); }}
+              onClick={() => { setSearchQuery(''); setSelectedState('All'); setSelectedCategory('All'); }}
               style={{
                 background: 'var(--theme-btn-bg)',
                 color: 'var(--theme-btn-text)',
@@ -751,12 +1366,12 @@ const CulturalDances = () => {
                     gap: 6
                   }}
                 >
-                  <span>←</span> Back to Dances
+                  <span>←</span> Back to All Dances
                 </button>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--theme-text-muted)' }}>
-                    {selectedDance.state}
+                    📍 {selectedDance.state}
                   </span>
                   <button
                     onClick={() => setSelectedDance(null)}
@@ -780,60 +1395,80 @@ const CulturalDances = () => {
               </div>
 
               {/* Media Player / Hero Video Section */}
-              <div style={{ position: 'relative', width: '100%', backgroundColor: '#000', aspectRatio: '16/9' }}>
-                <video
-                  ref={videoRef}
-                  src={selectedDance.videoPath}
-                  poster={selectedDance.imageUrl}
-                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  autoPlay
-                  loop
-                  muted={isMuted}
-                  playsInline
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                  onClick={() => {
-                    if (videoRef.current) {
-                      if (videoRef.current.paused) videoRef.current.play();
-                      else videoRef.current.pause();
-                    }
-                  }}
-                />
-
-                {/* Media Controls Bar Overlay */}
-                <div style={{
-                  position: 'absolute', bottom: 0, left: 0, right: 0,
-                  padding: '14px 20px',
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  color: '#fff'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <button
-                      onClick={() => {
-                        if (videoRef.current) {
-                          if (videoRef.current.paused) videoRef.current.play();
-                          else videoRef.current.pause();
-                        }
-                      }}
-                      style={{ background: 'none', border: 'none', color: '#fff', fontSize: 18, cursor: 'pointer' }}
-                    >
-                      {isPlaying ? '⏸' : '▶'}
-                    </button>
-                    <button
-                      onClick={() => setIsMuted(!isMuted)}
-                      style={{ background: 'none', border: 'none', color: '#fff', fontSize: 16, cursor: 'pointer' }}
-                    >
-                      {isMuted ? '🔇 Unmute' : '🔊 Live Audio'}
-                    </button>
+              <div style={{ position: 'relative', width: '100%', backgroundColor: '#000', aspectRatio: '16/9', overflow: 'hidden' }}>
+                {!videoError ? (
+                  <video
+                    ref={videoRef}
+                    src={selectedDance.videoPath}
+                    poster={selectedDance.imageUrl}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    autoPlay
+                    loop
+                    muted={isMuted}
+                    playsInline
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onError={() => setVideoError(true)}
+                    onClick={() => {
+                      if (videoRef.current) {
+                        if (videoRef.current.paused) videoRef.current.play();
+                        else videoRef.current.pause();
+                      }
+                    }}
+                  />
+                ) : (
+                  <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                    <img
+                      src={selectedDance.imageUrl}
+                      alt={selectedDance.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{
+                      position: 'absolute', bottom: 12, left: 16,
+                      backgroundColor: 'rgba(0,0,0,0.7)', padding: '6px 12px',
+                      borderRadius: 12, color: '#fff', fontSize: 12, fontWeight: 600
+                    }}>
+                      🏛️ Archival Cultural Visual Showcase
+                    </div>
                   </div>
+                )}
 
-                  <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', opacity: 0.8 }}>
-                    {selectedDance.category}
-                  </span>
-                </div>
+                {/* Media Controls Bar Overlay when video is available */}
+                {!videoError && (
+                  <div style={{
+                    position: 'absolute', bottom: 0, left: 0, right: 0,
+                    padding: '14px 20px',
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    color: '#fff'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <button
+                        onClick={() => {
+                          if (videoRef.current) {
+                            if (videoRef.current.paused) videoRef.current.play();
+                            else videoRef.current.pause();
+                          }
+                        }}
+                        style={{ background: 'none', border: 'none', color: '#fff', fontSize: 18, cursor: 'pointer' }}
+                      >
+                        {isPlaying ? '⏸' : '▶'}
+                      </button>
+                      <button
+                        onClick={() => setIsMuted(!isMuted)}
+                        style={{ background: 'none', border: 'none', color: '#fff', fontSize: 14, cursor: 'pointer' }}
+                      >
+                        {isMuted ? '🔇 Unmute' : '🔊 Live Audio'}
+                      </button>
+                    </div>
+
+                    <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', opacity: 0.85 }}>
+                      {selectedDance.category}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Detailed Structured Information */}
