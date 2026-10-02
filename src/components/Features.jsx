@@ -30,6 +30,16 @@ const features = [
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
             </svg>
         ),
+    },
+    {
+        title: "Travel & Discovery",
+        description: "Book your journey across India and instantly discover monuments, food trails, and traditions.",
+        href: "/travel",
+        icon: (
+            <svg className="w-8 h-8 text-[var(--theme-accent-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+        ),
     }
 ];
 
@@ -49,7 +59,7 @@ const Features = () => {
                     <div className="hidden md:block w-24 h-[1px] bg-[var(--theme-border)] mb-4"></div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-6">
                     {features.map((feature, index) => (
                         <div
                             key={index}

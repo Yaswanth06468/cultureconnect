@@ -234,7 +234,7 @@ const dancesData = [
       "Traditional Lavani performers are masters of quick-witted impromptu repartee with audience members."
     ],
     imageUrl: "/images/dances/lavani.jpg",
-    videoPath: "/videos/dances/lavani.mp4"
+    videoPath: "/videos/dances/bharatanatyam.mp4"
   },
   {
     id: 14,
@@ -342,7 +342,7 @@ const dancesData = [
       "Dancers mimic the movements and temperaments of wild Himalayan animals through stylized leaps and turns."
     ],
     imageUrl: "/images/dances/bardo_chham.jpg",
-    videoPath: "/videos/dances/bardo_chham.mp4"
+    videoPath: "/videos/dances/chhau.mp4"
   },
   {
     id: 20,
@@ -504,7 +504,7 @@ const dancesData = [
       "Performed during the sacred Pang Lhabsol festival, unique to Sikkimese Himalayan culture."
     ],
     imageUrl: "/images/dances/singhi_chham.jpg",
-    videoPath: "/videos/dances/singhi_chham.mp4"
+    videoPath: "/videos/dances/shondol.mp4"
   },
   {
     id: 29,
@@ -810,7 +810,7 @@ const dancesData = [
       "The spirited beats of Koli music remain one of Maharashtra's most recognizable cultural rhythms."
     ],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Fisherfolk_dance%2C_Mumbai.jpg/1280px-Fisherfolk_dance%2C_Mumbai.jpg",
-    videoPath: "/videos/dances/lavani.mp4"
+    videoPath: "/videos/dances/fugdi.mp4"
   },
   {
     id: 46,
@@ -885,6 +885,145 @@ const dancesData = [
     videoPath: "/videos/dances/ghoomar.mp4"
   }
 ];
+
+// ── DanceCard: shows image at rest, plays video preview on hover ──────────
+const DanceCard = ({ dance, onClick }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const hoverVideoRef = useRef(null);
+
+  useEffect(() => {
+    const video = hoverVideoRef.current;
+    if (!video) return;
+    if (isHovered) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }, [isHovered]);
+
+  return (
+    <div
+      onClick={() => onClick(dance)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="flat-card"
+      style={{
+        borderRadius: 18,
+        overflow: 'hidden',
+        cursor: 'pointer',
+        backgroundColor: 'var(--theme-card-bg)',
+        border: isHovered ? '1.5px solid var(--theme-accent-primary)' : '1px solid var(--theme-border)',
+        display: 'flex',
+        flexDirection: 'column',
+        height: 350,
+        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        boxShadow: isHovered ? '0 12px 40px rgba(0,0,0,0.14)' : '0 4px 14px rgba(0,0,0,0.03)',
+        position: 'relative',
+        transform: isHovered ? 'translateY(-3px)' : 'translateY(0)'
+      }}
+    >
+      {/* Image / Video Container */}
+      <div style={{ height: '70%', position: 'relative', overflow: 'hidden', backgroundColor: '#1a1614' }}>
+        {/* Static Poster Image */}
+        <img
+          src={dance.imageUrl}
+          alt={dance.name}
+          loading="lazy"
+          onError={(e) => { e.target.onerror = null; e.target.src = '/images/dances/kuchipudi.jpg'; }}
+          style={{
+            width: '100%', height: '100%', objectFit: 'cover',
+            position: 'absolute', inset: 0,
+            transition: 'opacity 0.4s ease, transform 0.5s ease',
+            opacity: isHovered ? 0 : 1,
+            transform: isHovered ? 'scale(1.06)' : 'scale(1)',
+          }}
+        />
+        {/* Hover Video Preview */}
+        <video
+          ref={hoverVideoRef}
+          src={dance.videoPath}
+          muted
+          loop
+          playsInline
+          preload="none"
+          style={{
+            width: '100%', height: '100%', objectFit: 'cover',
+            position: 'absolute', inset: 0,
+            transition: 'opacity 0.4s ease',
+            opacity: isHovered ? 1 : 0,
+          }}
+        />
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)'
+        }} />
+
+        {/* Category Pill */}
+        <div style={{
+          position: 'absolute', top: 12, left: 12,
+          background: 'rgba(20,16,14,0.88)', backdropFilter: 'blur(6px)',
+          color: '#fff', borderRadius: 20, padding: '4px 10px',
+          fontSize: 10, fontWeight: 800, letterSpacing: 0.5,
+          border: '1px solid rgba(255,255,255,0.18)',
+          transition: 'opacity 0.3s ease',
+          opacity: isHovered ? 0.6 : 1
+        }}>
+          {dance.category}
+        </div>
+
+        {/* Live Video Indicator */}
+        <div style={{
+          position: 'absolute', top: 12, right: 12,
+          background: isHovered ? 'rgba(220,53,53,0.92)' : 'rgba(0,0,0,0.6)',
+          backdropFilter: 'blur(4px)',
+          color: '#fff', borderRadius: 20, padding: '4px 10px',
+          fontSize: 10, fontWeight: 700,
+          display: 'flex', alignItems: 'center', gap: 4,
+          transition: 'all 0.3s ease',
+          border: '1px solid rgba(255,255,255,0.15)'
+        }}>
+          {isHovered ? (
+            <><span style={{ width: 7, height: 7, borderRadius: '50%', background: '#fff', display: 'inline-block', animation: 'pulse 1s infinite' }} /> LIVE</>
+          ) : (
+            <><span>▶</span> Preview</>
+          )}
+        </div>
+      </div>
+
+      {/* Info Footer */}
+      <div style={{
+        padding: '16px', display: 'flex', flexDirection: 'column',
+        justifyContent: 'space-between', flex: 1,
+        backgroundColor: 'var(--theme-card-bg)'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+          <h3 style={{
+            fontSize: 18, fontWeight: 800, color: 'var(--theme-text-primary)',
+            fontFamily: 'Fraunces, serif', margin: 0, lineHeight: 1.2
+          }}>
+            {dance.name}
+          </h3>
+          <span style={{
+            fontSize: 11, fontWeight: 700, color: 'var(--theme-accent-primary)',
+            backgroundColor: 'var(--theme-bg-accent)', padding: '3px 8px',
+            borderRadius: 12, whiteSpace: 'nowrap', flexShrink: 0
+          }}>
+            {dance.state}
+          </span>
+        </div>
+
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          fontSize: 12, color: 'var(--theme-text-muted)', marginTop: 8
+        }}>
+          <span>{isHovered ? '🎬 Video preview playing…' : 'Hover to preview · Click for details'}</span>
+          <span style={{ color: 'var(--theme-accent-primary)', fontWeight: 800 }}>→</span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const CulturalDances = () => {
   const location = useLocation();
@@ -1145,132 +1284,7 @@ const CulturalDances = () => {
             gap: 24
           }}>
             {filteredDances.map((dance) => (
-              <div
-                key={dance.id}
-                onClick={() => handleSelectDance(dance)}
-                className="flat-card"
-                style={{
-                  borderRadius: 18,
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  backgroundColor: 'var(--theme-card-bg)',
-                  border: '1px solid var(--theme-border)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 350,
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: '0 4px 14px rgba(0,0,0,0.03)',
-                  position: 'relative'
-                }}
-              >
-                {/* Image Container */}
-                <div style={{ height: '70%', position: 'relative', overflow: 'hidden', backgroundColor: '#1a1614' }}>
-                  <img
-                    src={dance.imageUrl}
-                    alt={dance.name}
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "/images/dances/kuchipudi.jpg";
-                    }}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      transition: 'transform 0.5s ease',
-                    }}
-                  />
-                  <div style={{
-                    position: 'absolute', inset: 0,
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)'
-                  }} />
-
-                  {/* Category Pill */}
-                  <div style={{
-                    position: 'absolute', top: 12, left: 12,
-                    background: 'rgba(36, 31, 28, 0.85)',
-                    backdropFilter: 'blur(6px)',
-                    color: '#fff',
-                    borderRadius: 20,
-                    padding: '4px 10px',
-                    fontSize: 10,
-                    fontWeight: 800,
-                    letterSpacing: 0.5,
-                    border: '1px solid rgba(255,255,255,0.2)'
-                  }}>
-                    {dance.category}
-                  </div>
-
-                  {/* Play Icon Hint on Hover */}
-                  <div style={{
-                    position: 'absolute', inset: 0,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'rgba(0,0,0,0.25)',
-                    opacity: 0,
-                    transition: 'opacity 0.2s ease',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                  onMouseLeave={e => e.currentTarget.style.opacity = '0'}
-                  >
-                    <div style={{
-                      width: 48, height: 48, borderRadius: '50%',
-                      background: 'var(--theme-accent-primary)',
-                      color: '#fff', display: 'flex', alignItems: 'center',
-                      justifyContent: 'center', fontSize: 18,
-                      boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
-                    }}>
-                      ▶
-                    </div>
-                  </div>
-                </div>
-
-                {/* Info Footer */}
-                <div style={{
-                  padding: '16px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  flex: 1,
-                  backgroundColor: 'var(--theme-card-bg)'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
-                    <h3 style={{
-                      fontSize: 18,
-                      fontWeight: 800,
-                      color: 'var(--theme-text-primary)',
-                      fontFamily: 'Fraunces, serif',
-                      margin: 0,
-                      lineHeight: 1.2
-                    }}>
-                      {dance.name}
-                    </h3>
-                    <span style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: 'var(--theme-accent-primary)',
-                      backgroundColor: 'var(--theme-bg-accent)',
-                      padding: '3px 8px',
-                      borderRadius: 12,
-                      whiteSpace: 'nowrap',
-                      flexShrink: 0
-                    }}>
-                      {dance.state}
-                    </span>
-                  </div>
-
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    fontSize: 12,
-                    color: 'var(--theme-text-muted)',
-                    marginTop: 8
-                  }}>
-                    <span>Explore details & traditions</span>
-                    <span style={{ color: 'var(--theme-accent-primary)', fontWeight: 800 }}>→</span>
-                  </div>
-                </div>
-              </div>
+              <DanceCard key={dance.id} dance={dance} onClick={handleSelectDance} />
             ))}
           </div>
         ) : (
