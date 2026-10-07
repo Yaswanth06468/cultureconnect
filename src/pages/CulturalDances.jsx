@@ -1,11 +1,15 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import DancePreviewVideo from '../components/DancePreviewVideo';
 
 const dancesData = [
   {
     id: 1,
     name: "Kuchipudi",
     state: "Andhra Pradesh",
+    origin: "Kuchelapuram (Kuchipudi village), Krishna District, Andhra Pradesh",
+    style: "Classical Dance-Drama",
+    famousFor: "Tarangam brass plate dance, intricate rhythmic footwork, and live character dialogue & singing",
     category: "Classical Dance",
     description: "Kuchipudi is a classical dance-drama form known for its graceful movements, brisk footwork, dramatic characterizations, and the famous 'Tarangam' performed on the edges of a brass plate.",
     history: "Originating in the village of Kuchelapuram (now Kuchipudi) in the Krishna district of Andhra Pradesh around the 14th–15th century, Kuchipudi was nurtured by Brahmin scholars and bards known as Bhagavathulu. It evolved from ancient Yakshagana dance-dramas and was formalized by Siddhendra Yogi.",
@@ -18,12 +22,16 @@ const dancesData = [
       "Historically performed exclusively by male troupes traveling between villages, it was revitalized in the 20th century for solo female exponents."
     ],
     imageUrl: "/images/dances/kuchipudi.jpg",
-    videoPath: "/videos/dances/kuchipudi.mp4"
+    videoPath: "/videos/dances/kuchipudi.mp4",
+    videoUrl: "/videos/dances/kuchipudi.mp4"
   },
   {
     id: 2,
     name: "Bharatanatyam",
     state: "Tamil Nadu",
+    origin: "Thanjavur & ancient temple traditions of Tamil Nadu",
+    style: "Classical Temple Dance (Sadir Natyam)",
+    famousFor: "Sculpted Aramandi postures, sharp geometric lines, sophisticated mudras, and profound abhinaya",
     category: "Classical Dance",
     description: "Bharatanatyam is one of the oldest classical dance traditions in India, renowned for its sculptured postures, sharp geometric lines (Aramandi), sophisticated mudras, and profound abhinaya.",
     history: "With roots traced back to the Natya Shastra by sage Bharata Muni and the Devadasi temple traditions of Tamil Nadu over 2,000 years ago, Bharatanatyam was preserved in the temples of Thanjavur and codified by the famous Thanjavur Quartet in the 19th century.",
@@ -36,12 +44,16 @@ const dancesData = [
       "Revitalized in the 1930s by pioneers like Rukmini Devi Arundale and E. Krishna Iyer, bringing it to global prestige."
     ],
     imageUrl: "https://images.unsplash.com/photo-1569851935333-6ca1448cc299?auto=format&fit=crop&q=80&w=1000",
-    videoPath: "/videos/dances/bharatanatyam.mp4"
+    videoPath: "/videos/dances/bharatanatyam.mp4",
+    videoUrl: "/videos/dances/bharatanatyam.mp4"
   },
   {
     id: 3,
     name: "Kathakali",
     state: "Kerala",
+    origin: "Courts and temples of Kerala (17th century)",
+    style: "Classical Dance-Drama (Attakkatha)",
+    famousFor: "Vibrant Paccha & Kathi face makeup (Vesham), towering Kireetam headdresses, and dramatic ocular expressions",
     category: "Classical Dance-Drama",
     description: "Kathakali is an iconic classical dance-drama from Kerala distinguished by elaborate colorful face makeup (Vesham), towering headdresses (Kireetam), and dramatic eye and facial expressions.",
     history: "Evolving during the 17th century in the courts and temples of southwestern India, Kathakali synthesized older martial arts (Kalaripayattu), folk rituals (Theyyam), and Sanskrit theater traditions (Koodiyattam).",
@@ -54,12 +66,16 @@ const dancesData = [
       "Traditionally staged all night long in temple courtyards illuminated solely by a large brass oil lamp (Kalivilakku)."
     ],
     imageUrl: "/images/dances/kathakali.jpg",
-    videoPath: "/videos/dances/kathakali.mp4"
+    videoPath: "/videos/dances/kathakali.mp4",
+    videoUrl: "/videos/dances/yakshagana.mp4"
   },
   {
     id: 4,
     name: "Kathak",
     state: "Uttar Pradesh",
+    origin: "Ancient northern bards & royal courts of Lucknow, Jaipur, and Varanasi",
+    style: "Classical Storytelling Dance (Katha)",
+    famousFor: "Lightning-fast spins (Chakkars), intricate Tatkar foot percussion, and chiming ghungroos",
     category: "Classical Dance",
     description: "Kathak is the premier classical dance form of northern India, celebrated for its lightning-fast spins (Chakkars), rhythmic foot percussion (Tatkar), and subtle romantic and devotional mime.",
     history: "Derived from the ancient Sanskrit word 'Katha' (story), Kathak was originally performed by wandering village bards (Kathakars). During the Mughal era, it flourished in the royal courts of Lucknow, Jaipur, and Banaras.",
@@ -72,7 +88,8 @@ const dancesData = [
       "The bells (ghungroos) worn by Kathak exponents can number from 100 to 200 bells on each ankle."
     ],
     imageUrl: "https://images.unsplash.com/photo-1756382616831-998e8baf9675?auto=format&fit=crop&q=80&w=1000",
-    videoPath: "/videos/dances/kathak.mp4"
+    videoPath: "/videos/dances/kathak.mp4",
+    videoUrl: "/videos/dances/kathak.mp4"
   },
   {
     id: 5,
@@ -90,7 +107,8 @@ const dancesData = [
       "Recognized by archaeological evidence as one of the oldest surviving dance traditions in the world."
     ],
     imageUrl: "/images/dances/odissi_generated.png",
-    videoPath: "/videos/dances/odissi.mp4"
+    videoPath: "/videos/dances/odissi.mp4",
+    videoUrl: "/videos/dances/bharatanatyam.mp4"
   },
   {
     id: 6,
@@ -108,7 +126,8 @@ const dancesData = [
       "Nobel laureate Rabindranath Tagore was so captivated by Manipuri that he introduced it to his university at Shantiniketan."
     ],
     imageUrl: "https://images.unsplash.com/photo-1632292611299-980426b386a1?auto=format&fit=crop&q=80&w=1000",
-    videoPath: "/videos/dances/manipuri.mp4"
+    videoPath: "/videos/dances/manipuri.mp4",
+    videoUrl: "/videos/dances/kathak.mp4"
   },
   {
     id: 7,
@@ -126,7 +145,8 @@ const dancesData = [
       "The music follows the evocative Sopana Sangeetham style, sung traditionally along temple sanctum steps."
     ],
     imageUrl: "/images/dances/mohiniyattam.png",
-    videoPath: "/videos/dances/mohiniyattam.mp4"
+    videoPath: "/videos/dances/mohiniyattam.mp4",
+    videoUrl: "/videos/dances/bharatanatyam.mp4"
   },
   {
     id: 8,
@@ -144,7 +164,8 @@ const dancesData = [
       "Dancers maintain precise hand gestures called 'Hastas' unique to northeastern Indian classical treatises."
     ],
     imageUrl: "/images/dances/sattriya.jpg",
-    videoPath: "/videos/dances/sattriya.mp4"
+    videoPath: "/videos/dances/sattriya.mp4",
+    videoUrl: "/videos/dances/kathak.mp4"
   },
   {
     id: 9,
@@ -162,7 +183,8 @@ const dancesData = [
       "Features dynamic tempo shifts, accelerating from gentle rhythmic steps into lightning-fast spins."
     ],
     imageUrl: "/images/dances/garba.jpg",
-    videoPath: "/videos/dances/garba.mp4"
+    videoPath: "/videos/dances/garba.mp4",
+    videoUrl: "/videos/dances/garba.mp4"
   },
   {
     id: 10,
@@ -180,7 +202,8 @@ const dancesData = [
       "Ranked among the top world heritage folk dances for its hypnotic circular choreography."
     ],
     imageUrl: "/images/dances/ghoomar_generated.png",
-    videoPath: "/videos/dances/ghoomar.mp4"
+    videoPath: "/videos/dances/ghoomar.mp4",
+    videoUrl: "/videos/dances/ghoomar.mp4"
   },
   {
     id: 11,
@@ -198,7 +221,8 @@ const dancesData = [
       "Accompanied by traditional 'Boliyan' (short rhyming couplets that capture everyday humor and bravery)."
     ],
     imageUrl: "/images/dances/bhangra.jpg",
-    videoPath: "/videos/dances/bhangra.mp4"
+    videoPath: "/videos/dances/bhangra.mp4",
+    videoUrl: "/videos/dances/bhangra.mp4"
   },
   {
     id: 12,
@@ -216,7 +240,8 @@ const dancesData = [
       "The rapid flutter of dancers' fingers mimics the gentle flutter of spring butterflies and leaves."
     ],
     imageUrl: "/images/dances/bihu.jpg",
-    videoPath: "/videos/dances/bihu.mp4"
+    videoPath: "/videos/dances/bihu.mp4",
+    videoUrl: "/videos/dances/cheraw.mp4"
   },
   {
     id: 13,
@@ -234,7 +259,8 @@ const dancesData = [
       "Traditional Lavani performers are masters of quick-witted impromptu repartee with audience members."
     ],
     imageUrl: "/images/dances/lavani.jpg",
-    videoPath: "/videos/dances/bharatanatyam.mp4"
+    videoPath: "/videos/dances/bharatanatyam.mp4",
+    videoUrl: "/videos/dances/bharatanatyam.mp4"
   },
   {
     id: 14,
@@ -252,7 +278,8 @@ const dancesData = [
       "Features two distinct regional schools: Tenkutittu (southern style) and Badagutittu (northern style)."
     ],
     imageUrl: "/images/dances/yakshagana.jpg",
-    videoPath: "/videos/dances/yakshagana.mp4"
+    videoPath: "/videos/dances/yakshagana.mp4",
+    videoUrl: "/videos/dances/yakshagana.mp4"
   },
   {
     id: 15,
@@ -270,7 +297,8 @@ const dancesData = [
       "Dancers execute breath-taking 360-degree aerial spins and forward somersaults while wearing heavy masks."
     ],
     imageUrl: "/images/dances/chhau.jpg",
-    videoPath: "/videos/dances/chhau.mp4"
+    videoPath: "/videos/dances/chhau.mp4",
+    videoUrl: "/videos/dances/paika.mp4"
   },
   {
     id: 16,
@@ -288,7 +316,8 @@ const dancesData = [
       "The rhythmic tapping of bamboo on the ground resonates with the sounds of nature and forest birds."
     ],
     imageUrl: "/images/dances/cheraw.jpg",
-    videoPath: "/videos/dances/cheraw.mp4"
+    videoPath: "/videos/dances/cheraw.mp4",
+    videoUrl: "/videos/dances/cheraw.mp4"
   },
   {
     id: 17,
@@ -306,7 +335,8 @@ const dancesData = [
       "Performed traditionally during the holy festival of Eid and the saffron harvest."
     ],
     imageUrl: "/images/dances/rouf.jpg",
-    videoPath: "/videos/dances/rouf.mp4"
+    videoPath: "/videos/dances/rouf.mp4",
+    videoUrl: "/videos/dances/rouf.mp4"
   },
   {
     id: 18,
@@ -324,7 +354,8 @@ const dancesData = [
       "The rhythm builds from deep meditative chants into an unstoppable, thunderous crescendo of footwork."
     ],
     imageUrl: "/images/dances/perini.jpg",
-    videoPath: "/videos/dances/perini.mp4"
+    videoPath: "/videos/dances/perini.mp4",
+    videoUrl: "/videos/dances/perini.mp4"
   },
   {
     id: 19,
@@ -342,7 +373,8 @@ const dancesData = [
       "Dancers mimic the movements and temperaments of wild Himalayan animals through stylized leaps and turns."
     ],
     imageUrl: "/images/dances/bardo_chham.jpg",
-    videoPath: "/videos/dances/chhau.mp4"
+    videoPath: "/videos/dances/chhau.mp4",
+    videoUrl: "/videos/dances/shondol.mp4"
   },
   {
     id: 20,
@@ -360,7 +392,8 @@ const dancesData = [
       "Songs like 'Bidesiya' gave voice to the emotional suffering of wives left behind in ancestral villages."
     ],
     imageUrl: "/images/dances/bidesiya.jpg",
-    videoPath: "/videos/dances/bidesiya.mp4"
+    videoPath: "/videos/dances/bidesiya.mp4",
+    videoUrl: "/videos/dances/matki_dance.mp4"
   },
   {
     id: 21,
@@ -378,7 +411,8 @@ const dancesData = [
       "The tempo begins slowly with lyrical poetic couplets and rises into high-speed footwork through the night."
     ],
     imageUrl: "/images/dances/karma_naach.jpg",
-    videoPath: "/videos/dances/karma_naach.mp4"
+    videoPath: "/videos/dances/karma_naach.mp4",
+    videoUrl: "/videos/dances/paika.mp4"
   },
   {
     id: 22,
@@ -396,7 +430,8 @@ const dancesData = [
       "Requires extraordinary cardiovascular stamina as dancers twirl faster and faster until climax."
     ],
     imageUrl: "/images/dances/fugdi.jpg",
-    videoPath: "/videos/dances/fugdi.mp4"
+    videoPath: "/videos/dances/fugdi.mp4",
+    videoUrl: "/videos/dances/fugdi.mp4"
   },
   {
     id: 23,
@@ -414,7 +449,8 @@ const dancesData = [
       "Characterized by brisk hops, synchronized claps, and lively circular formations."
     ],
     imageUrl: "/images/dances/phag_dance.jpg",
-    videoPath: "/videos/dances/phag_dance.mp4"
+    videoPath: "/videos/dances/phag_dance.mp4",
+    videoUrl: "/videos/dances/bhangra.mp4"
   },
   {
     id: 24,
@@ -432,7 +468,8 @@ const dancesData = [
       "There are thirteen distinct regional styles of Nati across Himachal Pradesh."
     ],
     imageUrl: "/images/dances/nati.jpg",
-    videoPath: "/videos/dances/nati.mp4"
+    videoPath: "/videos/dances/nati.mp4",
+    videoUrl: "/videos/dances/choliya.mp4"
   },
   {
     id: 25,
@@ -450,7 +487,8 @@ const dancesData = [
       "The rhythm builds from a steady tempo into rapid rotational spins that test the dancer's balance."
     ],
     imageUrl: "/images/dances/matki_dance.jpg",
-    videoPath: "/videos/dances/matki_dance.mp4"
+    videoPath: "/videos/dances/matki_dance.mp4",
+    videoUrl: "/videos/dances/matki_dance.mp4"
   },
   {
     id: 26,
@@ -468,7 +506,8 @@ const dancesData = [
       "A hallmark of the famous Behdienkhlam festival, one of Meghalaya's most celebrated cultural extravaganzas."
     ],
     imageUrl: "/images/dances/laho.jpg",
-    videoPath: "/videos/dances/laho.mp4"
+    videoPath: "/videos/dances/laho.mp4",
+    videoUrl: "/videos/dances/laho.mp4"
   },
   {
     id: 27,
@@ -486,7 +525,8 @@ const dancesData = [
       "The hornbill feather crown worn by dancers is a sacred tribal symbol of honor and leadership."
     ],
     imageUrl: "/images/dances/chang_lo.jpg",
-    videoPath: "/videos/dances/chang_lo.mp4"
+    videoPath: "/videos/dances/chang_lo.mp4",
+    videoUrl: "/videos/dances/chang_lo.mp4"
   },
   {
     id: 28,
@@ -504,7 +544,8 @@ const dancesData = [
       "Performed during the sacred Pang Lhabsol festival, unique to Sikkimese Himalayan culture."
     ],
     imageUrl: "/images/dances/singhi_chham.jpg",
-    videoPath: "/videos/dances/shondol.mp4"
+    videoPath: "/videos/dances/shondol.mp4",
+    videoUrl: "/videos/dances/shondol.mp4"
   },
   {
     id: 29,
@@ -522,7 +563,8 @@ const dancesData = [
       "Requires years of specialized training from childhood to master the required abdominal and postural stability."
     ],
     imageUrl: "/images/dances/hojagiri.jpg",
-    videoPath: "/videos/dances/hojagiri.mp4"
+    videoPath: "/videos/dances/hojagiri.mp4",
+    videoUrl: "/videos/dances/hojagiri.mp4"
   },
   {
     id: 30,
@@ -540,7 +582,8 @@ const dancesData = [
       "Rooted in ancient warrior codes of honor (Kshatriya dharma) of the Himalayan frontier."
     ],
     imageUrl: "/images/dances/choliya.jpg",
-    videoPath: "/videos/dances/choliya.mp4"
+    videoPath: "/videos/dances/choliya.mp4",
+    videoUrl: "/videos/dances/choliya.mp4"
   },
   {
     id: 31,
@@ -558,7 +601,8 @@ const dancesData = [
       "Characterized by dignified, measured paces and flowing sleeve gestures mirroring high-altitude winds."
     ],
     imageUrl: "/images/dances/shondol.jpg",
-    videoPath: "/videos/dances/shondol.mp4"
+    videoPath: "/videos/dances/shondol.mp4",
+    videoUrl: "/videos/dances/shondol.mp4"
   },
   {
     id: 32,
@@ -576,7 +620,8 @@ const dancesData = [
       "Historically performed to welcome victorious kings and royal dignitaries to tribal territories."
     ],
     imageUrl: "/images/dances/paika.png",
-    videoPath: "/videos/dances/paika.mp4"
+    videoPath: "/videos/dances/paika.mp4",
+    videoUrl: "/videos/dances/paika.mp4"
   },
   {
     id: 33,
@@ -594,7 +639,8 @@ const dancesData = [
       "Vocal chants narrate island folklore, celestial constellations, and oceanic navigation journeys."
     ],
     imageUrl: "/images/dances/nicobari.png",
-    videoPath: "/videos/dances/nicobari.mp4"
+    videoPath: "/videos/dances/nicobari.mp4",
+    videoUrl: "/videos/dances/nicobari.mp4"
   },
   {
     id: 34,
@@ -612,7 +658,8 @@ const dancesData = [
       "Performances can last from twilight until dawn during harvest celebrations."
     ],
     imageUrl: "/images/dances/tarpa.png",
-    videoPath: "/videos/dances/tarpa.mp4"
+    videoPath: "/videos/dances/tarpa.mp4",
+    videoUrl: "/videos/dances/tarpa.mp4"
   },
   {
     id: 35,
@@ -630,7 +677,8 @@ const dancesData = [
       "A hallmark tradition across the Lakshadweep archipelago during festivals and boat-launching rituals."
     ],
     imageUrl: "/images/dances/kolkali.png",
-    videoPath: "/videos/dances/kolkali.mp4"
+    videoPath: "/videos/dances/kolkali.mp4",
+    videoUrl: "/videos/dances/kolkali.mp4"
   },
   {
     id: 36,
@@ -648,7 +696,8 @@ const dancesData = [
       "Requires intense martial conditioning, acrobatic agility, and rhythmic endurance."
     ],
     imageUrl: "/images/dances/garadi.png",
-    videoPath: "/videos/dances/garadi.mp4"
+    videoPath: "/videos/dances/garadi.mp4",
+    videoUrl: "/videos/dances/garadi.mp4"
   },
   {
     id: 37,
@@ -666,7 +715,8 @@ const dancesData = [
       "Modern Dandiyas range from carved rosewood and brass to illuminated LED sticks for festive midnight celebrations."
     ],
     imageUrl: "/images/dances/dandiya_raas.jpg",
-    videoPath: "/videos/dances/garba.mp4"
+    videoPath: "/videos/dances/garba.mp4",
+    videoUrl: "/videos/dances/garba.mp4"
   },
   {
     id: 38,
@@ -684,7 +734,8 @@ const dancesData = [
       "Expert dancers perform incredible balancing feats like picking up rings or small coins with their eyelids while executing deep backbends."
     ],
     imageUrl: "/images/dances/kalbelia.jpg",
-    videoPath: "/videos/dances/ghoomar.mp4"
+    videoPath: "/videos/dances/ghoomar.mp4",
+    videoUrl: "/videos/dances/ghoomar.mp4"
   },
   {
     id: 39,
@@ -702,7 +753,8 @@ const dancesData = [
       "Devotees approach the dancer during the ceremony to consult the deity directly on life dilemmas and receive divine reassurance."
     ],
     imageUrl: "/images/dances/theyyam.jpg",
-    videoPath: "/videos/dances/kathakali.mp4"
+    videoPath: "/videos/dances/kathakali.mp4",
+    videoUrl: "/videos/dances/yakshagana.mp4"
   },
   {
     id: 40,
@@ -720,7 +772,8 @@ const dancesData = [
       "A hallmark tradition across the temples of Thanjavur, Madurai, and Tiruchirappalli during summer festivities."
     ],
     imageUrl: "/images/dances/karakattam.jpg",
-    videoPath: "/videos/dances/bharatanatyam.mp4"
+    videoPath: "/videos/dances/bharatanatyam.mp4",
+    videoUrl: "/videos/dances/bharatanatyam.mp4"
   },
   {
     id: 41,
@@ -738,7 +791,8 @@ const dancesData = [
       "A crowning highlight of Karnataka's Mysuru Dasara and Janapada Jathre cultural extravaganzas."
     ],
     imageUrl: "/images/dances/dollu_kunitha.jpg",
-    videoPath: "/videos/dances/yakshagana.mp4"
+    videoPath: "/videos/dances/yakshagana.mp4",
+    videoUrl: "/videos/dances/yakshagana.mp4"
   },
   {
     id: 42,
@@ -756,7 +810,8 @@ const dancesData = [
       "Performed in circles that swell and contract as solo pairs take turns in the center to exchange rhyming couplets."
     ],
     imageUrl: "/images/dances/giddha.jpg",
-    videoPath: "/videos/dances/bhangra.mp4"
+    videoPath: "/videos/dances/bhangra.mp4",
+    videoUrl: "/videos/dances/bhangra.mp4"
   },
   {
     id: 43,
@@ -774,7 +829,8 @@ const dancesData = [
       "Traditionally performed exclusively within sacred temple theatre complexes known as Koothambalams."
     ],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Koodiyattam%2C_Kerala%2C_India.jpg/1280px-Koodiyattam%2C_Kerala%2C_India.jpg",
-    videoPath: "/videos/dances/kathakali.mp4"
+    videoPath: "/videos/dances/kathakali.mp4",
+    videoUrl: "/videos/dances/yakshagana.mp4"
   },
   {
     id: 44,
@@ -792,7 +848,8 @@ const dancesData = [
       "Raghurajpur heritage crafts village in Odisha remains the vibrant cradle and living school for Gotipua troupes."
     ],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Gotipua_Dance_Raghurajpur.jpg/1280px-Gotipua_Dance_Raghurajpur.jpg",
-    videoPath: "/videos/dances/odissi.mp4"
+    videoPath: "/videos/dances/odissi.mp4",
+    videoUrl: "/videos/dances/kuchipudi.mp4"
   },
   {
     id: 45,
@@ -810,7 +867,8 @@ const dancesData = [
       "The spirited beats of Koli music remain one of Maharashtra's most recognizable cultural rhythms."
     ],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Fisherfolk_dance%2C_Mumbai.jpg/1280px-Fisherfolk_dance%2C_Mumbai.jpg",
-    videoPath: "/videos/dances/fugdi.mp4"
+    videoPath: "/videos/dances/fugdi.mp4",
+    videoUrl: "/videos/dances/fugdi.mp4"
   },
   {
     id: 46,
@@ -828,7 +886,8 @@ const dancesData = [
       "The music opens with the deep wail of the Mori brass horn before accelerating into a galloping dance rhythm."
     ],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Dhimsa_dance.jpg/1280px-Dhimsa_dance.jpg",
-    videoPath: "/videos/dances/kuchipudi.mp4"
+    videoPath: "/videos/dances/kuchipudi.mp4",
+    videoUrl: "/videos/dances/kuchipudi.mp4"
   },
   {
     id: 47,
@@ -846,7 +905,8 @@ const dancesData = [
       "Demands supreme physical conditioning, acrobatic agility, and collective coordination among community members."
     ],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Panthi_Dance_Chhattisgarh.jpg/1280px-Panthi_Dance_Chhattisgarh.jpg",
-    videoPath: "/videos/dances/karma_naach.mp4"
+    videoPath: "/videos/dances/karma_naach.mp4",
+    videoUrl: "/videos/dances/paika.mp4"
   },
   {
     id: 48,
@@ -864,7 +924,8 @@ const dancesData = [
       "Local folklore holds that heartfelt Jat-Jatin performances persuade the rain gods to send down nourishing showers."
     ],
     imageUrl: "https://images.unsplash.com/photo-1599818816942-835c6fcbfaae?auto=format&fit=crop&q=80&w=1000",
-    videoPath: "/videos/dances/bidesiya.mp4"
+    videoPath: "/videos/dances/bidesiya.mp4",
+    videoUrl: "/videos/dances/matki_dance.mp4"
   },
   {
     id: 49,
@@ -882,7 +943,8 @@ const dancesData = [
       "A centerpiece attraction of Rajasthan desert festivals and international cultural expos."
     ],
     imageUrl: "https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&q=80&w=1000",
-    videoPath: "/videos/dances/ghoomar.mp4"
+    videoPath: "/videos/dances/ghoomar.mp4",
+    videoUrl: "/videos/dances/ghoomar.mp4"
   }
 ];
 
@@ -907,6 +969,14 @@ const DanceCard = ({ dance, onClick }) => {
       onClick={() => onClick(dance)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick(dance);
+        }
+      }}
       className="flat-card"
       style={{
         borderRadius: 18,
@@ -942,7 +1012,7 @@ const DanceCard = ({ dance, onClick }) => {
         {/* Hover Video Preview */}
         <video
           ref={hoverVideoRef}
-          src={dance.videoPath}
+          src={dance.videoUrl || dance.videoPath}
           muted
           loop
           playsInline
@@ -967,27 +1037,9 @@ const DanceCard = ({ dance, onClick }) => {
           fontSize: 10, fontWeight: 800, letterSpacing: 0.5,
           border: '1px solid rgba(255,255,255,0.18)',
           transition: 'opacity 0.3s ease',
-          opacity: isHovered ? 0.6 : 1
+          opacity: isHovered ? 0.7 : 1
         }}>
           {dance.category}
-        </div>
-
-        {/* Live Video Indicator */}
-        <div style={{
-          position: 'absolute', top: 12, right: 12,
-          background: isHovered ? 'rgba(220,53,53,0.92)' : 'rgba(0,0,0,0.6)',
-          backdropFilter: 'blur(4px)',
-          color: '#fff', borderRadius: 20, padding: '4px 10px',
-          fontSize: 10, fontWeight: 700,
-          display: 'flex', alignItems: 'center', gap: 4,
-          transition: 'all 0.3s ease',
-          border: '1px solid rgba(255,255,255,0.15)'
-        }}>
-          {isHovered ? (
-            <><span style={{ width: 7, height: 7, borderRadius: '50%', background: '#fff', display: 'inline-block', animation: 'pulse 1s infinite' }} /> LIVE</>
-          ) : (
-            <><span>▶</span> Preview</>
-          )}
         </div>
       </div>
 
@@ -1015,10 +1067,10 @@ const DanceCard = ({ dance, onClick }) => {
 
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          fontSize: 12, color: 'var(--theme-text-muted)', marginTop: 8
+          fontSize: 12, color: isHovered ? 'var(--theme-accent-primary)' : 'var(--theme-text-muted)',
+          marginTop: 8, transition: 'color 0.2s ease', fontWeight: 600
         }}>
-          <span>{isHovered ? '🎬 Video preview playing…' : 'Hover to preview · Click for details'}</span>
-          <span style={{ color: 'var(--theme-accent-primary)', fontWeight: 800 }}>→</span>
+          <span>Click to watch preview →</span>
         </div>
       </div>
     </div>
@@ -1033,10 +1085,17 @@ const CulturalDances = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState("All");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [videoError, setVideoError] = useState(false);
-  const videoRef = useRef(null);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setSelectedDance(null);
+    };
+    if (selectedDance) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedDance]);
 
   // Sync state and dance selection from URL query params or router location state
   useEffect(() => {
@@ -1108,24 +1167,7 @@ const CulturalDances = () => {
 
   const handleSelectDance = (dance) => {
     setSelectedDance(dance);
-    setVideoError(false);
-    setIsMuted(false);
-    setIsPlaying(true);
   };
-
-  // Video playback effect
-  useEffect(() => {
-    if (selectedDance && videoRef.current) {
-      setVideoError(false);
-      videoRef.current.muted = isMuted;
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setIsPlaying(true))
-          .catch(() => setIsPlaying(false));
-      }
-    }
-  }, [selectedDance, isMuted]);
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--theme-bg-primary)', paddingTop: 88, paddingBottom: 64, transition: 'background-color 0.4s ease' }}>
@@ -1323,19 +1365,19 @@ const CulturalDances = () => {
           </div>
         )}
 
-        {/* ── Comprehensive Dance Detail Modal ────────────────────────────── */}
+        {/* ── Dance Detail & Preview Modal ────────────────────────────── */}
         {selectedDance && (
           <div
             style={{
               position: 'fixed',
               inset: 0,
               zIndex: 1000,
-              backgroundColor: 'rgba(0,0,0,0.75)',
+              backgroundColor: 'rgba(0,0,0,0.78)',
               backdropFilter: 'blur(8px)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '20px',
+              padding: '16px',
               overflowY: 'auto'
             }}
             onClick={() => setSelectedDance(null)}
@@ -1343,12 +1385,12 @@ const CulturalDances = () => {
             <div
               style={{
                 backgroundColor: 'var(--theme-bg-primary)',
-                borderRadius: 24,
+                borderRadius: 22,
                 width: '100%',
                 maxWidth: 820,
-                maxHeight: '90vh',
+                maxHeight: '92vh',
                 overflowY: 'auto',
-                boxShadow: '0 24px 80px rgba(0,0,0,0.35)',
+                boxShadow: '0 28px 90px rgba(0,0,0,0.45)',
                 border: '1px solid var(--theme-border)',
                 position: 'relative',
                 display: 'flex',
@@ -1389,6 +1431,7 @@ const CulturalDances = () => {
                   </span>
                   <button
                     onClick={() => setSelectedDance(null)}
+                    aria-label="Close details"
                     style={{
                       background: 'var(--theme-bg-accent)',
                       border: '1px solid var(--theme-border)',
@@ -1408,179 +1451,161 @@ const CulturalDances = () => {
                 </div>
               </div>
 
-              {/* Media Player / Hero Video Section */}
-              <div style={{ position: 'relative', width: '100%', backgroundColor: '#000', aspectRatio: '16/9', overflow: 'hidden' }}>
-                {!videoError ? (
-                  <video
-                    ref={videoRef}
-                    src={selectedDance.videoPath}
-                    poster={selectedDance.imageUrl}
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                    autoPlay
-                    loop
-                    muted={isMuted}
-                    playsInline
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                    onError={() => setVideoError(true)}
-                    onClick={() => {
-                      if (videoRef.current) {
-                        if (videoRef.current.paused) videoRef.current.play();
-                        else videoRef.current.pause();
-                      }
-                    }}
-                  />
-                ) : (
-                  <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                    <img
-                      src={selectedDance.imageUrl}
-                      alt={selectedDance.name}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <div style={{
-                      position: 'absolute', bottom: 12, left: 16,
-                      backgroundColor: 'rgba(0,0,0,0.7)', padding: '6px 12px',
-                      borderRadius: 12, color: '#fff', fontSize: 12, fontWeight: 600
-                    }}>
-                      🏛️ Archival Cultural Visual Showcase
-                    </div>
-                  </div>
-                )}
-
-                {/* Media Controls Bar Overlay when video is available */}
-                {!videoError && (
-                  <div style={{
-                    position: 'absolute', bottom: 0, left: 0, right: 0,
-                    padding: '14px 20px',
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    color: '#fff'
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <button
-                        onClick={() => {
-                          if (videoRef.current) {
-                            if (videoRef.current.paused) videoRef.current.play();
-                            else videoRef.current.pause();
-                          }
-                        }}
-                        style={{ background: 'none', border: 'none', color: '#fff', fontSize: 18, cursor: 'pointer' }}
-                      >
-                        {isPlaying ? '⏸' : '▶'}
-                      </button>
-                      <button
-                        onClick={() => setIsMuted(!isMuted)}
-                        style={{ background: 'none', border: 'none', color: '#fff', fontSize: 14, cursor: 'pointer' }}
-                      >
-                        {isMuted ? '🔇 Unmute' : '🔊 Live Audio'}
-                      </button>
-                    </div>
-
-                    <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', opacity: 0.85 }}>
-                      {selectedDance.category}
-                    </span>
-                  </div>
-                )}
-              </div>
-
               {/* Detailed Structured Information */}
-              <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+              <div style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
                 
-                {/* Title & Badges */}
+                {/* Title & Origin Region */}
                 <div style={{ borderBottom: '1px solid var(--theme-border)', paddingBottom: 16 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, flexWrap: 'nowrap', overflow: 'hidden' }}>
                     <span style={{
                       backgroundColor: 'var(--theme-bg-accent)', color: 'var(--theme-accent-primary)',
-                      padding: '4px 10px', borderRadius: 12, fontSize: 11, fontWeight: 800, textTransform: 'uppercase'
+                      padding: '4px 10px', borderRadius: 12, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5
                     }}>
-                      {selectedDance.category}
+                      {selectedDance.style || selectedDance.category}
                     </span>
-                    <span style={{ color: 'var(--theme-text-muted)', fontSize: 13, fontWeight: 600 }}>
+                    <span style={{ color: 'var(--theme-text-muted)', fontSize: 13, fontWeight: 700 }}>
                       📍 {selectedDance.state}
                     </span>
                   </div>
 
                   <h2 style={{
                     margin: 0,
-                    fontSize: 32,
+                    fontSize: 'clamp(1.75rem, 3.5vw, 2.25rem)',
                     fontWeight: 900,
                     color: 'var(--theme-text-primary)',
-                    fontFamily: 'Fraunces, serif'
+                    fontFamily: 'Fraunces, serif',
+                    lineHeight: 1.2
                   }}>
                     {selectedDance.name}
                   </h2>
                 </div>
 
-                {/* 1. Overview */}
+                {/* Reusable 30+ Second Dance Preview Video */}
+                <DancePreviewVideo
+                  videoUrl={selectedDance.videoUrl || selectedDance.videoPath}
+                  posterUrl={selectedDance.imageUrl}
+                  danceName={selectedDance.name}
+                />
+
+                {/* Short Simple Description (2-4 lines) */}
                 <div>
-                  <h4 style={{ margin: '0 0 8px', fontSize: 14, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 1 }}>
-                    📖 Overview
+                  <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.8 }}>
+                    📖 About the Dance
                   </h4>
                   <p style={{ margin: 0, fontSize: 15, color: 'var(--theme-text-secondary)', lineHeight: 1.7 }}>
                     {selectedDance.description}
                   </p>
                 </div>
 
-                {/* 2. Short History */}
+                {/* Basic Details Grid: Origin, Style/Type, Famous For */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: 14
+                }}>
+                  <div style={{
+                    backgroundColor: 'var(--theme-bg-secondary)',
+                    border: '1px solid var(--theme-border)',
+                    borderRadius: 14,
+                    padding: '14px 16px'
+                  }}>
+                    <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>
+                      🏛️ Origin
+                    </div>
+                    <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--theme-text-primary)', lineHeight: 1.5 }}>
+                      {selectedDance.origin || `${selectedDance.state}, India`}
+                    </div>
+                  </div>
+
+                  <div style={{
+                    backgroundColor: 'var(--theme-bg-secondary)',
+                    border: '1px solid var(--theme-border)',
+                    borderRadius: 14,
+                    padding: '14px 16px'
+                  }}>
+                    <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>
+                      🎭 Style / Type
+                    </div>
+                    <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--theme-text-primary)', lineHeight: 1.5 }}>
+                      {selectedDance.style || selectedDance.category}
+                    </div>
+                  </div>
+
+                  <div style={{
+                    backgroundColor: 'var(--theme-bg-secondary)',
+                    border: '1px solid var(--theme-border)',
+                    borderRadius: 14,
+                    padding: '14px 16px'
+                  }}>
+                    <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>
+                      ⭐ Famous For
+                    </div>
+                    <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--theme-text-primary)', lineHeight: 1.5 }}>
+                      {selectedDance.famousFor || (selectedDance.facts && selectedDance.facts[0]) || 'Signature classical rhythm and traditional choreography'}
+                    </div>
+                  </div>
+                </div>
+
+                {/* History & Origin Background */}
                 {selectedDance.history && (
-                  <div style={{ backgroundColor: 'var(--theme-bg-secondary)', padding: '18px', borderRadius: 16, border: '1px solid var(--theme-border)' }}>
-                    <h4 style={{ margin: '0 0 8px', fontSize: 14, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 1 }}>
-                      🏛️ History & Origin
+                  <div style={{ backgroundColor: 'var(--theme-bg-secondary)', padding: '16px 18px', borderRadius: 16, border: '1px solid var(--theme-border)' }}>
+                    <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                      🏛️ History & Origin Background
                     </h4>
-                    <p style={{ margin: 0, fontSize: 14, color: 'var(--theme-text-secondary)', lineHeight: 1.7 }}>
+                    <p style={{ margin: 0, fontSize: 14, color: 'var(--theme-text-secondary)', lineHeight: 1.65 }}>
                       {selectedDance.history}
                     </p>
                   </div>
                 )}
 
-                {/* 3. Cultural Significance */}
+                {/* Cultural Significance */}
                 {selectedDance.significance && (
                   <div>
-                    <h4 style={{ margin: '0 0 8px', fontSize: 14, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
                       ✨ Cultural Significance
                     </h4>
-                    <p style={{ margin: 0, fontSize: 14, color: 'var(--theme-text-secondary)', lineHeight: 1.7 }}>
+                    <p style={{ margin: 0, fontSize: 14, color: 'var(--theme-text-secondary)', lineHeight: 1.65 }}>
                       {selectedDance.significance}
                     </p>
                   </div>
                 )}
 
-                {/* 4. Traditional Costume & Music Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-                  {selectedDance.costume && (
-                    <div style={{ backgroundColor: 'var(--theme-bg-secondary)', padding: '16px', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
-                      <h4 style={{ margin: '0 0 6px', fontSize: 13, fontWeight: 800, color: 'var(--theme-text-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                        👗 Traditional Costume & Attire
-                      </h4>
-                      <p style={{ margin: 0, fontSize: 13, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
-                        {selectedDance.costume}
-                      </p>
-                    </div>
-                  )}
+                {/* Traditional Costume & Music Grid */}
+                {(selectedDance.costume || selectedDance.instruments) && (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
+                    {selectedDance.costume && (
+                      <div style={{ backgroundColor: 'var(--theme-bg-secondary)', padding: '14px 16px', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
+                        <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-text-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                          👗 Traditional Costume & Attire
+                        </h4>
+                        <p style={{ margin: 0, fontSize: 13, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
+                          {selectedDance.costume}
+                        </p>
+                      </div>
+                    )}
 
-                  {selectedDance.instruments && (
-                    <div style={{ backgroundColor: 'var(--theme-bg-secondary)', padding: '16px', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
-                      <h4 style={{ margin: '0 0 6px', fontSize: 13, fontWeight: 800, color: 'var(--theme-text-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                        🎶 Music & Instruments
-                      </h4>
-                      <p style={{ margin: 0, fontSize: 13, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
-                        {selectedDance.instruments}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                    {selectedDance.instruments && (
+                      <div style={{ backgroundColor: 'var(--theme-bg-secondary)', padding: '14px 16px', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
+                        <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-text-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                          🎶 Music & Instruments
+                        </h4>
+                        <p style={{ margin: 0, fontSize: 13, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
+                          {selectedDance.instruments}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-                {/* 5. Interesting Facts */}
+                {/* Interesting Facts */}
                 {selectedDance.facts && selectedDance.facts.length > 0 && (
                   <div>
-                    <h4 style={{ margin: '0 0 10px', fontSize: 14, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                    <h4 style={{ margin: '0 0 8px', fontSize: 12, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
                       💡 Interesting Facts
                     </h4>
-                    <ul style={{ margin: 0, paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <ul style={{ margin: 0, paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 6 }}>
                       {selectedDance.facts.map((fact, idx) => (
-                        <li key={idx} style={{ fontSize: 14, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
+                        <li key={idx} style={{ fontSize: 13.5, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
                           {fact}
                         </li>
                       ))}
@@ -1589,7 +1614,7 @@ const CulturalDances = () => {
                 )}
 
                 {/* Bottom Back Button */}
-                <div style={{ borderTop: '1px solid var(--theme-border)', paddingTop: 18, textAlign: 'right' }}>
+                <div style={{ borderTop: '1px solid var(--theme-border)', paddingTop: 16, textAlign: 'right' }}>
                   <button
                     onClick={() => setSelectedDance(null)}
                     style={{
@@ -1597,9 +1622,9 @@ const CulturalDances = () => {
                       color: 'var(--theme-btn-text)',
                       border: 'none',
                       borderRadius: 14,
-                      padding: '12px 28px',
+                      padding: '10px 24px',
                       fontWeight: 800,
-                      fontSize: 14,
+                      fontSize: 13,
                       cursor: 'pointer'
                     }}
                   >
@@ -1618,3 +1643,4 @@ const CulturalDances = () => {
 };
 
 export default CulturalDances;
+

@@ -115,8 +115,8 @@ const BookingModal = ({ trip, fromCity, toCity, travelDate, travelers = 1, onClo
           <div className="grid grid-cols-3 items-center text-center pt-2 border-t border-[var(--theme-border)]">
             <div className="text-left">
               <span className="text-[11px] text-[var(--theme-text-muted)] block">From</span>
-              <span className="font-bold text-sm text-[var(--theme-text-primary)]">{fromCity}</span>
-              <span className="text-xs font-mono text-[var(--theme-accent-primary)]">{trip.departureTime}</span>
+              <div className="font-bold text-sm text-[var(--theme-text-primary)]">{fromCity}</div>
+              <div className="text-xs font-mono text-[var(--theme-accent-primary)]">{trip.departureTime}</div>
             </div>
             <div className="text-center">
               <span className="text-[11px] text-[var(--theme-text-muted)] block">Duration</span>
@@ -125,8 +125,8 @@ const BookingModal = ({ trip, fromCity, toCity, travelDate, travelers = 1, onClo
             </div>
             <div className="text-right">
               <span className="text-[11px] text-[var(--theme-text-muted)] block">To</span>
-              <span className="font-bold text-sm text-[var(--theme-text-primary)]">{toCity}</span>
-              <span className="text-xs font-mono text-[var(--theme-accent-primary)]">{trip.arrivalTime}</span>
+              <div className="font-bold text-sm text-[var(--theme-text-primary)]">{toCity}</div>
+              <div className="text-xs font-mono text-[var(--theme-accent-primary)]">{trip.arrivalTime}</div>
             </div>
           </div>
         </div>

@@ -8,6 +8,22 @@ import TripDashboard from '../components/travel/TripDashboard';
 import MyTripsModal from '../components/travel/MyTripsModal';
 import { generateMockTrips, getDestinationCulture, normalizeCity } from '../data/travelData';
 
+// ── Decorative hero stats ─────────────────────────────────────────────────────
+const HERO_STATS = [
+  { icon: '🏙️', label: 'Cities', value: '50+' },
+  { icon: '🚆', label: 'Routes', value: '200+' },
+  { icon: '🎭', label: 'Culture Guides', value: '30+' },
+  { icon: '🍛', label: 'Food Trails', value: '150+' },
+];
+
+const POPULAR_DEST_PREVIEW = [
+  { city: 'Jaipur', tagline: 'City of Palaces', emoji: '🏯' },
+  { city: 'Goa', tagline: 'Sun, Sea & Culture', emoji: '🌴' },
+  { city: 'Varanasi', tagline: 'Spiritual Capital', emoji: '🪔' },
+  { city: 'Kerala', tagline: "God's Own Country", emoji: '🌿' },
+  { city: 'Mumbai', tagline: 'Maximum City', emoji: '🌆' },
+];
+
 const Travel = () => {
   const [searchParams] = useSearchParams();
   const urlCity = searchParams.get('to') || 'Bangalore';
@@ -32,23 +48,28 @@ const Travel = () => {
   const [activeBooking, setActiveBooking] = useState(null);
   const [viewMode, setViewMode] = useState('search'); // 'search' | 'confirmation' | 'experience'
   const [myTripsOpen, setMyTripsOpen] = useState(false);
-  const [sortOption, setSortOption] = useState('recommended'); // 'recommended', 'price_asc', 'duration_asc'
+  const [sortOption, setSortOption] = useState('recommended');
+  const [heroDestIdx, setHeroDestIdx] = useState(0);
+
+  // Cycle popular destinations in hero
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroDestIdx((prev) => (prev + 1) % POPULAR_DEST_PREVIEW.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
 
   // Pre-load default trips on mount
   useEffect(() => {
-    // Check if there is an active trip in localStorage
     try {
       const savedActive = localStorage.getItem('active_travel_trip');
       if (savedActive) {
         const parsed = JSON.parse(savedActive);
         setActiveBooking(parsed);
-        // If user navigated directly or already booked, give them option
       }
     } catch {
       /* ignore */
     }
-
-    // Generate initial trip list for default route
     const initialTrips = generateMockTrips(searchState.fromCity, searchState.toCity, searchState.travelDate, searchState.travelMode);
     setTrips(initialTrips);
   }, []);
@@ -79,12 +100,8 @@ const Travel = () => {
     return 0;
   });
 
-  // Trigger Booking Modal
-  const handleBookClick = (trip) => {
-    setSelectedTripForBooking(trip);
-  };
+  const handleBookClick = (trip) => setSelectedTripForBooking(trip);
 
-  // On Booking Confirmed
   const handleBookingConfirmed = (bookingRecord) => {
     setActiveBooking(bookingRecord);
     setSelectedTripForBooking(null);
@@ -92,7 +109,6 @@ const Travel = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Select a stored trip from MyTrips
   const handleSelectStoredTrip = (tripRecord) => {
     setActiveBooking(tripRecord);
     setSearchState((prev) => ({
@@ -105,169 +121,396 @@ const Travel = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Get dynamic culture data for current destination
   const currentDestination = activeBooking ? activeBooking.toCity : searchState.toCity;
   const currentOrigin = activeBooking ? activeBooking.fromCity : searchState.fromCity;
   const destinationCulture = getDestinationCulture(currentDestination);
+  const heroDest = POPULAR_DEST_PREVIEW[heroDestIdx];
 
   return (
-    <div className="min-h-screen pt-24 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
-      {/* ── Page Hero Header ── */}
-      <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[var(--theme-bg-accent)] text-[var(--theme-accent-primary)] mb-2">
-            <span>✈️ CultureConnect Travel Experience</span>
-          </div>
-          <h1 className="text-3xl md:text-5xl font-serif font-black tracking-tight text-[var(--theme-text-primary)]">
-            Travel & Cultural Discovery
-          </h1>
-          <p className="text-sm md:text-base text-[var(--theme-text-secondary)] mt-1 font-sans max-w-2xl">
-            Book your journey across India and instantly discover the living culture, iconic monuments, regional food trails, folk dances, and local language phrases of your destination.
-          </p>
-        </div>
+    <div className="min-h-screen pb-20" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
 
-        {/* Global Action Header */}
-        <div className="flex items-center gap-3 self-start md:self-auto">
-          {activeBooking && viewMode !== 'experience' && (
-            <button
-              type="button"
-              onClick={() => setViewMode('experience')}
-              className="px-4 py-2.5 rounded-2xl text-xs font-serif font-bold text-[var(--theme-btn-text)] bg-[var(--theme-btn-bg)] hover:opacity-90 transition-all flex items-center gap-1.5 shadow-sm"
+      {/* ══════════════════════════════════════════════════════════
+          LIGHT HERO — cream background, dark text, orange accent
+      ══════════════════════════════════════════════════════════ */}
+      <div className="pt-20 md:pt-22 pb-5 px-4 md:px-8" style={{ backgroundColor: 'var(--theme-bg-primary)' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Top Bar: Badge centered, My Trips on far right */}
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
+              style={{
+                background: 'var(--theme-bg-accent)',
+                border: '1px solid var(--theme-border)',
+                color: 'var(--theme-accent-primary)'
+              }}
             >
-              <span>✨</span>
-              <span>Open {activeBooking.toCity} Culture</span>
-            </button>
-          )}
-
-          <button
-            type="button"
-            onClick={() => setMyTripsOpen(true)}
-            className="px-4 py-2.5 rounded-2xl text-xs font-serif font-bold border border-[var(--theme-border)] bg-[var(--theme-card-bg)] hover:bg-[var(--theme-bg-accent)] text-[var(--theme-text-primary)] transition-all flex items-center gap-1.5"
-          >
-            <span>📋</span>
-            <span>My Trips</span>
-          </button>
-        </div>
-      </div>
-
-      {/* ── Mode 1: Confirmation Screen ── */}
-      {viewMode === 'confirmation' && activeBooking && (
-        <div className="space-y-8">
-          <BookingConfirmation
-            booking={activeBooking}
-            onExploreCulture={() => setViewMode('experience')}
-            onOpenMyTrips={() => setMyTripsOpen(true)}
-            onNewSearch={() => setViewMode('search')}
-          />
-        </div>
-      )}
-
-      {/* ── Mode 2: Destination Cultural Experience ── */}
-      {viewMode === 'experience' && (
-        <div className="space-y-8">
-          <TripDashboard
-            cultureData={destinationCulture}
-            booking={activeBooking}
-            destinationName={normalizeCity(currentDestination)}
-            originName={normalizeCity(currentOrigin)}
-            onViewTicket={() => setViewMode('confirmation')}
-            onOpenMyTrips={() => setMyTripsOpen(true)}
-            onPlanNewTrip={() => setViewMode('search')}
-          />
-        </div>
-      )}
-
-      {/* ── Mode 3: Search & Trip Listings ── */}
-      {viewMode === 'search' && (
-        <div className="space-y-10">
-          {/* Search Box */}
-          <TravelSearch
-            onSearch={handleSearch}
-            initialFrom={searchState.fromCity}
-            initialTo={searchState.toCity}
-            initialDate={searchState.travelDate}
-            initialMode={searchState.travelMode}
-          />
-
-          {/* Results Section */}
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--theme-border)]">
-              <div>
-                <h3 className="font-serif font-black text-2xl text-[var(--theme-text-primary)]">
-                  Available Trips: {searchState.fromCity} <span className="text-[var(--theme-accent-primary)]">➔</span> {searchState.toCity}
-                </h3>
-                <p className="text-xs text-[var(--theme-text-muted)] mt-0.5">
-                  Showing {sortedTrips.length} verified mock transport options for {new Date(searchState.travelDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                </p>
-              </div>
-
-              {/* Sorting Filter */}
-              <div className="flex items-center gap-2 text-xs">
-                <span className="font-bold text-[var(--theme-text-muted)]">Sort by:</span>
-                <select
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value)}
-                  className="px-3 py-1.5 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] text-[var(--theme-text-primary)] font-medium focus:outline-none focus:border-[var(--theme-accent-primary)]"
-                >
-                  <option value="recommended">Recommended</option>
-                  <option value="price_asc">Lowest Price (₹)</option>
-                  <option value="duration_asc">Shortest Duration</option>
-                </select>
-              </div>
+              <span>✈️</span>
+              <span>Travel Experience</span>
             </div>
 
-            {/* Trip Cards Grid */}
-            {sortedTrips.length === 0 ? (
-              <div className="text-center py-16 px-4 rounded-3xl bg-[var(--theme-card-bg)] border border-[var(--theme-border)]">
-                <span className="text-4xl block mb-2">🧭</span>
-                <h4 className="font-serif font-bold text-lg text-[var(--theme-text-primary)]">
-                  No trips found for this selection
-                </h4>
-                <p className="text-xs text-[var(--theme-text-muted)] mt-1">
-                  Try changing travel mode to "All Modes" or select popular hubs like Hyderabad, Bangalore, Mumbai, or Goa.
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {sortedTrips.map((trip) => (
-                  <TripCard
-                    key={trip.id}
-                    trip={trip}
-                    travelers={searchState.travelers}
-                    onBook={handleBookClick}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Quick Destination Cultural Preview Teaser */}
-          <div className="mt-16 p-8 rounded-3xl bg-[var(--theme-card-bg)] border border-[var(--theme-border)] shadow-md">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-2 max-w-2xl">
-                <span className="text-xs font-bold uppercase tracking-wider text-[var(--theme-accent-primary)] bg-[var(--theme-bg-accent)] px-3 py-1 rounded-full">
-                  Destination Sneak Peek
-                </span>
-                <h4 className="text-2xl font-serif font-black text-[var(--theme-text-primary)]">
-                  Traveling to {searchState.toCity}?
-                </h4>
-                <p className="text-xs md:text-sm text-[var(--theme-text-secondary)] leading-relaxed">
-                  Booking any ticket unlocks {searchState.toCity}’s curated cultural guide — including famous places like {destinationCulture.places?.[0]?.name || 'historic palaces'}, iconic foods like {destinationCulture.foods?.[0]?.name || 'signature dishes'}, native Kannada/regional phrases, and custom 2-day itineraries!
-                </p>
-              </div>
-
+            {/* Top Right Actions */}
+            <div className="flex items-center gap-2.5">
+              {activeBooking && viewMode !== 'experience' && (
+                <button
+                  type="button"
+                  onClick={() => setViewMode('experience')}
+                  className="flex items-center gap-2 px-4 py-2 rounded-2xl font-serif font-bold text-xs transition-all hover:opacity-90 active:scale-95"
+                  style={{
+                    background: 'var(--theme-btn-bg)',
+                    color: 'var(--theme-btn-text)',
+                    boxShadow: '0 2px 10px rgba(193,80,46,0.2)'
+                  }}
+                >
+                  <span>✨</span>
+                  <span>Open {activeBooking.toCity} Culture</span>
+                </button>
+              )}
               <button
                 type="button"
-                onClick={() => setViewMode('experience')}
-                className="px-6 py-3.5 rounded-2xl font-serif font-bold text-xs uppercase tracking-wider text-[var(--theme-btn-text)] bg-[var(--theme-btn-bg)] hover:opacity-90 flex items-center justify-center gap-2 self-start md:self-auto flex-shrink-0"
+                onClick={() => setMyTripsOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-2xl font-serif font-bold text-xs transition-all hover:bg-[var(--theme-bg-accent)]"
+                style={{
+                  background: 'var(--theme-card-bg)',
+                  border: '1px solid var(--theme-border)',
+                  color: 'var(--theme-text-primary)',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
+                }}
               >
-                <span>Preview {searchState.toCity} Culture</span>
-                <span>✨</span>
+                <span>📋</span>
+                <span>My Trips</span>
               </button>
             </div>
           </div>
+
+          {/* Heading — centered, shorter */}
+          <h1
+            className="font-serif font-black tracking-tight mb-3"
+            style={{
+              fontSize: 'clamp(1.75rem, 3.2vw, 2.75rem)',
+              lineHeight: 1.2,
+              color: 'var(--theme-text-primary)'
+            }}
+          >
+            Travel India & <span style={{ color: 'var(--theme-accent-primary)' }}>Discover Its Soul</span>
+          </h1>
+
+          {/* Subtitle — centered */}
+          <p
+            className="text-sm md:text-base leading-relaxed mb-5 mx-auto"
+            style={{ color: 'var(--theme-text-secondary)', maxWidth: 560 }}
+          >
+            Book your journey and unlock a curated cultural gateway — monuments, food trails,
+            folk dances, and native language phrases for every city.
+          </p>
+
+          {/* Animated destination preview pill — centered */}
+          <div className="flex justify-center mb-4">
+            <div
+              className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl"
+              style={{
+                background: 'var(--theme-card-bg)',
+                border: '1px solid var(--theme-border)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+              }}
+            >
+              <span className="text-xl">{heroDest.emoji}</span>
+              <div>
+                <div className="font-serif font-black text-sm leading-tight" style={{ color: 'var(--theme-text-primary)' }}>
+                  {heroDest.city}
+                </div>
+                <div className="text-xs" style={{ color: 'var(--theme-text-muted)' }}>{heroDest.tagline}</div>
+              </div>
+              <div className="flex gap-1.5 ml-1">
+                {POPULAR_DEST_PREVIEW.map((_, i) => (
+                  <div
+                    key={i}
+                    className="rounded-full transition-all duration-500"
+                    style={{
+                      width: i === heroDestIdx ? 18 : 6,
+                      height: 6,
+                      background: i === heroDestIdx ? 'var(--theme-accent-primary)' : 'var(--theme-border)'
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Stats row — centered */}
+          <div className="flex flex-wrap justify-center items-center gap-3">
+            {HERO_STATS.map((stat, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 px-4 py-2 rounded-2xl"
+                style={{
+                  background: 'var(--theme-card-bg)',
+                  border: '1px solid var(--theme-border)',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
+                }}
+              >
+                <span className="text-base">{stat.icon}</span>
+                <div>
+                  <div className="font-serif font-black text-sm leading-none" style={{ color: 'var(--theme-text-primary)' }}>
+                    {stat.value}
+                  </div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--theme-text-muted)' }}>
+                    {stat.label}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      )}
+      </div>
+
+      {/* Thin accent divider below hero */}
+      <div style={{ height: 1, background: 'var(--theme-border)', maxWidth: '100%' }} />
+
+      {/* ══════════════════════════════════════════════════════════
+          MAIN CONTENT
+      ══════════════════════════════════════════════════════════ */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 mt-6">
+
+        {/* ── Mode 1: Confirmation Screen ── */}
+        {viewMode === 'confirmation' && activeBooking && (
+          <div className="space-y-8 animate-fade-in-up">
+            <div className="flex items-center gap-3">
+              <div
+                className="w-10 h-10 rounded-2xl flex items-center justify-center text-xl flex-shrink-0"
+                style={{ background: 'var(--theme-bg-accent)', border: '1px solid var(--theme-border)' }}
+              >
+                🎟️
+              </div>
+              <div>
+                <h2 className="font-serif font-black text-2xl" style={{ color: 'var(--theme-text-primary)' }}>Booking Confirmed</h2>
+                <p className="text-sm" style={{ color: 'var(--theme-text-muted)' }}>Your journey from {activeBooking.fromCity} → {activeBooking.toCity} is all set</p>
+              </div>
+            </div>
+            <BookingConfirmation
+              booking={activeBooking}
+              onExploreCulture={() => setViewMode('experience')}
+              onOpenMyTrips={() => setMyTripsOpen(true)}
+              onNewSearch={() => setViewMode('search')}
+            />
+          </div>
+        )}
+
+        {/* ── Mode 2: Destination Cultural Experience ── */}
+        {viewMode === 'experience' && (
+          <div className="space-y-8 animate-fade-in-up">
+            <div className="flex items-center gap-3">
+              <div
+                className="w-10 h-10 rounded-2xl flex items-center justify-center text-xl flex-shrink-0"
+                style={{ background: 'var(--theme-bg-accent)', border: '1px solid var(--theme-border)' }}
+              >
+                🌏
+              </div>
+              <div>
+                <h2 className="font-serif font-black text-2xl" style={{ color: 'var(--theme-text-primary)' }}>
+                  Cultural Portal — {normalizeCity(currentDestination)}
+                </h2>
+                <p className="text-sm" style={{ color: 'var(--theme-text-muted)' }}>Deep-dive cultural experience unlocked for your destination</p>
+              </div>
+            </div>
+            <TripDashboard
+              cultureData={destinationCulture}
+              booking={activeBooking}
+              destinationName={normalizeCity(currentDestination)}
+              originName={normalizeCity(currentOrigin)}
+              onViewTicket={() => setViewMode('confirmation')}
+              onOpenMyTrips={() => setMyTripsOpen(true)}
+              onPlanNewTrip={() => setViewMode('search')}
+            />
+          </div>
+        )}
+
+        {/* ── Mode 3: Search & Trip Listings ── */}
+        {viewMode === 'search' && (
+          <div className="space-y-10 animate-fade-in-up">
+
+            {/* Search section */}
+            <section>
+              <div className="flex items-center gap-2 mb-5">
+                <span
+                  className="text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full"
+                  style={{
+                    color: 'var(--theme-accent-primary)',
+                    background: 'var(--theme-bg-accent)',
+                    border: '1px solid var(--theme-border)'
+                  }}
+                >
+                  🔍 Plan Your Journey
+                </span>
+              </div>
+              <TravelSearch
+                onSearch={handleSearch}
+                initialFrom={searchState.fromCity}
+                initialTo={searchState.toCity}
+                initialDate={searchState.travelDate}
+                initialMode={searchState.travelMode}
+              />
+            </section>
+
+            {/* Visual divider */}
+            <div className="stitched-divider" />
+
+            {/* Results Section */}
+            <section className="space-y-6">
+              {/* Results header */}
+              <div
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-3xl"
+                style={{
+                  background: 'var(--theme-card-bg)',
+                  border: '1px solid var(--theme-border)',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.04)'
+                }}
+              >
+                <div className="flex items-center justify-center gap-3 flex-wrap w-full sm:w-auto">
+                  <div
+                    className="flex items-center gap-3 px-5 py-2 rounded-2xl"
+                    style={{
+                      background: 'var(--theme-bg-accent)',
+                      border: '1px solid var(--theme-border)',
+                      color: 'var(--theme-text-primary)'
+                    }}
+                  >
+                    <span style={{ color: 'var(--theme-text-secondary)', fontSize: 14, fontWeight: 500 }}>
+                      {searchState.fromCity}
+                    </span>
+                    <span style={{ color: 'var(--theme-accent-primary)', fontSize: 15 }}>➔</span>
+                    <span style={{ color: 'var(--theme-text-primary)', fontSize: 14, fontWeight: 500 }}>{searchState.toCity}</span>
+                  </div>
+                  <p className="text-xs font-medium" style={{ color: 'var(--theme-text-muted)' }}>
+                    {sortedTrips.length} transport options &bull;{' '}
+                    {new Date(searchState.travelDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="font-bold" style={{ color: 'var(--theme-text-muted)' }}>Sort by:</span>
+                  <select
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value)}
+                    className="px-3 py-2 rounded-xl font-medium focus:outline-none transition-all"
+                    style={{
+                      border: '1px solid var(--theme-border)',
+                      background: 'var(--theme-bg-accent)',
+                      color: 'var(--theme-text-primary)'
+                    }}
+                  >
+                    <option value="recommended">Recommended</option>
+                    <option value="price_asc">Lowest Price (₹)</option>
+                    <option value="duration_asc">Shortest Duration</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Trip Cards */}
+              {sortedTrips.length === 0 ? (
+                <div
+                  className="text-center py-20 px-6 rounded-3xl"
+                  style={{ background: 'var(--theme-card-bg)', border: '1px solid var(--theme-border)' }}
+                >
+                  <span className="text-5xl block mb-4">🧭</span>
+                  <h4 className="font-serif font-bold text-xl mb-2" style={{ color: 'var(--theme-text-primary)' }}>
+                    No trips found for this selection
+                  </h4>
+                  <p className="text-sm max-w-sm mx-auto" style={{ color: 'var(--theme-text-muted)' }}>
+                    Try changing travel mode to "All Modes" or select popular hubs like Hyderabad, Bangalore, Mumbai, or Goa.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {sortedTrips.map((trip) => (
+                    <TripCard key={trip.id} trip={trip} travelers={searchState.travelers} onBook={handleBookClick} />
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* ── Destination Culture Preview Teaser — light card style ── */}
+            <section>
+              <div
+                className="rounded-3xl overflow-hidden"
+                style={{
+                  background: 'var(--theme-card-bg)',
+                  border: '1px solid var(--theme-border)',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
+                }}
+              >
+                {/* Thin colored top strip */}
+                <div style={{ height: 4, background: 'linear-gradient(90deg, var(--theme-accent-primary), var(--theme-accent-saffron), var(--theme-accent-jade))' }} />
+
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 md:p-10">
+                  <div className="space-y-4 max-w-2xl">
+                    {/* Label */}
+                    <span
+                      className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full inline-block"
+                      style={{
+                        background: 'var(--theme-bg-accent)',
+                        border: '1px solid var(--theme-border)',
+                        color: 'var(--theme-accent-primary)'
+                      }}
+                    >
+                      ✨ Destination Sneak Peek
+                    </span>
+
+                    <h4
+                      className="text-2xl md:text-3xl font-serif font-black"
+                      style={{ color: 'var(--theme-text-primary)' }}
+                    >
+                      Traveling to {searchState.toCity}?
+                    </h4>
+
+                    <p className="text-sm md:text-base leading-relaxed" style={{ color: 'var(--theme-text-secondary)' }}>
+                      Booking any ticket unlocks {searchState.toCity}'s curated cultural guide — famous places like{' '}
+                      <span style={{ color: 'var(--theme-accent-primary)', fontWeight: 700 }}>
+                        {destinationCulture.places?.[0]?.name || 'historic palaces'}
+                      </span>,
+                      iconic foods like{' '}
+                      <span style={{ color: 'var(--theme-accent-primary)', fontWeight: 700 }}>
+                        {destinationCulture.foods?.[0]?.name || 'signature dishes'}
+                      </span>,
+                      native regional phrases, and a custom 2-day itinerary!
+                    </p>
+
+                    {/* Culture tag pills — light */}
+                    <div className="flex flex-wrap gap-2">
+                      {['🏛️ Monuments', '🍛 Food Trails', '💃 Folk Dances', '🗣️ Language Guide', '📅 Itinerary'].map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-xs font-medium px-3 py-1 rounded-full"
+                          style={{
+                            background: 'var(--theme-bg-accent)',
+                            border: '1px solid var(--theme-border)',
+                            color: 'var(--theme-text-secondary)'
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('experience')}
+                    className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-serif font-bold text-sm tracking-wide flex-shrink-0 self-start md:self-auto active:scale-95 transition-all hover:opacity-90"
+                    style={{
+                      background: 'var(--theme-btn-bg)',
+                      color: 'var(--theme-btn-text)',
+                      boxShadow: '0 4px 16px rgba(193,80,46,0.2)'
+                    }}
+                  >
+                    <span>Preview {searchState.toCity} Culture</span>
+                    <span>✨</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        )}
+      </div>
 
       {/* ── Booking Modal ── */}
       {selectedTripForBooking && (

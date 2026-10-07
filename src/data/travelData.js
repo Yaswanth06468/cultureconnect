@@ -428,6 +428,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Yakshagana',
         category: 'Classical Dance-Drama',
         imageUrl: '/images/dances/yakshagana.jpg',
+        videoPath: '/videos/dances/yakshagana.mp4',
+        videoUrl: '/videos/dances/yakshagana.mp4',
         description: 'A mesmerizing theatrical dance-drama combining vibrant multi-tiered headgear (Muguta), fierce facial cosmetics, high-flying spins, and impromptu Kannada dialogues depicting Ramayana and Mahabharata epics.',
         instruments: 'Chande (thunderous cylindrical drum), Maddale (horizontal drum), and Taala (bronze cymbals) guided by the Bhagavata (lead singer).',
         whereToWatch: 'Ravindra Kalakshetra (J.C. Road) and Ranga Shankara (J.P. Nagar).'
@@ -436,6 +438,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Dollu Kunitha',
         category: 'High-Energy Folk Drum Dance',
         imageUrl: '/images/dances/dollu_kunitha.jpg',
+        videoPath: '/videos/dances/garadi.mp4',
+        videoUrl: '/videos/dances/garadi.mp4',
         description: 'An exhilarating ritual percussion dance performed by the Kuruba shepherd community, where athletic dancers beat massive decorated sheepskin drums strapped to their chests while leaping in circular formations.',
         instruments: 'Large Dollu drums, Tala cymbals, and brass flutes (Kahaley).',
         whereToWatch: 'Performed during Karnataka Rajyotsava, Temple Rathotsavas, and Janapada Loka showcases.'
@@ -444,6 +448,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Veeragase & Somana Kunitha',
         category: 'Warrior & Spirit Folk Dance',
         imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Oggu_Katha_-_Folk_Dance_Of_Telangana_-_Wikiconference_India_2023_-_Hyderabad_2023-04-28_8112.jpg',
+        videoPath: '/videos/dances/paika.mp4',
+        videoUrl: '/videos/dances/paika.mp4',
         description: 'Veeragase is an intense devotional warrior dance dedicated to Lord Shiva, featuring crimson headbands, wooden swords, and rhythmic stomping, while Somana Kunitha features massive carved wooden spirit masks representing guardian village deities.',
         instruments: 'Karabhaday, Sambal drums, and Nagari.',
         whereToWatch: 'Dasara cultural processions and heritage temple fairs around Bengaluru.'
@@ -762,6 +768,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Perini Sivatandavam',
         category: 'Ancient Warrior Dance',
         imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Oggu_Katha_-_Folk_Dance_Of_Telangana_-_Wikiconference_India_2023_-_Hyderabad_2023-04-28_8112.jpg',
+        videoPath: '/videos/dances/perini.mp4',
+        videoUrl: '/videos/dances/perini.mp4',
         description: 'An invigorating Kakatiya-era warrior dance performed by male artists to the resonant beats of brass bells and damarus before marching into battle.',
         instruments: 'Mridangam, bell anklets, conch shells.',
         whereToWatch: 'Ravindra Bharati and Shilparamam amphitheater.'
@@ -770,6 +778,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Kuchipudi & Qawwali Nights',
         category: 'Classical & Sufi Musical Arts',
         imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/12/Kuchipudi_Dance_Performance_by_V_Anjana_Devi_at_Ravindra_Bharathi_Hyderabad.jpg',
+        videoPath: '/videos/dances/kuchipudi.mp4',
+        videoUrl: '/videos/dances/kuchipudi.mp4',
         description: 'Classical Andhra Kuchipudi recitals and Thursday night Sufi Qawwali devotional gatherings at Dargah Yousufain.',
         instruments: 'Harmonium, tabla, mridangam, kartal.',
         whereToWatch: 'Shilparamam Madhapur & Nampally Dargah.'
@@ -873,6 +883,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Bharatanatyam',
         category: 'Ancient Classical Dance',
         imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/12/Kuchipudi_Dance_Performance_by_V_Anjana_Devi_at_Ravindra_Bharathi_Hyderabad.jpg',
+        videoPath: '/videos/dances/bharatanatyam.mp4',
+        videoUrl: '/videos/dances/bharatanatyam.mp4',
         description: 'The sublime classical dance form with roots in the Natya Shastra, characterized by sculptured Aramandi stances, rhythmic foot percussion, and exquisite facial abhinaya.',
         instruments: 'Mridangam, nattuvangam cymbals, Carnatic violin, and flute.',
         whereToWatch: 'Kalakshetra Foundation (Thiruvanmiyur) and The Music Academy (TTK Road).'
@@ -975,6 +987,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Lavani & Koli Folk Arts',
         category: 'Folk Rhythm & Dance',
         imageUrl: '/images/dances/lavani.jpg',
+        videoPath: '/videos/dances/fugdi.mp4',
+        videoUrl: '/videos/dances/fugdi.mp4',
         description: 'Lavani is Maharashtra’s spirited folk dance celebrated for rapid dholki beats, nine-yard Nauvari sarees, and romantic-satirical poetic themes.',
         instruments: 'Dholki, manjira, and ghungroos.',
         whereToWatch: 'NCPA (Nariman Point) and Shivaji Mandir (Dadar).'
@@ -1077,6 +1091,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Kathak & Sufi Qawwali',
         category: 'Classical Dance & Mystic Music',
         imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=800',
+        videoPath: '/videos/dances/kathak.mp4',
+        videoUrl: '/videos/dances/kathak.mp4',
         description: 'Kathak showcases rapid rhythmic spins (chakkars) and tatkar footwork, while Sufi Qawwali connects devotional poetry to acoustic percussion.',
         instruments: 'Tabla, harmonium, sarangi, and vocal Bols.',
         whereToWatch: 'Kamani Auditorium and India Habitat Centre.'
@@ -1179,6 +1195,8 @@ export const DESTINATION_CULTURE_DATA = {
         name: 'Fugdi & Dekhnni',
         category: 'Goan Coastal Folk Dance',
         imageUrl: '/images/dances/fugdi.jpg',
+        videoPath: '/videos/dances/fugdi.mp4',
+        videoUrl: '/videos/dances/fugdi.mp4',
         description: 'Fugdi is performed by women clapping and blowing through hands in sync to rhythmic folk songs, while Dekhnni depicts temple dancer traditions accompanied by the Ghumat clay drum.',
         instruments: 'Ghumat (clay monitor-lizard skin drum), Kansallem (cymbals), and violin.',
         whereToWatch: 'Shigmo cultural parades and Goa Chitra Museum events.'
@@ -1303,6 +1321,8 @@ export const getDestinationCulture = (destinationName = 'Bangalore') => {
         name: `${norm} Regional Classical & Folk Dance`,
         category: 'Traditional Performing Arts',
         imageUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80',
+        videoPath: '/videos/dances/bharatanatyam.mp4',
+        videoUrl: '/videos/dances/bharatanatyam.mp4',
         description: `Rhythmic folk and classical dances celebrating harvest seasons, epics, and local mythology through colorful costumes and lively drumming.`,
         instruments: 'Traditional drums, cymbals, flutes, and harmonium.',
         whereToWatch: `Town Cultural Auditorium & Open-air Heritage Enclaves.`

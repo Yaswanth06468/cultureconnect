@@ -241,14 +241,20 @@ const PlacesExplorer = () => {
       {/* ─────────────────────────────────────────────────────────────
           1. HEADER & SEARCH SECTION
       ───────────────────────────────────────────────────────────── */}
-      <div className="text-center max-w-3xl mx-auto mb-10">
+      <div className="text-center max-w-5xl mx-auto mb-10">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--theme-bg-accent)] text-[var(--theme-accent-primary)] text-xs font-bold uppercase tracking-widest mb-4 border border-[var(--theme-border)]">
           <span>🏛️</span> Heritage & Monuments
         </div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black tracking-tight text-[var(--theme-text-primary)] mb-4">
+        <h1
+          className="font-serif font-black tracking-tight text-[var(--theme-text-primary)] mb-4 whitespace-nowrap"
+          style={{
+            fontSize: 'clamp(1.4rem, 4.5vw, 3.6rem)',
+            lineHeight: 1.2
+          }}
+        >
           Explore Places & <span className="text-[var(--theme-accent-primary)]">Monuments</span>
         </h1>
-        <p className="text-[var(--theme-text-secondary)] text-base md:text-lg leading-relaxed">
+        <p className="text-[var(--theme-text-secondary)] text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
           Discover the soul of India’s most iconic cities — dive deep into ancient forts, sacred temples, regal palaces, and living cultural traditions.
         </p>
 
