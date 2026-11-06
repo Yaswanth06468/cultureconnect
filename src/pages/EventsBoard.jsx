@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
@@ -627,8 +627,774 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
   );
 };
 
+// ── SVG QR Code Generator (Zero-Dependency) ──────────────────────────────────
+const TicketQRCode = ({ value = 'CC-EVT-TICKET', size = 120, darkColor = '#181513', lightColor = '#ffffff' }) => {
+  const matrix = useMemo(() => {
+    const s = 21;
+    const grid = Array.from({ length: s }, () => Array(s).fill(false));
+
+    const drawFinder = (startX, startY) => {
+      for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 7; c++) {
+          if (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
+            grid[startY + r][startX + c] = true;
+          }
+        }
+      }
+    };
+
+    drawFinder(0, 0);
+    drawFinder(14, 0);
+    drawFinder(0, 14);
+
+    for (let i = 8; i < 13; i++) {
+      grid[6][i] = i % 2 === 0;
+      grid[i][6] = i % 2 === 0;
+    }
+
+    let hash = 0;
+    for (let i = 0; i < value.length; i++) {
+      hash = ((hash << 5) - hash + value.charCodeAt(i)) | 0;
+    }
+
+    let seed = Math.abs(hash) || 12345;
+    const nextBit = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      return (seed & 1) === 1;
+    };
+
+    for (let r = 0; r < s; r++) {
+      for (let c = 0; c < s; c++) {
+        const inFinder1 = r < 8 && c < 8;
+        const inFinder2 = r < 8 && c >= 13;
+        const inFinder3 = r >= 13 && c < 8;
+        const inTiming = r === 6 || c === 6;
+        if (!inFinder1 && !inFinder2 && !inFinder3 && !inTiming) {
+          grid[r][c] = nextBit();
+        }
+      }
+    }
+    return grid;
+  }, [value]);
+
+  const moduleSize = size / 21;
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block', background: lightColor, borderRadius: 8, padding: 4, boxSizing: 'content-box' }}>
+      {matrix.map((row, r) =>
+        row.map((cell, c) =>
+          cell ? (
+            <rect
+              key={`${r}-${c}`}
+              x={c * moduleSize}
+              y={r * moduleSize}
+              width={moduleSize}
+              height={moduleSize}
+              fill={darkColor}
+            />
+          ) : null
+        )
+      )}
+    </svg>
+  );
+};
+
+// ── Download & Print Ticket PDF Generator ─────────────────────────────────────
+const downloadTicketPDF = (ticket) => {
+  if (!ticket) return;
+  const printWindow = window.open('', '_blank', 'width=800,height=920');
+  if (!printWindow) {
+    alert('Please allow popups to download or print your event ticket pass.');
+    return;
+  }
+
+  // Generate QR SVG string
+  const s = 21;
+  const grid = Array.from({ length: s }, () => Array(s).fill(false));
+  const drawFinder = (startX, startY) => {
+    for (let r = 0; r < 7; r++) {
+      for (let c = 0; c < 7; c++) {
+        if (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
+          grid[startY + r][startX + c] = true;
+        }
+      }
+    }
+  };
+  drawFinder(0, 0); drawFinder(14, 0); drawFinder(0, 14);
+  for (let i = 8; i < 13; i++) { grid[6][i] = i % 2 === 0; grid[i][6] = i % 2 === 0; }
+  let hash = 0;
+  const text = (ticket.id || 'CC') + '-' + (ticket.name || 'PASS');
+  for (let i = 0; i < text.length; i++) hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
+  let seed = Math.abs(hash) || 12345;
+  const nextBit = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return (seed & 1) === 1; };
+  for (let r = 0; r < s; r++) {
+    for (let c = 0; c < s; c++) {
+      const inFinder1 = r < 8 && c < 8;
+      const inFinder2 = r < 8 && c >= 13;
+      const inFinder3 = r >= 13 && c < 8;
+      const inTiming = r === 6 || c === 6;
+      if (!inFinder1 && !inFinder2 && !inFinder3 && !inTiming) grid[r][c] = nextBit();
+    }
+  }
+
+  const moduleSize = 6;
+  const svgRects = grid.map((row, r) =>
+    row.map((cell, c) => cell ? `<rect x="${c * moduleSize}" y="${r * moduleSize}" width="${moduleSize}" height="${moduleSize}" fill="#181513" />` : '').join('')
+  ).join('');
+
+  const qrSvg = `<svg width="126" height="126" viewBox="0 0 126 126" xmlns="http://www.w3.org/2000/svg" style="background:#fff;padding:8px;border:1px solid #ddd;border-radius:8px;">${svgRects}</svg>`;
+
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cultural Admission Pass - ${ticket.id}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: #F4EFEA;
+      color: #241F1C;
+      padding: 30px 20px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .no-print-bar {
+      max-width: 680px;
+      margin: 0 auto 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .print-btn {
+      background: #C1502E;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .pass-container {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid #E2D9D0;
+    }
+    .pass-header {
+      background: linear-gradient(135deg, #241F1C 0%, #3D2B24 60%, #C1502E 100%);
+      color: #FBF7F0;
+      padding: 26px 30px;
+      position: relative;
+    }
+    .pass-header .brand {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #E8B84B;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .pass-header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .pass-header .badge {
+      display: inline-block;
+      background: rgba(232, 184, 75, 0.2);
+      color: #E8B84B;
+      border: 1px solid #E8B84B;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .pass-body {
+      padding: 26px 30px;
+    }
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 24px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px dashed #DDD2C7;
+    }
+    .detail-item .label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8C827A;
+      margin-bottom: 4px;
+    }
+    .detail-item .value {
+      font-size: 15px;
+      font-weight: 800;
+      color: #241F1C;
+    }
+    .detail-item .sub {
+      font-size: 12px;
+      color: #6B615B;
+      margin-top: 2px;
+    }
+    .qr-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FAF7F2;
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid #EADFD5;
+      margin-bottom: 24px;
+    }
+    .qr-info {
+      flex: 1;
+      padding-right: 20px;
+    }
+    .qr-info h4 {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      color: #241F1C;
+    }
+    .qr-info p {
+      font-size: 12px;
+      color: #6B615B;
+      line-height: 1.5;
+    }
+    .pass-footer {
+      border-top: 2px dashed #DDD2C7;
+      padding: 20px 30px;
+      background: #FDFBF7;
+      font-size: 11px;
+      color: #8C827A;
+      line-height: 1.6;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .no-print-bar { display: none; }
+      .pass-container { box-shadow: none; border: 1px solid #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print-bar">
+    <div>
+      <strong>CultureConnect Official Ticket Pass</strong>
+      <div style="font-size: 12px; color: #666;">Ready to print or save as PDF</div>
+    </div>
+    <button class="print-btn" onclick="window.print()">📥 Print / Save as PDF</button>
+  </div>
+
+  <div class="pass-container">
+    <div class="pass-header">
+      <div class="brand">CultureConnect • Official Event Pass</div>
+      <h1>${ticket.event_title}</h1>
+      <span class="badge">🟢 Confirmed Reservation • ${ticket.category || 'Cultural Event'}</span>
+    </div>
+
+    <div class="pass-body">
+      <div class="details-grid">
+        <div class="detail-item">
+          <div class="label">Date & Time</div>
+          <div class="value">${ticket.date}</div>
+          <div class="sub">${ticket.time || '06:00 PM IST'}</div>
+        </div>
+        <div class="detail-item">
+          <div class="label">Booking Reference</div>
+          <div class="value" style="font-family: monospace; color: #C1502E;">${ticket.id}</div>
+          <div class="sub">Booked: ${new Date(ticket.bookedAt || Date.now()).toLocaleDateString()}</div>
+        </div>
+        <div class="detail-item">
+          <div class="label">Venue & Location</div>
+          <div class="value">${ticket.location}</div>
+        </div>
+        <div class="detail-item">
+          <div class="label">Attendee & Passes</div>
+          <div class="value">${ticket.name}</div>
+          <div class="sub">${ticket.tickets} Pass${ticket.tickets > 1 ? 'es' : ''} • ${ticket.total_price === 0 ? 'FREE ENTRY' : '₹' + ticket.total_price + ' Paid'}</div>
+        </div>
+        <div class="detail-item">
+          <div class="label">Contact Email</div>
+          <div class="value" style="font-size: 13px;">${ticket.email}</div>
+        </div>
+        <div class="detail-item">
+          <div class="label">Phone Number</div>
+          <div class="value" style="font-size: 13px;">${ticket.phone}</div>
+        </div>
+      </div>
+
+      <div class="qr-section">
+        <div class="qr-info">
+          <h4>📱 Gate Check-in QR Code</h4>
+          <p>Scan this QR code or show the pass on your smartphone at the entrance gate turnstile for admission verification.</p>
+          <div style="margin-top: 8px; font-size: 11px; font-family: monospace; color: #C1502E; font-weight: 700;">
+            GATE PASS ID: ${ticket.id}
+          </div>
+        </div>
+        <div>
+          ${qrSvg}
+        </div>
+      </div>
+    </div>
+
+    <div class="pass-footer">
+      <strong>Important Gate Instructions:</strong><br>
+      • Please arrive at least 20 minutes before the scheduled event start time.<br>
+      • Present this digital ticket or printed copy at the entrance verification desk.<br>
+      • Valid identification corresponding to the attendee name may be requested.<br>
+      • For queries or assistance, contact support@cultureconnect.org.
+    </div>
+  </div>
+</body>
+</html>`;
+
+  printWindow.document.open();
+  printWindow.document.write(html);
+  printWindow.document.close();
+  printWindow.focus();
+  setTimeout(() => {
+    printWindow.print();
+  }, 450);
+};
+
+// ── Digital Gate Pass Modal (For Venue Entrance Verification) ────────────────
+const GatePassModal = ({ ticket, onClose, onDownload }) => {
+  if (!ticket) return null;
+
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 1200,
+        backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(10px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          background: 'linear-gradient(180deg, #181513 0%, #221B17 100%)',
+          color: '#FBF7F0',
+          borderRadius: 24,
+          width: '100%',
+          maxWidth: 420,
+          boxShadow: '0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(232, 184, 75, 0.3)',
+          maxHeight: '92vh',
+          overflowY: 'auto',
+          position: 'relative',
+          padding: '24px 20px',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute', top: 14, right: 14,
+            background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none',
+            borderRadius: '50%', width: 32, height: 32, display: 'flex',
+            alignItems: 'center', justifyContent: 'center', fontSize: 16,
+            cursor: 'pointer'
+          }}
+        >✕</button>
+
+        {/* Status Header Badge */}
+        <div style={{ textAlign: 'center', marginBottom: 16 }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.4)',
+            color: '#34D399', borderRadius: 20, padding: '4px 12px', fontSize: 11, fontWeight: 800,
+            letterSpacing: 0.8, textTransform: 'uppercase'
+          }}>
+            <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#34D399', boxShadow: '0 0 8px #34D399' }} />
+            <span>Valid Entry Pass • Ready to Scan</span>
+          </div>
+          <div style={{ fontSize: 11, color: 'rgba(232, 184, 75, 0.8)', letterSpacing: 1.5, fontWeight: 800, textTransform: 'uppercase', marginTop: 8 }}>
+            CultureConnect Admission Pass
+          </div>
+        </div>
+
+        {/* Event Title */}
+        <div style={{ textAlign: 'center', marginBottom: 14 }}>
+          <h2 style={{
+            margin: '0 0 6px', fontSize: 20, fontWeight: 900,
+            fontFamily: 'Fraunces, serif', color: '#FBF7F0', lineHeight: 1.3
+          }}>
+            {ticket.event_title}
+          </h2>
+          <span style={{ fontSize: 11, color: '#E8B84B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            {ticket.category || 'Cultural Gathering'} {ticket.language ? `• ${ticket.language}` : ''}
+          </span>
+        </div>
+
+        {/* Date & Time & Venue Badges */}
+        <div style={{
+          background: 'rgba(255,255,255,0.06)', borderRadius: 14, padding: '10px 14px',
+          border: '1px solid rgba(255,255,255,0.1)', marginBottom: 18, fontSize: 12, textAlign: 'center'
+        }}>
+          <div style={{ fontWeight: 800, color: '#FBF7F0' }}>
+            📅 {ticket.date} • {ticket.time || '06:00 PM IST'}
+          </div>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, marginTop: 4 }}>
+            📍 {ticket.location}
+          </div>
+        </div>
+
+        {/* Scannable QR Code Box */}
+        <div style={{
+          background: '#ffffff',
+          borderRadius: 18,
+          padding: 16,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+          marginBottom: 16
+        }}>
+          <TicketQRCode value={(ticket.id || 'CC') + '-' + (ticket.name || 'GUEST')} size={160} darkColor="#181513" lightColor="#ffffff" />
+          <div style={{ marginTop: 10, fontFamily: 'monospace', fontSize: 13, fontWeight: 900, color: '#C1502E', letterSpacing: 1.5 }}>
+            {ticket.id}
+          </div>
+          <div style={{ fontSize: 10, color: '#666', marginTop: 2, textTransform: 'uppercase', fontWeight: 700 }}>
+            Gate Entry Verification
+          </div>
+        </div>
+
+        {/* Attendee Details Card */}
+        <div style={{
+          background: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: '12px 14px',
+          border: '1px solid rgba(255,255,255,0.08)', marginBottom: 18, fontSize: 12
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+            <span style={{ color: 'rgba(255,255,255,0.6)' }}>Pass Holder</span>
+            <strong style={{ color: '#FBF7F0' }}>{ticket.name}</strong>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+            <span style={{ color: 'rgba(255,255,255,0.6)' }}>Pass Count</span>
+            <strong style={{ color: '#E8B84B' }}>{ticket.tickets} Admission{ticket.tickets > 1 ? 's' : ''}</strong>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 6 }}>
+            <span style={{ color: 'rgba(255,255,255,0.6)' }}>Pass Status</span>
+            <span style={{ color: '#34D399', fontWeight: 800 }}>
+              {ticket.total_price === 0 ? 'FREE ENTRY PASS' : `PAID (₹${ticket.total_price})`}
+            </span>
+          </div>
+        </div>
+
+        {/* Gate Instructions Notice */}
+        <p style={{
+          fontSize: 11, color: 'rgba(255,255,255,0.6)', textAlign: 'center',
+          lineHeight: 1.5, margin: '0 0 16px', padding: '0 10px'
+        }}>
+          Present this screen to event security at the entrance turnstile for direct entry. You may also present the printed PDF ticket.
+        </p>
+
+        {/* Modal Actions */}
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button
+            type="button"
+            onClick={() => onDownload(ticket)}
+            style={{
+              flex: 1, padding: '12px 10px', borderRadius: 12,
+              background: 'var(--theme-btn-bg)', color: 'var(--theme-btn-text)',
+              border: 'none', fontWeight: 800, fontSize: 13, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              boxShadow: '0 4px 12px rgba(193, 80, 46, 0.3)'
+            }}
+          >
+            <span>📥</span>
+            <span>Download PDF</span>
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            style={{
+              flex: 1, padding: '12px 10px', borderRadius: 12,
+              background: 'rgba(255,255,255,0.1)', color: '#fff',
+              border: '1px solid rgba(255,255,255,0.2)', fontWeight: 700, fontSize: 13, cursor: 'pointer'
+            }}
+          >
+            Close Pass
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── My Tickets Dashboard Modal ───────────────────────────────────────────────
+const MyTicketsModal = ({ tickets, onClose, onShowGatePass, onDownloadTicket, onCancelTicket, onBrowseEvents }) => {
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 1150,
+        backgroundColor: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          backgroundColor: 'var(--theme-bg-primary)',
+          borderRadius: 24,
+          width: '100%',
+          maxWidth: 680,
+          boxShadow: '0 24px 60px rgba(0,0,0,0.25)',
+          maxHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+          border: '1px solid var(--theme-border)',
+          overflow: 'hidden'
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div style={{
+          padding: '20px 24px',
+          borderBottom: '1px solid var(--theme-border)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          backgroundColor: 'var(--theme-bg-secondary)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 22 }}>🎟️</span>
+            <div>
+              <h2 style={{
+                margin: 0, fontSize: 18, fontWeight: 900,
+                color: 'var(--theme-text-primary)', fontFamily: 'Fraunces, serif'
+              }}>
+                My Cultural Event Tickets
+              </h2>
+              <span style={{ fontSize: 12, color: 'var(--theme-text-muted)' }}>
+                {tickets.length} Saved Pass{tickets.length !== 1 ? 'es' : ''} on this device
+              </span>
+            </div>
+          </div>
+
+          <button
+            onClick={onClose}
+            style={{
+              width: 32, height: 32, borderRadius: '50%',
+              backgroundColor: 'var(--theme-bg-accent)', border: 'none',
+              color: 'var(--theme-text-primary)', fontWeight: 800, fontSize: 14,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Scrollable List or Empty State */}
+        <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1 }}>
+          {tickets.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '48px 16px' }}>
+              <div style={{ fontSize: 50, marginBottom: 14 }}>🎭</div>
+              <h3 style={{
+                margin: '0 0 8px', fontSize: 18, fontWeight: 800,
+                color: 'var(--theme-text-primary)', fontFamily: 'Fraunces, serif'
+              }}>
+                No Tickets Reserved Yet
+              </h3>
+              <p style={{
+                margin: '0 auto 20px', color: 'var(--theme-text-muted)',
+                fontSize: 13, maxWidth: 380, lineHeight: 1.5
+              }}>
+                Explore upcoming classical dance recitals, heritage concerts, folk arts, and reserve passes to see them here!
+              </p>
+              <button
+                onClick={() => { onClose(); if (onBrowseEvents) onBrowseEvents(); }}
+                style={{
+                  background: 'var(--theme-btn-bg)', color: 'var(--theme-btn-text)',
+                  border: 'none', borderRadius: 20, padding: '10px 24px', fontWeight: 800,
+                  fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 12px rgba(193, 80, 46, 0.25)'
+                }}
+              >
+                Explore Cultural Events
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {tickets.map(ticket => (
+                <div
+                  key={ticket.id}
+                  style={{
+                    backgroundColor: 'var(--theme-bg-secondary)',
+                    borderRadius: 16,
+                    border: '1px solid var(--theme-border)',
+                    padding: '18px 20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                  }}
+                >
+                  {/* Top Bar of Ticket */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{
+                        fontSize: 11, fontWeight: 800, textTransform: 'uppercase',
+                        color: 'var(--theme-accent-primary)', backgroundColor: 'var(--theme-bg-accent)',
+                        padding: '3px 8px', borderRadius: 6
+                      }}>
+                        {ticket.category || 'Cultural'}
+                      </span>
+                      <span style={{
+                        fontSize: 11, fontWeight: 800, color: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)', padding: '3px 8px', borderRadius: 6
+                      }}>
+                        ✓ Confirmed
+                      </span>
+                    </div>
+                    <span style={{
+                      fontSize: 12, fontWeight: 900, color: 'var(--theme-text-muted)',
+                      fontFamily: 'monospace'
+                    }}>
+                      {ticket.id}
+                    </span>
+                  </div>
+
+                  {/* Title & Timing */}
+                  <div>
+                    <h4 style={{
+                      margin: '0 0 6px', fontSize: 17, fontWeight: 800,
+                      color: 'var(--theme-text-primary)', fontFamily: 'Fraunces, serif'
+                    }}>
+                      {ticket.event_title}
+                    </h4>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, fontSize: 12, color: 'var(--theme-text-secondary)' }}>
+                      <span>📅 {ticket.date} • {ticket.time || '06:00 PM IST'}</span>
+                      <span>📍 {ticket.location}</span>
+                    </div>
+                  </div>
+
+                  {/* Attendee Info */}
+                  <div style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    borderTop: '1px dashed var(--theme-border)', paddingTop: 10, fontSize: 12
+                  }}>
+                    <span style={{ color: 'var(--theme-text-secondary)' }}>
+                      Attendee: <strong>{ticket.name}</strong> • <strong>{ticket.tickets} Pass{ticket.tickets > 1 ? 'es' : ''}</strong>
+                    </span>
+                    <span style={{ fontWeight: 800, color: 'var(--theme-accent-primary)' }}>
+                      {ticket.total_price === 0 ? 'FREE' : `₹${ticket.total_price}`}
+                    </span>
+                  </div>
+
+                  {/* Action Buttons Row */}
+                  <div style={{
+                    display: 'flex', gap: 8, flexWrap: 'wrap',
+                    borderTop: '1px solid var(--theme-border)', paddingTop: 12, marginTop: 2
+                  }}>
+                    {/* Show Gate Pass */}
+                    <button
+                      type="button"
+                      onClick={() => onShowGatePass(ticket)}
+                      style={{
+                        flex: '1 1 140px',
+                        padding: '9px 14px',
+                        borderRadius: 10,
+                        background: 'linear-gradient(135deg, #241F1C 0%, #3D2B24 100%)',
+                        color: '#E8B84B',
+                        border: '1px solid #E8B84B',
+                        fontSize: 12,
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 6
+                      }}
+                    >
+                      <span>📱</span>
+                      <span>Show Gate Pass</span>
+                    </button>
+
+                    {/* Download PDF */}
+                    <button
+                      type="button"
+                      onClick={() => onDownloadTicket(ticket)}
+                      style={{
+                        flex: '1 1 120px',
+                        padding: '9px 14px',
+                        borderRadius: 10,
+                        background: 'var(--theme-btn-bg)',
+                        color: 'var(--theme-btn-text)',
+                        border: 'none',
+                        fontSize: 12,
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 6
+                      }}
+                    >
+                      <span>📥</span>
+                      <span>Download PDF</span>
+                    </button>
+
+                    {/* Cancel Booking */}
+                    <button
+                      type="button"
+                      onClick={() => onCancelTicket(ticket.id)}
+                      style={{
+                        padding: '9px 12px',
+                        borderRadius: 10,
+                        background: 'transparent',
+                        color: '#EF4444',
+                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                        fontSize: 12,
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                      title="Cancel this ticket reservation"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Footer Note */}
+        <div style={{
+          padding: '12px 24px',
+          borderTop: '1px solid var(--theme-border)',
+          backgroundColor: 'var(--theme-bg-secondary)',
+          fontSize: 12,
+          color: 'var(--theme-text-muted)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6
+        }}>
+          <span>💡</span>
+          <span>Tip: Tap <strong>"Show Gate Pass"</strong> at the event entrance for instant QR check-in by gatekeepers.</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ── Booking Modal (Detail & Reservation Experience) ──────────────────────────
-const BookingModal = ({ event, onClose, token, navigate }) => {
+const BookingModal = ({ event, onClose, token, navigate, onBookingSuccess, onShowGatePass }) => {
   const [tickets, setTickets] = useState(1);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -660,18 +1426,27 @@ const BookingModal = ({ event, onClose, token, navigate }) => {
     }
 
     setTimeout(() => {
-      setBookingData({
-        id: 'CC-' + Math.floor(100000 + Math.random() * 900000),
+      const newBooking = {
+        id: 'CC-EVT-' + Math.floor(100000 + Math.random() * 900000),
+        eventId: event.id,
         tickets,
         total_price: totalPrice,
         name,
         email,
         phone,
         event_title: event.title,
+        category: event.category,
+        language: event.language,
         date: event.date,
         location: event.location,
-        time: event.time || '06:00 PM IST'
-      });
+        time: event.time || '06:00 PM IST',
+        image_url: event.image_url,
+        bookedAt: new Date().toISOString()
+      };
+      setBookingData(newBooking);
+      if (onBookingSuccess) {
+        onBookingSuccess(newBooking);
+      }
       setStage('success');
     }, 1200);
   };
@@ -753,62 +1528,135 @@ const BookingModal = ({ event, onClose, token, navigate }) => {
           )}
 
           {stage === 'success' && bookingData && (
-            <div style={{ textAlign: 'center', padding: '16px 8px' }}>
+            <div style={{ textAlign: 'center', padding: '12px 6px' }}>
               <div style={{
-                width: 64, height: 64, borderRadius: '50%',
+                width: 60, height: 60, borderRadius: '50%',
                 background: 'rgba(16, 185, 129, 0.1)', color: '#10B981',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 32, margin: '0 auto 16px', border: '1px solid rgba(16, 185, 129, 0.3)'
+                fontSize: 30, margin: '0 auto 14px', border: '1px solid rgba(16, 185, 129, 0.3)'
               }}>
                 ✓
               </div>
-              <h3 style={{ fontSize: 22, fontWeight: 800, color: 'var(--theme-text-primary)', margin: '0 0 8px', fontFamily: 'Fraunces, serif' }}>
+              <h3 style={{ fontSize: 22, fontWeight: 800, color: 'var(--theme-text-primary)', margin: '0 0 6px', fontFamily: 'Fraunces, serif' }}>
                 Booking Confirmed!
               </h3>
-              <p style={{ fontSize: 14, color: 'var(--theme-text-muted)', margin: '0 0 20px' }}>
-                Your pass has been generated. An email confirmation has been dispatched.
+              <p style={{ fontSize: 13, color: 'var(--theme-text-muted)', margin: '0 0 18px' }}>
+                Your pass has been generated and saved to <strong>My Tickets</strong>.
               </p>
 
-              {/* Ticket Card */}
+              {/* Ticket Card with QR Code */}
               <div style={{
                 background: 'var(--theme-bg-secondary)',
                 borderRadius: 16,
-                padding: '20px',
+                padding: '18px',
                 border: '1px dashed var(--theme-border)',
                 textAlign: 'left',
-                marginBottom: 24
+                marginBottom: 20
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                  <span style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', color: 'var(--theme-text-muted)' }}>Ticket Pass</span>
-                  <span style={{ fontSize: 12, fontWeight: 900, color: 'var(--theme-accent-primary)', fontFamily: 'monospace' }}>{bookingData.id}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                  <span style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', color: 'var(--theme-accent-primary)' }}>
+                    🎟️ Cultural Admission Pass
+                  </span>
+                  <span style={{ fontSize: 12, fontWeight: 900, color: 'var(--theme-accent-primary)', fontFamily: 'monospace' }}>
+                    {bookingData.id}
+                  </span>
                 </div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--theme-text-primary)', marginBottom: 6 }}>{event.title}</div>
-                <div style={{ fontSize: 13, color: 'var(--theme-text-secondary)', marginBottom: 4 }}>📅 {formatEventDate(event.date)} {event.time ? `• ${event.time}` : ''}</div>
-                <div style={{ fontSize: 12, color: 'var(--theme-text-muted)', marginBottom: 12 }}>📍 {event.location}</div>
+
+                <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 12 }}>
+                  <div style={{ background: '#fff', padding: 4, borderRadius: 8, border: '1px solid var(--theme-border)', flexShrink: 0 }}>
+                    <TicketQRCode value={bookingData.id + '-' + bookingData.name} size={76} />
+                  </div>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--theme-text-primary)', marginBottom: 4, lineHeight: 1.3 }}>
+                      {event.title}
+                    </div>
+                    <div style={{ fontSize: 12, color: 'var(--theme-text-secondary)', marginBottom: 2 }}>
+                      📅 {formatEventDate(event.date)} {event.time ? `• ${event.time}` : ''}
+                    </div>
+                    <div style={{ fontSize: 12, color: 'var(--theme-text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      📍 {event.location}
+                    </div>
+                  </div>
+                </div>
+
                 <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--theme-border)', paddingTop: 10 }}>
-                  <span style={{ fontSize: 12, color: 'var(--theme-text-secondary)' }}>Attendee: <strong>{bookingData.name}</strong> ({bookingData.tickets} Ticket{bookingData.tickets > 1 ? 's' : ''})</span>
+                  <span style={{ fontSize: 12, color: 'var(--theme-text-secondary)' }}>
+                    Attendee: <strong>{bookingData.name}</strong> ({bookingData.tickets} Pass{bookingData.tickets > 1 ? 'es' : ''})
+                  </span>
                   <span style={{ fontSize: 14, fontWeight: 900, color: 'var(--theme-accent-primary)' }}>
                     {bookingData.total_price === 0 ? 'FREE PASS' : `₹${bookingData.total_price}`}
                   </span>
                 </div>
               </div>
 
-              <button
-                onClick={onClose}
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  borderRadius: 12,
-                  background: 'var(--theme-btn-bg)',
-                  color: 'var(--theme-btn-text)',
-                  fontWeight: 800,
-                  fontSize: 14,
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                Close & Explore More Events
-              </button>
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <button
+                  type="button"
+                  onClick={() => onShowGatePass && onShowGatePass(bookingData)}
+                  style={{
+                    width: '100%',
+                    padding: '13px 16px',
+                    borderRadius: 12,
+                    background: 'linear-gradient(135deg, #241F1C 0%, #3D2B24 100%)',
+                    color: '#E8B84B',
+                    fontWeight: 800,
+                    fontSize: 14,
+                    border: '1px solid #E8B84B',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                  }}
+                >
+                  <span>📱</span>
+                  <span>Show Gate Pass (Entrance QR Code)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => downloadTicketPDF(bookingData)}
+                  style={{
+                    width: '100%',
+                    padding: '13px 16px',
+                    borderRadius: 12,
+                    background: 'var(--theme-btn-bg)',
+                    color: 'var(--theme-btn-text)',
+                    fontWeight: 800,
+                    fontSize: 14,
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    boxShadow: '0 4px 12px rgba(193, 80, 46, 0.25)'
+                  }}
+                >
+                  <span>📥</span>
+                  <span>Download / Print Ticket (PDF)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={onClose}
+                  style={{
+                    width: '100%',
+                    padding: '11px',
+                    borderRadius: 12,
+                    background: 'var(--theme-bg-secondary)',
+                    color: 'var(--theme-text-primary)',
+                    fontWeight: 700,
+                    fontSize: 13,
+                    border: '1px solid var(--theme-border)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Close & Explore More Events
+                </button>
+              </div>
             </div>
           )}
 
@@ -1235,6 +2083,14 @@ const EventsBoard = () => {
   const [showModal, setShowModal] = useState(false);
   const [bookingEvent, setBookingEvent] = useState(null);
 
+  // Ticket Dashboard State
+  const [myTickets, setMyTickets] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('cc_event_bookings') || '[]'); }
+    catch { return []; }
+  });
+  const [showMyTickets, setShowMyTickets] = useState(false);
+  const [gatePassTicket, setGatePassTicket] = useState(null);
+
   // Filters
   const [activeCategory, setActiveCategory] = useState('All');
   const [dateFilter, setDateFilter] = useState('all'); // all | today | tomorrow | weekend | custom
@@ -1248,6 +2104,20 @@ const EventsBoard = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
+
+  // ── Ticket Booking Handlers ────────────────────────────────────────────────
+  const handleBookingConfirmed = (newTicket) => {
+    const updatedTickets = [newTicket, ...myTickets];
+    setMyTickets(updatedTickets);
+    try { localStorage.setItem('cc_event_bookings', JSON.stringify(updatedTickets)); } catch {}
+  };
+
+  const handleCancelTicket = (ticketId) => {
+    if (!window.confirm('Are you sure you want to cancel this ticket reservation?')) return;
+    const updatedTickets = myTickets.filter(t => t.id !== ticketId);
+    setMyTickets(updatedTickets);
+    try { localStorage.setItem('cc_event_bookings', JSON.stringify(updatedTickets)); } catch {}
+  };
 
   const activeFilterCount = (
     (activeCategory !== 'All' ? 1 : 0) +
@@ -1432,6 +2302,31 @@ const EventsBoard = () => {
                   >✕</button>
                 )}
               </div>
+
+              {/* My Tickets Button (Hero) */}
+              <button
+                onClick={() => setShowMyTickets(true)}
+                style={{
+                  background: 'rgba(232, 184, 75, 0.15)', color: '#E8B84B',
+                  border: '1px solid rgba(232, 184, 75, 0.4)', borderRadius: 24,
+                  padding: '10px 18px', fontWeight: 800, fontSize: 13, cursor: 'pointer',
+                  whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  position: 'relative'
+                }}
+              >
+                <span>🎟️</span>
+                <span>My Tickets</span>
+                {myTickets.length > 0 && (
+                  <span style={{
+                    background: '#E8B84B', color: '#241F1C', borderRadius: '50%',
+                    width: 20, height: 20, display: 'inline-flex', alignItems: 'center',
+                    justifyContent: 'center', fontSize: 11, fontWeight: 900
+                  }}>
+                    {myTickets.length}
+                  </span>
+                )}
+              </button>
 
               {token ? (
                 <button
@@ -1800,6 +2695,29 @@ const EventsBoard = () => {
           onClose={() => setBookingEvent(null)}
           token={token}
           navigate={navigate}
+          onBookingSuccess={handleBookingConfirmed}
+          onShowGatePass={(t) => { setBookingEvent(null); setGatePassTicket(t); }}
+        />
+      )}
+
+      {/* ── My Tickets Dashboard Modal ────────────────────────────────────── */}
+      {showMyTickets && (
+        <MyTicketsModal
+          tickets={myTickets}
+          onClose={() => setShowMyTickets(false)}
+          onShowGatePass={(t) => { setShowMyTickets(false); setGatePassTicket(t); }}
+          onDownloadTicket={(t) => downloadTicketPDF(t)}
+          onCancelTicket={handleCancelTicket}
+          onBrowseEvents={() => {}}
+        />
+      )}
+
+      {/* ── Digital Gate Pass Modal ───────────────────────────────────────── */}
+      {gatePassTicket && (
+        <GatePassModal
+          ticket={gatePassTicket}
+          onClose={() => setGatePassTicket(null)}
+          onDownload={(t) => downloadTicketPDF(t)}
         />
       )}
     </div>
