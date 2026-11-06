@@ -410,13 +410,13 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
     >
       {/* Poster / Hero Image */}
       <div style={{
-        height: 240,
+        height: 220,
         background: `linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.85) 100%), url("${event.image_url || 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80'}") center/cover no-repeat`,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        padding: '20px',
+        padding: '16px 18px',
         overflow: 'hidden',
       }}>
         {/* Top Section: Category & Language Badges */}
@@ -459,7 +459,7 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(event.id); }}
             style={{
-              position: 'absolute', top: 20, right: 20,
+              position: 'absolute', top: 16, right: 16,
               background: 'rgba(239, 68, 68, 0.9)', color: '#fff', border: 'none',
               borderRadius: 8, padding: '5px 10px', fontSize: 10, fontWeight: 800, cursor: 'pointer',
               zIndex: 10, backdropFilter: 'blur(4px)'
@@ -470,11 +470,11 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
         {/* Bottom Section: Title, Date and Price */}
         <div style={{ position: 'relative', zIndex: 2 }}>
           <h3 style={{
-            fontSize: 22,
+            fontSize: 20,
             fontWeight: 800,
             color: '#fff',
-            lineHeight: 1.2,
-            marginBottom: 10,
+            lineHeight: 1.25,
+            marginBottom: 8,
             fontFamily: 'Fraunces, serif',
             textShadow: '0 2px 8px rgba(0,0,0,0.6)'
           }}>
@@ -515,7 +515,7 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
       </div>
 
       {/* Card Body */}
-      <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+      <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
         <div>
           {/* Location */}
           <div style={{
@@ -525,10 +525,10 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
             fontSize: 12,
             color: 'var(--theme-text-muted)',
             fontWeight: 600,
-            marginBottom: 10,
+            marginBottom: 8,
             lineHeight: 1.4
           }}>
-            <span style={{ fontSize: 15, flexShrink: 0 }}>📍</span>
+            <span style={{ fontSize: 14, flexShrink: 0 }}>📍</span>
             <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
               {event.location}
             </span>
@@ -543,7 +543,7 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
               fontSize: 12,
               color: 'var(--theme-accent-primary)',
               fontWeight: 700,
-              marginBottom: 12
+              marginBottom: 10
             }}>
               <span>⏰</span>
               <span>{event.time}</span>
@@ -556,7 +556,7 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
             color: 'var(--theme-text-secondary)',
             margin: 0,
             lineHeight: 1.6,
-            minHeight: 42,
+            minHeight: 40,
             display: '-webkit-box',
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
@@ -568,14 +568,16 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
 
         {/* Card Footer */}
         <div style={{
-          marginTop: 18,
-          paddingTop: 16,
+          marginTop: 16,
+          paddingTop: 14,
           borderTop: '1px solid var(--theme-border)',
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          gap: 8,
+          flexWrap: 'wrap'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
             <div style={{
               width: 32,
               height: 32,
@@ -587,13 +589,14 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
               justifyContent: 'center',
               fontSize: 12,
               fontWeight: 800,
-              border: '1px solid var(--theme-border)'
+              border: '1px solid var(--theme-border)',
+              flexShrink: 0
             }}>
               {event.username?.[0]?.toUpperCase() || 'C'}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
               <span style={{ fontSize: 9, color: 'var(--theme-text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5 }}>Organized by</span>
-              <span style={{ color: 'var(--theme-text-primary)', fontWeight: 700, fontSize: 12 }}>{event.username || 'CultureConnect'}</span>
+              <span style={{ color: 'var(--theme-text-primary)', fontWeight: 700, fontSize: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{event.username || 'CultureConnect'}</span>
             </div>
           </div>
 
@@ -611,7 +614,8 @@ const EventCard = ({ event, onDelete, role, onBook }) => {
               transition: 'all 0.2s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: 4
+              gap: 4,
+              flexShrink: 0
             }}
           >
             <span>View Details</span>
@@ -906,7 +910,7 @@ const BookingModal = ({ event, onClose, token, navigate }) => {
                     color: 'var(--theme-text-primary)', fontSize: 14, outline: 'none'
                   }}
                 />
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <input
                     type="email"
                     placeholder="Email Address"
@@ -1010,11 +1014,11 @@ const HostEventModal = ({ onClose, onSubmit, error }) => {
             type="text" placeholder="Event Title (e.g., Classical Dance Workshop)" value={title} onChange={e => setTitle(e.target.value)} required
             style={inputStyle}
           />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input type="date" value={date} onChange={e => setDate(e.target.value)} required style={inputStyle} />
             <input type="text" placeholder="Time (e.g., 06:00 PM – 09:00 PM)" value={time} onChange={e => setTime(e.target.value)} style={inputStyle} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input type="number" placeholder="Price (₹) — 0 for Free" value={price} onChange={e => setPrice(e.target.value)} style={inputStyle} min={0} />
             <select value={language} onChange={e => setLanguage(e.target.value)} style={inputStyle}>
               {LANGUAGES.filter(l => l !== 'All Languages').map(l => <option key={l} value={l}>{l}</option>)}
@@ -1046,6 +1050,184 @@ const inputStyle = {
   background: 'var(--theme-bg-secondary)', boxSizing: 'border-box', color: 'var(--theme-text-primary)',
 };
 
+// ── Filter Controls Component (Shared between Desktop Sidebar & Mobile Sheet) ─
+const FilterControls = ({
+  dateFilter,
+  setDateFilter,
+  customDate,
+  setCustomDate,
+  activeLanguage,
+  setActiveLanguage,
+  activePriceIdx,
+  setActivePriceIdx,
+  isMobile
+}) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {/* Date Filter Section */}
+      <div>
+        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: 'var(--theme-text-muted)', textTransform: 'uppercase', marginBottom: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>📅 Date</span>
+          {dateFilter !== 'all' && (
+            <button
+              onClick={() => { setDateFilter('all'); setCustomDate(''); }}
+              style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
+          {[
+            ['all', 'All'],
+            ['today', 'Today'],
+            ['tomorrow', 'Tomorrow'],
+            ['weekend', 'This Weekend']
+          ].map(([val, lbl]) => {
+            const isSelected = dateFilter === val;
+            return (
+              <button
+                key={val}
+                type="button"
+                onClick={() => setDateFilter(val)}
+                style={{
+                  padding: isMobile ? '8px 14px' : '6px 12px',
+                  borderRadius: 14,
+                  border: '1px solid',
+                  fontSize: 12,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  background: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-bg-primary)',
+                  color: isSelected ? '#fff' : 'var(--theme-text-primary)',
+                  borderColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-border)',
+                  transition: 'all 0.2s ease',
+                  flexGrow: isMobile ? 1 : 0,
+                  textAlign: 'center'
+                }}
+              >
+                {lbl}
+              </button>
+            );
+          })}
+        </div>
+        <label style={{ fontSize: 11, color: 'var(--theme-text-muted)', fontWeight: 600, display: 'block', marginBottom: 4 }}>Custom Date</label>
+        <input
+          type="date"
+          value={customDate}
+          onChange={e => { setCustomDate(e.target.value); setDateFilter('custom'); }}
+          style={{
+            width: '100%', padding: '9px 12px', border: '1px solid var(--theme-border)',
+            borderRadius: 10, fontSize: 13, outline: 'none', boxSizing: 'border-box',
+            backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)'
+          }}
+        />
+      </div>
+
+      {/* Language Section */}
+      <div style={{ borderTop: '1px solid var(--theme-border)', paddingTop: 16 }}>
+        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: 'var(--theme-text-muted)', textTransform: 'uppercase', marginBottom: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>🌐 Language</span>
+          {activeLanguage !== 'All Languages' && (
+            <button
+              onClick={() => setActiveLanguage('All Languages')}
+              style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <div style={{
+          display: isMobile ? 'grid' : 'flex',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : undefined,
+          flexDirection: isMobile ? undefined : 'column',
+          gap: 6,
+          maxHeight: isMobile ? 220 : 180,
+          overflowY: 'auto'
+        }}>
+          {LANGUAGES.map(lang => {
+            const isSelected = activeLanguage === lang;
+            return (
+              <div
+                key={lang}
+                onClick={() => setActiveLanguage(lang)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  padding: isMobile ? '8px 10px' : '6px 8px',
+                  borderRadius: 10, cursor: 'pointer',
+                  backgroundColor: isSelected ? 'var(--theme-bg-accent)' : 'transparent',
+                  border: isMobile ? (isSelected ? '1px solid var(--theme-accent-primary)' : '1px solid var(--theme-border)') : 'none',
+                  transition: 'background-color 0.2s ease, border-color 0.2s ease'
+                }}
+              >
+                <div style={{
+                  width: 16, height: 16, borderRadius: 4, border: '1.5px solid',
+                  borderColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-border)',
+                  backgroundColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-bg-primary)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                }}>
+                  {isSelected && <span style={{ color: '#fff', fontSize: 10, fontWeight: 900 }}>✓</span>}
+                </div>
+                <span style={{ fontSize: 13, color: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-text-primary)', fontWeight: isSelected ? 700 : 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {lang}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Price Range Section */}
+      <div style={{ borderTop: '1px solid var(--theme-border)', paddingTop: 16 }}>
+        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: 'var(--theme-text-muted)', textTransform: 'uppercase', marginBottom: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>💰 Price</span>
+          {activePriceIdx !== 0 && (
+            <button
+              onClick={() => setActivePriceIdx(0)}
+              style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <div style={{
+          display: isMobile ? 'grid' : 'flex',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : undefined,
+          flexDirection: isMobile ? undefined : 'column',
+          gap: 6
+        }}>
+          {PRICE_RANGES.map((pr, i) => {
+            const isSelected = activePriceIdx === i;
+            return (
+              <div
+                key={pr.label}
+                onClick={() => setActivePriceIdx(i)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  padding: isMobile ? '8px 10px' : '6px 8px',
+                  borderRadius: 10, cursor: 'pointer',
+                  backgroundColor: isSelected ? 'var(--theme-bg-accent)' : 'transparent',
+                  border: isMobile ? (isSelected ? '1px solid var(--theme-accent-primary)' : '1px solid var(--theme-border)') : 'none',
+                  transition: 'background-color 0.2s ease, border-color 0.2s ease'
+                }}
+              >
+                <div style={{
+                  width: 14, height: 14, borderRadius: '50%', border: '1.5px solid',
+                  borderColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-border)',
+                  backgroundColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-bg-primary)',
+                  flexShrink: 0,
+                }} />
+                <span style={{ fontSize: 13, color: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-text-primary)', fontWeight: isSelected ? 700 : 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {pr.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ── Main Page Component ───────────────────────────────────────────────────────
 const EventsBoard = () => {
   const [events, setEvents] = useState(() => getDemoEvents());
@@ -1061,10 +1243,19 @@ const EventsBoard = () => {
   const [activePriceIdx, setActivePriceIdx] = useState(0);
   const [search, setSearch] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
+
+  const activeFilterCount = (
+    (activeCategory !== 'All' ? 1 : 0) +
+    (dateFilter !== 'all' ? 1 : 0) +
+    (activeLanguage !== 'All Languages' ? 1 : 0) +
+    (activePriceIdx !== 0 ? 1 : 0) +
+    (search.trim() ? 1 : 0)
+  );
 
   useEffect(() => {
     fetchEvents();
@@ -1196,13 +1387,12 @@ const EventsBoard = () => {
       {/* ── Top Hero Banner ─────────────────────────────────────────────────── */}
       <div style={{
         background: 'linear-gradient(135deg, #241F1C 0%, #3D2B24 50%, #5E3D30 100%)',
-        padding: '36px 24px 20px',
         position: 'relative',
         overflow: 'hidden',
         borderBottom: '1px solid var(--theme-border)'
-      }}>
+      }} className="px-4 sm:px-6 lg:px-8 py-6 sm:py-9">
         <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 20 }}>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
             <div>
               <div style={{
                 display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -1211,17 +1401,17 @@ const EventsBoard = () => {
               }}>
                 <span>📍</span> CULTURAL GATHERINGS & FESTIVALS
               </div>
-              <h1 style={{ margin: 0, fontSize: 36, fontWeight: 900, color: '#FBF7F0', fontFamily: 'Fraunces, serif', lineHeight: 1.2 }}>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#FBF7F0] font-serif leading-tight m-0">
                 Upcoming Cultural Events <span style={{ color: 'var(--theme-accent-primary)' }}>&</span> Experiences
               </h1>
-              <p style={{ margin: '8px 0 0', color: 'rgba(251,247,240,0.7)', fontSize: 14, fontWeight: 400, maxWidth: 620 }}>
+              <p className="text-xs sm:text-sm text-[#FBF7F0]/75 mt-2 max-w-2xl leading-relaxed m-0 font-normal">
                 Discover vibrant classical concerts, heritage dance recitals, artisanal craft exhibitions, regional food festivals, and sacred celebrations across India.
               </p>
             </div>
 
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto mt-2 lg:mt-0">
               {/* Search Bar */}
-              <div style={{ position: 'relative' }}>
+              <div className="relative w-full sm:w-64">
                 <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 14, opacity: 0.7 }}>🔍</span>
                 <input
                   type="text"
@@ -1229,10 +1419,10 @@ const EventsBoard = () => {
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   style={{
-                    paddingLeft: 38, paddingRight: 16, paddingTop: 10, paddingBottom: 10,
+                    paddingLeft: 38, paddingRight: 32, paddingTop: 10, paddingBottom: 10,
                     borderRadius: 24, border: '1px solid rgba(255,255,255,0.2)', fontSize: 13, outline: 'none',
-                    background: 'rgba(255,255,255,0.1)', color: '#fff', width: 240,
-                    backdropFilter: 'blur(8px)',
+                    background: 'rgba(255,255,255,0.1)', color: '#fff', width: '100%',
+                    backdropFilter: 'blur(8px)', boxSizing: 'border-box'
                   }}
                 />
                 {search && (
@@ -1251,7 +1441,7 @@ const EventsBoard = () => {
                     border: 'none', borderRadius: 24, padding: '10px 22px',
                     fontWeight: 800, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap',
                     boxShadow: '0 4px 14px rgba(193, 80, 46, 0.3)',
-                    display: 'flex', alignItems: 'center', gap: 6
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6
                   }}
                 >
                   <span>+</span> Host Event
@@ -1261,7 +1451,8 @@ const EventsBoard = () => {
                   onClick={() => navigate('/login')}
                   style={{
                     background: 'rgba(255,255,255,0.12)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)',
-                    borderRadius: 24, padding: '10px 20px', fontWeight: 700, fontSize: 13, cursor: 'pointer'
+                    borderRadius: 24, padding: '10px 20px', fontWeight: 700, fontSize: 13, cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center'
                   }}
                 >
                   Login to Host
@@ -1271,10 +1462,7 @@ const EventsBoard = () => {
           </div>
 
           {/* Category Horizontal Pills */}
-          <div style={{
-            display: 'flex', gap: 8, marginTop: 24, overflowX: 'auto', paddingBottom: 10,
-            scrollbarWidth: 'none', msOverflowStyle: 'none'
-          }}>
+          <div className="flex gap-2 mt-5 sm:mt-6 overflow-x-auto pb-2 no-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {CATEGORIES.map(cat => {
               const isSelected = activeCategory === cat;
               return (
@@ -1305,194 +1493,121 @@ const EventsBoard = () => {
       </div>
 
       {/* ── Main Layout (Sidebar Filters + Events Grid) ──────────────────────── */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 24px', display: 'flex', gap: 28, alignItems: 'flex-start' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
 
-        {/* ── Left Sidebar Filters ─────────────────────────────────────────── */}
-        <aside style={{
-          width: sidebarOpen ? 260 : 0,
-          flexShrink: 0,
-          backgroundColor: 'var(--theme-bg-secondary)',
-          borderRadius: 18,
-          boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
-          overflow: 'hidden',
-          transition: 'width 0.25s ease, padding 0.25s ease',
-          padding: sidebarOpen ? '20px' : 0,
-          border: sidebarOpen ? '1px solid var(--theme-border)' : 'none',
-        }}>
+        {/* ── Desktop Left Sidebar Filters ─────────────────────────────────── */}
+        <aside
+          className={`hidden lg:block shrink-0 transition-all duration-300 ease-in-out ${
+            sidebarOpen ? 'w-[270px] opacity-100' : 'w-0 opacity-0 overflow-hidden'
+          }`}
+        >
           {sidebarOpen && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              
-              {/* Filter Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--theme-border)', paddingBottom: 12 }}>
-                <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--theme-text-primary)', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <div style={{
+              backgroundColor: 'var(--theme-bg-secondary)',
+              borderRadius: 18,
+              border: '1px solid var(--theme-border)',
+              padding: '20px',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
+              position: 'sticky',
+              top: 90
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--theme-border)', paddingBottom: 12, marginBottom: 16 }}>
+                <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--theme-text-primary)', textTransform: 'uppercase', letterSpacing: 1 }}>
                   Filters
                 </span>
-                <button
-                  onClick={resetAllFilters}
-                  style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
-                >
-                  Reset All
-                </button>
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={resetAllFilters}
+                    style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
+                  >
+                    Reset All
+                  </button>
+                )}
               </div>
-
-              {/* Date Filter Section */}
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: 'var(--theme-text-muted)', textTransform: 'uppercase', marginBottom: 10, display: 'flex', justifyContent: 'space-between' }}>
-                  <span>📅 Date</span>
-                  {dateFilter !== 'all' && (
-                    <button onClick={() => { setDateFilter('all'); setCustomDate(''); }} style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>
-                      Clear
-                    </button>
-                  )}
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
-                  {[
-                    ['all', 'All'],
-                    ['today', 'Today'],
-                    ['tomorrow', 'Tomorrow'],
-                    ['weekend', 'This Weekend']
-                  ].map(([val, lbl]) => {
-                    const isSelected = dateFilter === val;
-                    return (
-                      <button
-                        key={val}
-                        onClick={() => setDateFilter(val)}
-                        style={{
-                          padding: '6px 12px', borderRadius: 14, border: '1px solid',
-                          fontSize: 12, fontWeight: 700, cursor: 'pointer',
-                          background: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-bg-primary)',
-                          color: isSelected ? '#fff' : 'var(--theme-text-primary)',
-                          borderColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-border)',
-                          transition: 'all 0.2s ease'
-                        }}
-                      >
-                        {lbl}
-                      </button>
-                    );
-                  })}
-                </div>
-                <label style={{ fontSize: 11, color: 'var(--theme-text-muted)', fontWeight: 600, display: 'block', marginBottom: 4 }}>Custom Date</label>
-                <input
-                  type="date"
-                  value={customDate}
-                  onChange={e => { setCustomDate(e.target.value); setDateFilter('custom'); }}
-                  style={{
-                    width: '100%', padding: '8px 10px', border: '1px solid var(--theme-border)',
-                    borderRadius: 8, fontSize: 12, outline: 'none', boxSizing: 'border-box',
-                    backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)'
-                  }}
-                />
-              </div>
-
-              {/* Language Section */}
-              <div style={{ borderTop: '1px solid var(--theme-border)', paddingTop: 16 }}>
-                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: 'var(--theme-text-muted)', textTransform: 'uppercase', marginBottom: 10, display: 'flex', justifyContent: 'space-between' }}>
-                  <span>🌐 Language</span>
-                  {activeLanguage !== 'All Languages' && (
-                    <button onClick={() => setActiveLanguage('All Languages')} style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>
-                      Clear
-                    </button>
-                  )}
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxHeight: 180, overflowY: 'auto' }}>
-                  {LANGUAGES.map(lang => {
-                    const isSelected = activeLanguage === lang;
-                    return (
-                      <div
-                        key={lang}
-                        onClick={() => setActiveLanguage(lang)}
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: 10, padding: '6px 8px',
-                          borderRadius: 8, cursor: 'pointer',
-                          backgroundColor: isSelected ? 'var(--theme-bg-accent)' : 'transparent',
-                          transition: 'background-color 0.2s ease'
-                        }}
-                      >
-                        <div style={{
-                          width: 16, height: 16, borderRadius: 4, border: '1.5px solid',
-                          borderColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-border)',
-                          backgroundColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-bg-primary)',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                        }}>
-                          {isSelected && <span style={{ color: '#fff', fontSize: 10, fontWeight: 900 }}>✓</span>}
-                        </div>
-                        <span style={{ fontSize: 13, color: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-text-primary)', fontWeight: isSelected ? 700 : 500 }}>
-                          {lang}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Price Range Section */}
-              <div style={{ borderTop: '1px solid var(--theme-border)', paddingTop: 16 }}>
-                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1, color: 'var(--theme-text-muted)', textTransform: 'uppercase', marginBottom: 10, display: 'flex', justifyContent: 'space-between' }}>
-                  <span>💰 Price</span>
-                  {activePriceIdx !== 0 && (
-                    <button onClick={() => setActivePriceIdx(0)} style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>
-                      Clear
-                    </button>
-                  )}
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  {PRICE_RANGES.map((pr, i) => {
-                    const isSelected = activePriceIdx === i;
-                    return (
-                      <div
-                        key={pr.label}
-                        onClick={() => setActivePriceIdx(i)}
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: 10, padding: '6px 8px',
-                          borderRadius: 8, cursor: 'pointer',
-                          backgroundColor: isSelected ? 'var(--theme-bg-accent)' : 'transparent',
-                          transition: 'background-color 0.2s ease'
-                        }}
-                      >
-                        <div style={{
-                          width: 14, height: 14, borderRadius: '50%', border: '1.5px solid',
-                          borderColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-border)',
-                          backgroundColor: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-bg-primary)',
-                          flexShrink: 0,
-                        }} />
-                        <span style={{ fontSize: 13, color: isSelected ? 'var(--theme-accent-primary)' : 'var(--theme-text-primary)', fontWeight: isSelected ? 700 : 500 }}>
-                          {pr.label}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
+              <FilterControls
+                dateFilter={dateFilter}
+                setDateFilter={setDateFilter}
+                customDate={customDate}
+                setCustomDate={setCustomDate}
+                activeLanguage={activeLanguage}
+                setActiveLanguage={setActiveLanguage}
+                activePriceIdx={activePriceIdx}
+                setActivePriceIdx={setActivePriceIdx}
+                isMobile={false}
+              />
             </div>
           )}
         </aside>
 
-        {/* ── Right Content Area ───────────────────────────────────────────── */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        {/* ── Content Area ─────────────────────────────────────────────────── */}
+        <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
           {/* Action Toolbar */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-            <button
-              onClick={() => setSidebarOpen(o => !o)}
-              style={{
-                backgroundColor: 'var(--theme-bg-secondary)',
-                border: '1px solid var(--theme-border)',
-                borderRadius: 10, padding: '8px 14px', fontSize: 13, fontWeight: 700,
-                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
-                color: 'var(--theme-text-primary)',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.02)'
-              }}
-            >
-              <span>{sidebarOpen ? '◀ Hide Filters' : '▶ Show Filters'}</span>
-            </button>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-3 flex-wrap">
+              {/* Desktop Toggle Sidebar */}
+              <button
+                onClick={() => setSidebarOpen(o => !o)}
+                className="hidden lg:inline-flex items-center gap-2"
+                style={{
+                  backgroundColor: 'var(--theme-bg-secondary)',
+                  border: '1px solid var(--theme-border)',
+                  borderRadius: 12, padding: '8px 14px', fontSize: 13, fontWeight: 700,
+                  cursor: 'pointer', color: 'var(--theme-text-primary)',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.02)'
+                }}
+              >
+                <span>{sidebarOpen ? '◀ Hide Filters' : '▶ Show Filters'}</span>
+              </button>
 
-            <span style={{ fontSize: 14, color: 'var(--theme-text-muted)', fontWeight: 500 }}>
-              Showing <strong style={{ color: 'var(--theme-text-primary)', fontWeight: 800 }}>{filtered.length}</strong> cultural event{filtered.length !== 1 ? 's' : ''}
-              {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}
-            </span>
+              {/* Mobile Filter Sheet Trigger Button */}
+              <button
+                onClick={() => setMobileFilterOpen(true)}
+                className="inline-flex lg:hidden items-center gap-2"
+                style={{
+                  backgroundColor: 'var(--theme-bg-secondary)',
+                  border: '1px solid var(--theme-border)',
+                  borderRadius: 12, padding: '8px 14px', fontSize: 13, fontWeight: 700,
+                  cursor: 'pointer', color: 'var(--theme-text-primary)',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.02)'
+                }}
+              >
+                <span>⚙️ Filters</span>
+                {activeFilterCount > 0 && (
+                  <span style={{
+                    backgroundColor: 'var(--theme-accent-primary)',
+                    color: '#fff', borderRadius: '50%', width: 20, height: 20,
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 11, fontWeight: 800
+                  }}>
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
 
-            {/* Active Filter Chips */}
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginLeft: 'auto' }}>
+              <span style={{ fontSize: 13, color: 'var(--theme-text-muted)', fontWeight: 500 }}>
+                Showing <strong style={{ color: 'var(--theme-text-primary)', fontWeight: 800 }}>{filtered.length}</strong> cultural event{filtered.length !== 1 ? 's' : ''}
+                {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}
+              </span>
+            </div>
+
+            {/* Clear All shortcut */}
+            {activeFilterCount > 0 && (
+              <button
+                onClick={resetAllFilters}
+                style={{
+                  background: 'none', border: 'none', color: 'var(--theme-accent-primary)',
+                  fontSize: 12, fontWeight: 700, cursor: 'pointer', padding: '4px 0',
+                  alignSelf: 'flex-start'
+                }}
+              >
+                Reset All Filters
+              </button>
+            )}
+          </div>
+
+          {/* Active Filter Chips */}
+          {(activeCategory !== 'All' || dateFilter !== 'all' || activeLanguage !== 'All Languages' || activePriceIdx !== 0 || search) && (
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 18 }}>
               {activeCategory !== 'All' && (
                 <Chip label={activeCategory} onRemove={() => setActiveCategory('All')} />
               )}
@@ -1509,20 +1624,20 @@ const EventsBoard = () => {
                 <Chip label={`"${search}"`} onRemove={() => setSearch('')} />
               )}
             </div>
-          </div>
+          )}
 
           {/* Events Grid or Empty State */}
           {filtered.length === 0 ? (
             <div style={{
-              textAlign: 'center', padding: '80px 24px',
+              textAlign: 'center', padding: '70px 20px',
               backgroundColor: 'var(--theme-bg-secondary)',
               borderRadius: 20, border: '1px dashed var(--theme-border)'
             }}>
-              <div style={{ fontSize: 52, marginBottom: 16 }}>🎭</div>
-              <h3 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 800, color: 'var(--theme-text-primary)', fontFamily: 'Fraunces, serif' }}>
+              <div style={{ fontSize: 48, marginBottom: 14 }}>🎭</div>
+              <h3 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 800, color: 'var(--theme-text-primary)', fontFamily: 'Fraunces, serif' }}>
                 No events found matching your criteria
               </h3>
-              <p style={{ margin: '0 auto 20px', color: 'var(--theme-text-muted)', fontSize: 14, maxWidth: 460 }}>
+              <p style={{ margin: '0 auto 18px', color: 'var(--theme-text-muted)', fontSize: 13, maxWidth: 460 }}>
                 Try adjusting or clearing your date, language, category, or search filters to explore available cultural experiences.
               </p>
               <button
@@ -1537,11 +1652,7 @@ const EventsBoard = () => {
               </button>
             </div>
           ) : (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-              gap: 24,
-            }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
               {filtered.map(event => (
                 <EventCard
                   key={event.id}
@@ -1554,8 +1665,124 @@ const EventsBoard = () => {
             </div>
           )}
         </div>
-
       </div>
+
+      {/* ── Mobile Filter Bottom Sheet Modal ──────────────────────────────────── */}
+      {mobileFilterOpen && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, zIndex: 1100,
+            backgroundColor: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)',
+            display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+          }}
+          onClick={() => setMobileFilterOpen(false)}
+        >
+          <div
+            style={{
+              backgroundColor: 'var(--theme-bg-primary)',
+              borderTopLeftRadius: 24, borderTopRightRadius: 24,
+              maxHeight: '88vh', display: 'flex', flexDirection: 'column',
+              boxShadow: '0 -10px 40px rgba(0,0,0,0.25)',
+              borderTop: '1px solid var(--theme-border)',
+              overflow: 'hidden',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Grab handle indicator */}
+            <div style={{ padding: '12px 0 6px', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: 40, height: 4, borderRadius: 2, backgroundColor: 'var(--theme-border)' }} />
+            </div>
+
+            {/* Sheet Header */}
+            <div style={{
+              padding: '10px 20px 14px',
+              borderBottom: '1px solid var(--theme-border)',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 16, fontWeight: 900, color: 'var(--theme-text-primary)', fontFamily: 'Fraunces, serif' }}>
+                  Filter Events
+                </span>
+                {activeFilterCount > 0 && (
+                  <span style={{
+                    backgroundColor: 'var(--theme-accent-primary)', color: '#fff',
+                    borderRadius: 12, padding: '2px 8px', fontSize: 11, fontWeight: 800
+                  }}>
+                    {activeFilterCount}
+                  </span>
+                )}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={resetAllFilters}
+                    style={{ background: 'none', border: 'none', color: 'var(--theme-accent-primary)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
+                  >
+                    Reset All
+                  </button>
+                )}
+                <button
+                  onClick={() => setMobileFilterOpen(false)}
+                  style={{
+                    width: 32, height: 32, borderRadius: '50%',
+                    backgroundColor: 'var(--theme-bg-accent)', border: 'none',
+                    color: 'var(--theme-text-primary)', fontWeight: 800, fontSize: 14,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Filters Body */}
+            <div style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
+              <FilterControls
+                dateFilter={dateFilter}
+                setDateFilter={setDateFilter}
+                customDate={customDate}
+                setCustomDate={setCustomDate}
+                activeLanguage={activeLanguage}
+                setActiveLanguage={setActiveLanguage}
+                activePriceIdx={activePriceIdx}
+                setActivePriceIdx={setActivePriceIdx}
+                isMobile={true}
+              />
+            </div>
+
+            {/* Sticky Bottom Action */}
+            <div style={{
+              padding: '14px 20px',
+              borderTop: '1px solid var(--theme-border)',
+              backgroundColor: 'var(--theme-bg-secondary)'
+            }}>
+              <button
+                onClick={() => setMobileFilterOpen(false)}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  borderRadius: 14,
+                  backgroundColor: 'var(--theme-btn-bg)',
+                  color: 'var(--theme-btn-text)',
+                  border: 'none',
+                  fontSize: 14,
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                  boxShadow: '0 4px 14px rgba(193, 80, 46, 0.25)'
+                }}
+              >
+                <span>Show {filtered.length} Cultural Event{filtered.length !== 1 ? 's' : ''}</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Host Event Modal ────────────────────────────────────────────────── */}
       {showModal && (
