@@ -5,8 +5,6 @@ import DestinationCulture from './DestinationCulture';
 import DestinationDances from './DestinationDances';
 import DestinationEvents from './DestinationEvents';
 import DestinationLanguage from './DestinationLanguage';
-import DestinationFoodMap from './DestinationFoodMap';
-import TripItinerary from './TripItinerary';
 
 const TripDashboard = ({
   cultureData,
@@ -34,9 +32,7 @@ const TripDashboard = ({
     { id: 'food', label: 'Local Food', icon: '🍛', count: cultureData.foods?.length },
     { id: 'culture', label: 'Local Culture', icon: '🪔' },
     { id: 'events', label: 'Events', icon: '🎪', count: cultureData.events?.length },
-    { id: 'translate', label: 'Translate', icon: '🗣️', count: cultureData.languagePhrases?.length },
-    { id: 'foodmap', label: 'Food Map', icon: '🗺️', count: cultureData.foodMap?.length },
-    { id: 'itinerary', label: 'Trip Itinerary', icon: '📅', count: cultureData.itinerary?.length }
+    { id: 'translate', label: 'Translate', icon: '🗣️', count: cultureData.languagePhrases?.length }
   ];
 
   return (
@@ -169,17 +165,15 @@ const TripDashboard = ({
         {/* OVERVIEW TAB: Shows Curated Highlights from all modules */}
         {activeTab === 'overview' && (
           <div className="space-y-12">
-            {/* Quick summary grid of 8 sections */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Quick summary grid of 6 sections */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {[
                 { title: 'Explore Places', icon: '🏛️', desc: `${cultureData.places?.length || 5}+ Monuments`, tab: 'places' },
                 { title: 'Traditional Dances', icon: '🎭', desc: `${cultureData.dancesAndArts?.length || 3}+ Art Forms (Videos)`, tab: 'dances' },
                 { title: 'Local Food', icon: '🍛', desc: `${cultureData.foods?.length || 6}+ Iconic Dishes`, tab: 'food' },
                 { title: 'Local Culture', icon: '🪔', desc: 'Traditions & Customs', tab: 'culture' },
                 { title: 'Events', icon: '🎪', desc: `${cultureData.events?.length || 4}+ Live Festivals`, tab: 'events' },
-                { title: 'Local Phrases', icon: '🗣️', desc: 'Pronunciation Guide', tab: 'translate' },
-                { title: 'Food Map', icon: '🗺️', desc: 'Culinary Hotspots', tab: 'foodmap' },
-                { title: 'Trip Itinerary', icon: '📅', desc: 'Day-by-Day Plan', tab: 'itinerary' }
+                { title: 'Local Phrases', icon: '🗣️', desc: 'Pronunciation Guide', tab: 'translate' }
               ].map((card, idx) => (
                 <button
                   key={idx}
@@ -229,16 +223,6 @@ const TripDashboard = ({
             <section className="pt-8 border-t border-[var(--theme-border)]">
               <DestinationLanguage phrases={cultureData.languagePhrases} destinationName={destinationName} />
             </section>
-
-            {/* G. Local Food Map */}
-            <section className="pt-8 border-t border-[var(--theme-border)]">
-              <DestinationFoodMap foodSpots={cultureData.foodMap} destinationName={destinationName} />
-            </section>
-
-            {/* H. Trip Itinerary */}
-            <section className="pt-8 border-t border-[var(--theme-border)]">
-              <TripItinerary itinerary={cultureData.itinerary} destinationName={destinationName} />
-            </section>
           </div>
         )}
 
@@ -265,14 +249,6 @@ const TripDashboard = ({
 
         {activeTab === 'translate' && (
           <DestinationLanguage phrases={cultureData.languagePhrases} destinationName={destinationName} />
-        )}
-
-        {activeTab === 'foodmap' && (
-          <DestinationFoodMap foodSpots={cultureData.foodMap} destinationName={destinationName} />
-        )}
-
-        {activeTab === 'itinerary' && (
-          <TripItinerary itinerary={cultureData.itinerary} destinationName={destinationName} />
         )}
       </div>
     </div>
