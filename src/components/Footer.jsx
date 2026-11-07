@@ -24,7 +24,7 @@ const Footer = () => {
                     <div>
                         <h4 className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-[var(--theme-accent-primary)]">Platform</h4>
                         <ul className="space-y-3 font-light text-sm text-[var(--theme-text-secondary)]">
-                            <li><Link to="/dances" className="hover:text-[var(--theme-accent-primary)] transition-colors">Dances & Traditions</Link></li>
+                            <li><Link to="/travel" className="hover:text-[var(--theme-accent-primary)] transition-colors">Travel & Destinations</Link></li>
                             <li><Link to="/city-food" className="hover:text-[var(--theme-accent-primary)] transition-colors">City Food Explorer</Link></li>
                             <li><Link to="/feed" className="hover:text-[var(--theme-accent-primary)] transition-colors">Cultural Feed</Link></li>
                             <li><Link to="/events" className="hover:text-[var(--theme-accent-primary)] transition-colors">Global Events</Link></li>

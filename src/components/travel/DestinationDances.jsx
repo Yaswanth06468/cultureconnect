@@ -70,13 +70,10 @@ const DestinationDances = ({ dances = [], destinationName = 'Bangalore' }) => {
             </p>
           </div>
 
-          <Link
-            to="/dances"
-            className="text-xs font-bold text-[var(--theme-accent-primary)] hover:underline inline-flex items-center gap-1 self-start md:self-auto"
-          >
-            <span>Open Full Dances Showcase</span>
-            <span>→</span>
-          </Link>
+          <span className="text-xs font-bold text-[var(--theme-text-muted)] bg-[var(--theme-bg-accent)] px-3.5 py-1.5 rounded-full border border-[var(--theme-border)] self-start md:self-auto flex items-center gap-1.5">
+            <span>🎭</span>
+            <span>{dances.length} Traditional Art Form{dances.length !== 1 ? 's' : ''}</span>
+          </span>
         </div>
 
         {/* Dance Cards Grid */}
@@ -340,6 +337,32 @@ const DestinationDances = ({ dances = [], destinationName = 'Bangalore' }) => {
                 </p>
               </div>
 
+              {/* Cultural Importance & History */}
+              {(selectedDance.history || selectedDance.significance) && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
+                  {selectedDance.history && (
+                    <div style={{ background: 'var(--theme-bg-secondary)', padding: '16px', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
+                      <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                        🏛️ Historical Origins
+                      </h4>
+                      <p style={{ margin: 0, fontSize: 13, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
+                        {selectedDance.history}
+                      </p>
+                    </div>
+                  )}
+                  {selectedDance.significance && (
+                    <div style={{ background: 'var(--theme-bg-secondary)', padding: '16px', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
+                      <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                        🪔 Cultural Significance
+                      </h4>
+                      <p style={{ margin: 0, fontSize: 13, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
+                        {selectedDance.significance}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Instruments & Where to Watch */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
                 {selectedDance.instruments && (
@@ -349,6 +372,16 @@ const DestinationDances = ({ dances = [], destinationName = 'Bangalore' }) => {
                     </h4>
                     <p style={{ margin: 0, fontSize: 13, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
                       {selectedDance.instruments}
+                    </p>
+                  </div>
+                )}
+                {selectedDance.costume && (
+                  <div style={{ background: 'var(--theme-bg-secondary)', padding: '16px', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
+                    <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-text-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                      👗 Traditional Costume
+                    </h4>
+                    <p style={{ margin: 0, fontSize: 13, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
+                      {selectedDance.costume}
                     </p>
                   </div>
                 )}
@@ -364,26 +397,32 @@ const DestinationDances = ({ dances = [], destinationName = 'Bangalore' }) => {
                 )}
               </div>
 
+              {/* Cultural Facts if available */}
+              {Array.isArray(selectedDance.facts) && selectedDance.facts.length > 0 && (
+                <div style={{ background: 'var(--theme-bg-accent)', padding: '14px 18px', borderRadius: 14, border: '1px solid var(--theme-border)' }}>
+                  <h4 style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 800, color: 'var(--theme-accent-primary)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                    💡 Fascinating Dance Facts
+                  </h4>
+                  <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: 'var(--theme-text-secondary)', lineHeight: 1.6 }}>
+                    {selectedDance.facts.map((fact, fIdx) => (
+                      <li key={fIdx}>{fact}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {/* Footer actions */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 8, borderTop: '1px solid var(--theme-border)' }}>
-                <Link
-                  to="/dances"
-                  style={{
-                    fontSize: 13, fontWeight: 700, color: 'var(--theme-accent-primary)',
-                    textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5
-                  }}
-                >
-                  Explore all Indian dances →
-                </Link>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingTop: 8, borderTop: '1px solid var(--theme-border)' }}>
                 <button
                   onClick={handleClose}
                   style={{
                     background: 'var(--theme-btn-bg)', color: 'var(--theme-btn-text)',
-                    border: 'none', borderRadius: 12, padding: '10px 22px',
-                    fontWeight: 800, fontSize: 13, cursor: 'pointer'
+                    border: 'none', borderRadius: 12, padding: '10px 24px',
+                    fontWeight: 800, fontSize: 13, cursor: 'pointer',
+                    boxShadow: '0 2px 8px rgba(193,80,46,0.2)'
                   }}
                 >
-                  ← Back
+                  Close Pass
                 </button>
               </div>
             </div>

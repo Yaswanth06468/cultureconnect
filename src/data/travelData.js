@@ -1,20 +1,24 @@
 // Comprehensive Travel and Destination Cultural Experience Dataset for CultureConnect
 // "Travel to a place → Book your journey → Discover the culture of that place."
+import { PLACES_DATA, CITIES_METADATA } from './placesData';
+import { dancesData } from './dancesData';
 
 export const POPULAR_CITIES = [
   'Bangalore',
   'Hyderabad',
   'Chennai',
+  'Kochi',
+  'Jaipur',
   'Mumbai',
   'Delhi',
-  'Kochi',
-  'Mysore',
   'Goa',
-  'Jaipur',
   'Kolkata',
   'Varanasi',
+  'Amritsar',
   'Ahmedabad',
   'Visakhapatnam',
+  'Vijayawada',
+  'Mysore',
   'Pune'
 ];
 
@@ -24,7 +28,8 @@ export const POPULAR_ROUTES = [
   { from: 'Mumbai', to: 'Jaipur', label: 'Mumbai → Jaipur', desc: 'Pink City Palaces & Royal Cuisine' },
   { from: 'Delhi', to: 'Varanasi', label: 'Delhi → Varanasi', desc: 'Sacred Ganga Ghats & Classical Arts' },
   { from: 'Chennai', to: 'Kochi', label: 'Chennai → Kochi', desc: 'Backwaters, Kathakali & Spice Trade' },
-  { from: 'Bangalore', to: 'Mysore', label: 'Bangalore → Mysore', desc: 'Palace Splendour & Silk Weaving' }
+  { from: 'Bangalore', to: 'Mysore', label: 'Bangalore → Mysore', desc: 'Palace Splendour & Silk Weaving' },
+  { from: 'Hyderabad', to: 'Visakhapatnam', label: 'Hyderabad → Visakhapatnam', desc: 'Coastal Caves & Seafood Trails' }
 ];
 
 // Helper to normalize city names
@@ -36,15 +41,18 @@ export const normalizeCity = (city) => {
   if (c.includes('chennai') || c.includes('madras')) return 'Chennai';
   if (c.includes('mumbai') || c.includes('bombay')) return 'Mumbai';
   if (c.includes('delhi')) return 'Delhi';
-  if (c.includes('kochi') || c.includes('cochin')) return 'Kochi';
+  if (c.includes('kochi') || c.includes('cochin') || c.includes('kerala')) return 'Kochi';
   if (c.includes('mysore') || c.includes('mysuru')) return 'Mysore';
-  if (c.includes('goa')) return 'Goa';
-  if (c.includes('jaipur')) return 'Jaipur';
+  if (c.includes('goa') || c.includes('panaji')) return 'Goa';
+  if (c.includes('jaipur') || c.includes('rajasthan')) return 'Jaipur';
   if (c.includes('kolkata') || c.includes('calcutta')) return 'Kolkata';
   if (c.includes('varanasi') || c.includes('banaras') || c.includes('kashi')) return 'Varanasi';
+  if (c.includes('amritsar') || c.includes('punjab')) return 'Amritsar';
   if (c.includes('ahmedabad')) return 'Ahmedabad';
   if (c.includes('visakhapatnam') || c.includes('vizag')) return 'Visakhapatnam';
+  if (c.includes('vijayawada')) return 'Vijayawada';
   if (c.includes('pune')) return 'Pune';
+  if (c.includes('agra')) return 'Agra';
   // Capitalize first letter
   return city.charAt(0).toUpperCase() + city.slice(1);
 };
@@ -1235,24 +1243,415 @@ export const DESTINATION_CULTURE_DATA = {
   }
 };
 
-// Fallback generator for ANY other destination (e.g. Kochi, Mysore, Jaipur, Kolkata, Varanasi, etc.)
+// ── City to State & Alias Mappings ──────────────────────────────────────────
+const CITY_TO_STATE = {
+  Bangalore: 'Karnataka',
+  Bengaluru: 'Karnataka',
+  Mysore: 'Karnataka',
+  Mysuru: 'Karnataka',
+  Hyderabad: 'Telangana',
+  Warangal: 'Telangana',
+  Visakhapatnam: 'Andhra Pradesh',
+  Vijayawada: 'Andhra Pradesh',
+  Guntur: 'Andhra Pradesh',
+  Tirupati: 'Andhra Pradesh',
+  Chennai: 'Tamil Nadu',
+  Madurai: 'Tamil Nadu',
+  Coimbatore: 'Tamil Nadu',
+  Kochi: 'Kerala',
+  Cochin: 'Kerala',
+  Kerala: 'Kerala',
+  Mumbai: 'Maharashtra',
+  Pune: 'Maharashtra',
+  Delhi: 'Delhi',
+  'New Delhi': 'Delhi',
+  Agra: 'Uttar Pradesh',
+  Varanasi: 'Uttar Pradesh',
+  Lucknow: 'Uttar Pradesh',
+  Jaipur: 'Rajasthan',
+  Udaipur: 'Rajasthan',
+  Kolkata: 'West Bengal',
+  Goa: 'Goa',
+  Panaji: 'Goa',
+  Amritsar: 'Punjab',
+  Ahmedabad: 'Gujarat',
+  Bhubaneswar: 'Odisha',
+  Guwahati: 'Assam',
+};
+
+const CITY_ALIASES = {
+  Bangalore: ['Bengaluru', 'Bangalore'],
+  Bengaluru: ['Bengaluru', 'Bangalore'],
+  Mysore: ['Mysuru', 'Mysore'],
+  Mysuru: ['Mysuru', 'Mysore'],
+  Kochi: ['Kochi', 'Cochin', 'Kerala'],
+  Kerala: ['Kochi', 'Cochin', 'Kerala'],
+  Delhi: ['Delhi', 'New Delhi'],
+  Goa: ['Goa', 'Panaji'],
+  Visakhapatnam: ['Visakhapatnam', 'Vizag'],
+};
+
+// Curated authentic regional dishes for popular destinations
+const DESTINATION_FOODS_MAP = {
+  Kochi: [
+    {
+      id: 'koc-fd-1',
+      name: 'Karimeen Pollichathu',
+      imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80',
+      description: 'Fresh Pearl Spot fish marinated in fiery ground shallots, kokum, and green chillies, wrapped inside tender banana leaf and slow-roasted on hot tawa.',
+      recommendedPlaces: 'Grand Hotel (M.G. Road), Paragon Restaurant, Fort Kochi Seafood Kitchen',
+      approxPrice: '₹280 – ₹420',
+      mealType: 'Iconic Coastal Specialty'
+    },
+    {
+      id: 'koc-fd-2',
+      name: 'Appam & Vegetable / Mutton Stew',
+      imageUrl: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80',
+      description: 'Lacy, bowl-shaped fermented rice hoppers with soft spongy centers paired with fragrant, mildly spiced coconut milk stew infused with whole cardamom and cloves.',
+      recommendedPlaces: 'Dhe Puttu (Edappally), Kashi Art Cafe, Cassava at Marriott',
+      approxPrice: '₹140 – ₹240',
+      mealType: 'Traditional Kerala Breakfast'
+    },
+    {
+      id: 'koc-fd-3',
+      name: 'Kerala Malabar Porotta & Beef Roast',
+      imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80',
+      description: 'Multi-layered flaky, spiral Kerala porotta served with deeply spiced slow-roasted meat cooked with toasted coconut slices, curry leaves, and black pepper.',
+      recommendedPlaces: 'Al Reem Cookhouse, Ceylon Bake House, Paragon',
+      approxPrice: '₹150 – ₹260',
+      mealType: 'Legendary Dinner Staple'
+    },
+    {
+      id: 'koc-fd-4',
+      name: 'Creamy Prawn Moilee',
+      imageUrl: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=800&auto=format&fit=crop&q=80',
+      description: 'Succulent king prawns gently poached in rich golden coconut milk flavored with turmeric, ginger, green chillies, and fresh curry leaves.',
+      recommendedPlaces: 'Oceanos Seafood (Elamkulam), Fusion Bay (Fort Kochi)',
+      approxPrice: '₹320 – ₹480',
+      mealType: 'Coastal Curry Delicacy'
+    },
+    {
+      id: 'koc-fd-5',
+      name: 'Coconut-Oil Banana Chips & Halwa',
+      imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+      description: 'Crisp golden raw Nendran banana wafers fried in pure cold-pressed coconut oil, paired with gelatinous dark jaggery Kozhikodan halwa.',
+      recommendedPlaces: 'Broadway Market Spice Bazaars, A-One Banana Chips',
+      approxPrice: '₹90 – ₹180',
+      mealType: 'Traditional Snack & Sweet'
+    }
+  ],
+  Jaipur: [
+    {
+      id: 'jpr-fd-1',
+      name: 'Authentic Dal Baati Churma',
+      imageUrl: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80',
+      description: 'Crisp, baked whole-wheat dumplings soaked in pure desi ghee, served with five-lentil Panchmel dal, garlic chutney, and sweet cardamom churma crumble.',
+      recommendedPlaces: 'Chokhi Dhani, Laxmi Misthan Bhandar (LMB Johari Bazaar), Rawat Misthan Bhandar',
+      approxPrice: '₹220 – ₹450',
+      mealType: 'Royal Rajasthani Feast'
+    },
+    {
+      id: 'jpr-fd-2',
+      name: 'Fiery Royal Laal Maas',
+      imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80',
+      description: 'Legendary Rajput warrior dish cooked with tender mutton in an intense smoked gravy of Mathania dried red chillies, garlic, and whole spices.',
+      recommendedPlaces: 'Handi Restaurant (MI Road), Niros, 1135 AD (Amer Fort)',
+      approxPrice: '₹350 – ₹550',
+      mealType: 'Royal Heritage Dinner'
+    },
+    {
+      id: 'jpr-fd-3',
+      name: 'Crispy Pyaaz Kachori',
+      imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+      description: 'Deep-fried flaky pastry filled with a savory, spiced onion, potato, and fennel seed mixture, served piping hot with sweet tamarind and spicy mint chutneys.',
+      recommendedPlaces: 'Rawat Misthan Bhandar (Station Road), LMB, Sodhani Sweets',
+      approxPrice: '₹40 – ₹70',
+      mealType: 'Iconic Morning Street Snack'
+    },
+    {
+      id: 'jpr-fd-4',
+      name: 'Honeycomb Royal Ghevar',
+      imageUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80',
+      description: 'Disc-shaped sweet made from all-purpose flour batter fried in pure ghee into a porous honeycomb texture, soaked in saffron syrup and smothered with thick Rabdi.',
+      recommendedPlaces: 'Laxmi Misthan Bhandar, Sambhar Fini, Doodh Mishthan Bhandar',
+      approxPrice: '₹180 – ₹320',
+      mealType: 'Festive Confection'
+    }
+  ],
+  Kolkata: [
+    {
+      id: 'kol-fd-1',
+      name: 'Slow-Cooked Kosha Mangsho & Luchi',
+      imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80',
+      description: 'Dark, intensely spiced Bengali mutton curry simmered with caramelized onions, mustard oil, and whole garam masala, paired with puffy white deep-fried luchis.',
+      recommendedPlaces: 'Golbari (Shyambazar), 6 Ballygunge Place, Oh! Calcutta',
+      approxPrice: '₹280 – ₹420',
+      mealType: 'Celebratory Sunday Lunch'
+    },
+    {
+      id: 'kol-fd-2',
+      name: 'Original Nizam\'s Kathi Roll',
+      imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80',
+      description: 'Charcoal-grilled juicy skewered kebabs rolled inside flaky paratha layered with fried egg, sliced onions, lime juice, and green chillies.',
+      recommendedPlaces: 'Nizam\'s (New Market), Kusum Rolls (Park Street), Hot Kati Roll',
+      approxPrice: '₹70 – ₹130',
+      mealType: 'Pioneering Street Food'
+    },
+    {
+      id: 'kol-fd-3',
+      name: 'Authentic Mishti Doi & Spongy Rosogolla',
+      imageUrl: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&auto=format&fit=crop&q=80',
+      description: 'Caramelized sweetened yogurt set in porous earthen clay pots, accompanied by melt-in-mouth chhena spheres poached in light rose-scented sugar syrup.',
+      recommendedPlaces: 'K.C. Das (Esplanade), Balaram Mullick, Mithai, Ganguram',
+      approxPrice: '₹50 – ₹120',
+      mealType: 'Timeless Bengali Dessert'
+    }
+  ],
+  Varanasi: [
+    {
+      id: 'vns-fd-1',
+      name: 'Banarasi Meetha & Zarda Paan',
+      imageUrl: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&auto=format&fit=crop&q=80',
+      description: 'Tender betel leaf layered with gulkand (rose petal preserve), sweet areca, menthol, saffron paste, and silver vark, crafted with centuries of nawabi artistry.',
+      recommendedPlaces: 'Keshav Tambool Bhandar, Deepak Tambool, Godowlia Chowk',
+      approxPrice: '₹30 – ₹90',
+      mealType: 'Legendary Cultural After-Meal'
+    },
+    {
+      id: 'vns-fd-2',
+      name: 'Morning Kachori Sabzi & Jalebi',
+      imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+      description: 'Crisp urad-dal stuffed kachoris served with spicy hing-infused potato gravy, paired with hot orange swirls of crispy sugar-syrup jalebis.',
+      recommendedPlaces: 'Ram Bhandar (Thatheri Bazaar), Shri Rajbandhu, Chachi Ki Dukan',
+      approxPrice: '₹50 – ₹90',
+      mealType: 'Ghat Morning Breakfast'
+    },
+    {
+      id: 'vns-fd-3',
+      name: 'Banarasi Tamatar Chaat & Malaiyyo',
+      imageUrl: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80',
+      description: 'Mashed spiced tomatoes cooked with hing, cumin, and dried fruits served in clay kulhad, followed by airy saffron-flavored winter milk foam.',
+      recommendedPlaces: 'Kashi Chaat Bhandar (Godowlia), Deena Chaat Bhandar',
+      approxPrice: '₹40 – ₹80',
+      mealType: 'Iconic Street Food'
+    }
+  ],
+  Amritsar: [
+    {
+      id: 'asr-fd-1',
+      name: 'Crispy Amritsari Kulcha with Chole',
+      imageUrl: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80',
+      description: 'Clay-tandoor baked layered bread stuffed with spiced potatoes and onions, brushed with melting butter, served with tangy dark chickpea curry.',
+      recommendedPlaces: 'Bhai Kulwant Singh Kulchian Wale, Kesar Da Dhaba, Kulcha Land',
+      approxPrice: '₹80 – ₹140',
+      mealType: 'Signature Punjabi Breakfast'
+    },
+    {
+      id: 'asr-fd-2',
+      name: 'Thick Frothy Amritsari Malai Lassi',
+      imageUrl: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&auto=format&fit=crop&q=80',
+      description: 'Chilled hand-churned yogurt beverage served in heavy tall brass tumblers crowned with a thick dollop of clotted cream (malai).',
+      recommendedPlaces: 'Ahuja Milk Centre, Gian Chand Lassi Wale (Hall Bazaar)',
+      approxPrice: '₹50 – ₹90',
+      mealType: 'Refreshing Heritage Drink'
+    }
+  ],
+  Ahmedabad: [
+    {
+      id: 'ahd-fd-1',
+      name: 'Authentic Gujarati Thali',
+      imageUrl: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80',
+      description: 'A lavish round platter of sweet Gujarati khatti-meethi dal, Kadhi, Ringan No Oro, Rotlis with ghee, Basundi, and crispy farsan.',
+      recommendedPlaces: 'Agashiye (The House of MG), Gordhan Thal, Toran',
+      approxPrice: '₹350 – ₹650',
+      mealType: 'Grand Culinary Heritage'
+    },
+    {
+      id: 'ahd-fd-2',
+      name: 'Khaman Dhokla & Fafda Jalebi',
+      imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+      description: 'Feather-light spongy gram flour cakes tempered with mustard seeds and curry leaves, alongside crunchy chickpea flour fafda with hot jalebis.',
+      recommendedPlaces: 'Das Khaman, Chandravilas, Iscon Gathiya',
+      approxPrice: '₹60 – ₹120',
+      mealType: 'Beloved Sunday Street Tradition'
+    }
+  ],
+  Visakhapatnam: [
+    {
+      id: 'viz-fd-1',
+      name: 'Araku Valley Bamboo Chicken',
+      imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80',
+      description: 'Marinated chicken sealed inside hollow green bamboo stalks with wild forest herbs and roasted slowly over burning charcoal with zero oil.',
+      recommendedPlaces: 'Araku Valley Eateries, Coastal Dhaba, Tyda Jungle Camp',
+      approxPrice: '₹220 – ₹320',
+      mealType: 'Tribal Culinary Heritage'
+    },
+    {
+      id: 'viz-fd-2',
+      name: 'Coastal Andhra Chepa Pulusu',
+      imageUrl: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=800&auto=format&fit=crop&q=80',
+      description: 'Sea-fresh seer fish simmered in a tangy tamarind, green chilli, and fenugreek gravy cooked in clay pots for authentic depth of flavor.',
+      recommendedPlaces: 'Sea Inn (Raju Gari Dhaba), Kamat, Daspalla Executive Mess',
+      approxPrice: '₹180 – ₹280',
+      mealType: 'Coastal Fisherman Lunch'
+    }
+  ],
+  Vijayawada: [
+    {
+      id: 'vja-fd-1',
+      name: 'Spicy Gongura Mutton / Chicken',
+      imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80',
+      description: 'Tender meat slow-cooked with fresh red sorrel (gongura) leaves, Guntur red chillies, and garlic, creating an intense spicy-sour flavor profile.',
+      recommendedPlaces: 'Crossroads Restaurant, Babai Hotel, Sweet Magic Mess',
+      approxPrice: '₹240 – ₹360',
+      mealType: 'Andhra Spice Masterpiece'
+    },
+    {
+      id: 'vja-fd-2',
+      name: 'Babai Hotel Idli & Crispy Punugulu',
+      imageUrl: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80',
+      description: 'Steaming soft idlis bathed in fragrant homemade cow ghee with spicy podi, alongside deep-fried golden fermented batter punugulu.',
+      recommendedPlaces: 'Babai Hotel (Nageswara Rao Pantulu Road), Minerva Grand',
+      approxPrice: '₹60 – ₹110',
+      mealType: 'Legendary Andhra Breakfast'
+    }
+  ],
+  Mysore: [
+    {
+      id: 'mys-fd-1',
+      name: 'Original Royal Mysore Pak',
+      imageUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80',
+      description: 'Melt-in-mouth royal confection created in the Mysore Palace kitchens using roasted gram flour, generous pure ghee, and sugar syrup.',
+      recommendedPlaces: 'Guru Sweet Mart (Sayyaji Rao Road), Mahalakshmi Sweets',
+      approxPrice: '₹120 – ₹220',
+      mealType: 'Palace Royal Heritage Sweet'
+    },
+    {
+      id: 'mys-fd-2',
+      name: 'Mysore Masala Dosa with Red Garlic Chutney',
+      imageUrl: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80',
+      description: 'Crispy butter-roasted crepe lined with fiery red chilli-garlic paste and stuffed with gently spiced mashed potatoes.',
+      recommendedPlaces: 'Mylari Hotel (Nazarbad), Hotel Hanumanthu, Gufha',
+      approxPrice: '₹70 – ₹110',
+      mealType: 'Iconic Heritage Breakfast'
+    }
+  ],
+  Pune: [
+    {
+      id: 'pne-fd-1',
+      name: 'Extra-Spicy Puneri Misal Pav',
+      imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+      description: 'Sprouted moth beans in fiery red tarri broth garnished with farsan, raw onions, and coriander, served with fresh buttered pav.',
+      recommendedPlaces: 'Katta Kirr, Bedekar Tea Stall, Vaidya Upahar Gruha',
+      approxPrice: '₹80 – ₹130',
+      mealType: 'Fiery Maharashtrian Tiffin'
+    },
+    {
+      id: 'pne-fd-2',
+      name: 'Chitale Bandhu Bakarwadi & Mango Mastani',
+      imageUrl: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&auto=format&fit=crop&q=80',
+      description: 'Crisp spiral pinwheel snacks stuffed with sweet-sour-spicy masala, accompanied by thick mango shake topped with ice cream and dry fruits.',
+      recommendedPlaces: 'Chitale Bandhu Mithaiwale (Deccan Gymkhana), Sujata Mastani',
+      approxPrice: '₹90 – ₹160',
+      mealType: 'Classic Puneri Treat'
+    }
+  ]
+};
+
+// ── Dynamic Destination Culture Builder ─────────────────────────────────────
+// Dynamically pulls real monuments from PLACES_DATA, traditional dances with
+// authentic video preview paths from dancesData, and local food specialties.
 export const getDestinationCulture = (destinationName = 'Bangalore') => {
   const norm = normalizeCity(destinationName);
+  const aliases = CITY_ALIASES[norm] || [norm];
+  const state = CITY_TO_STATE[norm] || 'Karnataka';
 
-  if (DESTINATION_CULTURE_DATA[norm]) {
-    return DESTINATION_CULTURE_DATA[norm];
+  // 1. Gather Real Places from PLACES_DATA
+  const matchedPlaces = PLACES_DATA.filter(p =>
+    aliases.some(a => a.toLowerCase() === (p.city || '').toLowerCase())
+  ).map(p => ({
+    id: p.id,
+    name: p.name,
+    imageUrl: p.imageUrl,
+    shortDescription: p.historicalSignificance || p.description,
+    location: p.location,
+    openingHours: p.timings || p.openingHours || '09:00 AM – 06:00 PM',
+    entryFee: p.entryFee || 'Free entry',
+    category: p.category || 'Historical Monument',
+    highlight: p.architecture || p.culturalSignificance || (p.keyHighlights && p.keyHighlights[0]) || 'Iconic historical heritage landmark.'
+  }));
+
+  // 2. Gather Traditional Dances with working videos from dancesData
+  const matchedDances = dancesData.filter(d => {
+    const dState = (d.state || '').toLowerCase();
+    const targetState = state.toLowerCase();
+    if (dState === targetState || dState.includes(targetState) || targetState.includes(dState)) return true;
+    if (targetState === 'telangana' && dState === 'andhra pradesh') return true;
+    if (targetState === 'andhra pradesh' && dState === 'telangana') return true;
+    if (targetState === 'delhi' && dState === 'uttar pradesh') return true;
+    return false;
+  }).map(d => ({
+    id: d.id,
+    name: d.name,
+    category: d.category || 'Traditional Dance',
+    imageUrl: d.imageUrl,
+    videoPath: d.videoPath || d.videoUrl,
+    videoUrl: d.videoUrl || d.videoPath,
+    description: d.description,
+    history: d.history,
+    significance: d.significance,
+    costume: d.costume,
+    instruments: d.instruments,
+    whereToWatch: d.famousFor || d.origin || `${d.name} Recitals & Cultural Festivals`,
+    facts: d.facts
+  }));
+
+  // 3. Check for existing curated base
+  const existingBase = DESTINATION_CULTURE_DATA[norm];
+
+  if (existingBase) {
+    return {
+      ...existingBase,
+      places: matchedPlaces.length > 0 ? matchedPlaces : existingBase.places,
+      dancesAndArts: matchedDances.length > 0 ? matchedDances : existingBase.dancesAndArts
+    };
   }
 
-  // Smart dynamic builder for other cities
+  // 4. Build from CITIES_METADATA and DESTINATION_FOODS_MAP for any other city
+  const meta = CITIES_METADATA.find(m =>
+    aliases.some(a => a.toLowerCase() === (m.city || '').toLowerCase())
+  );
+
+  const foods = DESTINATION_FOODS_MAP[norm] || [
+    {
+      id: `gen-fd-1-${norm}`,
+      name: `${norm} Signature Traditional Thali`,
+      imageUrl: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80',
+      description: `A celebrated culinary spread featuring regional breads, slow-cooked lentils, seasonal vegetables, fragrant rice, and authentic sweet desserts.`,
+      recommendedPlaces: `Heritage Mess & Local Restaurants in ${norm}`,
+      approxPrice: '₹150 – ₹280',
+      mealType: 'Regional Traditional Feast'
+    },
+    {
+      id: `gen-fd-2-${norm}`,
+      name: `Famous ${norm} Street Food & Chai`,
+      imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
+      description: `Crispy spiced savory snacks prepared hot off the pan with tangy tamarind and mint chutneys, accompanied by spiced clay-pot chai.`,
+      recommendedPlaces: `Old Town Bazaars & Clock Tower Squares`,
+      approxPrice: '₹40 – ₹90',
+      mealType: 'Iconic Evening Street Snack'
+    }
+  ];
+
   return {
     city: norm,
-    officialName: norm,
-    state: 'India',
-    tagline: `Cultural Exploration & Heritage of ${norm}`,
-    heroImage: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=1600&auto=format&fit=crop&q=80',
-    introQuote: `Immerse yourself in the authentic historical monuments, traditional cuisines, time-honored folk arts, and vibrant local spirit of ${norm}.`,
-    shortDescription: `A cultural destination brimming with ancient heritage, local craftsmanship, regional gastronomical wonders, and friendly people eager to share their folklore.`,
-    places: [
+    officialName: meta ? meta.city : norm,
+    state: meta ? meta.state : state,
+    tagline: meta ? meta.tagline : `Cultural Exploration & Heritage of ${norm}`,
+    heroImage: meta ? meta.heroImage : 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=1600&auto=format&fit=crop&q=80',
+    introQuote: meta ? meta.description : `Immerse yourself in the authentic historical monuments, traditional cuisines, time-honored folk arts, and vibrant local spirit of ${norm}.`,
+    shortDescription: meta ? meta.historicalSignificance : `A cultural destination brimming with ancient heritage, local craftsmanship, regional gastronomical wonders, and friendly people eager to share their folklore.`,
+    places: matchedPlaces.length > 0 ? matchedPlaces : [
       {
         id: `gen-pl-1-${norm}`,
         name: `${norm} Historic Heritage Monument`,
@@ -1263,67 +1662,45 @@ export const getDestinationCulture = (destinationName = 'Bangalore') => {
         entryFee: '₹25 – ₹50 (Indians)',
         category: 'Historical Landmark',
         highlight: `Stunning 360-degree views of the historic old city and local marketplace.`
-      },
-      {
-        id: `gen-pl-2-${norm}`,
-        name: `${norm} Heritage Museum & Gardens`,
-        imageUrl: 'https://images.unsplash.com/photo-1580294658515-63f052988821?w=800&auto=format&fit=crop&q=80',
-        shortDescription: `Botanical and historical museum preserving antique royal regalia, manuscripts, and regional archaeological sculptures.`,
-        location: `Museum Enclave, ${norm}`,
-        openingHours: '10:00 AM – 05:30 PM',
-        entryFee: '₹30 per visitor',
-        category: 'Museum & Heritage Garden',
-        highlight: 'Curated galleries depicting royal history and regional freedom movement archives.'
-      },
-      {
-        id: `gen-pl-3-${norm}`,
-        name: `Grand Temple & Spiritual Ghats of ${norm}`,
-        imageUrl: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800&auto=format&fit=crop&q=80',
-        shortDescription: `Ancient sanctuary renowned for intricate stone carvings, peaceful meditation halls, and evening lamp aartis.`,
-        location: `Old Town, ${norm}`,
-        openingHours: '06:00 AM – 08:30 PM',
-        entryFee: 'Free entry',
-        category: 'Spiritual & Temple Architecture',
-        highlight: 'Atmospheric evening bells and devotional hymns during twilight.'
       }
     ],
-    foods: [
-      {
-        id: `gen-fd-1-${norm}`,
-        name: `${norm} Traditional Signature Thali`,
-        imageUrl: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80',
-        description: `Grand platter featuring local breads, spiced lentils, seasonal vegetable gravies, aromatic rice, and sweet dishes prepared with local recipes.`,
-        recommendedPlaces: `Heritage Mess & Local Restaurants in ${norm}`,
-        approxPrice: '₹120 – ₹220',
-        mealType: 'Regional Traditional Lunch'
-      },
-      {
-        id: `gen-fd-2-${norm}`,
-        name: `Famous ${norm} Street Snack & Chai`,
-        imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80',
-        description: `Crispy spiced savory snacks served hot off the pan with tangy tamarind and mint chutneys, accompanied by spiced clay-cup chai.`,
-        recommendedPlaces: `Main Market & Clock Tower Square`,
-        approxPrice: '₹30 – ₹70',
-        mealType: 'Iconic Evening Street Food'
-      }
-    ],
+    foods,
     culture: {
-      traditions: [`Traditional morning market addas and welcoming regional hospitality`, `Handloom textile and handicraft heritage`],
-      festivals: [
-        { name: `${norm} Cultural Utsav`, description: `Annual state festival celebrating folk dances, craft exhibitions, and regional musical concerts.` }
+      traditions: [
+        `Traditional morning market walks and welcoming regional hospitality`,
+        `Preservation of ancestral handloom textiles and artisan metalcraft`,
+        `Community gatherings for festive evening aartis and classical recitals`
       ],
-      languages: `Regional state language and Hindi; English commonly spoken in hotels and transport hubs.`,
-      culturalPractices: ['Greeting with folded hands (Namaste / Vanakkam / Namaskara)', 'Supporting local family-run eateries'],
-      customs: ['Dress modestly when entering place of worship', 'Remove footwear outside holy sanctums']
+      festivals: [
+        {
+          name: `${norm} Cultural Utsav`,
+          description: `Annual state festival celebrating folk dances, craft exhibitions, and regional musical concerts.`
+        }
+      ],
+      languages: `${state} state language and Hindi; English commonly spoken in hotels and transport hubs.`,
+      culturalPractices: [
+        'Greeting with folded hands (Namaste / Namaskara / Vanakkam)',
+        'Supporting local family-run eateries and traditional tea stalls',
+        'Respecting heritage monuments and local customs'
+      ],
+      customs: [
+        'Dress modestly when entering place of worship',
+        'Remove footwear outside sacred sanctums',
+        'Ask permission before photographing rituals or performers'
+      ]
     },
-    dancesAndArts: [
+    dancesAndArts: matchedDances.length > 0 ? matchedDances : [
       {
-        name: `${norm} Regional Classical & Folk Dance`,
+        id: `gen-dc-1-${norm}`,
+        name: `${state} Traditional Classical & Folk Dance`,
         category: 'Traditional Performing Arts',
         imageUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80',
         videoPath: '/videos/dances/bharatanatyam.mp4',
         videoUrl: '/videos/dances/bharatanatyam.mp4',
         description: `Rhythmic folk and classical dances celebrating harvest seasons, epics, and local mythology through colorful costumes and lively drumming.`,
+        history: `Developed over centuries through temple traditions and rural community celebrations across ${state}.`,
+        significance: `Enacts deep spiritual, heroic, and emotional narratives uniting music, mime, and footwork.`,
+        costume: `Vivid silk drapes, ornate temple jewelry, and ankle bells (ghungroos).`,
         instruments: 'Traditional drums, cymbals, flutes, and harmonium.',
         whereToWatch: `Town Cultural Auditorium & Open-air Heritage Enclaves.`
       }
@@ -1347,7 +1724,15 @@ export const getDestinationCulture = (destinationName = 'Bangalore') => {
       { english: 'I need help', kannada: 'मुझे मदद चाहिए', pronunciation: 'Mujhe madad chahiye', meaning: 'Requesting aid', context: 'Assistance' }
     ],
     foodMap: [
-      { id: `gmap-gen-${norm}`, area: `${norm} Main Bazaar & Food Street`, neighborhood: `Old Town Center`, timings: '05:30 PM – 11:00 PM', mustEat: 'Traditional Sweets, Regional Savories, Hot Chai', vibe: 'Bustling bazaar lined with decades-old vendors', highlightDish: 'Signature Local Thali' }
+      {
+        id: `gmap-gen-${norm}`,
+        area: `${norm} Main Bazaar & Food Street`,
+        neighborhood: `Old Town Center`,
+        timings: '05:30 PM – 11:00 PM',
+        mustEat: 'Traditional Sweets, Regional Savories, Hot Chai',
+        vibe: 'Bustling bazaar lined with decades-old vendors',
+        highlightDish: 'Signature Local Thali'
+      }
     ],
     itinerary: [
       {

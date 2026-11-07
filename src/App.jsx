@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -25,6 +25,12 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ThemeToggle from './components/ThemeToggle';
 import { API_BASE_URL } from './config';
+
+// Redirect helper for old places links into unified Travel experience
+const PlacesRedirect = () => {
+  const { city } = useParams();
+  return <Navigate to={city ? `/travel?to=${encodeURIComponent(city)}` : '/travel'} replace />;
+};
 
 function App() {
   useEffect(() => {
@@ -53,12 +59,12 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/feed" element={<Feed />} />
             <Route path="/events" element={<EventsBoard />} />
-            <Route path="/places" element={<PlacesExplorer />} />
-            <Route path="/places/:city" element={<PlacesExplorer />} />
+            <Route path="/places" element={<Navigate to="/travel" replace />} />
+            <Route path="/places/:city" element={<PlacesRedirect />} />
             <Route path="/travel" element={<Travel />} />
             <Route path="/travel/:city" element={<Travel />} />
             <Route path="/translate" element={<Translator />} />
-            <Route path="/dances" element={<CulturalDances />} />
+            <Route path="/dances" element={<Navigate to="/travel" replace />} />
             <Route path="/city-food" element={<CityFoodExplorer />} />
             <Route path="/culture-swap" element={<CultureSwap />} />
             <Route path="/matching" element={<CultureMatching />} />

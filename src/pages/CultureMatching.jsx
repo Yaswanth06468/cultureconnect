@@ -17,19 +17,19 @@ const CultureMatching = () => {
     const suggestionsRef = useRef(null);
     const peersRef = useRef(null);
 
-    // Culture → relevant navigation targets
+    // Culture → relevant navigation targets (routed through destination travel experience)
     const cultureRoutes = {
-        Marathi: { path: '/dances', state: 'Maharashtra', dance: 'Lavani' },
-        Malayalam: { path: '/dances', state: 'Kerala', dance: 'Kathakali' },
-        Tamil: { path: '/dances', state: 'Tamil Nadu', dance: 'Bharatanatyam' },
-        Telugu: { path: '/dances', state: 'Andhra Pradesh', dance: 'Kuchipudi' },
-        Bengali: { path: '/dances', state: 'West Bengal', dance: 'Chhau' },
-        Punjabi: { path: '/dances', state: 'Punjab', dance: 'Bhangra' },
-        Gujarati: { path: '/dances', state: 'Gujarat', dance: 'Garba' },
-        Rajasthani: { path: '/dances', state: 'Rajasthan', dance: 'Ghoomar' },
-        Odia: { path: '/dances', state: 'Odisha', dance: 'Odissi' },
-        Assamese: { path: '/dances', state: 'Assam', dance: 'Bihu' },
-        Kannada: { path: '/dances', state: 'Karnataka', dance: 'Yakshagana' },
+        Marathi: { path: '/travel', city: 'Mumbai', state: 'Maharashtra', dance: 'Lavani' },
+        Malayalam: { path: '/travel', city: 'Kochi', state: 'Kerala', dance: 'Kathakali' },
+        Tamil: { path: '/travel', city: 'Chennai', state: 'Tamil Nadu', dance: 'Bharatanatyam' },
+        Telugu: { path: '/travel', city: 'Hyderabad', state: 'Telangana', dance: 'Kuchipudi' },
+        Bengali: { path: '/travel', city: 'Kolkata', state: 'West Bengal', dance: 'Chhau' },
+        Punjabi: { path: '/travel', city: 'Amritsar', state: 'Punjab', dance: 'Bhangra' },
+        Gujarati: { path: '/travel', city: 'Ahmedabad', state: 'Gujarat', dance: 'Garba' },
+        Rajasthani: { path: '/travel', city: 'Jaipur', state: 'Rajasthan', dance: 'Ghoomar' },
+        Odia: { path: '/travel', city: 'Kolkata', state: 'Odisha', dance: 'Odissi' },
+        Assamese: { path: '/travel', city: 'Kolkata', state: 'Assam', dance: 'Bihu' },
+        Kannada: { path: '/travel', city: 'Bangalore', state: 'Karnataka', dance: 'Yakshagana' },
     };
 
     const suggestions = [
@@ -114,14 +114,14 @@ const CultureMatching = () => {
         const route = cultureRoutes[cultureName];
         if (route) {
             const queryParams = new URLSearchParams();
+            if (route.city) queryParams.set('to', route.city);
             if (route.state) queryParams.set('state', route.state);
-            if (route.dance) queryParams.set('dance', route.dance);
             navigate(`${route.path}?${queryParams.toString()}`, {
-                state: { selectedState: route.state, targetDance: route.dance }
+                state: { selectedState: route.state, targetDance: route.dance, toCity: route.city }
             });
-            showToast(`🌍 Exploring ${cultureName} culture from ${route.state}!`);
+            showToast(`🌍 Exploring ${cultureName} culture in ${route.city || route.state}!`);
         } else {
-            navigate('/dances');
+            navigate('/travel');
             showToast(`🌍 Exploring ${cultureName} culture!`);
         }
     };

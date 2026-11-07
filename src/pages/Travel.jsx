@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import TravelSearch from '../components/travel/TravelSearch';
 import TripCard from '../components/travel/TripCard';
 import BookingModal from '../components/travel/BookingModal';
@@ -26,7 +26,8 @@ const POPULAR_DEST_PREVIEW = [
 
 const Travel = () => {
   const [searchParams] = useSearchParams();
-  const urlCity = searchParams.get('to') || 'Bangalore';
+  const location = useLocation();
+  const urlCity = searchParams.get('to') || location.state?.toCity || 'Bangalore';
   const urlFrom = searchParams.get('from') || 'Hyderabad';
 
   // Search parameters
@@ -273,7 +274,7 @@ const Travel = () => {
 
         {/* ── Mode 1: Confirmation Screen ── */}
         {viewMode === 'confirmation' && activeBooking && (
-          <div className="space-y-8 animate-fade-in-up">
+          <div className="space-y-10 animate-fade-in-up">
             <div className="flex items-center gap-3">
               <div
                 className="w-10 h-10 rounded-2xl flex items-center justify-center text-xl flex-shrink-0"
@@ -286,12 +287,54 @@ const Travel = () => {
                 <p className="text-sm" style={{ color: 'var(--theme-text-muted)' }}>Your journey from {activeBooking.fromCity} → {activeBooking.toCity} is all set</p>
               </div>
             </div>
+
             <BookingConfirmation
               booking={activeBooking}
-              onExploreCulture={() => setViewMode('experience')}
+              onExploreCulture={() => {
+                const el = document.getElementById('destination-experience-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                else setViewMode('experience');
+              }}
               onOpenMyTrips={() => setMyTripsOpen(true)}
               onNewSearch={() => setViewMode('search')}
             />
+
+            {/* Automatically Display Destination Cultural Experience Below Confirmed Ticket */}
+            <div id="destination-experience-section" className="pt-8 space-y-6">
+              <div className="p-5 rounded-3xl bg-[var(--theme-card-bg)] border border-[var(--theme-border)] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[var(--theme-accent-primary)] bg-[var(--theme-bg-accent)] px-3 py-1 rounded-full">
+                    ✨ Cultural Gateway Unlocked
+                  </span>
+                  <h3 className="font-serif font-black text-2xl md:text-3xl mt-2" style={{ color: 'var(--theme-text-primary)' }}>
+                    Discover {normalizeCity(activeBooking.toCity)} — Places, Dances &amp; Food
+                  </h3>
+                  <p className="text-xs md:text-sm text-[var(--theme-text-secondary)] mt-1">
+                    Your confirmed ticket unlocks historical monuments, traditional dances with playable preview videos, and local gastronomy.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="px-4 py-2 rounded-xl text-xs font-serif font-bold tracking-wide border border-[var(--theme-border)] bg-[var(--theme-card-bg)] text-[var(--theme-text-primary)] hover:border-[var(--theme-accent-primary)] transition-all flex items-center gap-1.5"
+                  >
+                    <span>🎟️</span>
+                    <span>Scroll to Ticket</span>
+                  </button>
+                </div>
+              </div>
+
+              <TripDashboard
+                cultureData={destinationCulture}
+                booking={activeBooking}
+                destinationName={normalizeCity(activeBooking.toCity)}
+                originName={normalizeCity(activeBooking.fromCity)}
+                onViewTicket={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onOpenMyTrips={() => setMyTripsOpen(true)}
+                onPlanNewTrip={() => setViewMode('search')}
+              />
+            </div>
           </div>
         )}
 

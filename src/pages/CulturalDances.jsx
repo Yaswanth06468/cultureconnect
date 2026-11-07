@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import DancePreviewVideo from '../components/DancePreviewVideo';
 
-const dancesData = [
+export const dancesData = [
   {
     id: 1,
     name: "Kuchipudi",

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -8,14 +8,29 @@ import Profile from './pages/Profile';
 import EventsBoard from './pages/EventsBoard';
 import Translator from './pages/Translator';
 import CulturalDances from './pages/CulturalDances';
+import PlacesExplorer from './pages/PlacesExplorer';
+import Travel from './pages/Travel';
 import CityFoodExplorer from './pages/CityFoodExplorer';
 import CultureSwap from './pages/CultureSwap';
 import CultureMatching from './pages/CultureMatching';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import VerifyEmail from './pages/VerifyEmail';
 import WelcomeModal from './components/WelcomeModal';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import ThemeToggle from './components/ThemeToggle';
 import { API_BASE_URL } from './config';
+
+// Redirect helper for old places links into unified Travel experience
+const PlacesRedirect = () => {
+  const { city } = useParams();
+  return <Navigate to={city ? `/travel?to=${encodeURIComponent(city)}` : '/travel'} replace />;
+};
 
 function App() {
   useEffect(() => {
@@ -33,28 +48,40 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <WelcomeModal />
+    <AuthProvider>
+      <ThemeProvider>
+        <WelcomeModal />
       <BrowserRouter>
         <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-bg-primary)', color: 'var(--theme-text-primary)', transition: 'background-color 0.4s ease, color 0.4s ease' }}>
           <Navbar />
+          <ThemeToggle />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/feed" element={<Feed />} />
             <Route path="/events" element={<EventsBoard />} />
+            <Route path="/places" element={<Navigate to="/travel" replace />} />
+            <Route path="/places/:city" element={<PlacesRedirect />} />
+            <Route path="/travel" element={<Travel />} />
+            <Route path="/travel/:city" element={<Travel />} />
             <Route path="/translate" element={<Translator />} />
-            <Route path="/dances" element={<CulturalDances />} />
+            <Route path="/dances" element={<Navigate to="/travel" replace />} />
             <Route path="/city-food" element={<CityFoodExplorer />} />
             <Route path="/culture-swap" element={<CultureSwap />} />
             <Route path="/matching" element={<CultureMatching />} />
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/admin" element={<ProtectedRoute requireAdmin={true}><AdminDashboard /></ProtectedRoute>} />
           </Routes>
         </div>
       </BrowserRouter>
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

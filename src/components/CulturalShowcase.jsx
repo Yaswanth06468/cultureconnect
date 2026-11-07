@@ -39,7 +39,7 @@ const CulturalShowcase = () => {
                     </h2>
                 </div>
                 <Link
-                    to="/dances"
+                    to="/travel"
                     className="hidden md:flex items-center gap-2 text-[var(--theme-accent-primary)] hover:opacity-80 font-bold text-sm transition-colors group"
                 >
                     <span>View All Destinations</span>

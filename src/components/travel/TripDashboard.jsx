@@ -30,9 +30,9 @@ const TripDashboard = ({
   const tabs = [
     { id: 'overview', label: 'All Highlights', icon: '✨' },
     { id: 'places', label: 'Places', icon: '🏛️', count: cultureData.places?.length },
-    { id: 'food', label: 'City Food', icon: '🍛', count: cultureData.foods?.length },
+    { id: 'dances', label: 'Traditional Dances', icon: '🎭', count: cultureData.dancesAndArts?.length },
+    { id: 'food', label: 'Local Food', icon: '🍛', count: cultureData.foods?.length },
     { id: 'culture', label: 'Local Culture', icon: '🪔' },
-    { id: 'dances', label: 'Dances & Arts', icon: '🎭', count: cultureData.dancesAndArts?.length },
     { id: 'events', label: 'Events', icon: '🎪', count: cultureData.events?.length },
     { id: 'translate', label: 'Translate', icon: '🗣️', count: cultureData.languagePhrases?.length },
     { id: 'foodmap', label: 'Food Map', icon: '🗺️', count: cultureData.foodMap?.length },
@@ -173,9 +173,9 @@ const TripDashboard = ({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { title: 'Explore Places', icon: '🏛️', desc: `${cultureData.places?.length || 5}+ Monuments`, tab: 'places' },
-                { title: 'City Food', icon: '🍛', desc: `${cultureData.foods?.length || 6}+ Iconic Dishes`, tab: 'food' },
+                { title: 'Traditional Dances', icon: '🎭', desc: `${cultureData.dancesAndArts?.length || 3}+ Art Forms (Videos)`, tab: 'dances' },
+                { title: 'Local Food', icon: '🍛', desc: `${cultureData.foods?.length || 6}+ Iconic Dishes`, tab: 'food' },
                 { title: 'Local Culture', icon: '🪔', desc: 'Traditions & Customs', tab: 'culture' },
-                { title: 'Dances & Arts', icon: '🎭', desc: `${cultureData.dancesAndArts?.length || 3}+ Art Forms`, tab: 'dances' },
                 { title: 'Events', icon: '🎪', desc: `${cultureData.events?.length || 4}+ Live Festivals`, tab: 'events' },
                 { title: 'Local Phrases', icon: '🗣️', desc: 'Pronunciation Guide', tab: 'translate' },
                 { title: 'Food Map', icon: '🗺️', desc: 'Culinary Hotspots', tab: 'foodmap' },
@@ -200,24 +200,24 @@ const TripDashboard = ({
               ))}
             </div>
 
-            {/* A. Places */}
-            <section>
+            {/* A. Explore Places */}
+            <section id="destination-places-section">
               <DestinationPlaces places={cultureData.places} destinationName={destinationName} />
             </section>
 
-            {/* B. City Food */}
-            <section className="pt-8 border-t border-[var(--theme-border)]">
+            {/* B. Discover Traditional Dances */}
+            <section id="destination-dances-section" className="pt-8 border-t border-[var(--theme-border)]">
+              <DestinationDances dances={cultureData.dancesAndArts} destinationName={destinationName} />
+            </section>
+
+            {/* C. Explore Local Food */}
+            <section id="destination-food-section" className="pt-8 border-t border-[var(--theme-border)]">
               <DestinationFood foods={cultureData.foods} destinationName={destinationName} />
             </section>
 
-            {/* C. Local Culture */}
+            {/* D. Local Culture */}
             <section className="pt-8 border-t border-[var(--theme-border)]">
               <DestinationCulture culture={cultureData.culture} destinationName={destinationName} />
-            </section>
-
-            {/* D. Dances & Arts */}
-            <section className="pt-8 border-t border-[var(--theme-border)]">
-              <DestinationDances dances={cultureData.dancesAndArts} destinationName={destinationName} />
             </section>
 
             {/* E. Events */}

@@ -28,13 +28,10 @@ const DestinationPlaces = ({ places = [], destinationName = 'Bangalore' }) => {
           </p>
         </div>
 
-        <Link
-          to={`/places/${destinationName}`}
-          className="text-xs font-bold text-[var(--theme-accent-primary)] hover:underline inline-flex items-center gap-1 self-start md:self-auto"
-        >
-          <span>Open Full Places Explorer</span>
-          <span>→</span>
-        </Link>
+        <span className="text-xs font-bold text-[var(--theme-text-muted)] bg-[var(--theme-bg-accent)] px-3.5 py-1.5 rounded-full border border-[var(--theme-border)] self-start md:self-auto flex items-center gap-1.5">
+          <span>🏛️</span>
+          <span>{places.length} Heritage Attraction{places.length !== 1 ? 's' : ''}</span>
+        </span>
       </div>
 
       {/* Places Grid */}
@@ -167,22 +164,14 @@ const DestinationPlaces = ({ places = [], destinationName = 'Bangalore' }) => {
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-[var(--theme-border)] flex items-center justify-between gap-3">
+            <div className="mt-6 pt-4 border-t border-[var(--theme-border)] flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setSelectedPlace(null)}
-                className="px-5 py-2.5 rounded-xl border border-[var(--theme-border)] text-xs font-bold uppercase tracking-wider text-[var(--theme-text-secondary)]"
+                className="px-6 py-2.5 rounded-xl font-serif font-bold text-xs uppercase tracking-wider text-[var(--theme-btn-text)] bg-[var(--theme-btn-bg)] hover:opacity-90 flex items-center gap-1.5 shadow-md"
               >
-                Close
+                <span>Close Monument Details</span>
               </button>
-
-              <Link
-                to={`/places/${destinationName}`}
-                className="px-6 py-2.5 rounded-xl font-serif font-bold text-xs uppercase tracking-wider text-[var(--theme-btn-text)] bg-[var(--theme-btn-bg)] hover:opacity-90 flex items-center gap-1.5"
-              >
-                <span>Full Guide in Places Explorer</span>
-                <span>→</span>
-              </Link>
             </div>
           </div>
         </div>
